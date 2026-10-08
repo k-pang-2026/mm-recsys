@@ -1,0 +1,324 @@
+schema_version: 4
+seed: 42
+scale: dev
+scales:
+  dev:
+    n_products: 10000
+    n_users: 2000
+    n_events: 200000
+  full:
+    n_products: 50000
+    n_users: 10000
+    n_events: 1000000
+paths:
+  data_dir: data
+  model_dir: models
+  results_dir: docs/results
+  split_dir: data/split
+  by_scale:
+    full:
+      data_dir: data/full
+      split_dir: data/full/split
+      model_dir: models/full
+simulator:
+  n_products: 50000
+  n_users: 10000
+  n_events: 1000000
+  reference_time: '2026-01-01T00:00:00Z'
+  image_size: 224
+  choice_model:
+    uniform_noise: 0.05
+    zipf_alpha: 1.2
+    preferred_leaf_probability: 0.86
+    preferred_brand_probability: 0.88
+  event_types:
+  - search
+  - view
+  - cart
+  - purchase
+  personas:
+    trendsetter:
+      ratio: 0.15
+      price_sensitivity: 0.3
+      cvr: 0.05
+      category_preferences:
+      - 0.3
+      - 0.2
+      - 0.2
+      - 0.2
+      - 0.1
+    pragmatist:
+      ratio: 0.2
+      price_sensitivity: 0.6
+      cvr: 0.04
+      category_preferences:
+      - 0.25
+      - 0.25
+      - 0.2
+      - 0.2
+      - 0.1
+    bargain:
+      ratio: 0.2
+      price_sensitivity: 0.9
+      cvr: 0.03
+      category_preferences:
+      - 0.3
+      - 0.25
+      - 0.1
+      - 0.2
+      - 0.15
+    brand_loyal:
+      ratio: 0.15
+      price_sensitivity: 0.2
+      cvr: 0.06
+      category_preferences:
+      - 0.2
+      - 0.2
+      - 0.2
+      - 0.2
+      - 0.2
+    impulsive:
+      ratio: 0.15
+      price_sensitivity: 0.5
+      cvr: 0.08
+      category_preferences:
+      - 0.25
+      - 0.15
+      - 0.2
+      - 0.2
+      - 0.2
+    careful:
+      ratio: 0.15
+      price_sensitivity: 0.7
+      cvr: 0.02
+      category_preferences:
+      - 0.2
+      - 0.2
+      - 0.3
+      - 0.2
+      - 0.1
+  window_days: 30
+  new_item_ratio: 0.04
+  cold_user_ratio: 0.03
+  cold_max_events: 3
+  impressions_per_view: 4
+  image_variants: 8
+  transitions:
+    search:
+      view: 1.0
+    view:
+      view: 0.46
+      cart: 0.2
+      exit: 0.34
+    cart:
+      purchase: 0.45
+      view: 0.25
+      exit: 0.3
+    purchase:
+      exit: 1.0
+    exit:
+      search: 1.0
+  taxonomy:
+    tops:
+      shirts:
+      - shirt
+      - blouse
+      - polo shirt
+      knitwear:
+      - sweater
+      - cardigan
+      - knitted vest
+      casual:
+      - hoodie
+      - sweatshirt
+      - t-shirt
+    bottoms:
+      trousers:
+      - jeans
+      - chinos
+      - cargo pants
+      shorts:
+      - denim shorts
+      - bermuda shorts
+      - athletic shorts
+      skirts:
+      - mini skirt
+      - pleated skirt
+      - long skirt
+    outerwear:
+      coats:
+      - long coat
+      - trench coat
+      - pea coat
+      jackets:
+      - bomber jacket
+      - denim jacket
+      - blazer
+      warm:
+      - puffer jacket
+      - fleece jacket
+      - padded vest
+    footwear:
+      casual:
+      - sneakers
+      - slip-on shoes
+      - canvas shoes
+      formal:
+      - loafers
+      - oxford shoes
+      - heels
+      outdoor:
+      - boots
+      - sandals
+      - hiking shoes
+    accessories:
+      bags:
+      - backpack
+      - tote bag
+      - crossbody bag
+      headwear:
+      - cap
+      - beanie
+      - bucket hat
+      small:
+      - scarf
+      - belt
+      - gloves
+  brands:
+  - North
+  - Urban
+  - Classic
+  - Field
+  - Studio
+  - Value
+  - Muse
+  - Daily
+  colors:
+    black: '#222222'
+    white: '#eeeeee'
+    red: '#c73c3c'
+    blue: '#315fa8'
+    green: '#3e835a'
+    yellow: '#d2ac3a'
+    brown: '#8b6244'
+    pink: '#db8ba0'
+  styles:
+  - regular
+  - relaxed
+  - slim
+  - oversized
+  category_price_ranges:
+    tops:
+    - 15000
+    - 140000
+    bottoms:
+    - 20000
+    - 160000
+    outerwear:
+    - 50000
+    - 350000
+    footwear:
+    - 30000
+    - 220000
+    accessories:
+    - 10000
+    - 180000
+search:
+  clip_model: openai/clip-vit-base-patch32
+  batch_size: 32
+  top_k: 10
+  clip_revision: 3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268
+  faiss:
+    type: HNSW
+    metric: inner_product
+    M: 32
+    ef_construction: 200
+    ef_search: 128
+    threads: 4
+    nlist: 256
+    m: 16
+    nbits: 8
+    nprobe: 16
+  fusion:
+    text_weight: 0.5
+    image_weight: 0.5
+  query_fusion:
+    text_weight: 0.5
+    image_weight: 0.5
+  evaluation:
+    relevance: observable_attributes
+    queries_per_mode: 200
+    ann_recall_k: 10
+recommend:
+  candidate_k: 300
+  top_n: 10
+  exclude_purchased: false
+  candidate:
+    dim: 64
+    history_n: 50
+    batch_size: 512
+    epochs: 20
+    patience: 3
+    learning_rate: 0.001
+    temperature: 0.1
+    negatives_per_positive: 4
+    loss: sampled_softmax
+    positive_weights:
+      view: 0.2
+      cart: 0.6
+      purchase: 1.0
+    faiss:
+      type: HNSW
+      metric: inner_product
+      M: 32
+      ef_search: 512
+  evaluation:
+    cutoff_policy: fixed_origin
+    target_events:
+    - cart
+    - purchase
+    aggregation: macro_user
+    k: 300
+    coverage_top_n: 50
+    coverage_users: 10000
+    min_history: 0
+  mab:
+    algo: epsilon_greedy
+    epsilon: 0.1
+  new_item_days: 7
+  max_consecutive_same_category: 2
+  cold_start_min_events: 5
+split:
+  train: 0.8
+  valid: 0.1
+  test: 0.1
+ct:
+  hitrate_threshold: 0.2
+  retrain_log_threshold: 10000
+redis:
+  host: redis
+  port: 6379
+benchmark:
+  warmup: 10
+  requests: 100
+  concurrency: 1
+targets:
+  mrr: 0.55
+  ndcg_at_10: 0.5
+  recall_at_300: 0.3
+  auc: 0.7
+  hit_rate_at_50: 0.2
+  ndcg_at_50: 0.08
+  coverage: 0.2
+  candidate_p95_ms: 100
+  search_p95_ms: 200
+  recommend_p95_ms: 200
+  feature_p95_ms: 10
+serving:
+  feature_store: memory
+  history_limit: 50
+  session_ttl_seconds: 1800
+  feedback_ttl_seconds: 86400
+  plugins:
+    search: src.search.service
+    recommend: src.recommendation.service

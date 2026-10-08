@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "recorded_at": "2026-10-08T15:42:52.005368+00:00",
+  "distro": "Ubuntu",
+  "platform": "WSL2 / Linux ARM64",
+  "diagnosis": "Docker Desktop was stopped; Ubuntu integration was already enabled",
+  "integration_settings": {
+    "EnableIntegrationWithDefaultWslDistro": true,
+    "IntegratedWslDistros": [
+      "Ubuntu"
+    ]
+  },
+  "repair": {
+    "command": "docker.exe desktop start",
+    "exit_code": 0,
+    "output": "Starting Docker Desktop"
+  },
+  "docker_version": {
+    "Client": {
+      "Version": "29.8.2",
+      "ApiVersion": "1.56",
+      "DefaultAPIVersion": "1.56",
+      "GitCommit": "7fc2dff",
+      "GoVersion": "go1.26.8",
+      "Os": "linux",
+      "Arch": "arm64",
+      "BuildTime": "Wed Sep 30 19:31:29 2026",
+      "Context": "default"
+    },
+    "Server": {
+      "Platform": {
+        "Name": "Docker Desktop 4.94.0 (241994)"
+      },
+      "Version": "29.8.2",
+      "ApiVersion": "1.56",
+      "MinAPIVersion": "1.40",
+      "Os": "linux",
+      "Arch": "arm64",
+      "Components": [
+        {
+          "Name": "Engine",
+          "Version": "29.8.2",
+          "Details": {
+            "ApiVersion": "1.56",
+            "Arch": "arm64",
+            "BuildTime": "Wed Sep 30 19:31:50 2026",
+            "Experimental": "false",
+            "GitCommit": "8af9fe3",
+            "GoVersion": "go1.26.8",
+            "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+            "MinAPIVersion": "1.40",
+            "Module": "github.com/moby/moby/v2",
+            "ModuleVersion": "v2.0.0+unknown",
+            "Os": "linux"
+          }
+        },
+        {
+          "Name": "containerd",
+          "Version": "v2.3.6",
+          "Details": {
+            "GitCommit": "ee2735368117d2eb259779949d5e75cdafec9761"
+          }
+        },
+        {
+          "Name": "runc",
+          "Version": "1.5.1",
+          "Details": {
+            "GitCommit": "v1.5.1-0-g8f2685a4"
+          }
+        },
+        {
+          "Name": "docker-init",
+          "Version": "0.19.0",
+          "Details": {
+            "GitCommit": "de40ad0"
+          }
+        }
+      ],
+      "GitCommit": "8af9fe3",
+      "GoVersion": "go1.26.8",
+      "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+      "BuildTime": "2026-09-30T19:31:50.000000000+00:00"
+    }
+  },
+  "docker_preflight": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "version"
+      ],
+      "exit_code": 0,
+      "output": "Docker Compose version v5.5.1\n"
+    },
+    {
+      "command": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}}"
+      ],
+      "exit_code": 0,
+      "output": "29.8.2\n"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ],
+  "runtime_check": {
+    "command": "docker run --rm --mount type=bind,source=<repository-root>,target=/workspace,readonly redis:7 sh -ec 'test -f /workspace/config.yaml; redis-server --daemonize yes; for attempt in 1 2 3 4 5; do if redis-cli ping; then exit 0; fi; sleep 1; done; exit 1'",
+    "exit_code": 0,
+    "output": "PONG",
+    "bind_mount": "WSL repository root read-only",
+    "temporary_container_removed": true,
+    "image_digests": [
+      "redis@sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f"
+    ]
+  },
+  "setup": {
+    "command": "env -u HF_HOME HF_HUB_OFFLINE=1 bash setup_env.sh . --role=A",
+    "exit_code": 0,
+    "skipped_checks": [],
+    "tests_passed": 61,
+    "clip_text_and_image": "PASS",
+    "dev_data_validation": "PASS",
+    "train_valid_diagnostics": "PASS"
+  },
+  "final_four_service_model_reproduction": "UNMEASURED; assigned to B10/INTEGRATE after model implementation"
+}

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "method": "setup scaffold export plus generation with the already verified interpreter; not a remote GitHub clone",
+  "scale": "dev",
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "all_file_hashes_equal": true,
+  "verified_files": [
+    "products.parquet",
+    "users.parquet",
+    "events.parquet",
+    "impressions.parquet",
+    "image_manifest.json",
+    "split/train.parquet",
+    "split/valid.parquet",
+    "split/test.parquet"
+  ],
+  "role": "B",
+  "fresh_remote_clone": "PENDING_FIRST_APPROVED_PR_MERGE"
+}

@@ -1,0 +1,44 @@
+{
+  "generator_version": "4.0.0",
+  "generation_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "scale": "full",
+  "seed": 42,
+  "reference_time": "2026-01-01T00:00:00Z",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "split_counts": {
+    "train": 800000,
+    "valid": 100000,
+    "test": 100000
+  },
+  "boundaries": {
+    "train": {
+      "start": "2025-12-02 00:00:00+00:00",
+      "end": "2025-12-25 23:59:57.408000+00:00"
+    },
+    "valid": {
+      "start": "2025-12-26 00:00:00+00:00",
+      "end": "2025-12-28 23:59:57.408000+00:00"
+    },
+    "test": {
+      "start": "2025-12-29 00:00:00+00:00",
+      "end": "2025-12-31 23:59:57.408000+00:00"
+    }
+  },
+  "file_hashes": {
+    "products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+    "events.parquet": "efc8d3d1e31c616845356a48cd9c5300a77db82164b07fee6c74771e664dd529",
+    "impressions.parquet": "4f9064dc3781e68c916c4068f095788d24a444812cc6a86f5447da84fd6de609",
+    "image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+    "split/train.parquet": "48ec6861964ddcabafec4d7ed36f3523eb8380e8858526768efbb5579b30c8ff",
+    "split/valid.parquet": "34abd1620303a22a3b69948ee705b58726f12a7c4990069da6d6d010a7c8f889",
+    "split/test.parquet": "e2b53a80f793628ebd57b8afd77a59de49a536adbe139b9d19c18e12e67a4814"
+  },
+  "cutoff_policy": "fixed_origin",
+  "images": "synthetic category silhouettes; observed attributes only; no unique-ID semantics"
+}

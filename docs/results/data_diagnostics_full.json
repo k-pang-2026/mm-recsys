@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "evaluation_split": "valid",
+  "test_outcomes_read": false,
+  "cutoff": "2025-12-25 23:59:57.408000+00:00",
+  "eligible_catalog": 48000,
+  "evaluated_users": 7769,
+  "cold_users": 0,
+  "unavailable_truth_items": 78,
+  "event_distribution": {
+    "view": 450664,
+    "search": 224907,
+    "cart": 88921,
+    "purchase": 35508
+  },
+  "persona_purchase_event_rates": {
+    "bargain": 0.030480495479746267,
+    "brand_loyal": 0.05843142816621756,
+    "careful": 0.020256076823046913,
+    "impulsive": 0.07553002801399042,
+    "pragmatist": 0.038744798673466196,
+    "trendsetter": 0.049250409932068404
+  },
+  "valid_history_recall_at_300": 0.7901274295276097,
+  "valid_popularity_recall_at_300": 0.22950186639207104,
+  "uniform_catalog_expected_recall": 0.00625,
+  "note": "Train/valid pilot, not Two Tower acceptance; frozen test metrics remain UNMEASURED"
+}

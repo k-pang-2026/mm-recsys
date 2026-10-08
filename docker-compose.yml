@@ -1,0 +1,42 @@
+services:
+  redis:
+    image: redis:7
+    command: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api-server:
+    build: {context: ., dockerfile: docker/Dockerfile.api}
+    env_file: .env
+    ports: ["${API_PORT:-8000}:8000"]
+    depends_on:
+      redis: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 30s
+    mem_limit: 4g
+    volumes: ["./data:/app/data", "./models:/app/models", "./docs/results:/app/docs/results", "hf_cache:/app/.cache/huggingface"]
+
+  dashboard:
+    build: {context: ., dockerfile: docker/Dockerfile.dashboard}
+    env_file: .env
+    ports: ["${DASHBOARD_PORT:-8501}:8501"]
+    depends_on:
+      api-server: {condition: service_healthy}
+    volumes: ["./docs/results:/app/docs/results:ro"]
+
+  simulator:
+    build: {context: ., dockerfile: docker/Dockerfile.simulator}
+    env_file: .env
+    depends_on: [redis]
+    volumes: ["./data:/app/data"]
+
+volumes:
+  hf_cache:

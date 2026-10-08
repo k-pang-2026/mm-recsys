@@ -1,0 +1,11 @@
+{
+  "python": "3.12.3",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.39",
+  "scale": "dev",
+  "seed": 42,
+  "clip_inference": "PASS",
+  "performance": "미측정",
+  "clip_model": "openai/clip-vit-base-patch32",
+  "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+  "clip_projection_dim": 512
+}
