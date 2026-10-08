@@ -1,0 +1,22 @@
+{
+  "status": "MERGED",
+  "pr_number": 1,
+  "url": "https://github.com/k-pang-2026/mm-recsys/pull/1",
+  "head": "chore/shared-foundation",
+  "base": "main",
+  "published_commit": "4291876e44ad6803109c03fc1da69ddc102f55a2",
+  "merge_commit": "8c9487eca8c54b2551fdfebfc68403c55e21b840",
+  "head_ci": "PASS",
+  "passed_checks": 2,
+  "merge_conditions": [
+    "published remote gate PASS",
+    "quality not FAIL",
+    "required common CI PASS",
+    "all checks complete",
+    "no unresolved requested changes",
+    "mergeable true / clean",
+    "head and base unchanged before merge"
+  ],
+  "authorization": "user authorized automatic merges when conflict-free and safe",
+  "note": "Evidence for the initial shared PR; subsequent policy changes are local until separately approved push"
+}

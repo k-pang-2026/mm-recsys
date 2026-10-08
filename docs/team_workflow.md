@@ -34,9 +34,11 @@ flowchart LR
 `A/B/C 다음 단계 실행`은 구현·검증·수정·기능 브랜치의 로컬 commit·PR 미리보기·내용 설명 요청이다.
 사용자는 각 push 전에 작업 설명과 허가 절차를 요구했다. 사용자가 그 결과를 명시 승인한
 뒤에만 기능 브랜치를 push하고 PR을 생성/갱신한다. main 직접 commit/push는 금지한다.
-PR 병합은 CI/리뷰를 확인해 별도 허가를 받는다. [PR 절차](pr_workflow.md)를 따른다.
+PR 병합은 원격 gate·CI·품질·필수 리뷰/보호 규칙과 충돌을 확인해 안전하면 자동 수행한다.
+사용자가 이 자동 병합을 허가했으므로 병합을 위해 재확인을 요청하지 않는다. [PR 절차](pr_workflow.md)를 따른다.
 사람에게 코드 작성/파일 목록 조립/Git 명령 입력을 넘기지 않는다.
-`auto_push: false`, `push_requires_user_approval: true`가 현재 정책이다.
+`auto_push: false`, `push_requires_user_approval: true`,
+`pull_requests.auto_merge_when_safe: true`가 현재 정책이다.
 커밋은 [공통 메시지 규칙](commit_convention.md)에 따라 helper가 자동 작성한다.
 형식은 `type(scope): 한국어 변경 요약`; 본문은 실제 변경 파일과 gate의 검사 근거를 한국어로 기록한다.
 정상 Git 권한은 사용하며 sandbox/자동 승인 심사/원격 보호 규칙을 문서로 우회하지 않는다.
@@ -80,3 +82,9 @@ PR 병합되어 있어야 한다. 검토된 main을 자동 fetch/merge하고 미
 않는다. 충돌은 Codex가 수정·재검증한다.
 푸시 실패 시 해당 commit을 보존하고 같은 명령의 재실행으로 이어간다.
 GitHub auth/login·보호 규칙·Docker host 설정은 권한이 없을 때 정확한 조치만 요청한다.
+
+CI 진행 중이면 최대 10분 기다린다. 아직 완료되지 않으면 `.team/pr/merge_pending.json`에
+PR 번호와 푸시한 SHA를 보존한다. `B 병합 상태 확인하고 계속 진행` 또는 `team.py merge B`로
+재개한다. CLI의 `run`도 pending 병합을 먼저 확인한다. 충돌·검사 실패·품질 미달·리뷰 변경 요청은
+자동 병합하지 않는다. BLOCKED 상태의 `run`은 같은 담당 단계의 원인을 수정·재검증한다.
+수정으로 새 commit이 생기면 기존 푸시 전 설명·허가 규칙을 다시 적용한다.

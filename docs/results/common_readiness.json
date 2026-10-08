@@ -16,7 +16,7 @@
   },
   "tests": {
     "command": ".venv/bin/python -m pytest -q tests",
-    "passed": 61,
+    "passed": 76,
     "failed": 0
   },
   "datasets": {
@@ -133,7 +133,7 @@
     "evidence": "docs/results/docker_wsl_verification.json",
     "final_four_service_model_reproduction": "UNMEASURED"
   },
-  "automation_verification": "local Git remotes: cross-role dependencies require PASS evidence merged into main; unmerged/failed dependencies blocked; main direct commit/push rejected even with a wrong branch assignment; push approval bound to SHA; mocked GitHub PR create/update/Draft-ready and separate merge SHA/CI/review checks; live GitHub API authentication/publication UNMEASURED",
+  "automation_verification": "local Git remotes: cross-role dependencies require PASS evidence merged into main; unmerged/failed dependencies blocked; main direct commit/push rejected even with a wrong branch assignment; push approval bound to SHA; mocked GitHub PR create/update/Draft-ready and separate merge SHA/CI/review checks; live GitHub API authentication/publication UNMEASURED; automatic merge tests: remote gate, conflict/protection/quality rejection, head/base movement, CI wait and durable retry state; initial PR #1 merged with real safety checks",
   "not_implemented_yet": [
     "A search encoder/index/service",
     "B learned recommendation/ranking/session",
@@ -141,11 +141,11 @@
   ],
   "github_publication_evidence": "verified branch remote head and PR URL/head/base/draft after approval; main changes only through separately approved PR merge",
   "github_publication": {
-    "status": "APPROVED_AFTER_DOCKER_REPAIR",
+    "status": "POLICY_UPDATE_AWAITING_PUSH_APPROVAL",
     "pushed": false,
     "target": "https://github.com/k-pang-2026/mm-recsys.git",
     "branch": "chore/shared-foundation",
-    "policy": "user authorized branch push after Docker WSL repair; PR creation follows the agreed workflow; PR merge still requires separate approval",
+    "policy": "explain and obtain approval for the new policy-update push; safe PR merges are already authorized",
     "base": "main",
     "pull_request_required": true,
     "pr_created": false,
@@ -168,13 +168,27 @@
       "split/test.parquet"
     ],
     "role": "B",
-    "fresh_remote_clone": "PENDING_FIRST_APPROVED_PR_MERGE"
+    "fresh_remote_clone": "AVAILABLE_AFTER_PR_1_MERGE; fresh remote clone not yet executed"
   },
-  "record_kind": "pre-publication snapshot",
+  "record_kind": "local automatic-merge policy update snapshot; first shared PR publication recorded separately",
   "commit_policy": {
     "format": "type(scope): 한국어 변경 요약",
     "body_language": "ko",
     "generation": "Codex diff summary + helper-generated changed files and real gate checks",
     "push": "explicit approval bound to reviewed commit"
+  },
+  "previous_publication": "docs/results/common_publication.json",
+  "automatic_merge_policy": {
+    "enabled": true,
+    "requires_separate_approval": false,
+    "conditions": [
+      "no conflicts",
+      "remote gate/quality",
+      "all CI",
+      "required review and protections",
+      "exact published SHA and unchanged base"
+    ],
+    "wait_seconds": 600,
+    "resume_state": ".team/pr/merge_pending.json"
   }
 }

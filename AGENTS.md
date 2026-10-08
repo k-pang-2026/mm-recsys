@@ -24,8 +24,9 @@
    --summary에 넣고 helper가 type(scope), 한국어 변경 내역과 실제 검증 본문을 자동 생성하게 한다.
    로컬 PR 미리보기와 변경 내용을 설명하고 푸시·PR 생성 허가를 받은 뒤에만
    `--mode publish --approved`를 실행한다. 원격 commit과 PR head/base/draft를 확인한다.
-   `--approved`는 자동으로 붙이지 않는다. PR 병합은 별도 허가 후 CI/리뷰와 승인한 SHA를
-   확인해 `scripts/pull_request.py --merge`로 수행한다. 절차는 `docs/pr_workflow.md`를 따른다.
+   `--approved`는 자동으로 붙이지 않는다. 사용자는 충돌 없고 안전한 PR의 자동 병합을
+   허가했다. 원격 gate·CI·품질·필수 리뷰/보호 규칙과 푸시한 SHA를 확인해 자동 병합한다.
+   병합 허가를 다시 요청하지 않는다. 절차는 `docs/pr_workflow.md`를 따른다.
    허가 후 push 실패 재시도는 동일 승인 commit에만 적용하며 새로운 commit은 다시 설명/허가를 받는다.
 7. 외부 push 권한과 샌드박스 정책은 문서로 우회할 수 없다. 승인된 작업에는 정상적인
    escalation/auto-review를 사용한다. 강제 push·전체 권한 우회·비밀값 출력은 금지한다.

@@ -27,3 +27,7 @@
 [dev pilot](../results/data_diagnostics.json), [full pilot](../results/data_diagnostics_full.json).
 공통 commit/push는 이 문서와 SHARED gate가 포함된 실제 Git 이력으로 확인한다.
 검색/Two Tower/DeepFM/Redis/CT/Docker 완성 및 모델 최종 품질은 후속 담당 단계에 남아 있다.
+
+- 사용자 최신 지시에 따라 충돌·원격 gate·CI·품질·필수 리뷰/보호 규칙을 확인한 PR은
+  자동 병합하도록 구현했다. 푸시 전 설명·허가 규칙은 유지한다. 병합 직전 head/base SHA
+  변경을 확인하고 CI 대기·차단 상태를 보존하며 같은 PR의 병합 재시도를 지원한다.
