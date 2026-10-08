@@ -11,7 +11,7 @@ PDF가 요구사항의 기준이며, 아래 기본값/실험 설계/역할 3인�
 
 공통 **SHARED(P0 범위 기록+B0 설정/계약+B1 시뮬레이터+기초 serving/평가/자동화)**는
 팀장이 chore/shared-foundation에서 완료·검증한다. 내용을 설명하고 허가받아 브랜치를
-푸시하고 main 대상 공통 PR을 생성한다. CI/리뷰 후 별도 병합 허가를 받아 먼저 main에 병합한다.
+푸시하고 main 대상 공통 PR을 생성한다. 충돌·gate·CI·품질·필수 리뷰 조건을 통과하면 공통 PR을 자동으로 먼저 main에 병합한다.
 이후에는 `config/team_workflow.yaml`이 순서 기준이다.
 
 | 담당 | 사람 | 병렬 시작 이후 순서 | 기본 브랜치 |
@@ -25,7 +25,7 @@ A/B/C는 독립 clone에서 시작한다. B7은 B5+B6, B8은 B2b+B7을 기다리
 직접 가져오지 않는다. 구조 검증과 full 품질을 구분하며 실패를 숫자 조작으로 숨기지 않는다.
 `A/B/C 다음 단계 실행`은 구현·검증·필요 수정·로컬 commit·내용 설명까지 요청한 것이다.
 각 기능 브랜치 push·PR 생성은 설명을 받은 사용자의 명시 허가 후에만 수행한다.
-단계 실행 지시는 push 허가가 아니다. PR 병합은 별도 허가가 필요하며 main 직접 push는 금지한다.
+단계 실행 지시는 push 허가가 아니다. 안전한 PR 병합은 자동 수행하며 main 직접 push는 금지한다.
 개발자가 직접 파일을 편집하거나 각 명령을 복사할 필요 없이 Codex가 실제 파일과 명령을 처리한다.
 진행은 `scripts/team.py status`, 준비는 `scripts/team.py prepare <role>`, 실제 검사 근거는
 `scripts/record_gate.py`, 푸시는 `scripts/step_git.py`로 자동화한다.
@@ -56,7 +56,7 @@ CLI 한 줄: `bash scripts/codex_run.sh B`. 실행 중 runner가 publication을 
 - End with a Korean SUMMARY: changed files, commands run, observed results, gate PASS/FAIL/BLOCKED, unmet targets, run/validation commands, and expected outputs clearly labeled as expectations.
 - Never invent runs, metrics, artifacts, or PASS results. Record unmeasured values as `미측정`. Do not loosen targets or change evaluation to manufacture success.
 - Preserve unrelated changes. 구현·검증·로컬 commit은 진행한다. 원격 push 전에는 변경/검사/제한/commit을 설명하고 그 결과의 명시적 허가를 받아야 한다. --approved를 자동으로 붙이거나 단계 실행 요청을 푸시 허가로 해석하지 않는다. 동일 승인 commit의 push 실패 재시도는 가능하며 새 commit은 새 설명·허가가 필요하다. 삭제/volume 제거/visibility 변경은 별도 명시 요청이 있어야 한다.
-- Follow the three human roles in `docs/team_workflow.md`; use persistent `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`. SHARED uses chore/shared-foundation and INTEGRATE uses feat/integration. Every branch submits a main-target PR; never commit/push main directly. Draft intermediate stages, update the existing branch PR, mark the completed feature ready, and merge only after separate explicit approval of the reviewed PR/SHA and CI/review checks. Each step reports owner/reviewer, file list, branch, tests, commit hash/push state and PR draft. Use `scripts/step_git.py` to discover owned changed files (explicit list optional); no `git add .`, force push, fabricated contributions or credentials.
+- Follow the three human roles in `docs/team_workflow.md`; use persistent `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`. SHARED uses chore/shared-foundation and INTEGRATE uses feat/integration. Every branch submits a main-target PR; never commit/push main directly. Draft intermediate stages, update the existing branch PR, mark the completed feature ready, and automatically merge completed, non-draft PRs only after verifying the exact published SHA, remote gate/quality, all CI checks, required review/protection rules, and clean mergeability. The user authorized these safe merges; do not ask for merge approval again. Each step reports owner/reviewer, file list, branch, tests, commit hash/push state and PR draft. Use `scripts/step_git.py` to discover owned changed files (explicit list optional); no `git add .`, force push, fabricated contributions or credentials.
 - Use `scripts/record_gate.py --step <STEP> --role <ROLE> --command "실제 검증 명령" --artifact <실제 산출물>` to run actual checks and write `docs/results/gates/<STEP>.json`; do not handwrite a fabricated PASS. Separate structural status from full acceptance. Failed quality results may accompany a verified implementation PR; document them visibly.
 - All commits follow docs/commit_convention.md: `type(scope): 한국어 변경 요약`, title ≤72 characters. Codex supplies an actual diff summary via record_gate --summary; helper automatically generates Korean added/modified file details and measured validation evidence. Human-written messages are not required. Do not fabricate changes or tests.
 - If a stage measures its mandatory full target and misses it, record `--acceptance FAIL`, even if structure passes. team.py keeps that stage as next and blocks dependents; re-run to repair it on valid. Partial-stage passes use UNMEASURED for overall final acceptance. Global PASS is reserved for the strict final_acceptance schema in docs/contracts.md.
@@ -317,7 +317,7 @@ Requirement authority: attached assignment PDF (14 pages), especially pp.3–6, 
 - 실행 명령·exit code·실제 결과 경로·scale/data/model/evaluation version.
 - 구조 PASS/FAIL/BLOCKED와 full acceptance PASS/FAIL/UNMEASURED를 구분.
 - 측정값/목표/미달 원인/valid에서 수행한 개선·다음 필요한 입력.
-- 커밋 hash·origin 브랜치 푸시/PR URL·head/base/draft 상태와 별도 병합 상태. 미실행이면 미실행.
+- 커밋 hash·origin 브랜치 푸시/PR URL·head/base/draft 상태와 자동 병합 상태와 차단 사유. 미실행이면 미실행.
 
 PDF pp.1,5–6,9는 GitHub 제출/접근/필수 파일, pp.13–14는 팀별 기여를 요구한다.
 3인 구성, HNSW 기본값, 하위 단계 분리와 진단 실험은 이 요청을 해결하기 위한 설계 선택이다.
@@ -334,7 +334,7 @@ B11 checker를 재실행한다. C의 final_acceptance.json 수치를 실제 산�
 모든 mandatory gate가 실제 PASS일 때 record_gate --step INTEGRATE --role A --acceptance PASS와
 로컬 commit·PR 미리보기를 만든 후 최종 변경·측정·제한을 설명하고 사용자의 푸시·PR 생성 허가를 받는다.
 허가 후 step_git --mode publish --approved로 feat/integration을 푸시하고 main 대상 최종 PR을
-생성/갱신해 원격 hash와 PR URL을 보고한다. CI/리뷰 후 별도 병합 허가를 받아 main에 병합하며
+생성/갱신해 원격 hash와 PR URL을 보고한다. 충돌·CI·품질·필수 리뷰 조건이 통과하면 자동으로 main에 병합하며
 main 직접 push는 금지한다. Docker/권한/모델 품질
 미측정은 완료 처리하지 않는다. PDF p.7의 실데이터 활용 해석은 별도로 공개한다.
 
@@ -345,6 +345,6 @@ main 직접 push는 금지한다. Docker/권한/모델 품질
 - 서비스 factory/CLI/result 인터페이스를 유지해 다른 clone의 병렬 구현과 조립 가능하게 한다.
 - 실제 검사를 record_gate로 실행하고 로컬 commit을 준비한다. 변경/검사/제한을 설명한 후
   기능 브랜치 푸시·PR 생성 허가를 받는다. CLI runner도 승인 대기에서 멈춘다.
-  main은 PR 병합으로만 반영하고 병합 허가는 별도로 받는다. 승인한 동일 commit의 push 실패만
+  main은 PR 병합으로만 반영하고 안전 조건을 통과한 기능 완료 PR은 자동 병합한다. 승인한 동일 commit의 push 실패만
   기존 허가로 재시도하며 pending commit을 버리지 않는다.
 - 각 role/단계의 실제 기여는 docs/contributions/<role>.md에 기록한다. GitHub 계정은 추측하지 않는다.

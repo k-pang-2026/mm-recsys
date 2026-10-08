@@ -178,6 +178,10 @@ def main() -> int:
             print('PR VERIFIED:',result['url'],'draft:',result['draft'])
         pending.unlink(missing_ok=True)
         print('PUSH VERIFIED:',commit)
+        if pr_required and not result['draft']:
+            from scripts.pull_request import automatic_merge_enabled,auto_merge
+            if automatic_merge_enabled(plan):
+                auto_merge(root,client,plan,args.step,args.role,result['number'],commit,wait=True)
         return 0
     if pending.exists():
         publication=json.loads(pending.read_text())

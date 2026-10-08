@@ -101,4 +101,6 @@ def test_common_and_integration_stages_never_use_main_directly():
     plan=team.workflow(ROOT)
     assert plan['stages']['SHARED']['branch']=='chore/shared-foundation'
     assert plan['stages']['INTEGRATE']['branch']=='feat/integration'
-    assert plan['pull_requests']['required'] and plan['pull_requests']['merge_requires_user_approval']
+    assert plan['pull_requests']['required'] and not plan['pull_requests']['merge_requires_user_approval']
+    assert plan['pull_requests']['auto_merge_when_safe']
+    assert plan['push_requires_user_approval'] and not plan['auto_push']

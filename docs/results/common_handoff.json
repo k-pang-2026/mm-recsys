@@ -15,5 +15,5 @@
     "split/test.parquet"
   ],
   "role": "B",
-  "fresh_remote_clone": "PENDING_FIRST_APPROVED_PR_MERGE"
+  "fresh_remote_clone": "AVAILABLE_AFTER_PR_1_MERGE; fresh remote clone not yet executed"
 }

@@ -6,7 +6,10 @@ push_requires_user_approval: true
 pull_requests:
   required: true
   base: main
-  merge_requires_user_approval: true
+  merge_requires_user_approval: false
+  auto_merge_when_safe: true
+  merge_poll_seconds: 10
+  merge_wait_seconds: 600
   merge_method: merge
   api_version: '2026-03-10'
   timeout_seconds: 30

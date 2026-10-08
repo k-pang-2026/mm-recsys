@@ -12,7 +12,8 @@
 각 입력은 환경 확인, branch 동기화, 해당 단계 구현, 테스트, 실패 수정, gate 기록,
 담당 파일의 로컬 커밋·PR 미리보기와 변경 설명까지 포함한다. 설명을 확인한 뒤
 `설명한 B B3a 커밋을 브랜치에 푸시하고 PR 생성을 승인한다`처럼 지시하면 Codex가
-push/원격 hash 확인과 main 대상 PR 생성·갱신을 수행한다. PR 병합은 별도 허가가 필요하다.
+push/원격 hash 확인과 main 대상 PR 생성·갱신을 수행한다. 기능 완료 PR은 안전 조건을
+통과하면 자동 병합한다. 병합을 위해 다시 허가를 요청하지 않는다.
 **사용자의 명시 허가 전에는 원격 푸시하지 않는다.** 역할·단계는
 `config/team_workflow.yaml`, 구현 요구사항은 `ai_step_prompts_optimized.md`에서 자동 조회한다.
 한 역할의 모든 단계를 요청해도 각 push 전에는 작업 설명과 허가가 필요하다.
@@ -66,7 +67,8 @@ setup을 생략 옵션 없이 다시 실행한다. 전체 WSL 종료나 기존 �
 7. 변경·검사·미달 지표·commit·대상 origin/branch·PR 미리보기를 설명하고 푸시·PR 생성 허가를 요청한다.
 8. 그 결과의 명시 허가를 받은 뒤에만 `scripts/team.py publish B --approved`를 실행해
    승인한 commit을 기능 브랜치에 push하고 원격 head와 PR head/base/draft를 확인한다.
-   --approved를 자동으로 붙이지 않는다. CI/리뷰를 확인한 PR 병합은 별도 허가 후 수행한다.
+   --approved를 자동으로 붙이지 않는다. 기능 완료 PR은 원격 gate·CI·품질·필수 리뷰와
+   충돌 여부를 확인한 뒤 별도 허가 없이 자동 병합한다.
 
 `prepare` 후 충돌이 나면 Codex가 파일 계약과 양쪽 작업을 읽어 해결하고 전체 회귀를 수행한다.
 같은 파일을 여러 명이 편집하지 않도록 search/recommend/serving config overlay가 분리되어 있다.
@@ -106,7 +108,9 @@ C의 B7은 B5 추천 PR, B8은 B2b 검색 PR이 main에 병합된 뒤 진행한�
 준비한다. 결과 설명과 허가 후 기능 브랜치를 push하고 최종 PR을 제출한다.
 
 모든 변경은 PR로 main에 반영한다. 중간 단계는 Draft이고 기능 완료 시 검토 준비 상태로 전환한다.
-PR의 변경·CI·리뷰를 확인한 뒤 사용자가 해당 PR과 SHA의 병합을 별도로 허가하면 Codex가 병합한다.
+기능이 완료된 PR은 푸시한 SHA의 gate·CI·품질·필수 리뷰/보호 규칙을 통과하고 충돌이 없으면
+Codex가 자동 병합한다. 중간 Draft PR과 실패/미달 결과는 병합하지 않는다.
+CI 대기가 10분을 넘으면 상태를 보존한다. `B 병합 상태 확인하고 계속 진행`으로 재개할 수 있다.
 main 직접 push와 원격 보호 규칙 제거는 하지 않는다. [구체적인 PR 절차](pr_workflow.md)를 따른다.
 
 공식 동작 근거: [AGENTS.md 자동 지침](https://learn.chatgpt.com/docs/agent-configuration/agents-md),

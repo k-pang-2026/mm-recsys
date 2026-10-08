@@ -6,15 +6,15 @@
   "acceptance": "UNMEASURED",
   "commands": [
     {
+      "command": ".venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
       "command": ".venv/bin/python -m pip check",
       "exit_code": 0
     },
     {
-      "command": "env -u HF_HOME HF_HUB_OFFLINE=1 .venv/bin/python scripts/check_environment.py",
-      "exit_code": 0
-    },
-    {
-      "command": "docker run --rm --mount type=bind,source=/home/peachpetal/ecommerce/mm-recsys,target=/workspace,readonly redis:7 sh -ec 'test -f /workspace/config.yaml; redis-server --daemonize yes; for attempt in 1 2 3 4 5; do if redis-cli ping; then exit 0; fi; sleep 1; done; exit 1'",
+      "command": "git diff --check",
       "exit_code": 0
     }
   ],
@@ -90,7 +90,8 @@
     "docs/pr_workflow.md",
     ".github/workflows/ci.yml",
     "docs/results/docker_wsl_verification.json",
-    "docs/results/common_installed_packages.txt"
+    "docs/results/common_installed_packages.txt",
+    "docs/results/common_publication.json"
   ],
   "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
   "config_fingerprint": "2363351ea11ad22a359646c39e56a993657746d1f63e76ba053139bc229c4152",
@@ -124,8 +125,8 @@
     "scripts/codex_run.sh": "51b053164355ae3c28ee7243e99bbf45f73898f92bd67335d4dd73081f071dec",
     "scripts/local_env.sh": "4339b4d45b6404ab3703692f9fcfd70dd0c619b2e160a05b089a438856e96e38",
     "scripts/record_gate.py": "8f38f06797a989d0a619b3b53b0eddb7bc57ddaa6aa9d335bd10095ad877a5d2",
-    "scripts/step_git.py": "c6f44cff98175a1d063e5768581d4f584a5f3dc9383bdfab8dda6e8121fd9f49",
-    "scripts/team.py": "5cf0bc08d3327e5340e9ea175e99aa3e2ecd4fcca501a24f54c7d776fa072f4a",
+    "scripts/step_git.py": "80efb2d180295d6704a950f6e754f71b47b68196324925442ccb151d9e6ba49f",
+    "scripts/team.py": "7d2c421122832ba9970823f5de8f9fe0bb82d15b6074606d445a080236604804",
     "scripts/validate_common.py": "56910c9c3cd7ec21c2b80489548268f280f4e079afae4dfc7c34945440c69d51",
     "tests/test_config.py": "1c3e7c25280162be458f75c91615d0b71ce9ae9848d4f716e8cc2aaa8a149043",
     "tests/test_evaluation_acceptance.py": "f6e4f6a25b17206df558a29a5fe14f161abe83eb631f77fcdcb605d8b06a9c6a",
@@ -134,40 +135,41 @@
     "tests/test_setup_env.py": "21cf12d316d9a154c63cd6507647509dba77a15bbb07b09ea5d178c81c481d0b",
     "tests/test_simulator.py": "75b8a4b666369dff4ae80b339abaa3982b8333b4ce362b460e04af2f78fc83d0",
     "tests/test_smoke.py": "6f4ed2eead4dbb1309faada026b3f1c99531153aca28e964deb8d6ff7ad3f727",
-    "tests/test_team_workflow.py": "a5e9066f1e94e0f2a5db786e164e7a3d37dd90a50a2c1474d5415664510ce08e",
+    "tests/test_team_workflow.py": "7b173340b46ee792fc06876992ed2de71b2b60b3729067d978309500cad14a53",
     "config/recommend.yaml": "1945d137beef68870af19f186847ebf863dd84cdd90ae722eff3dfc33aa4bb13",
     "config/search.yaml": "78e5f4fc6e1b4d6a4759f4c696943149419c4aa0e2130152801105d0c8a32917",
     "config/serving.yaml": "56a84359aa1d25736b2d0e0e6e46695c49f4cca9617e0d9c9b36a4526d8e8a22",
-    "config/team_workflow.yaml": "f1fb34d88259a3db500218faed607a5e2544bf5fa314d1392ad93e2a1bf5f83d",
+    "config/team_workflow.yaml": "177515e806497d4f816a61683e80dc09beaa0be4827bcecb8fe4317eecf8f4a8",
     "setup_env.sh": "07f96c3dd09f72070ef6b5d8045aa3de173ceec025415648d9bef1204a8ef326",
     "config.yaml": "3eda693cfbde5cb9b6a54f70e342177032eb9dc3724776c406ee98042c07aa9b",
     "requirements.txt": "5873fef3665657869a69795743145763755b23ed8fff733513db80364b1429c9",
     "requirements-torch.txt": "bc64b26eabedbf6fd355a774220ee3b74f7ccd25b770e15cb8c43830a17f11c7",
     "requirements-dev.txt": "0d27da75c50e17a2f5b99232647820bdb06b3117dcfb74420bfa011b05c3ddd0",
     "requirements-dashboard.txt": "5ff460dd53a0487a0330545fcfbc91e45021561d65c802b656b1273896d8f23b",
-    "README.md": "e29dfe05de8e0ebbf26950a7d2c2a410c12a3cc22df828ae563c62cf74072931",
-    "AGENTS.md": "3b98ecb984b16458f8fdc63e1bc65e3d01eab6d4f0251f4c7792447aa24a7bae",
-    "ai_step_prompts_optimized.md": "1be82ddac145879236ae9d654e9b10e9551ca3a15c6816e73d02a811dcef6fdd",
-    "docs/ai_step_prompts.md": "1be82ddac145879236ae9d654e9b10e9551ca3a15c6816e73d02a811dcef6fdd",
+    "README.md": "7957c41716118804fb735ba5bb668c4e81d9bb59619d6115759e49654d524925",
+    "AGENTS.md": "65bca44304f6044939f2852f342ee5da0022dc973a2867db9fe454a5f7092cf7",
+    "ai_step_prompts_optimized.md": "331aefb8d7c2054c9bdfb7654e773129d25f688cecf83b18c96abb8348bced1f",
+    "docs/ai_step_prompts.md": "331aefb8d7c2054c9bdfb7654e773129d25f688cecf83b18c96abb8348bced1f",
     "docs/contracts.md": "b709c11455dfa3bf079552ab9cead89b30d4becb0180c9616bad0b938fb41603",
-    "docs/codex_quickstart.md": "b8f19bdc48b1b0a36a7db94457622462ab48368f0826887dab775b7d55c1249b",
-    "docs/team_workflow.md": "889553fcb903c1e73f0228bcbd69bda1aa9a57cc37c8f4875284a03dbeceb6e7",
-    "docs/contributions/A.md": "47ac6d3be8b37814fc4ddb072a488e2e11749437c9430db5d56e09b18d5d0eb0",
-    "docs/results/common_readiness.json": "978af473a02713a3de78b7006a7d9ca4178deddda22a5975ac028c9432272de4",
+    "docs/codex_quickstart.md": "ac452afc1db4fca6b4bac8b20462f4cfef0dc3350166eaefc676c0348cc45b73",
+    "docs/team_workflow.md": "732582d32d642f472a6cbbaba309149f245a6809d0ba35b5f4fbd1b56456a016",
+    "docs/contributions/A.md": "943d004b299a72155542d12d351867a0be63e186891cf85080dcc3a2e03bce2d",
+    "docs/results/common_readiness.json": "3910dfb613a90969aaa029c76178dd37a18bdbeb3eb98d1049a58a2848354b6b",
     "docs/results/common_environment.json": "ea9f733eb9bdde95a1d7ab6eba276265790e0c06c8950666c4f9225a3ad11013",
     "docs/results/common_manifest_dev.json": "646fab8f24733869b7fc53aa3a9683d6a700326f12362812c2bd42ea266acb22",
     "docs/results/common_manifest_full.json": "3852ef89c0435e334ed9f417b6c1b6a3ce4d582d5b417db8d796d2e010b3db47",
-    "docs/results/common_handoff.json": "a1ffc10237dc73a5c8023122029df21f04f17a64c497497f08b8bc3cea5dd681",
+    "docs/results/common_handoff.json": "b90ea1c171a346b6b9620c9ae766f259f1285f96713fefaa9146bc7497e417c2",
     "docs/results/data_diagnostics.json": "c9569d6b8ee91143cf18cbbafe49b454081ff6152d075442c24eff9ee563994e",
     "docs/results/data_diagnostics_full.json": "3b7b913060f0d39253fd2abb6f453d2db45bc59b4fc77467a56924179ad550f1",
-    "docs/commit_convention.md": "8294be4c1cac540b26bd02b120d43400139ea4c606809131905a37a72fa03bc7",
-    "docs/setup_analysis.md": "740ff1f4799f3f7ccae2ed41c8e900e8e82c0d680ccc9f9a4bb0c9d22215cc66",
-    "scripts/pull_request.py": "0c86acdc16b098fde4d8b6f02f0c08ff7d5a5c207fcaf5b8aef0f5d74711e628",
-    "tests/test_pull_request.py": "855555a502bfa05b5b77ea914e212d6a117764e0f15ee33d54b9e22da1c5f67c",
-    "docs/pr_workflow.md": "71fda8a05b9b94b74a4dbcd33f98c95e07bdb7e9ce1e5906223b1c5ed92bff6b",
+    "docs/commit_convention.md": "61b5320cea901fa8b461beff02ddf73f06ef9f2404c2ad2ec9d91713cc81eb61",
+    "docs/setup_analysis.md": "4c937cf3661df07a9586ab0451f11cfec68cbca2be4b2e14ceebccc2fe49f6a4",
+    "scripts/pull_request.py": "9c446d190cce356329af27d6fbeccc55c194a55158dcfd91af14eb1b8e75dbef",
+    "tests/test_pull_request.py": "474bdf0b42b3f4f217641d538d3b890f694f8e39c0ed3fc8deb7305d4da98377",
+    "docs/pr_workflow.md": "dcdc196adec5c8316c8c8ab3633bdce027feb6a54acec473195c0cb91b846d43",
     ".github/workflows/ci.yml": "ad57249028efb0cf93c35e8cc15765bc5c7f7d467ea3508ef82116d4effcbfae",
     "docs/results/docker_wsl_verification.json": "e77f7b2873f5bf737be45fcc225d8686bafaf5a4098bc5b167de85ee153017aa",
-    "docs/results/common_installed_packages.txt": "d521eefd1ec4366a151a250267e0305916a1bc56c83c712a69ce4402835232b4"
+    "docs/results/common_installed_packages.txt": "d521eefd1ec4366a151a250267e0305916a1bc56c83c712a69ce4402835232b4",
+    "docs/results/common_publication.json": "088f372bc422758a8cf4da5375c07e579af07ce085fcba030b69d3dc8c55f3b9"
   },
-  "commit_summary_ko": "Docker WSL 복구와 전체 환경 검증 결과 반영"
+  "commit_summary_ko": "안전 조건을 통과한 PR 자동 병합 적용"
 }

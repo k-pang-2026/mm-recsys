@@ -241,3 +241,15 @@ common_readiness.json, docker_wsl_verification.json이다. 이전 BLOCKED 기록
 
 이 허가는 복구 결과를 반영한 공통 기능 브랜치 push와 합의한 PR 제출에 적용한다.
 PR 병합은 별도 허가 대상이며 모델 포함 최종 4서비스 재현과 full 품질은 여전히 미측정이다.
+
+
+## 안전한 PR의 자동 병합에 대한 최신 지시
+
+사용자는 앞으로 충돌이 없고 병합해도 문제가 없는 PR은 자동 병합하라고 요청했다.
+이 지시가 앞선 PR 병합 별도 승인 규칙을 대체한다. 푸시 전 설명·허가 규칙은 유지한다.
+설정은 auto_merge_when_safe=true / merge_requires_user_approval=false다. 기능 완료 PR의
+정확한 푸시 SHA에서 원격 gate, 품질, CI, 변경 요청과 GitHub 보호 규칙을 검사한다.
+mergeable=true / mergeable_state=clean을 확인하고 쓰기 직전 head/base SHA와 PR 상태를
+다시 읽는다. CI 진행 중은 최대 10분 기다리고 상태를 보존해 재개한다. 충돌·품질 미달·
+실패 검사·필수 리뷰 미완료는 자동 병합하지 않으며 새 수정 commit은 푸시 허가를 다시 받는다.
+이 규칙은 이미 검증·푸시된 공통 PR #1에도 적용한다.

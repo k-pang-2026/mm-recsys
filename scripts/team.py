@@ -58,7 +58,8 @@ docs/commit_convention.md를 읽고 실제 diff의 한국어 요약을 record_ga
 구조 검증 후 로컬 커밋을 준비하고 변경 내용·검사 결과·제한을 사용자에게 설명하라.
 사용자가 그 결과의 푸시를 명시 승인하기 전에는 원격 푸시하지 마라.
 모든 변경은 기능 브랜치에 push하고 main 대상 PR로 제출한다. main 직접 push는 금지한다.
-push·PR 생성 허가와 PR 병합 허가는 구분한다. 다른 역할 의존성은 PR 병합된 main에서 가져온다.
+push·PR 생성은 명시 허가 후 수행하고, 충돌·CI·품질·필수 리뷰 조건을 통과한 PR은 자동 병합한다.
+병합을 위해 다시 허가를 요청하지 마라. 다른 역할 의존성은 PR 병합된 main에서 가져온다.
 CLI runner에서 실행 중이면 .team/runner.json을 읽어라. publication_managed=true이면
 Git 커밋·푸시는 외부 runner가 수행하므로 gate와 코드 검증만 완료하고 실제 push를 주장하지 마라.
 미측정/full 미달을 숨기지 말고, model test 진단 전에 평가 기준을 고정하라.
@@ -99,7 +100,7 @@ def prepare(root: Path, role: str, step: str, plan: dict) -> None:
 
 def main() -> int:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['status','prompt','prepare','run','publish'])
+    parser.add_argument('action',choices=['status','prompt','prepare','run','publish','merge'])
     parser.add_argument('role',nargs='?',choices=['A','B','C'])
     parser.add_argument('--step');parser.add_argument('--approved',action='store_true');args=parser.parse_args();plan=workflow()
     local=ROOT/'.team/local.json'
@@ -124,6 +125,17 @@ def main() -> int:
         print(f"AWAITING USER PUSH APPROVAL: {publication['role']}/{publication['step']} {publication['commit']}")
         print('Explain and review this commit; obtain explicit approval before team.py publish ROLE --approved.')
         return 0
+    merge_pending=ROOT/'.team/pr/merge_pending.json'
+    if args.action=='merge' or (args.action=='run' and merge_pending.exists()):
+        if not merge_pending.exists():raise ValueError('no pending PR to merge')
+        publication=json.loads(merge_pending.read_text())
+        if publication['role']!=role:raise ValueError('another role has a pending PR in this clone')
+        if args.action=='run' and publication.get('status')=='BLOCKED':
+            args.step=publication['step']
+            print(f"Repair published {role}/{args.step} before retrying merge: {publication.get('reason')}",flush=True)
+        else:
+            return subprocess.run([sys.executable,str(ROOT/'scripts/pull_request.py'),'--step',publication['step'],
+                                   '--role',role,'--merge',str(publication['number']),'--commit',publication['commit'],'--wait'],cwd=ROOT).returncode
     step=args.step or select_stage(ROOT,role,plan)
     if not step:print(f'{role}: all assigned stages complete');return 0
     if step not in plan['stages'] or plan['stages'][step]['owner']!=role:raise ValueError('stage/owner mismatch')

@@ -2,7 +2,8 @@
 
 main에는 검토한 PR을 병합한다. Codex는 기능 브랜치에서 구현·검증·한국어 자동 커밋과
 로컬 PR 미리보기까지 준비하고 사용자에게 설명한다. **푸시와 PR 생성은 허가 후에만**
-실행하며, 이 허가가 PR 병합까지 포함하지 않는다.
+실행한다. 사용자는 **충돌 없고 문제가 없는 PR의 자동 병합**을 허가했다.
+기능 완료 PR이 아래 안전 조건을 통과하면 병합을 위해 다시 확인하지 않는다.
 
 | 작업 | 담당 | head → base | 검토 준비 시점 |
 |---|---|---|---|
@@ -28,19 +29,23 @@ prepare가 중단한다. 각 브랜치는 검토된 main만 가져오며 아직 
 1. `B 다음 단계 실행`: Codex가 구현·검증·로컬 커밋과 PR 미리보기를 준비하고 설명한다.
 2. `설명한 B B3a 커밋을 브랜치에 푸시하고 PR 생성을 승인한다`: 그 commit만 push하고
    main 대상 Draft PR을 생성/갱신한다. 원격 SHA와 PR의 head/base/draft를 확인해 URL을 보고한다.
-3. 기능이 완료된 PR의 변경·CI·리뷰를 검토한 뒤 `검토한 PR 번호와 HEAD SHA의 병합을 승인한다`:
-   Codex가 해당 PR과 SHA를 다시 확인하고 CI 및 해결되지 않은 변경 요청을 검사한 뒤 병합한다.
-   실제 지시에는 Codex가 설명한 PR 번호와 전체 SHA를 넣거나 그 설명을 명확하게 지칭한다.
+3. 기능이 완료된 PR은 Codex가 푸시한 SHA의 원격 gate·CI·품질·필수 리뷰/보호 규칙과
+   충돌 여부를 확인해 자동 병합한다. 별도 병합 허가 입력은 필요 없다.
+4. CI가 아직 끝나지 않으면 최대 10분 기다린다. 이후에도 진행 중이면 상태를 보존한다.
+   `B 병합 상태 확인하고 계속 진행`으로 같은 PR과 SHA의 안전 검사를 재개한다.
 
 푸시와 PR 생성 허가가 명확하지 않으면 미리보기까지 준비해 범위를 확인한다. 브랜치 push만
 성공하고 PR 생성이 실패하면 두 결과를 구분해 보고한다. pending 상태는 승인한 동일 SHA로
 남아 있으므로 인증/권한을 복구한 뒤 기존 허가로 재시도한다. 새 commit은 다시 설명/허가를 받는다.
 
-PR 병합 전에 팀원이 실제 변경을 리뷰한다. 권장 순서는 A의 검색을 B가, B의 추천을 C가,
+팀원은 PR의 실제 변경을 리뷰한다. 저장소가 필수 리뷰를 요구하면 해당 조건이 충족되어야 병합한다. 권장 순서는 A의 검색을 B가, B의 추천을 C가,
 C의 플랫폼을 A가 리뷰하는 것이다. 리뷰·기여 기록은 실제 PR/commit URL로 연결하며 실행하지
 않은 리뷰를 만들지 않는다. 리뷰 댓글/승인을 Codex에 맡길 때도 실제 리뷰를 요청해야 한다.
 저장소 보호 규칙의 필수 리뷰 조건은 GitHub가 추가로 적용한다. helper는 Draft·SHA 불일치,
-common CI 미통과·다른 진행/실패 검사·미해결 변경 요청·미완료 기능을 병합하지 않는다.
+원격 gate 실패·품질 미달·common CI 미통과·다른 진행/실패 검사·미해결 변경 요청·미완료 기능을
+병합하지 않는다. GitHub의 mergeable=true와 mergeable_state=clean을 확인하고 병합 직전
+head/base SHA와 PR 상태를 다시 읽는다. 검사 중 기준 main이나 head가 바뀌면 중단하고 동기화·
+재검증한다. 충돌이나 보호 규칙을 강제로 우회하지 않는다.
 
 ## Codex가 호출하는 도구
 
@@ -53,8 +58,8 @@ common CI 미통과·다른 진행/실패 검사·미해결 변경 요청·미�
 ./.venv/bin/python scripts/step_git.py --step B3a --role B --mode commit
 # 설명한 commit의 push·PR 생성에 사용자가 명시 허가한 뒤에만
 ./.venv/bin/python scripts/team.py publish B --approved
-# 검토한 PR 병합을 별도로 허가한 뒤에만 (값은 실제 PR 번호/SHA)
-./.venv/bin/python scripts/pull_request.py --step B5 --role B --merge <PR번호> --commit <전체SHA> --approved
+# CI 대기/검증을 재개하고 안전할 때만 자동 병합
+./.venv/bin/python scripts/team.py merge B
 ```
 
 PR 발행은 승인 후 GitHub API로 기존 open PR을 찾고 없으면 생성하며 있으면 본문을 갱신한다.
@@ -64,7 +69,9 @@ GitHub CLI를 새로 설치할 필요가 없다. 기존 Git credential 또는 GH
 리뷰어 계정·초대·보호 규칙을 추측하거나 자동 변경하지 않는다.
 
 병합은 승인한 SHA를 조건으로 `merge` 방식을 사용해 기능의 한국어 커밋 이력을 보존한다.
-최종 INTEGRATE도 별도 PR로 제출해 full 결과와 제출 문서를 검토한 뒤 main에 병합한다.
+최종 INTEGRATE도 별도 PR로 제출해 full acceptance와 모든 안전 조건을 통과하면 자동 병합한다.
+자동 병합 대기/차단 사유는 `.team/pr/merge_pending.json`, 실제 결과는 merge_result.json에 기록한다.
+GitHub 저장소의 auto-merge 기능을 켜거나 관리자 설정을 변경하지 않고 helper가 조건을 검사한다.
 실제 원격 실행 증거가 생기기 전에는 PR/CI/병합 성공을 보고하지 않는다.
 
 API 근거: [GitHub PR 생성·갱신·병합 API](https://docs.github.com/en/rest/pulls/pulls),
