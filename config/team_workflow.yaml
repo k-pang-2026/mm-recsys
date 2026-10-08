@@ -1,0 +1,33 @@
+version: 4
+repository: https://github.com/k-pang-2026/mm-recsys.git
+base_branch: main
+auto_push: false
+push_requires_user_approval: true
+team:
+  A: {name: 이제원, github: null, branch: feat/A/search, focus: 공통 준비·검색·최종 통합}
+  B: {name: 박정욱, github: null, branch: feat/B/recommendation, focus: 추천 모델·재랭킹·세션}
+  C: {name: 박채영, github: null, branch: feat/C/platform, focus: Redis·평가·A/B·CT·Docker}
+order:
+  A: [B2a, B2b, INTEGRATE]
+  B: [B3a, B3b, B4, B5]
+  C: [B6, B7, B8, B9, B10, B11]
+stages:
+  SHARED: {owner: A, requires: [], branch: main}
+  B2a: {owner: A, requires: [SHARED]}
+  B2b: {owner: A, requires: [B2a]}
+  B3a: {owner: B, requires: [SHARED]}
+  B3b: {owner: B, requires: [B3a]}
+  B4: {owner: B, requires: [B3b]}
+  B5: {owner: B, requires: [B4]}
+  B6: {owner: C, requires: [SHARED]}
+  B7: {owner: C, requires: [B5, B6]}
+  B8: {owner: C, requires: [B2b, B7]}
+  B9: {owner: C, requires: [B8]}
+  B10: {owner: C, requires: [B9]}
+  B11: {owner: C, requires: [B10]}
+  INTEGRATE: {owner: A, requires: [B2b, B5, B11], branch: main}
+# Prefix matching, extended only by the integrator after shared-contract review.
+paths:
+  A: [src/search/, tests/test_search, tests/test_encoder, tests/test_index, config/search.yaml, docs/search_report.md, docs/results/search, docs/results/experiments/A/, docs/contributions/A.md]
+  B: [src/recommendation/, tests/test_two_tower, tests/test_candidate, tests/test_ranking, tests/test_deepfm, tests/test_reranking, tests/test_session, config/recommend.yaml, docs/recommend_report.md, docs/results/candidate, docs/results/ranking, docs/results/session, docs/results/experiments/B/, docs/contributions/B.md]
+  C: [src/serving/, src/evaluation/, src/ct/, dashboard/, docker/, scripts/prepare_all, scripts/smoke_test, scripts/check_submission, scripts/train_all, tests/test_redis, tests/test_feature, tests/test_ab, tests/test_evaluation, tests/test_dashboard, tests/test_ct, tests/test_api, tests/test_integration, config/serving.yaml, docker-compose.yml, .dockerignore, README.md, .github/, docs/ab_test_report.md, docs/submission, docs/data_sources.md, docs/results/ab, docs/results/evaluation, docs/results/final, docs/results/latency, docs/results/ct, docs/results/experiments/C/, docs/contributions/C.md]

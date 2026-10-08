@@ -1,0 +1,8 @@
+-r requirements.txt
+-r requirements-dashboard.txt
+pytest==8.3.4
+mypy==1.14.1
+types-PyYAML==6.0.12.20241230
+fakeredis==2.26.2
+httpx==0.28.1
+# Bonus(B12) 진행 시에만 설치:  pip install onnx onnxruntime

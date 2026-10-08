@@ -1,0 +1,44 @@
+{
+  "generator_version": "4.0.0",
+  "generation_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "scale": "dev",
+  "seed": 42,
+  "reference_time": "2026-01-01T00:00:00Z",
+  "counts": {
+    "products": 10000,
+    "users": 2000,
+    "events": 200000,
+    "impressions": 449696
+  },
+  "split_counts": {
+    "train": 160000,
+    "valid": 20000,
+    "test": 20000
+  },
+  "boundaries": {
+    "train": {
+      "start": "2025-12-02 00:00:00+00:00",
+      "end": "2025-12-25 23:59:47.040000+00:00"
+    },
+    "valid": {
+      "start": "2025-12-26 00:00:00+00:00",
+      "end": "2025-12-28 23:59:47.040000+00:00"
+    },
+    "test": {
+      "start": "2025-12-29 00:00:00+00:00",
+      "end": "2025-12-31 23:59:47.040000+00:00"
+    }
+  },
+  "file_hashes": {
+    "products.parquet": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "users.parquet": "4bba9847f5e6eebbed0ef6d7341de5c58705f65b12498277195d9a01e9a8b66d",
+    "events.parquet": "8d0c0a2251b35dc3904d89a8f1ee474a408ea25cb49a20fbedd20e036147ead9",
+    "impressions.parquet": "76882c3a4c213aa248556b700eb62cb4a507bbc6bf71586f6daedce436e2d692",
+    "image_manifest.json": "01c938b16d5415bf9917a60eec845184dd3ad670a24cfd67ba9d4f927ccd7178",
+    "split/train.parquet": "7fab795ba193a2c50a6d906934d7222596c4bc742d78a2b979cfd0cb02fcd82e",
+    "split/valid.parquet": "6b7adf05d79c13c89fae1d0e3b8612bb6cd9e46b2ef8909a6e5a45ae9262ea14",
+    "split/test.parquet": "bb8a202c26da77b0dca241f6cfabd0a2c70aa34366acf326773dabcf6b15cd08"
+  },
+  "cutoff_policy": "fixed_origin",
+  "images": "synthetic category silhouettes; observed attributes only; no unique-ID semantics"
+}

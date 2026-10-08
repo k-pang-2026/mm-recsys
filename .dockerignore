@@ -1,0 +1,12 @@
+.venv
+.git
+__pycache__
+*.pyc
+.env.local
+.env.*
+.cache
+.mypy_cache
+.pytest_cache
+.vscode
+data
+models
