@@ -213,3 +213,17 @@ SHARED 검증 명령/소스 해시가 첫 공통 commit의 근거다.
 `docs/commit_convention.md`와 helper에 type(scope), 한국어 실제 diff 요약, 파일 상태와
 검증 결과 본문을 구현했다. 영어-only/다중 행 요약은 staging 전에 거부하며 문서 변경은
 별도 docs type으로 분류한다. 실제 Git fixture의 생성된 commit 메시지를 검사했다.
+
+
+## 기능 브랜치와 PR에 대한 최신 지시
+
+사용자의 최신 요청으로 앞선 첫 main 직접 push와 기능 브랜치 직접 통합 설계를 대체했다.
+SHARED는 chore/shared-foundation → main PR로 먼저 병합하고 이후 3인이 독립 클론에서
+검색/추천/플랫폼 기능 브랜치를 사용한다. INTEGRATE도 feat/integration → main PR로 제출한다.
+main 직접 commit/push는 helper에서 거부하며 다른 역할 의존성은 PR 병합된 origin/main에서만
+가져온다. 미병합/실패 의존성을 로컬 Git fixture로 검사한다.
+
+로컬 한국어 PR 미리보기, 승인 후 기존 PR 검색/생성/본문 갱신, Draft→검토 준비 전환을 구현했다.
+PR 병합은 별도 명시 허가와 정확한 SHA, CI/미해결 리뷰 조건 확인 후 수행한다. GitHub API 동작은
+모의 검사로 확인했으며 실제 인증·원격 PR/CI/병합은 승인 전이라 미측정이다. 기존 공통 commit은
+기능 브랜치로 옮겼고 local main은 기존 origin/main 커밋을 유지한다. 상세 절차는 pr_workflow.md다.

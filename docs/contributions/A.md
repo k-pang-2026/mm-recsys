@@ -13,6 +13,10 @@
 - clone→setup→A/B/C branch→실행→검사→gate→로컬 commit→설명·허가→push 흐름과 중단 후 재개를 구현했다.
   full 최종 acceptance 수치/해시/실행 근거를 검사하는 최종 통합 제한을 추가했다.
 - 실제 설치와 고정 CLIP text/image 추론, 회귀 검사 및 로컬 Git 원격의 병렬 분기/병합을 검증했다.
+- 공통 준비·검색·추천·플랫폼·통합 모두 기능 브랜치→main PR로 제출하도록 수정했다.
+  원격 푸시/PR 생성과 PR 병합의 승인을 분리하고 로컬 한국어 PR 미리보기, 기존 PR 갱신,
+  Draft 전환, 정확한 승인 SHA·CI·리뷰 조건 검사를 구현했다. GitHub API 동작은 모의 검사로
+  검증했으며 실제 원격 PR 생성/병합은 사용자 허가 전이라 미실행이다.
 
 근거: [SHARED gate](../results/gates/SHARED.json),
 [공통 준비 실측](../results/common_readiness.json),

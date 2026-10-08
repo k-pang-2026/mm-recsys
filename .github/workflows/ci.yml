@@ -2,7 +2,7 @@ name: Common and application checks
 on:
   pull_request:
   push:
-    branches: [main, 'feat/**']
+    branches: [main, 'feat/**', 'chore/**', 'fix/**']
 permissions:
   contents: read
 jobs:

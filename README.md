@@ -1,6 +1,7 @@
 # 멀티모달 검색 및 Multi-Stage 추천 시스템
 
-팀장이 공통 개발 기반을 먼저 구현·검증해 main에 푸시한 뒤, 세 사람이 독립 클론에서
+팀장이 공통 개발 기반을 구현·검증해 `chore/shared-foundation` → main PR로 먼저 병합한 뒤,
+세 사람이 독립 클론에서
 Codex에 단계 실행만 지시해 검색·추천·서빙을 병렬 개발한다.
 
 | 역할 | 이름 | 담당 | Codex 입력 |
@@ -11,10 +12,11 @@ Codex에 단계 실행만 지시해 검색·추천·서빙을 병렬 개발한�
 
 첫 입력은 `B 개발환경 준비하고 다음 단계 실행`처럼 역할을 지정한다.
 Codex가 setup·브랜치 준비·구현·검증·수정·로컬 commit을 수행하고 내용을 설명한다.
-사용자가 확인해 푸시를 허가하면 Codex가 push와 원격 commit 확인을 수행한다.
+사용자가 확인해 푸시·PR 생성을 허가하면 Codex가 기능 브랜치를 push하고 main 대상 PR을
+생성/갱신한다. PR 병합은 CI/리뷰 확인 후 별도 허가를 받아 수행한다. main 직접 푸시는 하지 않는다.
 [사람이 따라 할 시작 가이드](docs/codex_quickstart.md),
 [단계별 상세 요구사항](ai_step_prompts_optimized.md),
-[병렬 작업·Git 계약](docs/team_workflow.md)을 참고한다.
+[병렬 작업·Git 계약](docs/team_workflow.md), [브랜치·PR 절차](docs/pr_workflow.md)를 참고한다.
 
 ```mermaid
 flowchart LR

@@ -33,12 +33,17 @@ chore(shared): 공통 개발환경과 3인 병렬 개발 기반 구성
 | chore | 공통 초기 환경·설정·의존성·자동화 변경 |
 
 scope는 단계에 따라 shared/search/recommendation/platform/ct/docker/integration을 사용한다.
+검토된 main을 담당 브랜치에 가져올 때는 `chore(sync): 검토된 main 변경을 기능 브랜치에 반영`을
+자동 사용한다. PR 병합은 한국어 Conventional Commit 형식의 PR 제목을 merge commit 제목으로
+사용하며 본문에는 검증·리뷰 확인과 승인한 commit을 한국어로 기록한다.
 단계별 실제 diff의 한국어 요약은 Codex가 `scripts/record_gate.py --summary "한국어 요약"`에
 전달한다. 별도 요약이 없으면 helper가 실제 변경 경로의 영역을 묶어 한국어 제목을 생성한다.
 본문의 추가/수정/삭제 파일, 검사 명령/종료 코드, 규모, 구조/최종 품질, data fingerprint는
 Git 상태와 실제 gate에서 자동 읽는다. 실행하지 않은 검사를 본문에 추가하지 않는다.
 
 `step_git.py --mode commit`은 메시지를 생성하고 로컬 commit을 만든다. Codex는
-제목·변경 내용·검증·제한·commit·대상 원격 브랜치를 설명한 뒤 사용자에게 푸시 허가를 받는다.
-허가 후 `--mode publish --approved`는 그 동일 commit만 푸시한다. 사용자 대신 --approved를
+제목·변경 내용·검증·제한·commit·대상 원격 브랜치·로컬 PR 미리보기를 설명한 뒤
+사용자에게 푸시·PR 생성 허가를 받는다. 허가 후 `--mode publish --approved`는 그 동일 commit을
+기능 브랜치에 푸시하고 PR을 생성/갱신한다. 사용자 대신 --approved를
 자동 생성하지 않는다. 새 commit으로 바뀌면 새 설명과 허가가 필요하다.
+PR 병합은 [PR 절차](pr_workflow.md)에 따라 별도 승인을 받는다.

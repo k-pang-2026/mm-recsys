@@ -1,6 +1,6 @@
 # Multimodal Search + Multi-Stage Recommendation
 
-Version 4 — 공통 준비 선행 후 Codex가 구현·검증하고 작업 설명·허가 후 푸시하는 3인 가이드.
+Version 4 — 공통 PR 선행 후 Codex가 구현·검증하고 설명·허가 후 기능 브랜치 푸시와 PR을 처리하는 3인 가이드.
 Work in the **existing repository root** (prepared by `bash setup_env.sh . --role=A`, v4).
 이 문서는 앞으로 각 단계를 호출할 때의 지시서다. 문서 분석 요청만으로 모든 단계를 실행하지 않는다.
 PDF가 요구사항의 기준이며, 아래 기본값/실험 설계/역할 3인은 구현 선택 또는 사용자 요청이다.
@@ -10,7 +10,8 @@ PDF가 요구사항의 기준이며, 아래 기본값/실험 설계/역할 3인�
 `setup_env.sh` copies this file to `docs/ai_step_prompts.md` and writes root `AGENTS.md`, which tells the agent to read **section A** first. If the agent does not auto-load `AGENTS.md`, paste A once per new session.
 
 공통 **SHARED(P0 범위 기록+B0 설정/계약+B1 시뮬레이터+기초 serving/평가/자동화)**는
-팀장이 완료·검증하고 내용을 사용자에게 설명한 뒤 허가받아 1차 main에 푸시한다.
+팀장이 chore/shared-foundation에서 완료·검증한다. 내용을 설명하고 허가받아 브랜치를
+푸시하고 main 대상 공통 PR을 생성한다. CI/리뷰 후 별도 병합 허가를 받아 먼저 main에 병합한다.
 이후에는 `config/team_workflow.yaml`이 순서 기준이다.
 
 | 담당 | 사람 | 병렬 시작 이후 순서 | 기본 브랜치 |
@@ -20,13 +21,15 @@ PDF가 요구사항의 기준이며, 아래 기본값/실험 설계/역할 3인�
 | C | 박채영 | B6 → B7 → B8 → B9 → B10 → B11 | feat/C/platform |
 
 A/B/C는 독립 clone에서 시작한다. B7은 B5+B6, B8은 B2b+B7을 기다리고 필요한
-원격 branch를 자동 merge한다. 구조 검증과 full 품질을 구분하며 실패를 숫자 조작으로 숨기지 않는다.
+다른 역할의 PR이 main에 병합된 뒤 검토된 main만 자동 merge한다. 미병합 기능 브랜치를
+직접 가져오지 않는다. 구조 검증과 full 품질을 구분하며 실패를 숫자 조작으로 숨기지 않는다.
 `A/B/C 다음 단계 실행`은 구현·검증·필요 수정·로컬 commit·내용 설명까지 요청한 것이다.
-각 push는 설명을 받은 사용자의 명시적인 허가 후에만 수행한다. 단계 실행 지시는 push 허가가 아니다.
+각 기능 브랜치 push·PR 생성은 설명을 받은 사용자의 명시 허가 후에만 수행한다.
+단계 실행 지시는 push 허가가 아니다. PR 병합은 별도 허가가 필요하며 main 직접 push는 금지한다.
 개발자가 직접 파일을 편집하거나 각 명령을 복사할 필요 없이 Codex가 실제 파일과 명령을 처리한다.
 진행은 `scripts/team.py status`, 준비는 `scripts/team.py prepare <role>`, 실제 검사 근거는
 `scripts/record_gate.py`, 푸시는 `scripts/step_git.py`로 자동화한다.
-최초 사용과 CLI wrapper는 docs/codex_quickstart.md를 따른다. B12는 별도 요청한 선택 보너스다.
+최초 사용과 CLI wrapper는 docs/codex_quickstart.md, PR은 docs/pr_workflow.md를 따른다. B12는 별도 요청한 선택 보너스다.
 
 Always run Python via the project venv: `./.venv/bin/python` (Windows Git Bash: `./.venv/Scripts/python.exe`), never the system interpreter.
 
@@ -34,7 +37,7 @@ Always run Python via the project venv: `./.venv/bin/python` (Windows Git Bash: 
 - `B 개발환경 준비하고 다음 단계 실행`
 - `A 다음 단계 실행`
 - `B 다음 단계 구현·검증하고 푸시 전에 내용 설명`
-- `설명한 B B3a 커밋의 푸시를 승인한다` (실제 설명을 확인한 뒤 입력)
+- `설명한 B B3a 커밋을 브랜치에 푸시하고 PR 생성을 승인한다` (실제 설명을 확인한 뒤 입력)
 - `C 다음 단계 실행`
 - `A 통합 단계 실행`
 - `Recall@300 미달을 C2로 진단하고 valid에서 수정·검증한 뒤 푸시 전 설명`
@@ -53,7 +56,7 @@ CLI 한 줄: `bash scripts/codex_run.sh B`. 실행 중 runner가 publication을 
 - End with a Korean SUMMARY: changed files, commands run, observed results, gate PASS/FAIL/BLOCKED, unmet targets, run/validation commands, and expected outputs clearly labeled as expectations.
 - Never invent runs, metrics, artifacts, or PASS results. Record unmeasured values as `미측정`. Do not loosen targets or change evaluation to manufacture success.
 - Preserve unrelated changes. 구현·검증·로컬 commit은 진행한다. 원격 push 전에는 변경/검사/제한/commit을 설명하고 그 결과의 명시적 허가를 받아야 한다. --approved를 자동으로 붙이거나 단계 실행 요청을 푸시 허가로 해석하지 않는다. 동일 승인 commit의 push 실패 재시도는 가능하며 새 commit은 새 설명·허가가 필요하다. 삭제/volume 제거/visibility 변경은 별도 명시 요청이 있어야 한다.
-- Follow the three human roles in `docs/team_workflow.md`; use persistent `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`. Only A's verified SHARED and final INTEGRATE publish main. Each step reports owner/reviewer, file list, branch, tests, commit hash/push state and PR draft. Use `scripts/step_git.py` to discover owned changed files (explicit list optional); no `git add .`, force push, fabricated contributions or credentials.
+- Follow the three human roles in `docs/team_workflow.md`; use persistent `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`. SHARED uses chore/shared-foundation and INTEGRATE uses feat/integration. Every branch submits a main-target PR; never commit/push main directly. Draft intermediate stages, update the existing branch PR, mark the completed feature ready, and merge only after separate explicit approval of the reviewed PR/SHA and CI/review checks. Each step reports owner/reviewer, file list, branch, tests, commit hash/push state and PR draft. Use `scripts/step_git.py` to discover owned changed files (explicit list optional); no `git add .`, force push, fabricated contributions or credentials.
 - Use `scripts/record_gate.py --step <STEP> --role <ROLE> --command "실제 검증 명령" --artifact <실제 산출물>` to run actual checks and write `docs/results/gates/<STEP>.json`; do not handwrite a fabricated PASS. Separate structural status from full acceptance. Failed quality results may accompany a verified implementation PR; document them visibly.
 - All commits follow docs/commit_convention.md: `type(scope): 한국어 변경 요약`, title ≤72 characters. Codex supplies an actual diff summary via record_gate --summary; helper automatically generates Korean added/modified file details and measured validation evidence. Human-written messages are not required. Do not fabricate changes or tests.
 - If a stage measures its mandatory full target and misses it, record `--acceptance FAIL`, even if structure passes. team.py keeps that stage as next and blocks dependents; re-run to repair it on valid. Partial-stage passes use UNMEASURED for overall final acceptance. Global PASS is reserved for the strict final_acceptance schema in docs/contracts.md.
@@ -66,7 +69,7 @@ CLI 한 줄: `bash scripts/codex_run.sh B`. 실행 중 runner가 publication을 
 - No external cloud APIs. Hugging Face model downloads allowed. Keep runtime local. Exclude payment, shipping, inventory, full authentication, and Kafka; identify users by ID.
 - Use `src/common/config.py:load_config` for parameters, paths, ratios, strategies, and targets; `.env` for environment values. No scattered hardcoded settings. Seed with `set_seed(cfg["seed"])` (seed 42 from config) throughout, including CUDA. Set `PYTHONHASHSEED` **before starting Python**; setting it inside a running interpreter does not reseed its hash function. Seed DataLoader workers/generator and FAISS training; disclose platform/thread nondeterminism.
 - Host resolution: `.env` uses Docker service names (`redis`, `api-server`). For local runs (tests, warmup, `streamlit run`, benchmarks outside Docker) run `source scripts/local_env.sh` (REDIS_HOST=localhost, API_URL=http://localhost:8000). Environment variables take precedence over config/.env values.
-- Common implementation v4 (verify rather than assume): `scale/scales`, cutoff/negative/fusion/HNSW/target settings already exist; `load_config` merges SCALE and Redis env overrides. `src/simulator/generate.py` builds deterministic catalog/images/users/events/impressions/splits; run.py replays chronological event chunks. Schemas and memory FeatureStore are implemented. Model APIs return 503 until service factories exist; `/health` is liveness and `/ready` model readiness. metrics already provides MRR/NDCG/HitRate/Recall/Coverage/AUC/LogLoss/entropy. Docker is scaffolding, not completed preparation. Existing clones preserve edited files; use the current committed main as the common baseline. Setup copies actual source, not old heredoc stubs.
+- Common implementation v4 (verify rather than assume): `scale/scales`, cutoff/negative/fusion/HNSW/target settings already exist; `load_config` merges SCALE and Redis env overrides. `src/simulator/generate.py` builds deterministic catalog/images/users/events/impressions/splits; run.py replays chronological event chunks. Schemas and memory FeatureStore are implemented. Model APIs return 503 until service factories exist; `/health` is liveness and `/ready` model readiness. metrics already provides MRR/NDCG/HitRate/Recall/Coverage/AUC/LogLoss/entropy. Docker is scaffolding, not completed preparation. Existing clones preserve edited files; use the PR-merged main as the common baseline. Setup copies actual source, not old heredoc stubs.
 - Pin direct dependencies, share `requirements-torch.txt` between local and Docker, run `pip check`, record `installed_packages.txt` and environment. B2 starts only after importing CLIPModel/CLIPProcessor and actual text/image inference succeeds. Use documented APIs for the pinned transformers version; do not blindly upgrade to a different major release.
 - Keep `src/{common,simulator,search,recommendation,serving,evaluation,ct}/`, `dashboard/app.py`, `tests/`, `docs/`, `data/`, `models/`; type-hint major functions.
 - `scale: dev`: products/users/events = 10000/2000/200000. `scale: full`: 50000/10000/1000000 minimum. `SCALE` overrides config. Dev checks are not final acceptance.
@@ -314,7 +317,7 @@ Requirement authority: attached assignment PDF (14 pages), especially pp.3–6, 
 - 실행 명령·exit code·실제 결과 경로·scale/data/model/evaluation version.
 - 구조 PASS/FAIL/BLOCKED와 full acceptance PASS/FAIL/UNMEASURED를 구분.
 - 측정값/목표/미달 원인/valid에서 수행한 개선·다음 필요한 입력.
-- 커밋 hash·origin 푸시/PR 상태 또는 검토된 명시적 publish 명령. 미실행이면 미실행.
+- 커밋 hash·origin 브랜치 푸시/PR URL·head/base/draft 상태와 별도 병합 상태. 미실행이면 미실행.
 
 PDF pp.1,5–6,9는 GitHub 제출/접근/필수 파일, pp.13–14는 팀별 기여를 요구한다.
 3인 구성, HNSW 기본값, 하위 단계 분리와 진단 실험은 이 요청을 해결하기 위한 설계 선택이다.
@@ -322,15 +325,17 @@ PDF pp.1,5–6,9는 GitHub 제출/접근/필수 파일, pp.13–14는 팀별 기
 
 ## INTEGRATE — 팀장 최종 통합 [이제원 A]
 
-`A 통합 단계 실행`에서 실행한다. scripts/team.py prepare A --step INTEGRATE로 B2b/B5/B11
-브랜치를 main에 병합한다. 단, final acceptance 전에는 main을 푸시하지 않는다.
+`A 통합 단계 실행`에서 실행한다. B2b/B5/B11 PR이 모두 main에 병합되어야 한다.
+scripts/team.py prepare A --step INTEGRATE로 main에서 feat/integration 브랜치를 준비한다.
 실제 merge 충돌은 두 구현과 공유 contracts에 맞춰 해결하고 전체 테스트를 수행한다.
 `SCALE=full`로 config/data/model/index fingerprint를 맞추고 B10 prepare/benchmark/Compose/smoke 및
 B11 checker를 재실행한다. C의 final_acceptance.json 수치를 실제 산출물과 대조한다.
 미달하면 담당 구현의 최소 수정과 valid 실험으로 해결하고 frozen test에 독립 재평가한다.
 모든 mandatory gate가 실제 PASS일 때 record_gate --step INTEGRATE --role A --acceptance PASS와
-로컬 commit을 만든 후 최종 변경·측정·제한을 설명하고 사용자의 푸시 허가를 받는다.
-허가 뒤에만 step_git --mode publish --approved로 main을 푸시하고 원격 hash와 제출 URL을 보고한다. Docker/권한/모델 품질
+로컬 commit·PR 미리보기를 만든 후 최종 변경·측정·제한을 설명하고 사용자의 푸시·PR 생성 허가를 받는다.
+허가 후 step_git --mode publish --approved로 feat/integration을 푸시하고 main 대상 최종 PR을
+생성/갱신해 원격 hash와 PR URL을 보고한다. CI/리뷰 후 별도 병합 허가를 받아 main에 병합하며
+main 직접 push는 금지한다. Docker/권한/모델 품질
 미측정은 완료 처리하지 않는다. PDF p.7의 실데이터 활용 해석은 별도로 공개한다.
 
 ## 단계 실행의 공통 종료 규칙 (v4)
@@ -339,6 +344,7 @@ B11 checker를 재실행한다. C의 final_acceptance.json 수치를 실제 산�
 - setup 후 공통 data/split_manifest checksum을 확인하고 자신 소유의 config overlay만 수정한다.
 - 서비스 factory/CLI/result 인터페이스를 유지해 다른 clone의 병렬 구현과 조립 가능하게 한다.
 - 실제 검사를 record_gate로 실행하고 로컬 commit을 준비한다. 변경/검사/제한을 설명한 후
-  푸시 허가를 받는다. CLI runner도 승인 대기에서 멈춘다. 승인한 동일 commit의 push 실패만
+  기능 브랜치 푸시·PR 생성 허가를 받는다. CLI runner도 승인 대기에서 멈춘다.
+  main은 PR 병합으로만 반영하고 병합 허가는 별도로 받는다. 승인한 동일 commit의 push 실패만
   기존 허가로 재시도하며 pending commit을 버리지 않는다.
 - 각 role/단계의 실제 기여는 docs/contributions/<role>.md에 기록한다. GitHub 계정은 추측하지 않는다.

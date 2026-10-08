@@ -3,6 +3,14 @@ repository: https://github.com/k-pang-2026/mm-recsys.git
 base_branch: main
 auto_push: false
 push_requires_user_approval: true
+pull_requests:
+  required: true
+  base: main
+  merge_requires_user_approval: true
+  merge_method: merge
+  api_version: '2026-03-10'
+  timeout_seconds: 30
+  required_ci_check: common
 team:
   A: {name: 이제원, github: null, branch: feat/A/search, focus: 공통 준비·검색·최종 통합}
   B: {name: 박정욱, github: null, branch: feat/B/recommendation, focus: 추천 모델·재랭킹·세션}
@@ -12,20 +20,20 @@ order:
   B: [B3a, B3b, B4, B5]
   C: [B6, B7, B8, B9, B10, B11]
 stages:
-  SHARED: {owner: A, requires: [], branch: main}
+  SHARED: {owner: A, requires: [], branch: chore/shared-foundation, pr_ready: true}
   B2a: {owner: A, requires: [SHARED]}
-  B2b: {owner: A, requires: [B2a]}
+  B2b: {owner: A, requires: [B2a], pr_ready: true}
   B3a: {owner: B, requires: [SHARED]}
   B3b: {owner: B, requires: [B3a]}
   B4: {owner: B, requires: [B3b]}
-  B5: {owner: B, requires: [B4]}
+  B5: {owner: B, requires: [B4], pr_ready: true}
   B6: {owner: C, requires: [SHARED]}
   B7: {owner: C, requires: [B5, B6]}
   B8: {owner: C, requires: [B2b, B7]}
   B9: {owner: C, requires: [B8]}
   B10: {owner: C, requires: [B9]}
-  B11: {owner: C, requires: [B10]}
-  INTEGRATE: {owner: A, requires: [B2b, B5, B11], branch: main}
+  B11: {owner: C, requires: [B10], pr_ready: true}
+  INTEGRATE: {owner: A, requires: [B2b, B5, B11], branch: feat/integration, pr_ready: true}
 # Prefix matching, extended only by the integrator after shared-contract review.
 paths:
   A: [src/search/, tests/test_search, tests/test_encoder, tests/test_index, config/search.yaml, docs/search_report.md, docs/results/search, docs/results/experiments/A/, docs/contributions/A.md]

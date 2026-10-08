@@ -190,6 +190,16 @@ class GitHelperTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('staged', result.stderr)
 
+    def test_main_is_rejected_even_when_workflow_assigns_it(self) -> None:
+        run('git', 'switch', '-c', 'main', cwd=self.repo)
+        (self.repo / 'config').mkdir()
+        (self.repo / 'config/team_workflow.yaml').write_text(
+            'base_branch: main\nteam:\n  A: {branch: main}\nstages:\n  B2a: {branch: main}\n')
+        result = self.helper('--mode', 'commit')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('main direct commit/push forbidden', result.stderr)
+        self.assertEqual(run('git', 'diff', '--cached', '--name-only', cwd=self.repo).stdout, '')
+
     def test_publish_scopes_commit_and_reports_push_failure(self) -> None:
         # The push is intercepted locally; this test never accesses GitHub.
         shim_dir = self.repo / 'test-bin'

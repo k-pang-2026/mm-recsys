@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-"""Scoped publication of a verified stage. Git auth is inherited; no token is read or printed."""
+"""Scoped, approved feature publication and PR creation; credentials are never printed."""
 from __future__ import annotations
 
 import argparse
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 OWNERS={'SHARED':'A','INTEGRATE':'A','P0':'A','B0':'A','B1':'A','B2a':'A','B2b':'A',
         'B3a':'B','B3b':'B','B4':'B','B5':'B',**{f'B{i}':'C' for i in range(6,12)}}
@@ -117,6 +119,8 @@ def main() -> int:
         expected=plan['stages'][args.step].get('branch',plan['team'][args.role]['branch'])
         valid_branch=branch==expected
     else:valid_branch=bool(re.fullmatch(rf'feat/{args.role}/{re.escape(args.step)}-[A-Za-z0-9._-]+',branch))
+    if branch in ('main','master') or (plan and branch==plan['base_branch']):
+        raise ValueError('main direct commit/push forbidden; use a feature branch and PR')
     if not valid_branch:raise ValueError(f'use assigned feature branch for {args.role}/{args.step}')
     remote=git('remote','get-url','origin')
     if not (remote.startswith('https://github.com/') or remote.startswith('git@github.com:')):raise ValueError('reviewed GitHub origin required')
@@ -160,9 +164,18 @@ def main() -> int:
         commit=publication['commit']
         publication['status']='PUSH_APPROVED'
         pending.write_text(json.dumps(publication))
+        pr_required=bool(plan and plan.get('pull_requests',{}).get('required'))
+        if pr_required:
+            from scripts.pull_request import GitHubAPI,render,ensure
+            description=render(root,args.step,args.role,plan,value)
+            client=GitHubAPI(root,plan)
+            client.preflight()
         git('push','-u','origin',branch,capture=False)
         observed=git('ls-remote','origin',f'refs/heads/{branch}').split()
         if not observed or observed[0]!=commit:raise ValueError('remote head differs; verify concurrent publication before retry')
+        if pr_required:
+            result=ensure(root,description,client)
+            print('PR VERIFIED:',result['url'],'draft:',result['draft'])
         pending.unlink(missing_ok=True)
         print('PUSH VERIFIED:',commit)
         return 0
@@ -179,6 +192,10 @@ def main() -> int:
     commit=git('rev-parse','HEAD');print('commit:',commit,flush=True)
     pending.parent.mkdir(exist_ok=True)
     pending.write_text(json.dumps({'step':args.step,'role':args.role,'branch':branch,'commit':commit,'status':'AWAITING_USER_APPROVAL'}))
+    if plan and plan.get('pull_requests',{}).get('required'):
+        from scripts.pull_request import render
+        description=render(root,args.step,args.role,plan,value)
+        print('LOCAL PR PREVIEW:',description['body_file'])
     print('AWAITING PUSH APPROVAL:',commit)
     print('Explain changes, tests and limitations to the user; publish only after explicit approval.')
     return 0

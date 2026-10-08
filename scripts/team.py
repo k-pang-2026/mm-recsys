@@ -57,6 +57,8 @@ docs/commit_convention.md를 읽고 실제 diff의 한국어 요약을 record_ga
 파일 소유권 밖 변경이 필요하면 해당 역할 overlay/adapter로 해결하거나 통합 단계로 명시하라.
 구조 검증 후 로컬 커밋을 준비하고 변경 내용·검사 결과·제한을 사용자에게 설명하라.
 사용자가 그 결과의 푸시를 명시 승인하기 전에는 원격 푸시하지 마라.
+모든 변경은 기능 브랜치에 push하고 main 대상 PR로 제출한다. main 직접 push는 금지한다.
+push·PR 생성 허가와 PR 병합 허가는 구분한다. 다른 역할 의존성은 PR 병합된 main에서 가져온다.
 CLI runner에서 실행 중이면 .team/runner.json을 읽어라. publication_managed=true이면
 Git 커밋·푸시는 외부 runner가 수행하므로 gate와 코드 검증만 완료하고 실제 push를 주장하지 마라.
 미측정/full 미달을 숨기지 말고, model test 진단 전에 평가 기준을 고정하라.
@@ -69,6 +71,17 @@ def prepare(root: Path, role: str, step: str, plan: dict) -> None:
         raise ValueError('local changes present; finish/publish prior work before automatic branch synchronization')
     git('fetch','origin',root=root)
     branch=plan['stages'][step].get('branch',plan['team'][role]['branch'])
+    if branch==plan['base_branch']:raise ValueError('development must use a feature branch; main changes go through PR')
+    # Check cross-role dependencies before creating/synchronizing any development branch.
+    for required in plan['stages'][step]['requires']:
+        own_branch=plan['stages'][required].get('branch',plan['team'][plan['stages'][required]['owner']]['branch'])
+        if own_branch==branch:continue
+        source=f"origin/{plan['base_branch']}"
+        try:evidence=git('show',f'{source}:docs/results/gates/{required}.json',root=root)
+        except subprocess.CalledProcessError:
+            raise ValueError(f'{required} PR not merged into {source} yet') from None
+        if not completed(json.loads(evidence)):
+            raise ValueError(f'{required} has not passed in PR-merged {source}')
     branches=git('branch','--list',branch,root=root)
     if branches:git('switch',branch,root=root)
     else:
@@ -77,17 +90,9 @@ def prepare(root: Path, role: str, step: str, plan: dict) -> None:
         else:git('switch','-c',branch,f"origin/{plan['base_branch']}",root=root)
     remote=git('branch','--remotes','--list',f'origin/{branch}',root=root)
     if remote:git('merge','--ff-only',f'origin/{branch}',root=root)
-    for required in plan['stages'][step]['requires']:
-        owner=plan['stages'][required]['owner']
-        source=plan['stages'][required].get('branch',plan['team'][owner]['branch'])
-        if source==branch:continue
-        available=git('branch','--remotes','--list',f'origin/{source}',root=root)
-        if not available:raise ValueError(f'{required} branch not pushed yet: {source}')
-        evidence=git('show',f'origin/{source}:docs/results/gates/{required}.json',root=root)
-        if not completed(json.loads(evidence)):
-            raise ValueError(f'{required} has not passed in published branch {source}')
-        # This is an explicitly requested integration of dependency branches, never a force push.
-        git('merge','--no-edit',f'origin/{source}',root=root)
+    # Integrate reviewed changes from main, not unpublished/unreviewed teammate branches.
+    git('merge','--no-edit','-m',f"chore(sync): 검토된 {plan['base_branch']} 변경을 기능 브랜치에 반영",
+        f"origin/{plan['base_branch']}",root=root)
     missing=dependencies(root,step,plan)
     if missing:raise ValueError(f'dependencies not verified yet: {missing}; resume when those teammates publish')
 

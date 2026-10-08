@@ -59,8 +59,8 @@ def test_owned_configuration_overlay_cannot_change_global_seed(tmp_path,monkeypa
 import pytest
 
 
-@pytest.mark.parametrize('dependency_status',['PASS','FAIL'])
-def test_prepare_merges_only_verified_published_dependency(tmp_path,dependency_status):
+@pytest.mark.parametrize('dependency_status,merged',[('PASS',True),('PASS',False),('FAIL',True)])
+def test_prepare_uses_only_verified_dependencies_merged_through_main(tmp_path,dependency_status,merged):
     remote=tmp_path/'origin.git';seed=tmp_path/'seed';clone=tmp_path/'C'
     def command(*args,cwd=tmp_path):
         return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
@@ -83,11 +83,22 @@ def test_prepare_merges_only_verified_published_dependency(tmp_path,dependency_s
     (clone/'docs/results/gates/B6.json').write_text(json.dumps({'status':'PASS'}))
     command('git','add','docs',cwd=clone);command('git','commit','-m','C fixture',cwd=clone)
     command('git','push','origin','feat/C/platform',cwd=clone)
-    if dependency_status=='FAIL':
-        with pytest.raises(ValueError,match='has not passed'):team.prepare(clone,'C','B7',plan)
+    if merged:
+        command('git','switch','main',cwd=seed)
+        command('git','merge','--no-edit','feat/B/recommendation',cwd=seed)
+        command('git','push','origin','main',cwd=seed)
+    if dependency_status=='FAIL' or not merged:
+        with pytest.raises(ValueError,match='has not passed|PR not merged'):team.prepare(clone,'C','B7',plan)
         assert not (clone/'docs/results/gates/B5.json').exists()
     else:
         team.prepare(clone,'C','B7',plan)
         assert team.dependencies(clone,'B7',plan)==[]
         assert (clone/'docs/results/gates/B5.json').exists()
     assert command('git','branch','--show-current',cwd=clone).strip()=='feat/C/platform'
+
+
+def test_common_and_integration_stages_never_use_main_directly():
+    plan=team.workflow(ROOT)
+    assert plan['stages']['SHARED']['branch']=='chore/shared-foundation'
+    assert plan['stages']['INTEGRATE']['branch']=='feat/integration'
+    assert plan['pull_requests']['required'] and plan['pull_requests']['merge_requires_user_approval']
