@@ -42,6 +42,14 @@ CLIP cache/양 모달 실제 추론·Docker 사전 점검까지 수행한다. �
 Docker를 실행할 수 없는 임시 머신에서 `--skip-docker-check`를 쓰면 해당 조건은
 UNMEASURED다. 전체 환경 완료나 PDF Docker 통과를 의미하지 않는다.
 
+WSL에서 Docker 명령을 찾을 수 없다는 메시지가 나오면 Codex는 Docker Desktop 실행 상태와
+해당 배포판의 WSL Integration 설정을 함께 확인한다. 연동이 이미 켜져 있어도 Desktop이
+종료되어 있으면 같은 오류가 발생한다. 설치된 Windows Docker CLI의 `docker.exe desktop start`로
+시작하고 `docker info`, `docker compose config --quiet`, 실제 컨테이너 실행을 확인한 뒤
+setup을 생략 옵션 없이 다시 실행한다. 전체 WSL 종료나 기존 컨테이너·볼륨 초기화는 하지 않는다.
+[Docker의 WSL 연동 안내](https://docs.docker.com/desktop/features/wsl/)와
+[Desktop 시작 CLI](https://docs.docker.com/desktop/features/desktop-cli/)를 따른다.
+
 ## VS Code Codex가 단계 지시를 처리하는 방식
 
 1. `.venv`와 `.team/local.json`이 없으면 setup을 실행한다.

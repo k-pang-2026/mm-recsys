@@ -9,10 +9,10 @@
     "C": "박채영"
   },
   "setup": {
-    "command": "env -u HF_HOME HF_HUB_OFFLINE=1 bash setup_env.sh . --role=A --skip-docker-check",
+    "command": "env -u HF_HOME HF_HUB_OFFLINE=1 bash setup_env.sh . --role=A",
     "exit_code": 0,
     "clip_cache": "project-local .cache/huggingface",
-    "docker_skipped": true
+    "docker_skipped": false
   },
   "tests": {
     "command": ".venv/bin/python -m pytest -q tests",
@@ -96,8 +96,8 @@
     }
   },
   "docker": {
-    "status": "BLOCKED",
-    "reason": "WSL 2 Docker Desktop integration unavailable",
+    "status": "PASS",
+    "reason": "Docker Desktop started; existing Ubuntu WSL2 integration restored",
     "checks": [
       {
         "command": [
@@ -105,8 +105,8 @@
           "compose",
           "version"
         ],
-        "exit_code": 1,
-        "output": "\nThe command 'docker' could not be found in this WSL 2 distro.\nWe recommend to activate the WSL integration in Docker Desktop settings.\n\nFor details about using Docker Desktop with WSL 2, visit:\n\nhttps://docs.docker.com/go/wsl2/\n\n"
+        "exit_code": 0,
+        "output": "Docker Compose version v5.5.1\n"
       },
       {
         "command": [
@@ -115,8 +115,8 @@
           "--format",
           "{{.ServerVersion}}"
         ],
-        "exit_code": 1,
-        "output": "\nThe command 'docker' could not be found in this WSL 2 distro.\nWe recommend to activate the WSL integration in Docker Desktop settings.\n\nFor details about using Docker Desktop with WSL 2, visit:\n\nhttps://docs.docker.com/go/wsl2/\n\n"
+        "exit_code": 0,
+        "output": "29.8.2\n"
       },
       {
         "command": [
@@ -125,10 +125,13 @@
           "config",
           "--quiet"
         ],
-        "exit_code": 1,
-        "output": "\nThe command 'docker' could not be found in this WSL 2 distro.\nWe recommend to activate the WSL integration in Docker Desktop settings.\n\nFor details about using Docker Desktop with WSL 2, visit:\n\nhttps://docs.docker.com/go/wsl2/\n\n"
+        "exit_code": 0,
+        "output": ""
       }
-    ]
+    ],
+    "runtime": "Redis PONG and WSL read-only bind mount PASS",
+    "evidence": "docs/results/docker_wsl_verification.json",
+    "final_four_service_model_reproduction": "UNMEASURED"
   },
   "automation_verification": "local Git remotes: cross-role dependencies require PASS evidence merged into main; unmerged/failed dependencies blocked; main direct commit/push rejected even with a wrong branch assignment; push approval bound to SHA; mocked GitHub PR create/update/Draft-ready and separate merge SHA/CI/review checks; live GitHub API authentication/publication UNMEASURED",
   "not_implemented_yet": [
@@ -138,11 +141,11 @@
   ],
   "github_publication_evidence": "verified branch remote head and PR URL/head/base/draft after approval; main changes only through separately approved PR merge",
   "github_publication": {
-    "status": "AWAITING_USER_APPROVAL",
+    "status": "APPROVED_AFTER_DOCKER_REPAIR",
     "pushed": false,
     "target": "https://github.com/k-pang-2026/mm-recsys.git",
     "branch": "chore/shared-foundation",
-    "policy": "explain changes and local PR preview; obtain explicit approval for branch push and PR creation; obtain separate reviewed SHA approval for PR merge",
+    "policy": "user authorized branch push after Docker WSL repair; PR creation follows the agreed workflow; PR merge still requires separate approval",
     "base": "main",
     "pull_request_required": true,
     "pr_created": false,

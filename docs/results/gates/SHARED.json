@@ -6,31 +6,15 @@
   "acceptance": "UNMEASURED",
   "commands": [
     {
-      "command": ".venv/bin/python -m pytest -q tests",
-      "exit_code": 0
-    },
-    {
       "command": ".venv/bin/python -m pip check",
       "exit_code": 0
     },
     {
-      "command": ".venv/bin/python scripts/validate_common.py",
+      "command": "env -u HF_HOME HF_HUB_OFFLINE=1 .venv/bin/python scripts/check_environment.py",
       "exit_code": 0
     },
     {
-      "command": "SCALE=full .venv/bin/python scripts/validate_common.py",
-      "exit_code": 0
-    },
-    {
-      "command": "bash -n setup_env.sh",
-      "exit_code": 0
-    },
-    {
-      "command": "bash -n scripts/codex_run.sh",
-      "exit_code": 0
-    },
-    {
-      "command": "bash -n scripts/local_env.sh",
+      "command": "docker run --rm --mount type=bind,source=/home/peachpetal/ecommerce/mm-recsys,target=/workspace,readonly redis:7 sh -ec 'test -f /workspace/config.yaml; redis-server --daemonize yes; for attempt in 1 2 3 4 5; do if redis-cli ping; then exit 0; fi; sleep 1; done; exit 1'",
       "exit_code": 0
     }
   ],
@@ -104,7 +88,9 @@
     "scripts/pull_request.py",
     "tests/test_pull_request.py",
     "docs/pr_workflow.md",
-    ".github/workflows/ci.yml"
+    ".github/workflows/ci.yml",
+    "docs/results/docker_wsl_verification.json",
+    "docs/results/common_installed_packages.txt"
   ],
   "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
   "config_fingerprint": "2363351ea11ad22a359646c39e56a993657746d1f63e76ba053139bc229c4152",
@@ -164,22 +150,24 @@
     "ai_step_prompts_optimized.md": "1be82ddac145879236ae9d654e9b10e9551ca3a15c6816e73d02a811dcef6fdd",
     "docs/ai_step_prompts.md": "1be82ddac145879236ae9d654e9b10e9551ca3a15c6816e73d02a811dcef6fdd",
     "docs/contracts.md": "b709c11455dfa3bf079552ab9cead89b30d4becb0180c9616bad0b938fb41603",
-    "docs/codex_quickstart.md": "6907a81c5a063e9785e85a930078020f83ca4f7692f8f8105fea270c7f783d7b",
+    "docs/codex_quickstart.md": "b8f19bdc48b1b0a36a7db94457622462ab48368f0826887dab775b7d55c1249b",
     "docs/team_workflow.md": "889553fcb903c1e73f0228bcbd69bda1aa9a57cc37c8f4875284a03dbeceb6e7",
-    "docs/contributions/A.md": "554014341186b43d1dee33cc24d19c941b2cd4f31acb83b8c3eaa7e3217c06a7",
-    "docs/results/common_readiness.json": "9c54bbe2a2c8ce0d108b2996ca2fac721b9e34205d304a1ed0579fce6385c41e",
-    "docs/results/common_environment.json": "432e45e0f6dd85d90a5ab1b15dc707c66ce8ae0c0cc9c9fc3d4ef1978a7a959c",
+    "docs/contributions/A.md": "47ac6d3be8b37814fc4ddb072a488e2e11749437c9430db5d56e09b18d5d0eb0",
+    "docs/results/common_readiness.json": "978af473a02713a3de78b7006a7d9ca4178deddda22a5975ac028c9432272de4",
+    "docs/results/common_environment.json": "ea9f733eb9bdde95a1d7ab6eba276265790e0c06c8950666c4f9225a3ad11013",
     "docs/results/common_manifest_dev.json": "646fab8f24733869b7fc53aa3a9683d6a700326f12362812c2bd42ea266acb22",
     "docs/results/common_manifest_full.json": "3852ef89c0435e334ed9f417b6c1b6a3ce4d582d5b417db8d796d2e010b3db47",
-    "docs/results/common_handoff.json": "5467710ae0d900a20de85526a9b61525a0289edd6f7cdc97e0c9f0ed0d9f6c9a",
+    "docs/results/common_handoff.json": "a1ffc10237dc73a5c8023122029df21f04f17a64c497497f08b8bc3cea5dd681",
     "docs/results/data_diagnostics.json": "c9569d6b8ee91143cf18cbbafe49b454081ff6152d075442c24eff9ee563994e",
     "docs/results/data_diagnostics_full.json": "3b7b913060f0d39253fd2abb6f453d2db45bc59b4fc77467a56924179ad550f1",
     "docs/commit_convention.md": "8294be4c1cac540b26bd02b120d43400139ea4c606809131905a37a72fa03bc7",
-    "docs/setup_analysis.md": "a510756f6ddbd88a57b473d61b92020d302603a83f71ff487982a4e127dbfc6b",
+    "docs/setup_analysis.md": "740ff1f4799f3f7ccae2ed41c8e900e8e82c0d680ccc9f9a4bb0c9d22215cc66",
     "scripts/pull_request.py": "0c86acdc16b098fde4d8b6f02f0c08ff7d5a5c207fcaf5b8aef0f5d74711e628",
     "tests/test_pull_request.py": "855555a502bfa05b5b77ea914e212d6a117764e0f15ee33d54b9e22da1c5f67c",
     "docs/pr_workflow.md": "71fda8a05b9b94b74a4dbcd33f98c95e07bdb7e9ce1e5906223b1c5ed92bff6b",
-    ".github/workflows/ci.yml": "ad57249028efb0cf93c35e8cc15765bc5c7f7d467ea3508ef82116d4effcbfae"
+    ".github/workflows/ci.yml": "ad57249028efb0cf93c35e8cc15765bc5c7f7d467ea3508ef82116d4effcbfae",
+    "docs/results/docker_wsl_verification.json": "e77f7b2873f5bf737be45fcc225d8686bafaf5a4098bc5b167de85ee153017aa",
+    "docs/results/common_installed_packages.txt": "d521eefd1ec4366a151a250267e0305916a1bc56c83c712a69ce4402835232b4"
   },
-  "commit_summary_ko": "기능별 브랜치와 PR 통합 흐름 적용"
+  "commit_summary_ko": "Docker WSL 복구와 전체 환경 검증 결과 반영"
 }

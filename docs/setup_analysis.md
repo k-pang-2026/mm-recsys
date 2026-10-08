@@ -227,3 +227,17 @@ main 직접 commit/push는 helper에서 거부하며 다른 역할 의존성은 
 PR 병합은 별도 명시 허가와 정확한 SHA, CI/미해결 리뷰 조건 확인 후 수행한다. GitHub API 동작은
 모의 검사로 확인했으며 실제 인증·원격 PR/CI/병합은 승인 전이라 미측정이다. 기존 공통 commit은
 기능 브랜치로 옮겼고 local main은 기존 origin/main 커밋을 유지한다. 상세 절차는 pr_workflow.md다.
+
+## Docker WSL 복구와 공통 발행 허가
+
+사용자는 Docker WSL 연동을 해결한 뒤 공통 브랜치를 푸시하도록 명시 허가했다.
+앞서 연동 미활성으로 추정한 오류의 실제 원인은 Docker Desktop 종료였다. Ubuntu의
+EnableIntegrationWithDefaultWslDistro와 IntegratedWslDistros 설정은 이미 활성화되어 있었다.
+설치된 Windows Docker CLI로 Desktop을 시작해 Ubuntu의 CLI/소켓/엔진 연결을 복구했다.
+시작 중 업데이트로 연결이 잠시 재설정된 뒤 엔진 29.8.2 / Desktop 4.94.0 / Compose 5.5.1로
+사전 검사를 통과했다. WSL 저장소 읽기 전용 bind mount와 임시 Redis 컨테이너의 PONG을
+확인했고 생략 옵션 없이 setup_env.sh 전체 실행도 통과했다. 현재 근거는 common_environment.json,
+common_readiness.json, docker_wsl_verification.json이다. 이전 BLOCKED 기록은 과거 상태다.
+
+이 허가는 복구 결과를 반영한 공통 기능 브랜치 push와 합의한 PR 제출에 적용한다.
+PR 병합은 별도 허가 대상이며 모델 포함 최종 4서비스 재현과 full 품질은 여전히 미측정이다.

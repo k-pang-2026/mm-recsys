@@ -16,7 +16,11 @@
 - 공통 준비·검색·추천·플랫폼·통합 모두 기능 브랜치→main PR로 제출하도록 수정했다.
   원격 푸시/PR 생성과 PR 병합의 승인을 분리하고 로컬 한국어 PR 미리보기, 기존 PR 갱신,
   Draft 전환, 정확한 승인 SHA·CI·리뷰 조건 검사를 구현했다. GitHub API 동작은 모의 검사로
-  검증했으며 실제 원격 PR 생성/병합은 사용자 허가 전이라 미실행이다.
+  검증했다. 원격 PR/병합 실행 여부는 실제 발행 증거로 확인한다.
+- Ubuntu 연동은 이미 활성화되어 있었지만 Docker Desktop이 종료되어 있던 원인을 확인했다.
+  Desktop 시작 후 Docker/Compose 사전 검사, WSL 폴더 bind mount와 임시 Redis 컨테이너 PONG을
+  검증했다. 생략 옵션 없는 setup 전체 실행도 통과했으며 `results/docker_wsl_verification.json`에
+  실제 결과를 기록했다. 검색·추천 모델을 포함한 최종 4서비스 재현은 후속 단계에 남아 있다.
 
 근거: [SHARED gate](../results/gates/SHARED.json),
 [공통 준비 실측](../results/common_readiness.json),

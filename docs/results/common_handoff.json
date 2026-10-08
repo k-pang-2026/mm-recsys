@@ -15,5 +15,5 @@
     "split/test.parquet"
   ],
   "role": "B",
-  "fresh_remote_clone": "PENDING_FIRST_APPROVED_PUSH"
+  "fresh_remote_clone": "PENDING_FIRST_APPROVED_PR_MERGE"
 }
