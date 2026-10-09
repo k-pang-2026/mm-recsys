@@ -1,0 +1,61 @@
+{
+  "python": "3.12.10",
+  "platform": "Windows-10-10.0.19044-SP0",
+  "versions": {
+    "torch": "2.6.0+cpu",
+    "torchvision": "0.21.0+cpu",
+    "faiss": "1.9.0",
+    "transformers": "4.46.3",
+    "fastapi": "0.115.6",
+    "streamlit": "1.41.1",
+    "redis": "5.2.1",
+    "yaml": "6.0.2",
+    "pandas": "2.2.3",
+    "pyarrow": "19.0.0",
+    "sklearn": "1.6.1",
+    "fakeredis": "2.26.2",
+    "httpx": "0.28.1"
+  },
+  "scale": "dev",
+  "seed": 42,
+  "cuda_available": false,
+  "clip_inference": "PASS",
+  "docker": "UNMEASURED",
+  "clip_model": "openai/clip-vit-base-patch32",
+  "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+  "clip_projection_dim": 512,
+  "status": "PARTIAL",
+  "role": "C",
+  "reviewer": "A",
+  "base_commit": "46aae2189b0654443b762c9756c0dd5d1a38773e",
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "pip_check": "PASS",
+  "initial_full_regression": {
+    "status": "FAIL",
+    "exit_code": 1,
+    "passed": 69,
+    "failed": 19,
+    "command": ".venv/Scripts/python.exe -m pytest -q tests --tb=short"
+  },
+  "portable_regression": {
+    "status": "PASS",
+    "exit_code": 0,
+    "passed": 70,
+    "command": ".venv/Scripts/python.exe -m pytest -q -p src.serving.pytest_support tests --ignore=tests/test_setup_env.py --tb=short"
+  },
+  "windows_bootstrap": {
+    "status": "BLOCKED",
+    "module": "tests/test_setup_env.py",
+    "affected_tests": 18,
+    "reason": "POSIX /tmp directory is absent on Windows; shared bootstrap tests require portability repair"
+  },
+  "b6_test_repair": "Fixed the Redis/builtin ConnectionError name collision; portable regression now passes",
+  "full_acceptance": "UNMEASURED",
+  "latency_source": "docs/results/latency/feature_dev.json",
+  "stream_source": "docs/results/experiments/C/stream_dev.json",
+  "note": "Docker Desktop is not installed; build 19044 is below the current Windows 10 requirement 19045. RAM is about 8GiB, below the project 16GiB recommendation.",
+  "ci": {
+    "status": "UNMEASURED",
+    "configuration": "Redis 7 service with localhost and RUN_REDIS_TESTS=1; isolated API test namespaces"
+  }
+}
