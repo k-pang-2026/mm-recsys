@@ -1,0 +1,91 @@
+{
+  "step": "B2a",
+  "owner": "A",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 .venv/bin/python scripts/check_environment.py",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 SCALE=dev .venv/bin/python -m src.simulator.generate",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=dev .venv/bin/python -m src.search.build_embeddings",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 SCALE=dev .venv/bin/python -m src.search.build_index",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=dev .venv/bin/python -m src.search.verify",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "src/search/__init__.py",
+    "src/search/bm25.py",
+    "src/search/build_embeddings.py",
+    "src/search/build_index.py",
+    "src/search/encoder.py",
+    "src/search/eval_support.py",
+    "src/search/index.py",
+    "src/search/locking.py",
+    "src/search/text.py",
+    "src/search/verify.py",
+    "tests/test_encoder.py",
+    "tests/test_index.py",
+    "tests/test_search_artifacts.py",
+    "tests/test_search_evaluation.py",
+    "config/search.yaml",
+    "docs/search_report.md",
+    "docs/contributions/A.md",
+    "docs/results/search_b2a_dev.json",
+    "docs/results/search_b2a_embeddings_manifest_dev.json",
+    "docs/results/search_b2a_environment.json",
+    "docs/results/search_b2a_indexes_manifest_dev.json"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "6caf6f2025fac71feadd597d1de323f2e1f6a85d67397aa9199c1869e8234d48",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "src/search/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/search/bm25.py": "6d739624d1b803fa50c1f5aae13ae95276d5fba5017c73e596ed453a3aa3eecd",
+    "src/search/build_embeddings.py": "bd25c7ee208f045b3af2d84dbdde4035787616d0c494436dcf2647e08071b974",
+    "src/search/build_index.py": "ff4b520f741ff9844f77da85ed2efeb0eb57001305a3e3479c6a9536db365099",
+    "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e",
+    "src/search/eval_support.py": "ad8365ee8891c5dc18c3ca2ddfaa1aad5ace13890e1b678a4ce18393788ff48f",
+    "src/search/index.py": "99ea77e0a80d0e8a5009f637c9c3863fc948840a2abf015862c3a3dfbb4b52bf",
+    "src/search/locking.py": "0f2a42f4039ace3888633b63a09c1a17435905bb8542a3a979b4dd88667e2338",
+    "src/search/text.py": "a8f862a14c61aaf990d2ebf38ebe60668a1e5057d9ed3b98a6bdf55da9084280",
+    "src/search/verify.py": "ac625e7c2bd632fb0ab7fb6539bd382116b84b1632109637a0bb70fc42ba6cbc",
+    "tests/test_encoder.py": "a49795568bc3bc5dabb6af2d9b1ce8a3f175979f81519658f3652e643d1133b2",
+    "tests/test_index.py": "33283f9c43258a5614c2ca2beb794ad04b3c04dca80f7cbfd05daee1f78d87eb",
+    "tests/test_search_artifacts.py": "fa40b85014885951b1b718b82afec9f6ad028e69a4e0e4ea047d6f1e262a9f61",
+    "tests/test_search_evaluation.py": "aa38d9906b5d6cd66281e91372101ef76bd9b6072b9fa46992c5057f6cf893d0",
+    "config/search.yaml": "cd3d5decde951b032600c28c0847fd50347eddc927a6843d8998c5937c506e83",
+    "docs/search_report.md": "dff1abe900b6968fa33fe5f71a495ca9e0ee1f54d02e61b64d749cbaed21c6d1",
+    "docs/contributions/A.md": "620166bb38bfdf964659e4a25b78c7f71815c8b6cbe7a720bfd3b99a817223d7",
+    "docs/results/search_b2a_dev.json": "8ffe794b678120464dd69a7818d82d3de75fa9621befa7fdab225444ea809b8c",
+    "docs/results/search_b2a_embeddings_manifest_dev.json": "ef21606c697d79bb4644373cfc140179bd23a73214d65525f5f1060f00d6624f",
+    "docs/results/search_b2a_environment.json": "ea9f733eb9bdde95a1d7ab6eba276265790e0c06c8950666c4f9225a3ad11013",
+    "docs/results/search_b2a_indexes_manifest_dev.json": "88725bdb5294ec739420bafce60bb640ed3669f7f00a1a965e40cb2e3af9661e"
+  },
+  "commit_summary_ko": "실제 CLIP 인코더와 재개 가능한 임베딩 및 검색 인덱스 구현"
+}

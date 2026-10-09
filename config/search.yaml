@@ -1,2 +1,7 @@
 # A owns this overlay; top-level key stays search.
-search: {}
+search:
+  device: cpu
+  torch_threads: 4
+  local_files_only: true
+  embedding_chunk_size: 256
+  artifact_subdir: search

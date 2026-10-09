@@ -31,3 +31,19 @@
 - 사용자 최신 지시에 따라 충돌·원격 gate·CI·품질·필수 리뷰/보호 규칙을 확인한 PR은
   자동 병합하도록 구현했다. 푸시 전 설명·허가 규칙은 유지한다. 병합 직전 head/base SHA
   변경을 확인하고 CI 대기·차단 상태를 보존하며 같은 PR의 병합 재시도를 지원한다.
+
+## B2a — 검색 인코더·산출물·인덱스 기반
+
+이제원(A) 담당 단계의 구현·실행을 Codex가 수행했다. 지정 reviewer는 박정욱(B)이며
+실제 팀원 리뷰가 수행됐다고 주장하지 않는다.
+
+- 실제 고정 CLIP projected text/image 인코더, 공통 한국어 별칭, RGB/길이/FP32/norm 검증을 구현했다.
+- 내용 기반 캐시, 완료 청크 해시 검증/중단 재개, 동시 쓰기 제한, 원자적 임베딩 발행을 구현했다.
+- dev 10,000개 `(10000,512)` 양 모달 임베딩과 explicit IP의 text/image/hybrid HNSW를 생성했다.
+- FAISS mapping·설정·해시 검증, -1 label 제외, save/load parity, IVFPQ 표본/차원 검사를 구현했다.
+- BM25와 관측 속성 relevance/exact·ANN 진단을 추가하고 실제 query 전처리로 저장 벡터 재현을 확인했다.
+- image/cross-modal ANN 일치율 미달과 일부 cross-modal 색 오검색을 숨기지 않고
+  [검색 보고서](../search_report.md)에 남겼다. full 품질·API·지연은 B2b에서 측정한다.
+
+근거: [B2a 실측](../results/search_b2a_dev.json), [환경 검사](../results/search_b2a_environment.json),
+[B2a gate](../results/gates/B2a.json). 실제 로컬 커밋/푸시 상태는 Git 이력과 발행 증거로 확인한다.
