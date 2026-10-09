@@ -1,4 +1,4 @@
-"""Exact all-catalog reference retrieval; ANN persistence belongs to B3b."""
+"""Exact reference and HNSW retrieval with cutoff/exclusion filtering and refill."""
 from __future__ import annotations
 
 import numpy as np
@@ -46,3 +46,52 @@ class ExactCandidate:
         scores = dot_scores(self.user_vectors([context]), self.vectors)[0]
         indices = top_indices(scores, self.eligible, k, context.purchased if exclude_purchased else frozenset())
         return self.table.public_ids(indices)
+
+
+class FaissCandidate:
+    def __init__(self, model, table, eligible, index):
+        self.model, self.table, self.eligible, self.index = model.eval(), table, eligible, index
+        if len(eligible) != len(set(eligible)) or (eligible <= 0).any():
+            raise ValueError('invalid eligible item mapping')
+        self.allowed = set(map(int, eligible))
+
+    user_vectors = ExactCandidate.user_vectors
+
+    def search(self, vectors: np.ndarray, k: int = 300, excluded=frozenset()) -> list[list[str]]:
+        if k <= 0 or not np.isfinite(vectors).all():
+            raise ValueError('invalid candidate vectors/k')
+        allowed = self.allowed - set(excluded)
+        wanted = min(k, len(allowed))
+        if not wanted:
+            return [[] for _ in vectors]
+        count = min(self.index.ntotal, max(k * 2, wanted + len(excluded)))
+        ranked = []
+        for vector in vectors:
+            fetch = count
+            while True:
+                distances, labels = self.index.search(np.ascontiguousarray(vector[None], dtype=np.float32), fetch)
+                valid = [(float(score), int(label) + 1) for score, label in zip(distances[0], labels[0])
+                         if 0 <= label < self.index.ntotal and int(label) + 1 in allowed]
+                # Filter -1 before restoring IDs and deduplicate before limiting to k.
+                unique = {row: score for score, row in valid}
+                rows = sorted(unique, key=lambda row: (-unique[row], row))[:wanted]
+                if len(rows) == wanted:
+                    ranked.append(self.table.public_ids(rows))
+                    break
+                if fetch == self.index.ntotal:
+                    raise ValueError('ANN exhausted catalog without required distinct candidates')
+                fetch = min(self.index.ntotal, fetch * 2)
+        return ranked
+
+    def retrieve(self, context: UserContext, k: int = 300, exclude_purchased: bool = False) -> list[str]:
+        return self.search(self.user_vectors([context]), k,
+                           context.purchased if exclude_purchased else frozenset())[0]
+
+
+def flat_reference(model, table, eligible, batch_size):
+    """IndexFlatIP uses the identical eligible vectors; labels map through a separate table."""
+    import faiss
+    reference = ExactCandidate(model, table, eligible, batch_size)
+    index = faiss.IndexFlatIP(reference.vectors.shape[1])
+    index.add(reference.vectors)
+    return reference, index

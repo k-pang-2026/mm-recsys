@@ -1,0 +1,26 @@
+{
+  "stage": "B3b",
+  "selection_split": "valid",
+  "seed": 42,
+  "best_epoch": 7,
+  "model_sha256": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+  "config_fingerprint": "74c8d74052b3b1d901d5e38f9322ef6e0544ce3af100a8d6b76b9255214d6906",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "index_sha256": "b409816e8195cb49607f56bae753d707756a8c3d659d70fc638bf5d631148c9a",
+  "ann_parameters": {
+    "M": 32,
+    "ef_search": 512,
+    "ef_construction": 200
+  },
+  "valid_exact_recall_at_300": 0.7459132449478697,
+  "valid_ann_recall_at_300": 0.7458488866005921,
+  "valid_p95_ms": 1.4904666981237824,
+  "inference_threads": 1,
+  "decision": "freeze baseline config and epoch7 before first test evaluation; no hyperparameter ablations needed for mandatory thresholds",
+  "sources": {
+    "docs/results/candidate_training_full.json": "ed7a8ec3d5333f79a942782a599740dc71b26fbcfe3402f0864bb1692e86dcf6",
+    "docs/results/candidate_full_valid.json": "8c61558625b9bcdf3f99ca3c705c8a81f82f61f9ba08ffe98ca604c418275988",
+    "docs/results/candidate_benchmark_full_valid.json": "0a8b2e186a104710400e5a5e72f286714cdb74c83e78104c2bdb1191b81b61ed",
+    "docs/results/candidate_diagnostics.json": "f236fd579452f7224605e9ae56b785c6baf50bf74e55c6daf086c6f42c0374d7"
+  }
+}

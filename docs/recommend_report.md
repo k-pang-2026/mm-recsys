@@ -1,4 +1,4 @@
-# 추천 개발 B3a — 학습·평가 기반
+# 추천 개발 — B3a 학습 기반 / B3b full ANN 검증
 
 담당 B, 예정 검토자 C. dev 구조 검증 단계이며 full test 품질·ANN·지연은 미측정이다.
 
@@ -90,3 +90,87 @@ test는 `--split test`를 명시했을 때만 읽는다. B3a에서는 실행하�
 `candidate_diagnostics_dev.json`과 `gates/B3a.json`에 저장한다.
 로컬 학습 로그는 `.team/train_B3a.log`。
 data fingerprint: `3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c`。
+
+
+## B3b — full ANN과 최종 측정 (2026-10-09)
+
+상품 50,000개, 사용자 10,000명,
+이벤트 1,000,000개의 별도 `data/full/` 데이터로 학습·평가했다.
+seed 42, 기존 mean pooling/64차원/temperature 0.1 설정을 유지했다.
+10 epoch 중 valid Recall로 epoch 7을 선택했고, 재로드 결과도 일치했다.
+새 hyperparameter ablation이나 데이터/정답 변경은 하지 않았다.
+valid ANN Recall과 지연을 확인한 뒤 `candidate_selection.json`에 선택을 고정하고
+처음으로 test를 평가했다. training 보고서의 stage 필드는 기존 B3a 학습 진단 형식이며,
+실제 B3b bundle 계약은 그 보고서의 `bundle.contract`와 `ann` manifest에 기록된다.
+
+| 측정 | full valid | full frozen test |
+|---|---:|---:|
+| train-only popularity Recall@300 | 0.228129 | 0.234984 |
+| observed-history profile Recall@300 | 0.764813 | 0.766795 |
+| Two Tower IndexFlatIP Recall@300 | 0.745913 | 0.746281 |
+| Two Tower HNSW Recall@300 | 0.745849 | 0.746281 |
+| ANN/exact 후보 agreement@300 | 0.999356 | 0.999360 |
+
+미래 정답 Recall과 exact 후보 집합 agreement는 다른 분모다.
+Two Tower는 test popularity 대비 217.59% 높지만,
+관측 이력 profile 대비 -2.68% 낮다.
+관측 이력 기준의 우위를 숨기거나 popularity/profile union을 primary Two Tower로 계산하지 않았다.
+최종 기준 0.30은 충족했으므로 test 결과를 보고 모델을 다시 선택하지 않았다.
+
+test macro 대상 7,686명, empty-target 2,314명,
+cutoff 당시 eligible 카탈로그 48,872개이며, 모든 대상에 고유 후보 300개를 반환했다.
+등록 시점 이후여서 검색 불가능한 정답 58개도 Recall 분모에 남겼다.
+cohort별 결과는 `candidate_full_test.json`과 `candidate_metrics.json`에 있다.
+
+### 저장·검증 계약
+
+`models/full/v1.0/item_index.faiss`는 전체 public ID 목록과 같은 순서의 normalized
+HNSWFlat/IP이다. M=32, efConstruction=200, efSearch=512이며 단일 스레드로 구축했다.
+FAISS label i는 `item_ids.json[i]`와 상품 table row i+1에 대응한다.
+후보 생성에서는 cutoff 등록일/구매 제외를 적용하고, 부족하면 검색 범위를 두 배씩 확대한다.
+-1 label/PAD/중복을 제외하며, 충분한 카탈로그에서 300개를 못 얻으면 오류로 종료한다.
+`index_manifest.json`과 `meta.json`에 model/data/catalog/config/feature/mapping/index/vector 해시를 저장한다.
+모델 재생성, ID mapping, checksum, index metric/shape가 어긋나면 로드가 실패한다.
+exact reference는 HNSW의 Flat storage에서 동일 벡터를 읽어 `IndexFlatIP`에 넣는다.
+동점에서 FAISS가 선택한 top-k 경계 집합은 달라질 수 있으며, 반환된 동점 안에서는 public ID로 정렬한다.
+
+### 지연과 macOS 복구
+
+native CPU, GPU 미사용, 실제 추론 스레드 1개에서 10 warm-up 후
+100 serial 요청으로 측정했다. 모델/인덱스 로드를 제외한 메모리 이력 조회, 시점 필터,
+피처 구성, user tower, FAISS, 후보 필터/refill, public ID 복원을 포함했다.
+HTTP 왕복/Redis I/O는 제외되며 결과/사용자 벡터 캐시는 사용하지 않았다.
+p50=1.272ms, p95=1.369ms, p99=1.466ms,
+최소 고유 후보=300개다. p95 기준 100ms를 충족했다.
+RAM은 sandbox가 `sysctl hw.memsize` 접근을 거부하여 미측정이다. Docker 측정은 아니다.
+
+초기 valid ANN 실행은 exit139로 실패했다. macOS 충돌 보고서의 공통 스택은 `libomp.dylib`였고,
+[PyTorch의 macOS ARM/FAISS 충돌 보고](https://github.com/pytorch/pytorch/issues/149201)와 부합한다.
+이 환경에서는 두 pinned 라이브러리의 병렬 런타임 충돌을 피하도록 `runtime.py`가
+추론을 단일 스레드로 설정한다. 학습 설정·선택 모델·평가 기준은 유지했다.
+HNSW 벡터 검증은 Flat storage를 직접 읽어 generic 병렬 reconstruction도 피한다.
+수정 후 valid/test/benchmark는 정상 종료했다. 실패·보조 함수 import 오류·복구 근거는
+`candidate_runtime_failures.json`에 보존했다. 단일 스레드 설정은 패키지 자체의 근본 수정은 아니다.
+
+### 재현과 gate
+
+```bash
+source scripts/local_env.sh
+SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.simulator.generate
+SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.train_two_tower
+OMP_NUM_THREADS=1 SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid --ann
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.bench_candidate --split valid --output docs/results/candidate_benchmark_full_valid.json
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.diagnose_candidate --report docs/results/candidate_training_full.json --evaluation docs/results/candidate_full_valid.json --benchmark docs/results/candidate_benchmark_full_valid.json --output docs/results/candidate_diagnostics.json
+SCALE=full .venv/bin/python -m src.recommendation.select_candidate
+OMP_NUM_THREADS=1 SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split test --ann
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.bench_candidate --split test --output docs/results/candidate_benchmark_full_test.json --evaluation docs/results/candidate_full_test.json --training docs/results/candidate_training_full.json --selection docs/results/candidate_selection.json --metrics docs/results/candidate_metrics.json
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_candidate --metrics docs/results/candidate_metrics.json
+```
+
+새 clone에서 위 순서로 실행한다. 이미 선택 파일이 있으면 `select_candidate --verify-existing`로 검증하며, 새 실험은 별도 버전 경로를 사용한다.
+최종 test는 모델 선택 후에만 실행한다. 이미 저장된 성공 결과를 확인할 때는 마지막 verifier를 사용한다.
+검증기는 원본 training/valid/test/benchmark/선택 파일의 해시와 현재 bundle을 대조하고
+저장된 지표에서 B3b 합격 조건을 다시 계산한다. 전체 시스템 종합 acceptance는 후속 단계가 남아
+UNMEASURED이며, B3b 후보 생성 자체는 `candidate_metrics.json`에서 PASS다.
+구조 gate는 `docs/results/gates/B3b.json`, 담당 변경과 검증은 `docs/contributions/B.md`에 기록한다.
+full data fingerprint: `0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6`.

@@ -114,6 +114,8 @@ def save_bundle(path: Path, model: TwoTower, encoder: FeatureEncoder, table, cfg
 
 
 def load_bundle(path: Path, data: dict, cfg: dict):
+    from src.recommendation.runtime import configure_inference
+    configure_inference(cfg['recommend']['candidate'])
     meta = json.loads((path / 'meta.json').read_text())
     if meta['data_fingerprint'] != data['manifest']['generation_fingerprint'] or meta['catalog_sha256'] != data['manifest']['file_hashes']['products.parquet']:
         raise ValueError('stale bundle/data')
@@ -213,8 +215,10 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
     reloaded = evaluation.model(loaded)
     if reloaded['recall_at_300'] != best_recall:
         raise ValueError('reloaded checkpoint differs from selected valid result')
-    report = dict(status='PASS', acceptance='UNMEASURED', stage='B3a', scale=cfg['scale'], seed=cfg['seed'],
-                  contract=evaluation.contract(), feature_contract=encoder.to_dict(), bundle_contract=bundle_contract(),
+    from src.recommendation.index import build_index
+    index_manifest = build_index(bundle, loaded, table, cfg, meta)
+    report = dict(status='PASS', acceptance='UNMEASURED', stage='B3b', scale=cfg['scale'], seed=cfg['seed'],
+                  contract=evaluation.contract(), feature_contract=encoder.to_dict(), bundle_contract=meta['contract'],
                   sampling=dataset.diagnostics, tiny_train_fit=tiny, baselines=baselines, epochs=epochs,
                   best_epoch=best_epoch, best_valid_exact=reloaded, checkpoint_reload='PASS', bundle=meta,
                   elapsed_seconds=time.perf_counter() - started,
@@ -222,7 +226,7 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
                                    platform=platform.platform(), cpu_count=os.cpu_count(), threads=torch.get_num_threads(),
                                    device='cpu', pythonhashseed=os.getenv('PYTHONHASHSEED'),
                                    determinism='seeded CPU run; cross-platform floating-point differences possible'),
-                  full_test_quality='UNMEASURED', ann='UNMEASURED', latency='UNMEASURED')
+                  full_test_quality='UNMEASURED', ann=index_manifest, latency='UNMEASURED')
     output = output or Path(cfg['paths']['results_dir']) / f'candidate_training_{cfg["scale"]}.json'
     write_json(output, report)
     print(f'best_epoch={best_epoch}; valid_recall@300={best_recall:.6f}; result={output}', flush=True)

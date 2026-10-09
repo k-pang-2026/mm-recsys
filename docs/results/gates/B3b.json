@@ -1,0 +1,81 @@
+{
+  "step": "B3b",
+  "owner": "B",
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.select_candidate --verify-existing",
+      "exit_code": 0
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_candidate --metrics docs/results/candidate_metrics.json",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "docs/contributions/B.md",
+    "docs/recommend_report.md",
+    "docs/results/candidate_benchmark_full_test.json",
+    "docs/results/candidate_benchmark_full_valid.json",
+    "docs/results/candidate_diagnostics.json",
+    "docs/results/candidate_full_test.json",
+    "docs/results/candidate_full_valid.json",
+    "docs/results/candidate_latency_valid_full.json",
+    "docs/results/candidate_metrics.json",
+    "docs/results/candidate_runtime_failures.json",
+    "docs/results/candidate_selection.json",
+    "docs/results/candidate_training_full.json",
+    "src/recommendation/bench_candidate.py",
+    "src/recommendation/candidate.py",
+    "src/recommendation/diagnose_candidate.py",
+    "src/recommendation/eval_candidate.py",
+    "src/recommendation/index.py",
+    "src/recommendation/runtime.py",
+    "src/recommendation/select_candidate.py",
+    "src/recommendation/train_two_tower.py",
+    "src/recommendation/verify_candidate.py",
+    "tests/test_candidate.py"
+  ],
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "config_fingerprint": "8414ca7a294e6920aaa270b30b8df9d692b54da052b3366de60750b105d69682",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "docs/contributions/B.md": "8a3fdae0016541860041335fd8d1f7046eb808465dd75e516bd491a7dc3bf11f",
+    "docs/recommend_report.md": "1be49a1d7a97eaf189eeda63c4ec33241ee3ae68490ea3f6fe5978b72164f58e",
+    "docs/results/candidate_benchmark_full_test.json": "c1468e1107e4dc2635cd43f91e4b2682c4707e9021c17b6fbed35fd9b7a0660e",
+    "docs/results/candidate_benchmark_full_valid.json": "0a8b2e186a104710400e5a5e72f286714cdb74c83e78104c2bdb1191b81b61ed",
+    "docs/results/candidate_diagnostics.json": "f236fd579452f7224605e9ae56b785c6baf50bf74e55c6daf086c6f42c0374d7",
+    "docs/results/candidate_full_test.json": "059e764a0aa023676579c5945c7f9cfb91b1ea2e968d9103886553cdff2ce165",
+    "docs/results/candidate_full_valid.json": "8c61558625b9bcdf3f99ca3c705c8a81f82f61f9ba08ffe98ca604c418275988",
+    "docs/results/candidate_latency_valid_full.json": "bcc6c3a83a122117fdc6423ed658b175474051160cd5c68a845b4292ea45b068",
+    "docs/results/candidate_metrics.json": "ccbfcc11e812001142e3bc63a911be1356a9fade00bf4d1a51bfaf0ad8d25420",
+    "docs/results/candidate_runtime_failures.json": "3a97019abbab9a5ff0853f72e72c1d67a73009b025f66105ef037eb2d7f6f4b4",
+    "docs/results/candidate_selection.json": "4ae5300734530f77fad00ef70c1d9738d3d583c16d5d414e0880a97c1b8e3bfb",
+    "docs/results/candidate_training_full.json": "ed7a8ec3d5333f79a942782a599740dc71b26fbcfe3402f0864bb1692e86dcf6",
+    "src/recommendation/bench_candidate.py": "42cc5927a1b51358bf7bc232c263ff57532ebdcc6f49166935f5a150797292ae",
+    "src/recommendation/candidate.py": "91064d921c9e9b623eca13bdc146ed0a02ae9b39191375305f951584557fa9ed",
+    "src/recommendation/diagnose_candidate.py": "b6aee4fac778459d5d81ad86f73d66d8bf6d085b47a721e37502a0f90e80eae1",
+    "src/recommendation/eval_candidate.py": "e87c9c310e2e428426f84bd074b50f27c1a7d839819c34543b26620aa6121b98",
+    "src/recommendation/index.py": "e43ece843e313e6bc874ae5d4e1a109fee4dec099905c2144f713d1bb92948ca",
+    "src/recommendation/runtime.py": "3345e29b917680523ddbfa32fc9c7f656f48b2cdfdb81684a07ba84cd0c4bfa2",
+    "src/recommendation/select_candidate.py": "8bef1a4e59ea299b34a55a4ff8f3c8e1e7dd6a152aea2e02d26db4f44da2de46",
+    "src/recommendation/train_two_tower.py": "5166f18d5dbba392341e99d70069a6760c9a9463f7bd5f904b82973da5afd86e",
+    "src/recommendation/verify_candidate.py": "8dd47b32018d0483f848a118fe501dc72b6ae2f275cdee7125427f935792aaa0",
+    "tests/test_candidate.py": "6c258c9da97209d4b9d3bc4c0fa9fb26c45ad383b742de9cafe3c45053750289"
+  },
+  "commit_summary_ko": "전체 카탈로그 ANN과 full 후보 품질·지연 검증 및 macOS 추론 충돌 복구"
+}
