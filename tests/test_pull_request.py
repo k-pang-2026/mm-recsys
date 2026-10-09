@@ -209,3 +209,26 @@ def test_preview_is_local_and_contains_quality_limits(tmp_path,monkeypatch):
     text=(tmp_path/info['body_file']).read_text()
     assert '미측정' in text and '박정욱' in text and '자동 병합' in text
     assert not (tmp_path/'.team/pr/publication.json').exists()
+
+
+@pytest.mark.parametrize('step,role,scope,draft',[
+    ('B8','C','platform',True),('B9','C','ct',False),('B10','A','docker',False),
+    ('B11','C','platform',False),('WORKFLOW','A','shared',False),
+])
+def test_handoff_prs_have_distinct_completed_feature_titles(tmp_path,monkeypatch,step,role,scope,draft):
+    import scripts.pull_request as pr
+    from scripts.team import workflow
+    plan=workflow(Path(__file__).resolve().parents[1])
+    branch=plan['stages'][step].get('branch',plan['team'][role]['branch'])
+    def git(root,*args):
+        if args[0]=='branch':return branch
+        if args[0]=='rev-parse':return 'a'*40
+        return 'README.md'
+    monkeypatch.setattr(pr,'git',git)
+    value={'commands':[{'command':'fixture validation','exit_code':0}],'acceptance':'UNMEASURED',
+           'status':'PASS','scale':'dev','data_fingerprint':'fixture'}
+    result=render(tmp_path,step,role,plan,value)
+    assert result['draft'] is draft and result['head']==branch
+    assert f'({scope}):' in result['title']
+    assert len(result['title'])<=72
+    if step=='B10':assert '검색' not in result['title']

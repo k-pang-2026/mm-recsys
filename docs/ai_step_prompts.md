@@ -1,6 +1,6 @@
 # Multimodal Search + Multi-Stage Recommendation
 
-Version 4 — 공통 PR 선행 후 Codex가 구현·검증하고 설명·허가 후 기능 브랜치 푸시와 PR을 처리하는 3인 가이드.
+Version 5 — Docker 담당 A 이관, 공통 PR 선행 후 Codex가 구현·검증하고 설명·허가 후 기능 브랜치 푸시와 PR을 처리하는 3인 가이드.
 Work in the **existing repository root** (prepared by `bash setup_env.sh . --role=A`, v4).
 이 문서는 앞으로 각 단계를 호출할 때의 지시서다. 문서 분석 요청만으로 모든 단계를 실행하지 않는다.
 PDF가 요구사항의 기준이며, 아래 기본값/실험 설계/역할 3인은 구현 선택 또는 사용자 요청이다.
@@ -16,11 +16,12 @@ PDF가 요구사항의 기준이며, 아래 기본값/실험 설계/역할 3인�
 
 | 담당 | 사람 | 병렬 시작 이후 순서 | 기본 브랜치 |
 |---|---|---|---|
-| A | 이제원 | B2a → B2b → INTEGRATE | feat/A/search |
+| A | 이제원 | B2a → B2b → B10 → INTEGRATE | feat/A/search → feat/A/docker → feat/integration |
 | B | 박정욱 | B3a → B3b → B4 → B5 | feat/B/recommendation |
-| C | 박채영 | B6 → B7 → B8 → B9 → B10 → B11 | feat/C/platform |
+| C | 박채영 | B6 → B7 → B8 → B9 → B11 | feat/C/platform (B9 병합 후 B11 새 PR) |
 
-A/B/C는 독립 clone에서 시작한다. B7은 B5+B6, B8은 B2b+B7을 기다리고 필요한
+A/B/C는 독립 clone에서 시작한다. C의 B9 플랫폼 PR → A B10 Docker PR → C B11 제출 PR 순서를 따른다.
+B7은 B5+B6, B8은 B2b+B7, B10은 B2b+B5+B9, B11은 B9+B10을 기다리고 필요한
 다른 역할의 PR이 main에 병합된 뒤 검토된 main만 자동 merge한다. 미병합 기능 브랜치를
 직접 가져오지 않는다. 구조 검증과 full 품질을 구분하며 실패를 숫자 조작으로 숨기지 않는다.
 `A/B/C 다음 단계 실행`은 구현·검증·필요 수정·로컬 commit·내용 설명까지 요청한 것이다.
@@ -56,7 +57,7 @@ CLI 한 줄: `bash scripts/codex_run.sh B`. 실행 중 runner가 publication을 
 - End with a Korean SUMMARY: changed files, commands run, observed results, gate PASS/FAIL/BLOCKED, unmet targets, run/validation commands, and expected outputs clearly labeled as expectations.
 - Never invent runs, metrics, artifacts, or PASS results. Record unmeasured values as `미측정`. Do not loosen targets or change evaluation to manufacture success.
 - Preserve unrelated changes. 구현·검증·로컬 commit은 진행한다. 원격 push 전에는 변경/검사/제한/commit을 설명하고 그 결과의 명시적 허가를 받아야 한다. --approved를 자동으로 붙이거나 단계 실행 요청을 푸시 허가로 해석하지 않는다. 동일 승인 commit의 push 실패 재시도는 가능하며 새 commit은 새 설명·허가가 필요하다. 삭제/volume 제거/visibility 변경은 별도 명시 요청이 있어야 한다.
-- Follow the three human roles in `docs/team_workflow.md`; use persistent `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`. SHARED uses chore/shared-foundation and INTEGRATE uses feat/integration. Every branch submits a main-target PR; never commit/push main directly. Draft intermediate stages, update the existing branch PR, mark the completed feature ready, and automatically merge completed, non-draft PRs only after verifying the exact published SHA, remote gate/quality, all CI checks, required review/protection rules, and clean mergeability. The user authorized these safe merges; do not ask for merge approval again. Each step reports owner/reviewer, file list, branch, tests, commit hash/push state and PR draft. Use `scripts/step_git.py` to discover owned changed files (explicit list optional); no `git add .`, force push, fabricated contributions or credentials.
+- Follow the three human roles in `docs/team_workflow.md`; use persistent `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`. SHARED uses chore/shared-foundation, A B10 uses feat/A/docker, and INTEGRATE uses feat/integration. C finishes and merges the B9 platform PR before A B10; after B10 is merged C uses the same platform branch for a new B11 submission PR. Stage-specific paths override role paths. Requested shared workflow maintenance uses WORKFLOW on chore/team-workflow, outside normal progression. Every branch submits a main-target PR; never commit/push main directly. Draft intermediate stages, update the existing branch PR, mark the completed feature ready, and automatically merge completed, non-draft PRs only after verifying the exact published SHA, remote gate/quality, all CI checks, required review/protection rules, and clean mergeability. The user authorized these safe merges; do not ask for merge approval again. Each step reports owner/reviewer, file list, branch, tests, commit hash/push state and PR draft. Use `scripts/step_git.py` to discover owned changed files (explicit list optional); no `git add .`, force push, fabricated contributions or credentials.
 - Use `scripts/record_gate.py --step <STEP> --role <ROLE> --command "실제 검증 명령" --artifact <실제 산출물>` to run actual checks and write `docs/results/gates/<STEP>.json`; do not handwrite a fabricated PASS. Separate structural status from full acceptance. Failed quality results may accompany a verified implementation PR; document them visibly.
 - All commits follow docs/commit_convention.md: `type(scope): 한국어 변경 요약`, title ≤72 characters. Codex supplies an actual diff summary via record_gate --summary; helper automatically generates Korean added/modified file details and measured validation evidence. Human-written messages are not required. Do not fabricate changes or tests.
 - If a stage measures its mandatory full target and misses it, record `--acceptance FAIL`, even if structure passes. team.py keeps that stage as next and blocks dependents; re-run to repair it on valid. Partial-stage passes use UNMEASURED for overall final acceptance. Global PASS is reserved for the strict final_acceptance schema in docs/contracts.md.
@@ -255,10 +256,14 @@ Implement `src/ct/{monitor,retrain_trigger,model_registry}.py`; `tests/test_ct.p
 - Reuse B3 `models/v{major}.{minor}/` (initial v1.0); register version/date/metrics/config/parent/status in `models/registry.json`; initial v1.0. Promote only on configured validation improvement; otherwise retain latest/rollback.
 - `/api/admin/reload`: local/internal operation, atomically swap a fully loaded compatible model/index/feature bundle; avoid downtime. Optional CT Compose profile keeps four mandatory services.
 - Gate: test alert, event threshold, increment and rollback; controlled fixture demonstrates v1.0→v1.1 and log evidence. Do not fabricate improvement to force promotion.
+- B9 completes the C platform feature: mark its existing Draft PR ready, then merge after approved push and all safe checks. Do not wait for B11 to merge this PR: A B10 must consume reviewed B9 from main.
 
-### B10 — Docker and performance [owner C, reviewers A/B]
+### B10 — Docker and performance [owner A 이제원, reviewers B/C]
 
-Edit `docker-compose.yml`, `docker/Dockerfile.{api,dashboard,simulator}`, `.dockerignore` (all exist as scaffold); add `scripts/{prepare_all,smoke_test}.sh` or equivalent Makefile.
+Require B2b, B5 and B9 PRs merged into main. Prepare `feat/A/docker` via `scripts/team.py prepare A --step B10`; never merge unreviewed teammate branches.
+Edit `docker-compose.yml`, `docker/Dockerfile.{api,dashboard,simulator}`, `.dockerignore` (all exist as scaffold); add `scripts/{prepare_all,smoke_test}.sh` or equivalent Makefile. Use stage B10 paths; keep C-owned serving/evaluation/CT/dashboard implementations and training interfaces intact. Add Docker tests under `tests/test_docker*`; write evidence under `docs/results/docker*`, `docs/results/latency*`, `docs/results/experiments/A/` and contributions/A.md.
+Write README Docker startup, ports, readiness, first-run time and resource/performance sections here. C edits submission documentation only after this B10 PR is merged. The shared search API requires A's `src.search.api:app` entrypoint for JSON and multipart; preserve common Redis/recommendation factories.
+This is a completed Docker feature PR with its own title/scope, not a continuation of the merged search PR.
 - Four core services: redis, api-server, dashboard, simulator. Healthchecks redis ping/API health; healthy dependencies; API mem_limit=4g; Redis settings B6; env_file; HF cache/data/models/results volumes; optional CT profile.
 - CPU torch and lean images. The dashboard image installs only `requirements-dashboard.txt` (no torch/faiss/transformers); keep torch/torchvision versions identical between the local venv and API/simulator images. Reuse pinned direct requirements and requirements-torch.txt; produce reviewed platform-specific transitive locks/constraints after successful resolution. Record pip freeze snapshots but do not mislabel them as portable CPU/GPU locks. Exclude `.venv`, `.git`, bulk data from build context, not runtime mounts.
 - Preparation: generate → build_embeddings → build_index → train_two_tower → train_deepfm → train_session → warmup_features. Skip only compatible complete artifacts (config/data/model fingerprints); invalidate stale outputs. Redis must be healthy before warmup; provide runnable startup orchestration.
@@ -269,7 +274,8 @@ Edit `docker-compose.yml`, `docker/Dockerfile.{api,dashboard,simulator}`, `.dock
 
 ### B11 — Documentation and submission [owner C, reviewers A/B]
 
-Write README, `docs/ab_test_report.md`, `scripts/check_submission.py`; collect A's search_report and B's recommend_report without overwriting their owned reports. Request required corrections through the integration workflow.
+Require C B9 platform and A B10 Docker PRs merged into main. Synchronize reviewed main into `feat/C/platform`, then create a new B11 submission PR (the prior B9 PR is already merged).
+Write README, `docs/ab_test_report.md`, `scripts/check_submission.py`; preserve the Docker instructions and measured evidence added by A B10, and collect A's search_report and B's recommend_report without overwriting their owned reports. Request required corrections through the integration workflow.
 - README: overview, Mermaid architecture, stack/tree, fresh-start preparation/Compose commands (`docker compose up --build`, alias `docker-compose`), ports/curl, expected first-run time, config changes, limitations, **filled three-member role/contribution table** linked to actual PRs/commits. All real names are provided; unknown GitHub handles stay 미등록, never guessed. PDF does not make a separate handle field a numerical acceptance criterion.
 - Reports: chronological split/cutoff, metric formulas (MRR,NDCG,Recall,HitRate,Coverage,AUC,CVR,Z-test), seed/config snapshots, baseline lifts, every A3 target/status, environment, unmet causes and measured optimization attempts. Explain CLIP contrastive space, ANN trade-off, offline item indexing, candidate-vs-ranking roles, MAB and offline/online metric mismatch.
 - Populate numbers only from result JSON. Cite assignment pages for requirements, not branding or example scores.
@@ -325,7 +331,7 @@ PDF pp.1,5–6,9는 GitHub 제출/접근/필수 파일, pp.13–14는 팀별 기
 
 ## INTEGRATE — 팀장 최종 통합 [이제원 A]
 
-`A 통합 단계 실행`에서 실행한다. B2b/B5/B11 PR이 모두 main에 병합되어야 한다.
+`A 통합 단계 실행`에서 실행한다. B2b/B5/B10/B11 PR이 모두 main에 병합되어야 한다.
 scripts/team.py prepare A --step INTEGRATE로 main에서 feat/integration 브랜치를 준비한다.
 실제 merge 충돌은 두 구현과 공유 contracts에 맞춰 해결하고 전체 테스트를 수행한다.
 `SCALE=full`로 config/data/model/index fingerprint를 맞추고 B10 prepare/benchmark/Compose/smoke 및
@@ -338,7 +344,15 @@ B11 checker를 재실행한다. C의 final_acceptance.json 수치를 실제 산�
 main 직접 push는 금지한다. Docker/권한/모델 품질
 미측정은 완료 처리하지 않는다. PDF p.7의 실데이터 활용 해석은 별도로 공개한다.
 
-## 단계 실행의 공통 종료 규칙 (v4)
+## WORKFLOW — 요청된 공통 역할·실행 계약 변경 [이제원 A]
+
+자동 A/B/C 단계 순서에는 넣지 않는다. 사용자가 공통 역할 변경을 요청했을 때만
+chore/team-workflow에서 config/team_workflow.yaml, 소유권·PR 자동화, README와 가이드를 함께 수정한다.
+WORKFLOW.paths의 범위를 지키고 기존 완료 gate를 덮어쓰지 않는다. 의존성 교착·브랜치 전환·
+다른 역할 소유권 거부·PR 완료 시점을 실제 테스트한 뒤 별도 WORKFLOW gate와 한국어 커밋을 만든다.
+설명된 변경에 대한 명시 푸시 허가 후만 발행하며, 안전한 완료 PR은 자동 병합한다.
+
+## 단계 실행의 공통 종료 규칙 (v5)
 
 - 사람이 코드를 작성하거나 commit 파일 목록을 조립하게 하지 않는다. Codex가 직접 구현/검사한다.
 - setup 후 공통 data/split_manifest checksum을 확인하고 자신 소유의 config overlay만 수정한다.

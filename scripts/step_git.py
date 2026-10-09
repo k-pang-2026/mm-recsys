@@ -10,17 +10,17 @@ import sys
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
-OWNERS={'SHARED':'A','INTEGRATE':'A','P0':'A','B0':'A','B1':'A','B2a':'A','B2b':'A',
-        'B3a':'B','B3b':'B','B4':'B','B5':'B',**{f'B{i}':'C' for i in range(6,12)}}
+OWNERS={'SHARED':'A','WORKFLOW':'A','INTEGRATE':'A','P0':'A','B0':'A','B1':'A','B2a':'A','B2b':'A',
+        'B3a':'B','B3b':'B','B4':'B','B5':'B','B6':'C','B7':'C','B8':'C','B9':'C','B10':'A','B11':'C'}
 
 
 def commit_message(step: str, role: str, files: list[str], value: dict, plan: dict | None) -> str:
     """Create a Conventional Commit with Korean change details from the verified diff."""
-    scope=('shared' if step in ('SHARED','P0','B0','B1') else 'integration' if step=='INTEGRATE'
+    scope=('shared' if step in ('SHARED','WORKFLOW','P0','B0','B1') else 'integration' if step=='INTEGRATE'
            else 'search' if step in ('B2a','B2b') else 'recommendation' if role=='B'
            else 'ct' if step=='B9' else 'docker' if step=='B10' else 'platform')
     content=[name for name in files if not name.startswith('docs/results/gates/')]
-    if step=='SHARED':kind='chore'
+    if step in ('SHARED','WORKFLOW'):kind='chore'
     elif content and all(name.startswith('docs/') or name.endswith('.md') for name in content):kind='docs'
     elif content and all(name.startswith('tests/') or name in ('pytest.ini','mypy.ini') for name in content):kind='test'
     elif any(name.startswith(('src/','dashboard/')) for name in content):
@@ -121,6 +121,7 @@ def main() -> int:
     else:valid_branch=bool(re.fullmatch(rf'feat/{args.role}/{re.escape(args.step)}-[A-Za-z0-9._-]+',branch))
     if branch in ('main','master') or (plan and branch==plan['base_branch']):
         raise ValueError('main direct commit/push forbidden; use a feature branch and PR')
+    if plan and plan['stages'][args.step]['owner']!=args.role:raise ValueError('configured stage/owner mismatch')
     if not valid_branch:raise ValueError(f'use assigned feature branch for {args.role}/{args.step}')
     remote=git('remote','get-url','origin')
     if not (remote.startswith('https://github.com/') or remote.startswith('git@github.com:')):raise ValueError('reviewed GitHub origin required')
@@ -143,9 +144,10 @@ def main() -> int:
     files=[] if args.mode=='publish' else (list(dict.fromkeys(validate_path(root,f,allow_deleted=True) for f in args.files)) if args.files else discover_files(root))
     if files and gate_path not in files:raise ValueError(f'include gate evidence: {gate_path}')
     if plan and args.step not in ('SHARED','INTEGRATE'):
+        from scripts.team import owned_paths
+        prefixes=owned_paths(plan,args.role,args.step)
         for name in files:
-            if name==gate_path:continue
-            if not any(name.startswith(prefix) for prefix in plan['paths'][args.role]):
+            if not any(name.startswith(prefix) for prefix in prefixes):
                 raise ValueError(f'outside {args.role} ownership: {name}; use role overlay/adapter')
     if value.get('source_hashes'):
         import hashlib

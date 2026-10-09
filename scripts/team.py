@@ -16,6 +16,11 @@ def workflow(root: Path = ROOT) -> dict:
     return yaml.safe_load((root/'config/team_workflow.yaml').read_text(encoding='utf-8'))
 
 
+def owned_paths(plan: dict, role: str, step: str) -> list[str]:
+    """Use the stage scope when present, otherwise the role's persistent scope."""
+    return list(plan['stages'][step].get('paths',plan['paths'][role]))+[f'docs/results/gates/{step}.json']
+
+
 def gate(root: Path, step: str) -> dict | None:
     path=root/f'docs/results/gates/{step}.json'
     return json.loads(path.read_text()) if path.exists() else None
@@ -49,7 +54,8 @@ def prompt(role: str, step: str) -> str:
     return f'''팀원 {role}로 {step} 단계만 끝까지 구현하라.
 AGENTS.md, docs/codex_quickstart.md, config/team_workflow.yaml, docs/contracts.md,
 ai_step_prompts_optimized.md의 A와 해당 단계 요구사항을 먼저 읽어라.
-같은 역할의 장기 feature 브랜치에서 이전 산출물과 데이터 fingerprint를 확인하라.
+config/team_workflow.yaml의 해당 단계 branch(없으면 역할 branch)에서 이전 산출물과 데이터 fingerprint를 확인하라.
+단계별 paths가 있으면 그 소유권을 우선 적용하라. B9 플랫폼 PR → A B10 Docker PR → C B11 제출 PR 순서로 main에 병합하라.
 수동 코드 작성 없이 네가 구현·의존성 검사·실제 검증·원인 수정·valid 튜닝을 수행하라.
 완료되면 docs/results/gates/{step}.json과 docs/contributions/{role}.md를 실제 근거로 작성하라.
 docs/commit_convention.md를 읽고 실제 diff의 한국어 요약을 record_gate.py --summary에 넣어라.
@@ -147,7 +153,7 @@ def main() -> int:
             raise ValueError('unfinished changes belong to another branch; preserve them before switching')
         # A failed model run can leave useful code. Resume it without silently discarding edits.
         changed=subprocess.run(['git','ls-files','-m','-o','--exclude-standard','-z'],cwd=ROOT,check=True,capture_output=True).stdout.decode().split('\0')
-        prefixes=plan['paths'][role]+[f'docs/results/gates/{step}.json']
+        prefixes=owned_paths(plan,role,step)
         if step not in ('SHARED','INTEGRATE') and any(name and not any(name.startswith(prefix) for prefix in prefixes) for name in changed):
             raise ValueError('unfinished changes include files outside this role ownership')
         missing=dependencies(ROOT,step,plan)

@@ -67,3 +67,17 @@
 근거: [검색 보고서](../search_report.md), [full 검색 결과](../results/search_metrics.json),
 [B2b gate](../results/gates/B2b.json). 검색 단계 완료와 전체 추천/Docker 종합 완료는 구분한다.
 지정 reviewer는 박정욱(B)이며 실제 리뷰·원격 B2b 푸시/병합 여부는 GitHub 증거로 확인한다.
+
+## WORKFLOW — Docker 역할 이관과 단계 인계
+
+사용자 요청에 따라 Docker·컨테이너 성능 B10을 이제원(A)에게 이관했다.
+README, Codex 가이드, 파일 소유권과 단계·PR·커밋 자동화를 함께 수정했다.
+C의 B9 플랫폼 PR → A의 feat/A/docker B10 PR → C의 B11 제출 PR 순서를 적용해
+미병합 기능 브랜치의 직접 공유와 상호 의존 대기를 방지했다.
+Docker 준비·smoke·컨테이너 결과는 A가, Redis/서빙/평가/CT/제출 문서는 C가 담당한다.
+README Docker 절차는 A B10, 최종 제출 문서는 B10 병합 후 C B11이 순서대로 작성한다.
+
+독립된 로컬 Git 클론으로 B9/B10 미병합 차단, main 병합 후 Docker·제출·통합 브랜치
+인계를 검증했다. 단계 소유권 거부, PR Draft 완료 시점과 별도 Docker 제목도 검사했다.
+근거는 [WORKFLOW gate](../results/gates/WORKFLOW.json)의 실제 검사 결과다.
+이번 변경은 역할·실행 계약 변경이며 Docker B10 구현·최종 재현이 완료됐다는 뜻은 아니다.
