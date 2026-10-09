@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import platform
 from collections import defaultdict
 from pathlib import Path
 
@@ -11,7 +12,7 @@ import pandas as pd
 from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.config import load_config
 from src.recommendation.baselines import Baselines
-from src.recommendation.candidate import ExactCandidate, dot_scores, top_indices
+from src.recommendation.candidate import ExactCandidate, FaissCandidate, dot_scores, top_indices, flat_reference
 from src.recommendation.datasets import context_for, cutoff_for, read_data
 from src.recommendation.features import FeatureEncoder, ItemTable
 
@@ -94,6 +95,36 @@ class Evaluation:
         history = [self.table.public_ids(top_indices(self.baselines.history_scores(c, self.eligible), self.eligible)) for c in self.contexts]
         return {'train_popularity': self.measure([popularity] * len(self.contexts)), 'observed_history_profile': self.measure(history)}
 
+    def ann_metrics(self, model, index) -> dict:
+        from src.recommendation.runtime import configure_inference
+        configure_inference(self.cfg['recommend']['candidate'], with_faiss=True)
+        import faiss
+        batch_size = self.cfg['recommend']['candidate']['batch_size']
+        reference, exact = flat_reference(model, self.table, self.eligible, batch_size)
+        from src.recommendation.index import stored_vectors
+        persisted_vectors = stored_vectors(index)[self.eligible - 1]
+        if not np.allclose(persisted_vectors, reference.vectors, rtol=1e-5, atol=1e-6):
+            raise ValueError('exact/ANN vectors differ from loaded checkpoint')
+        # Use persisted vectors for exact agreement, including CPU batching roundoff.
+        exact.reset()
+        exact.add(np.ascontiguousarray(persisted_vectors))
+        ann = FaissCandidate(model, self.table, self.eligible, index)
+        exact_ranked, ann_ranked, agreement = [], [], []
+        for start in range(0, len(self.contexts), batch_size):
+            vectors = reference.user_vectors(self.contexts[start:start + batch_size])
+            scores, labels = exact.search(vectors, min(300, len(self.eligible)))
+            for values, positions in zip(scores, labels):
+                rows = self.eligible[positions[positions >= 0]]
+                values = values[positions >= 0]
+                exact_ranked.append(self.table.public_ids(rows[np.lexsort((rows, -values))]))
+            ann_ranked.extend(ann.search(vectors))
+        for one, two in zip(exact_ranked, ann_ranked):
+            agreement.append(len(set(one) & set(two)) / len(one) if one else 1.0)
+        return dict(exact_flat_ip=self.measure(exact_ranked), ann_two_tower=self.measure(ann_ranked),
+                    ann_agreement_at_300=float(np.mean(agreement)) if agreement else None,
+                    agreement_denominator='exact IndexFlatIP top300 IDs, not future truth',
+                    agreement_users=len(agreement), boundary_ties='FAISS top-k tie selection; public-ID order within returned ties')
+
     def contract(self) -> dict:
         return dict(version='fixed-origin-v1', split=self.split, cutoff=self.cutoff.isoformat(), k=300,
                     truth='unique cart/purchase product IDs in evaluation interval; unavailable retained',
@@ -108,10 +139,12 @@ def main() -> int:
     parser.add_argument('--split', choices=['valid', 'test'], required=True)
     parser.add_argument('--bundle', type=Path)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--ann', action='store_true', help='compare persisted HNSW against identical-vector IndexFlatIP')
     args = parser.parse_args()
     cfg = load_config()
     import torch
-    torch.set_num_threads(cfg['recommend']['candidate']['threads'])
+    from src.recommendation.runtime import configure_inference
+    configure_inference(cfg['recommend']['candidate'])
     from src.recommendation.train_two_tower import load_bundle
     bundle = args.bundle or Path(cfg['paths']['model_dir']) / 'v1.0'
     data = read_data(cfg['paths']['data_dir'], args.split)
@@ -120,6 +153,14 @@ def main() -> int:
     report = dict(status='PASS', acceptance='UNMEASURED', scale=cfg['scale'], contract=evaluation.contract(),
                   exact_two_tower=evaluation.model(model), baselines=evaluation.baseline_metrics(),
                   model_sha256=file_hash(bundle / 'two_tower.pt'), bundle_meta=meta)
+    if args.ann:
+        from src.recommendation.index import load_index
+        index, manifest = load_index(bundle, table, meta)
+        report.update(evaluation.ann_metrics(model, index))
+        report['index_manifest'] = manifest
+    report['data_counts'] = data['manifest']['counts']
+    report['environment'] = dict(python=platform.python_version(), torch=torch.__version__, numpy=np.__version__,
+                               platform=platform.platform(), threads=torch.get_num_threads(), device='cpu')
     output = args.output or Path(cfg['paths']['results_dir']) / f'candidate_{cfg["scale"]}_{args.split}.json'
     write_json(output, report)
     print(f'{args.split}: exact Recall@300={report["exact_two_tower"]["recall_at_300"]:.6f}; output={output}')

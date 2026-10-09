@@ -1,0 +1,268 @@
+{
+  "stage": "B3b",
+  "status": "RECOVERED",
+  "failed_valid_evaluation": {
+    "command": "SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid --ann",
+    "exit_code": 139,
+    "log": ".team/checks/B3b/eval_full_valid.log"
+  },
+  "crash_reports": [
+    {
+      "report_name": "Python-2026-10-09-115413.ips",
+      "incident_id": "4884D6DA-8716-4CDF-92DA-93FC2DFA1FEA",
+      "pid": 57872,
+      "time": "2026-10-09 11:54:09.8691 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    },
+    {
+      "report_name": "Python-2026-10-09-115415.ips",
+      "incident_id": "97FEAFB7-7BDA-49E0-9259-14E9807A5678",
+      "pid": 57938,
+      "time": "2026-10-09 11:54:14.8278 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    },
+    {
+      "report_name": "Python-2026-10-09-115434.ips",
+      "incident_id": "87E214C5-0EAA-4AB0-8C2C-9CCA13A77911",
+      "pid": 58330,
+      "time": "2026-10-09 11:54:32.1476 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    },
+    {
+      "report_name": "Python-2026-10-09-115438.ips",
+      "incident_id": "7D33B696-9440-489F-9509-D2BC9B9D4A9A",
+      "pid": 58380,
+      "time": "2026-10-09 11:54:38.5563 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    },
+    {
+      "report_name": "Python-2026-10-09-115457.ips",
+      "incident_id": "A831D592-3F34-430C-B4CA-FC6DD90E9A36",
+      "pid": 58511,
+      "time": "2026-10-09 11:54:57.0007 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    },
+    {
+      "report_name": "Python-2026-10-09-115600.ips",
+      "incident_id": "1C53E4C4-E0F4-4D17-96A4-0BEFA88BCE3B",
+      "pid": 58912,
+      "time": "2026-10-09 11:55:59.4570 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    },
+    {
+      "report_name": "Python-2026-10-09-115609.ips",
+      "incident_id": "B3D59A80-E97F-4ACC-BED0-8206421E2C02",
+      "pid": 58977,
+      "time": "2026-10-09 11:56:08.8446 +0900",
+      "signal": "SIGSEGV",
+      "frames": [
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_suspend_initialize_thread"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "void __kmp_suspend_64<false, true>(int, kmp_flag_64<false, true>*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "kmp_flag_64<false, true>::wait(kmp_info*, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_hyper_barrier_release(barrier_type, kmp_info*, int, int, int, void*)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_fork_barrier(int, int)"
+        },
+        {
+          "library": "libomp.dylib",
+          "symbol": "__kmp_launch_thread"
+        }
+      ]
+    }
+  ],
+  "diagnosis": "macOS ARM pinned PyTorch/FAISS libomp parallel-runtime collision; common native stack and single-thread probe verified",
+  "reference": "https://github.com/pytorch/pytorch/issues/149201",
+  "recovery": "single-thread inference on macOS ARM; delayed FAISS imports; preserve trained checkpoint and frozen test",
+  "python_exception_recovery": {
+    "command": "OMP_NUM_THREADS=1 SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid --ann",
+    "exit_code": 1,
+    "log": ".team/checks/B3b/eval_full_valid_fixed.log",
+    "error": "NameError: faiss import missing in stored_vectors; corrected"
+  },
+  "successful_valid_evaluation": {
+    "command": "OMP_NUM_THREADS=1 SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid --ann",
+    "exit_code": 0,
+    "log": ".team/checks/B3b/eval_full_valid_fixed2.log",
+    "source": "docs/results/candidate_full_valid.json"
+  },
+  "native_crash_last_observed": "Python-2026-10-09-115609.ips",
+  "successful_test_evaluation": {
+    "exit_code": 0,
+    "source": "docs/results/candidate_full_test.json",
+    "log": ".team/checks/B3b/eval_full_test.log"
+  },
+  "benchmark": {
+    "exit_code": 0,
+    "source": "docs/results/candidate_benchmark_full_test.json",
+    "p95_ms": 1.3689955023437506
+  }
+}
