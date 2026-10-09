@@ -4,14 +4,18 @@ PDF pp.13–14의 역할/개인 기여 요구를 사용자 요청의 3인 구성
 
 | 역할 | 이름 | GitHub 계정 | 담당 브랜치 | 담당 단계 |
 |---|---|---|---|---|
-| A(팀장) | 이제원 | 미등록 | feat/A/search | 공통 SHARED, B2a/B2b, 최종 INTEGRATE |
+| A(팀장) | 이제원 | 미등록 | feat/A/search → feat/A/docker → feat/integration | 공통 SHARED, B2a/B2b, Docker·컨테이너 성능 B10, 최종 INTEGRATE |
 | B | 박정욱 | 미등록 | feat/B/recommendation | B3a/B3b/B4/B5 |
-| C | 박채영 | 미등록 | feat/C/platform | B6/B7/B8/B9/B10/B11 |
+| C | 박채영 | 미등록 | feat/C/platform | B6/B7/B8/B9 플랫폼, B11 제출 문서 |
 
 공통 SHARED는 팀장이 먼저 코드·설정·시뮬레이터·평가 정의·API/FeatureStore 계약·
 환경/단계/Git 자동화와 검증 결과를 chore/shared-foundation → main PR로 제출한다.
 공통 PR 병합 후 B/C가 main을 클론한다. 최종 INTEGRATE도 feat/integration PR로 제출한다.
 세 사람은 같은 폴더를 공유하지 않고 각자의 clone/venv/cache/data를 사용한다.
+C의 플랫폼은 B9에서 검토 준비 상태로 전환·병합한다. A의 B10은 검색 B2b, 추천 B5,
+플랫폼 B9 PR이 모두 main에 병합된 뒤 feat/A/docker에서 수행한다. C는 B10 병합 후
+feat/C/platform에 검토된 main을 가져와 B11을 수행하고 새 PR을 제출한다.
+B9 플랫폼 PR을 B11까지 미병합 상태로 두면 A B10과 의존성이 교착되므로 그렇게 진행하지 않는다.
 
 ```mermaid
 flowchart LR
@@ -20,9 +24,13 @@ flowchart LR
   S --> C[C 박채영: B6 Redis]
   B --> D[추천 PR 병합 → C B7 A/B]
   C --> D
-  A --> E[검색 PR 병합 → C B8 → B9 → B10 → B11 플랫폼 PR]
+  A --> E[검색 PR 병합 → C B8 → B9 플랫폼 PR 병합]
   D --> E
-  E --> F[플랫폼 PR 병합 → A INTEGRATE full 검증 → 통합 PR]
+  E --> G[A B10 Docker·성능 PR 병합]
+  B --> G
+  A --> G
+  G --> H[C B11 제출 문서 PR 병합]
+  H --> F[A INTEGRATE full 검증 → 통합 PR]
 ```
 
 이제원은 B, 박정욱은 C, 박채영은 A가 리뷰한다. PR/commit과 검증 결과에 실제 리뷰 내용을
@@ -54,7 +62,11 @@ VS Code 대화에서는 Codex가 동일 helper를 호출한다. CLI 밖 세션 �
 
 `config.yaml`, src/common, simulator, metrics.py, API schema는 SHARED에서 고정한다.
 A는 src/search와 config/search.yaml, B는 src/recommendation과 config/recommend.yaml,
-C는 serving/evaluation/ct/dashboard/docker와 config/serving.yaml을 편집한다.
+A의 B10은 docker/, docker-compose.yml, .dockerignore, scripts/prepare_all*,
+scripts/smoke_test*, tests/test_docker*, Docker/latency 결과를 편집한다.
+C는 serving/evaluation/ct/dashboard와 config/serving.yaml, CT용 scripts/train_all*을 편집한다.
+README는 B10에서 A가 Docker 실행·성능 절차를 작성하고, B10 병합 후 B11에서 C가
+제출 문서를 완성한다. 단계 paths가 있으면 역할 기본 paths 대신 적용한다.
 공통 의존성/스키마 변경은 다른 팀의 adapter를 깨뜨리지 않게 검증한다. helper가 소유권 밖 변경을
 검출하면 역할 overlay나 인터페이스로 해결하고, 꼭 필요한 공통 변경은 팀장 통합 단계에 반영한다.
 
@@ -77,6 +89,9 @@ INTEGRATE는 full acceptance PASS까지 검사한다. gate의 missing/FAIL/BLOCK
 
 사람이 읽고 복사할 것은 [Codex 시작 가이드](codex_quickstart.md)의 짧은 지시뿐이다.
 `config/team_workflow.yaml`이 owner/순서/의존성/branch/file scope의 기계 판독 기준이다.
+WORKFLOW는 사용자 요청에 따른 공통 계약 유지보수이며 자동 단계 순서에는 들어가지 않는다.
+chore/team-workflow에서 제한된 설정·문서·자동화만 변경하고 별도 gate/PR로 검증한다.
+기존 SHARED/B2a/B2b 검증 근거를 새 역할 변경 근거로 덮어쓰지 않는다.
 같은 역할의 이전 단계는 자신의 브랜치에서 이어간다. 다른 역할의 필요한 gate는 origin/main에
 PR 병합되어 있어야 한다. 검토된 main을 자동 fetch/merge하고 미검토 기능 브랜치는 가져오지
 않는다. 충돌은 Codex가 수정·재검증한다.

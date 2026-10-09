@@ -10,17 +10,23 @@ main에는 검토한 PR을 병합한다. Codex는 기능 브랜치에서 구현�
 | 공통 준비 | 이제원(A) | chore/shared-foundation → main | SHARED 공통 구조 검사 통과 |
 | 멀티모달 검색 | 이제원(A) | feat/A/search → main | B2b 완료 |
 | 다단계 추천 | 박정욱(B) | feat/B/recommendation → main | B5 완료 |
-| 서빙·평가·운영 | 박채영(C) | feat/C/platform → main | B11 완료 |
+| 서빙·평가·CT 플랫폼 | 박채영(C) | feat/C/platform → main | B9 완료 |
+| Docker·컨테이너 성능 | 이제원(A) | feat/A/docker → main | B10 완료 |
+| 제출 문서·검증 | 박채영(C) | feat/C/platform → main의 새 PR | B11 완료 |
+| 공통 역할 계약 변경 | 이제원(A) | chore/team-workflow → main | 요청된 WORKFLOW 검사 통과 |
 | 최종 통합 | 이제원(A) | feat/integration → main | INTEGRATE full acceptance PASS |
 
 공통 PR을 먼저 병합한 뒤 B/C가 main을 클론하고 setup을 실행한다. 이후 세 명은 독립된
 클론에서 검색·추천·Redis(B6)부터 병렬 개발한다. C의 B7은 추천 B5 PR 병합을,
-B8은 검색 B2b PR 병합을 기다린다. 필요한 다른 역할의 gate가 origin/main에 없으면
+B8은 검색 B2b PR 병합을 기다린다. C의 B9 플랫폼 PR을 먼저 병합하고, A는 B2b/B5/B9
+병합 후 별도 feat/A/docker에서 B10 PR을 제출한다. C는 B10 병합 후 검토된 main을
+feat/C/platform에 가져와 B11 새 PR을 제출한다. 필요한 다른 역할의 gate가 origin/main에 없으면
 prepare가 중단한다. 각 브랜치는 검토된 main만 가져오며 아직 병합되지 않은 다른 기능
 브랜치의 코드를 직접 가져오지 않는다.
 
-같은 기능의 중간 단계는 한 PR을 Draft로 생성/갱신하고 마지막 단계에서 검토 준비 상태로
-전환한다. 단계마다 새 PR을 만드는 방식이 아니다. 미달 품질은 본문에 공개하고 Draft로
+검색·추천의 중간 단계와 C의 B6–B8은 한 PR을 Draft로 생성/갱신한다.
+C는 B9에서 플랫폼 기능을 완료해 검토 준비 상태로 전환·병합한다. A의 B10은 별도 완료 PR,
+C의 B11은 B9 PR 병합 후 같은 브랜치에서 만드는 새 제출 PR이다. 단계마다 새 PR을 만들지는 않는다. 미달 품질은 본문에 공개하고 Draft로
 유지하며 실패를 고친 뒤 같은 단계에서 다시 검증한다. 최종 종합 품질 UNMEASURED와
 구조 PASS는 별개다. SHARED PR은 모델 구현 전 공통 기반의 검토이며 PDF 전체 통과가 아니다.
 
@@ -39,7 +45,7 @@ prepare가 중단한다. 각 브랜치는 검토된 main만 가져오며 아직 
 남아 있으므로 인증/권한을 복구한 뒤 기존 허가로 재시도한다. 새 commit은 다시 설명/허가를 받는다.
 
 팀원은 PR의 실제 변경을 리뷰한다. 저장소가 필수 리뷰를 요구하면 해당 조건이 충족되어야 병합한다. 권장 순서는 A의 검색을 B가, B의 추천을 C가,
-C의 플랫폼을 A가 리뷰하는 것이다. 리뷰·기여 기록은 실제 PR/commit URL로 연결하며 실행하지
+C의 플랫폼을 A가, A의 Docker를 B/C가 리뷰하는 것이다. 리뷰·기여 기록은 실제 PR/commit URL로 연결하며 실행하지
 않은 리뷰를 만들지 않는다. 리뷰 댓글/승인을 Codex에 맡길 때도 실제 리뷰를 요청해야 한다.
 저장소 보호 규칙의 필수 리뷰 조건은 GitHub가 추가로 적용한다. helper는 Draft·SHA 불일치,
 원격 gate 실패·품질 미달·common CI 미통과·다른 진행/실패 검사·미해결 변경 요청·미완료 기능을

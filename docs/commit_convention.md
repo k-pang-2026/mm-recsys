@@ -33,6 +33,8 @@ chore(shared): 공통 개발환경과 3인 병렬 개발 기반 구성
 | chore | 공통 초기 환경·설정·의존성·자동화 변경 |
 
 scope는 단계에 따라 shared/search/recommendation/platform/ct/docker/integration을 사용한다.
+역할 계약 변경 WORKFLOW는 shared, A의 B10은 docker, C의 B9는 ct를 사용한다.
+Docker 브랜치 PR의 제목을 검색 구현으로 만들지 않으며 C의 B11 제출 PR은 플랫폼 문서 제목을 사용한다.
 검토된 main을 담당 브랜치에 가져올 때는 `chore(sync): 검토된 main 변경을 기능 브랜치에 반영`을
 자동 사용한다. PR 병합은 한국어 Conventional Commit 형식의 PR 제목을 merge commit 제목으로
 사용하며 본문에는 검증·리뷰 확인과 승인한 commit을 한국어로 기록한다.

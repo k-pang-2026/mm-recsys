@@ -71,6 +71,14 @@ FeatureStore는 src/common/schemas.py에 정의되어 있다. C가 Redis를 추�
 dev 데이터는 `data/`, full은 `data/full/`에 분리한다. `SCALE=full`이면 load_config가
 data/split/model 경로까지 전환한다. dev 데이터에 full을 덮어쓰지 않는다.
 
+## Docker 준비와 파일 소유권
+
+A는 B10에서 Docker/Compose, artifacts 준비·smoke orchestration, 컨테이너 성능 검증을 담당한다.
+B2b/B5/B9 PR이 병합된 main의 서비스 factory, 학습 CLI와 Redis/CT 인터페이스를 사용한다.
+C의 B9 CT·서빙 코드를 직접 수정하지 않으며, 필요한 public interface 수정은 담당 PR로 반영한다.
+README Docker 절차는 A B10에서 작성하고, C B11은 B10 PR을 가져온 뒤 최종 제출 문서를 완성한다.
+최종 acceptance JSON은 C B11이 A의 Docker 측정 근거를 해시와 함께 집계하고 A INTEGRATE가 재검증한다.
+
 ## 최종 acceptance JSON
 
 C의 `docs/results/final_acceptance.json`은 `scale: full`, `status`, `data_fingerprint`,

@@ -6,9 +6,13 @@ Codex에 단계 실행만 지시해 검색·추천·서빙을 병렬 개발한�
 
 | 역할 | 이름 | 담당 | Codex 입력 |
 |---|---|---|---|
-| A(팀장) | 이제원 | 공통 준비, 검색, 최종 통합 | `A 다음 단계 실행` |
+| A(팀장) | 이제원 | 공통 준비, 검색, Docker·컨테이너 성능 검증, 최종 통합 | `A 다음 단계 실행` |
 | B | 박정욱 | Two Tower, DeepFM, 재랭킹, MAB, 세션 | `B 다음 단계 실행` |
-| C | 박채영 | Redis, 평가, A/B, CT, Docker, 문서 | `C 다음 단계 실행` |
+| C | 박채영 | Redis, 서빙, 평가, A/B, CT, 제출 문서 | `C 다음 단계 실행` |
+
+A는 검색 `feat/A/search`를 완료한 뒤 Docker B10을 `feat/A/docker`에서 수행한다.
+C는 B9까지 플랫폼 PR을 먼저 병합하고, A의 B10 Docker PR 병합 후 B11 제출 문서 PR을 만든다.
+순서는 **C B9 → A B10 → C B11 → A INTEGRATE**이며, 각 의존성은 PR 병합된 main에서 가져온다.
 
 첫 입력은 `B 개발환경 준비하고 다음 단계 실행`처럼 역할을 지정한다.
 Codex가 setup·브랜치 준비·구현·검증·수정·로컬 commit을 수행하고 내용을 설명한다.
@@ -31,6 +35,9 @@ flowchart LR
   Rerank --> API
   API --> Dashboard[C: Evaluation / A-B / Streamlit]
   Dataset --> CT[C: Continuous Training]
+  API --> Docker[A: Docker / 컨테이너 성능 검증]
+  Dashboard --> Docker
+  CT --> Docker
 ```
 
 환경을 직접 실행할 경우 한 명령으로 준비한다.

@@ -22,12 +22,12 @@ traceback 원인이나 Recall 개선 실측을 확보했다는 뜻은 아니다.
 | p.4 | DeepFM 또는 Wide&Deep, User/Item/Cross/Context, CTR/CVR, AUC≥0.70 | B4 / B |
 | pp.4–5 | 연속 동일 카테고리≤2, 이력<5 cold fallback, 탐색1–2, 신규7일 노출, GRU/Transformer 세션과 장기 선호 결합 | B5 / B |
 | p.5 | HitRate@50≥0.20, NDCG@50≥0.08, Coverage≥0.20, 추천≤200ms | B8 / C + B |
-| p.5 | Redis 실시간 피처/≤10ms, Compose 일괄 실행, 독립 API/대시보드 컨테이너 | B6,B10 / C |
+| p.5 | Redis 실시간 피처/≤10ms, Compose 일괄 실행, 독립 API/대시보드 컨테이너 | B6 / C, B10 / A |
 | p.5 | ≥2 A/B 전략, Chi-square **또는** Z-test, p-value/95%CI, 대시보드 | B7,B8 / C |
 | p.5 | HitRate/CTR 모니터·알림·로그량 재학습·모델 버전 | B9 / C |
 | pp.1,5–6,9 | README 아키텍처/실행, docs 실험 리포트, GitHub URL, Public 또는 평가자 접근 | B11 + 단계별 Git workflow / C |
 | pp.13–14 | 팀원별 역할 및 개인 주요 기여 명시 | team_workflow/contributions/README / A,B,C |
-| pp.9–10 | CPU 가능, 로컬 완결, Docker 자원 조건, warm-up10/serial100/p95, CPU 허용오차 별도 기재 | A2/B10 / C |
+| pp.9–10 | CPU 가능, 로컬 완결, Docker 자원 조건, warm-up10/serial100/p95, CPU 허용오차 별도 기재 | A2 공통 / B10 A |
 | pp.6–7 | Query理解/MMR/ONNX/Thompson 등 **선택** 보너스 | B12, 자동 실행 금지 |
 
 PDF는 팀 인원 3명을 지정하지 않는다. **3인**은 사용자의 요청이다. A/B/C 역할,

@@ -18,6 +18,10 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 
 TITLES={'SHARED':'chore(shared): 공통 개발환경과 3인 병렬 개발 기반 구성',
+        'WORKFLOW':'chore(shared): Docker 담당을 A로 이관하고 팀 개발 순서 정비',
+        'B9':'feat(ct): 서빙·평가·지속 학습 플랫폼 구현',
+        'B10':'chore(docker): Docker 실행과 컨테이너 성능 검증 구현',
+        'B11':'docs(platform): 최종 제출 문서와 검증 근거 정리',
         'INTEGRATE':'chore(integration): 검색·추천·서빙 통합 검증 완료'}
 
 

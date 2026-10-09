@@ -190,7 +190,7 @@ full 카탈로그, CPU, WSL2 ARM64, logical CPU=8, FAISS threads=4 환경에서
 선택했고 모든 모드가 nominal 200ms 이하다. CPU ±50ms 완화는 적용하지 않았다.
 실행 thread 설정만 바뀌었고 모델·데이터·정답·검색 mode/fusion 선택은 유지했다.
 최종 CPU 설정으로 query vectors/test 평가를 재생성했으며 최초 4-thread test 결과도 보존했다.
-이 수치는 현재 호스트의 결과이며 최종 Docker 자원 배분의 재현은 C B10/INTEGRATE에서 다시 측정한다.
+이 수치는 현재 호스트의 결과이며 최종 Docker 자원 배분의 재현은 A B10/INTEGRATE에서 다시 측정한다.
 
 ### 검증·근거·재현
 
