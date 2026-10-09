@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "initial_search_only_rows": 100,
+  "stream_rows_emitted": 2100,
+  "first_replay": {
+    "events_processed": 100,
+    "chunks_completed": 2,
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c"
+  },
+  "second_replay": {
+    "events_processed": 0,
+    "chunks_completed": 2,
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c"
+  },
+  "sample_features": {
+    "recent_clicks": [
+      "P002151"
+    ],
+    "session_clicks": 1,
+    "session_interest": "bottoms",
+    "profile": {
+      "age_group": "25-34",
+      "gender": "F",
+      "signup_at": "2025-07-18 00:00:00+00:00"
+    }
+  },
+  "history_within_train": true
+}

@@ -1,2 +1,8 @@
-# C owns this overlay. Global simulator/seed/evaluation contracts remain fixed.
-serving: {}
+# C owns this overlay; shared data and evaluation contracts remain fixed.
+serving:
+  feature_store: redis
+  redis:
+    timeout_seconds: 0.2
+    max_connections: 32
+    write_retries: 8
+    db: 0

@@ -7,7 +7,7 @@ from fastapi import FastAPI, HTTPException, Query, Request
 
 from src.common.config import load_config
 from src.common.schemas import EventRequest, FeedbackRequest, RecommendResponse, SearchRequest, SearchResponse
-from src.serving.memory_store import MemoryFeatureStore
+from src.serving.feature_store import create_feature_store
 
 
 def create_app(cfg: dict | None = None, search_service=None, recommend_service=None,
@@ -17,15 +17,18 @@ def create_app(cfg: dict | None = None, search_service=None, recommend_service=N
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         serving = cfg['serving']
-        app.state.store = feature_store or MemoryFeatureStore(
-            serving['history_limit'], serving['session_ttl_seconds'], serving['feedback_ttl_seconds'])
+        app.state.store = feature_store if feature_store is not None else create_feature_store(cfg)
         for kind, supplied in [('search', search_service), ('recommend', recommend_service)]:
             backend = supplied
             module_name = serving['plugins'][kind]
             if backend is None and importlib.util.find_spec(module_name) is not None:
                 backend = importlib.import_module(module_name).create_service(cfg, app.state.store)
             setattr(app.state, kind, backend)
-        yield
+        try:
+            yield
+        finally:
+            if feature_store is None and hasattr(app.state.store, 'close'):
+                app.state.store.close()
 
     app = FastAPI(title='MM Search & Recommend', lifespan=lifespan)
 

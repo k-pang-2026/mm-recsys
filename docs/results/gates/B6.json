@@ -1,0 +1,91 @@
+{
+  "step": "B6",
+  "owner": "C",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "./.venv/Scripts/python.exe -m pytest -q -p src.serving.pytest_support tests/test_redis_features.py tests/test_feature_stream.py tests/test_integration_redis.py tests/test_serving_contract.py",
+      "exit_code": 0
+    },
+    {
+      "command": "./.venv/Scripts/python.exe -m mypy --follow-imports=silent src/serving/feature_store.py src/serving/warmup_features.py src/serving/stream_features.py src/evaluation/bench_latency.py src/serving/main.py src/serving/pytest_support.py",
+      "exit_code": 0
+    },
+    {
+      "command": "./.venv/Scripts/python.exe -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "./.venv/Scripts/python.exe scripts/validate_common.py",
+      "exit_code": 0
+    },
+    {
+      "command": "./.venv/Scripts/python.exe -m src.serving.warmup_features",
+      "exit_code": 0
+    },
+    {
+      "command": "./.venv/Scripts/python.exe -m src.serving.stream_features --once",
+      "exit_code": 0
+    },
+    {
+      "command": "./.venv/Scripts/python.exe -m src.evaluation.bench_latency",
+      "exit_code": 0
+    },
+    {
+      "command": "HF_HUB_OFFLINE=1 ./.venv/Scripts/python.exe scripts/check_environment.py --skip-docker-check",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "docs/contributions/C.md",
+    "docs/results/experiments/C/bootstrap_diagnostics_dev.json",
+    "docs/results/experiments/C/bootstrap_environment.json",
+    "docs/results/experiments/C/installed_packages.txt",
+    "docs/results/experiments/C/stream_dev.json",
+    "docs/results/latency/feature_dev.json",
+    "docs/submission/b6_runbook.md",
+    "docs/submission/local_env.ps1",
+    "src/evaluation/bench_latency.py",
+    "src/serving/feature_store.py",
+    "src/serving/pytest_support.py",
+    "src/serving/stream_features.py",
+    "src/serving/warmup_features.py",
+    "tests/test_feature_stream.py",
+    "tests/test_integration_redis.py",
+    "tests/test_redis_features.py",
+    ".github/workflows/ci.yml",
+    "config/serving.yaml",
+    "src/serving/main.py"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "3bb382b5ceffb368587da886c78aa18723e0c24a495448cb8919f93ee6aa6474",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "docs/contributions/C.md": "44650ec617a20c92a30249e9695480986f80fa1552700414a5840a82613059c2",
+    "docs/results/experiments/C/bootstrap_diagnostics_dev.json": "c93f526e1dbb63b52aeaa311f688adc1d17b215452503c533f75835f56b9e087",
+    "docs/results/experiments/C/bootstrap_environment.json": "ef0e62a68689cbf05f142e0d614c0b5e097cfe47e4e05f1d1b9c859f0fc94d80",
+    "docs/results/experiments/C/installed_packages.txt": "3f611196efc45d6c92fcaaa14e68b3153fea31cf1de3bf5e148c09ce63a466b4",
+    "docs/results/experiments/C/stream_dev.json": "e424eb582e0b7782134740cebb3669629d278c420eeaac6819505757be764f48",
+    "docs/results/latency/feature_dev.json": "b71a9815ae1a992528f91945ad4b67a945b5a42b2ccf37f8b986eb899e719308",
+    "docs/submission/b6_runbook.md": "70f378da3e06c6ad007d6ffe298604c8fd173c274de87d51f7a4c9b248a5efde",
+    "docs/submission/local_env.ps1": "85c37375eb33fd6846d7895bce43c9e57ba5d7271dfaaab4126056a1d95cb311",
+    "src/evaluation/bench_latency.py": "b347b08794b4a78773a2d8c545d0035423bf40009e213781161422813a965bb8",
+    "src/serving/feature_store.py": "c7dc1b88e529e84cc0c39bc89fc9bf29ed1aaba59241984e2d8e0b793f9e8a59",
+    "src/serving/pytest_support.py": "27bac1c5e69f438f15bf87599920d95aec86be467dba2f75859c01b48036fbdc",
+    "src/serving/stream_features.py": "c402883cef647a34ebbc6e62c3fe08ad3af78b4c7d15086d12d073b708d79d29",
+    "src/serving/warmup_features.py": "026965fca8bd412d689c31a89902cae996dc9a7bfba0970404c5119b53eb7dc8",
+    "tests/test_feature_stream.py": "b9a4959403fad4208efa903f6d27e65779ea55ca8a15b6d04ed45557520f8ca1",
+    "tests/test_integration_redis.py": "30fa0d4d66cf04d95c74df79bc31e0000388228729ff0f18ad5314cbb5eb06d3",
+    "tests/test_redis_features.py": "085cef9c02c3656858b3bc67291f24e3fa66b1e01040646f3d93ff279ca458d0",
+    ".github/workflows/ci.yml": "e39a6fa80e2aaec80630cb20b3428c5eba7ddb980ddf63e08cdfa722476790c1",
+    "config/serving.yaml": "0b142a74346baac9228a21bcf942f85d98fd4f652dd8f25ef24bbf990c394ee7",
+    "src/serving/main.py": "15227e781d3817cf2b7bc2fc208897b34b133f5bf5c1c60db1d55382447dce4c"
+  },
+  "commit_summary_ko": "Redis 피처 저장소와 스트림 반영 및 지연 검증 구현"
+}

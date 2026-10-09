@@ -8,6 +8,20 @@ permissions:
 jobs:
   common:
     runs-on: ubuntu-latest
+    env:
+      REDIS_HOST: localhost
+      REDIS_PORT: '6379'
+      RUN_REDIS_TESTS: '1'
+      PYTHONHASHSEED: '42'
+    services:
+      redis:
+        image: redis:7
+        ports: ['6379:6379']
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,7 +38,7 @@ jobs:
           bash -n setup_env.sh
           bash -n scripts/codex_run.sh
       - name: Configuration, data, API, feature and automation tests
-        run: python -m pytest -q tests
+        run: python -m pytest -q -p src.serving.pytest_support tests
       - name: Store test outcome
         if: always()
         run: echo 'Model full-quality and Docker reproduction are separate stage gates.'
