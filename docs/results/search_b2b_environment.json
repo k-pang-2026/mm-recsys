@@ -1,0 +1,58 @@
+{
+  "python": "3.12.3",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.39",
+  "versions": {
+    "torch": "2.6.0+cpu",
+    "torchvision": "0.21.0",
+    "faiss": "1.9.0",
+    "transformers": "4.46.3",
+    "fastapi": "0.115.6",
+    "streamlit": "1.41.1",
+    "redis": "5.2.1",
+    "yaml": "6.0.2",
+    "pandas": "2.2.3",
+    "pyarrow": "19.0.0",
+    "sklearn": "1.6.1",
+    "fakeredis": "2.26.2",
+    "httpx": "0.28.1"
+  },
+  "scale": "dev",
+  "seed": 42,
+  "cuda_available": false,
+  "clip_inference": "PASS",
+  "docker": "PASS",
+  "clip_model": "openai/clip-vit-base-patch32",
+  "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+  "clip_projection_dim": 512,
+  "docker_checks": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "version"
+      ],
+      "exit_code": 0,
+      "output": "Docker Compose version v5.5.1\n"
+    },
+    {
+      "command": [
+        "docker",
+        "info",
+        "--format",
+        "{{.ServerVersion}}"
+      ],
+      "exit_code": 0,
+      "output": "29.8.2\n"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "config",
+        "--quiet"
+      ],
+      "exit_code": 0,
+      "output": ""
+    }
+  ]
+}

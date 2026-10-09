@@ -1,0 +1,67 @@
+{
+  "scope": "frozen before quality evaluation",
+  "path": "data/full/search_queries/40cc39d0beba4397a402e8f07041179f0ad30e3d0f2611389965628ee7ade6a1",
+  "manifest_sha256": "7bd45b6fcc7b23c5e46bca554a3e6a00c0a6b3952a05992be0843b0b43288745",
+  "fingerprint": "40cc39d0beba4397a402e8f07041179f0ad30e3d0f2611389965628ee7ade6a1",
+  "identity": {
+    "version": "observable-query-v1",
+    "scale": "full",
+    "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "preprocessing": "observable-alias-v1",
+    "alias_fingerprint": "f1ddf126ff623d88c4dde30db83f930230be468b78ea622e01496fb40dd4e7da",
+    "queries_per_mode": 200,
+    "seeds": {
+      "valid": 42001,
+      "test": 42002
+    },
+    "text_style_probability": 0.5,
+    "korean_probability": 0.5,
+    "augmentation": {
+      "rotation_degrees": 6,
+      "translate_pixels": 4,
+      "brightness": [
+        0.9,
+        1.1
+      ],
+      "contrast": [
+        0.9,
+        1.1
+      ],
+      "encoding": "PNG",
+      "version": 1
+    },
+    "relevance": {
+      "text": [
+        "category_l3",
+        "color",
+        "style_if_explicit"
+      ],
+      "image": [
+        "category_l1",
+        "color"
+      ],
+      "hybrid": [
+        "category_l3",
+        "color",
+        "style_if_explicit"
+      ]
+    },
+    "cutoffs": {
+      "valid": "2025-12-25 23:59:57.408000+00:00",
+      "test": "2025-12-28 23:59:57.408000+00:00"
+    }
+  },
+  "counts": {
+    "valid": {
+      "text": 200,
+      "image": 200,
+      "hybrid": 200
+    },
+    "test": {
+      "text": 200,
+      "image": 200,
+      "hybrid": 200
+    }
+  }
+}

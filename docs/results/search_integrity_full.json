@@ -1,0 +1,374 @@
+{
+  "stage": "B2a",
+  "status": "PASS",
+  "scale": "full",
+  "seed": 42,
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "config_fingerprint": "2a5dc4f5dd1afa886485c4f0a43eb4b5615c06545e7d9c223f3e5602b91d9894",
+  "count": 50000,
+  "projection_dim": 512,
+  "encoder": {
+    "model": "openai/clip-vit-base-patch32",
+    "model_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "processor_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "projection_dim": 512,
+    "normalization": "L2",
+    "dtype": "float32",
+    "max_text_length": 77,
+    "preprocess_version": "observable-alias-v1",
+    "alias_fingerprint": "f1ddf126ff623d88c4dde30db83f930230be468b78ea622e01496fb40dd4e7da",
+    "transformers": "4.46.3",
+    "torch": "2.6.0+cpu",
+    "device": "cpu"
+  },
+  "environment": {
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "embedding_fingerprint": "f3c8565bc420a9f945c04a803783b926b3c96ff7700c2a7fcdc3b2b1c8ee15cd",
+  "index_fingerprint": "12e8ab344486eef621baefdbc47fee96c4bfc375c6cbddb2341f5922dc96d53f",
+  "manifests": {
+    "embeddings": {
+      "path": "models/full/search/embeddings/f3c8565bc420a9f945c04a803783b926b3c96ff7700c2a7fcdc3b2b1c8ee15cd/manifest.json",
+      "sha256": "affdf2e1a6d1801b0cf7ee67e36a4c048faf23d66068ca0e6bb994f770e51002"
+    },
+    "indexes": {
+      "path": "models/full/search/indexes/12e8ab344486eef621baefdbc47fee96c4bfc375c6cbddb2341f5922dc96d53f/manifest.json",
+      "sha256": "67f887eb8091a8c0a56e43db8a5971a211ca707f4c65469dc2e3f86a979ffe4c"
+    }
+  },
+  "content_cache": {
+    "text": {
+      "unique_contents": 1440,
+      "cache_hits": 48560
+    },
+    "image": {
+      "unique_contents": 256,
+      "cache_hits": 49744
+    }
+  },
+  "query_preprocessing_reproduction": {
+    "text": "PASS",
+    "image": "PASS",
+    "query_count": 32
+  },
+  "self_content_exact_similarity": {
+    "text": "PASS",
+    "image": "PASS"
+  },
+  "save_load_parity": "PASS",
+  "ann_diagnostics": {
+    "text_to_text": {
+      "k": 10,
+      "queries": 32,
+      "label_overlap_recall": 1.0,
+      "exact_score_tie_aware_agreement": 1.0,
+      "max_reported_score_error": 2.384185791015625e-07,
+      "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+    },
+    "image_to_image": {
+      "k": 10,
+      "queries": 32,
+      "label_overlap_recall": 1.0,
+      "exact_score_tie_aware_agreement": 1.0,
+      "max_reported_score_error": 3.5762786865234375e-07,
+      "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+    },
+    "text_to_image": {
+      "k": 10,
+      "queries": 32,
+      "label_overlap_recall": 1.0,
+      "exact_score_tie_aware_agreement": 1.0,
+      "max_reported_score_error": 1.043081283569336e-07,
+      "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+    },
+    "hybrid_to_hybrid": {
+      "k": 10,
+      "queries": 32,
+      "label_overlap_recall": 1.0,
+      "exact_score_tie_aware_agreement": 1.0,
+      "max_reported_score_error": 1.7881393432617188e-07,
+      "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+    }
+  },
+  "cross_modal_content_inspection": [
+    {
+      "query": {
+        "raw": "a photo of a black shirt",
+        "encoded": "a photo of a black shirt",
+        "applied_aliases": [],
+        "unknown_terms": []
+      },
+      "hits": [
+        {
+          "product_id": "P000105",
+          "score": 0.33292531967163086,
+          "category_l1": "tops",
+          "category_l3": "knitted vest",
+          "color": "black"
+        },
+        {
+          "product_id": "P000177",
+          "score": 0.33292531967163086,
+          "category_l1": "tops",
+          "category_l3": "cardigan",
+          "color": "black"
+        },
+        {
+          "product_id": "P000217",
+          "score": 0.33292531967163086,
+          "category_l1": "tops",
+          "category_l3": "t-shirt",
+          "color": "black"
+        },
+        {
+          "product_id": "P000247",
+          "score": 0.33292531967163086,
+          "category_l1": "tops",
+          "category_l3": "cardigan",
+          "color": "black"
+        },
+        {
+          "product_id": "P000515",
+          "score": 0.33292531967163086,
+          "category_l1": "tops",
+          "category_l3": "knitted vest",
+          "color": "black"
+        }
+      ]
+    },
+    {
+      "query": {
+        "raw": "a photo of red sneakers",
+        "encoded": "a photo of red sneakers",
+        "applied_aliases": [],
+        "unknown_terms": []
+      },
+      "hits": [
+        {
+          "product_id": "P000042",
+          "score": 0.2859771251678467,
+          "category_l1": "bottoms",
+          "category_l3": "chinos",
+          "color": "red"
+        },
+        {
+          "product_id": "P000312",
+          "score": 0.2859771251678467,
+          "category_l1": "bottoms",
+          "category_l3": "chinos",
+          "color": "red"
+        },
+        {
+          "product_id": "P000461",
+          "score": 0.2859771251678467,
+          "category_l1": "bottoms",
+          "category_l3": "cargo pants",
+          "color": "red"
+        },
+        {
+          "product_id": "P000594",
+          "score": 0.2859771251678467,
+          "category_l1": "bottoms",
+          "category_l3": "athletic shorts",
+          "color": "red"
+        },
+        {
+          "product_id": "P000856",
+          "score": 0.2859771251678467,
+          "category_l1": "bottoms",
+          "category_l3": "jeans",
+          "color": "red"
+        }
+      ]
+    },
+    {
+      "query": {
+        "raw": "a photo of blue jeans",
+        "encoded": "a photo of blue jeans",
+        "applied_aliases": [],
+        "unknown_terms": []
+      },
+      "hits": [
+        {
+          "product_id": "P000976",
+          "score": 0.2795426845550537,
+          "category_l1": "bottoms",
+          "category_l3": "jeans",
+          "color": "blue"
+        },
+        {
+          "product_id": "P001501",
+          "score": 0.2795426845550537,
+          "category_l1": "bottoms",
+          "category_l3": "jeans",
+          "color": "blue"
+        },
+        {
+          "product_id": "P001714",
+          "score": 0.2795426845550537,
+          "category_l1": "bottoms",
+          "category_l3": "athletic shorts",
+          "color": "blue"
+        },
+        {
+          "product_id": "P001768",
+          "score": 0.2795426845550537,
+          "category_l1": "bottoms",
+          "category_l3": "chinos",
+          "color": "blue"
+        },
+        {
+          "product_id": "P001773",
+          "score": 0.2795426845550537,
+          "category_l1": "bottoms",
+          "category_l3": "athletic shorts",
+          "color": "blue"
+        }
+      ]
+    },
+    {
+      "query": {
+        "raw": "a photo of a white coat",
+        "encoded": "a photo of a white coat",
+        "applied_aliases": [],
+        "unknown_terms": []
+      },
+      "hits": [
+        {
+          "product_id": "P000104",
+          "score": 0.26429784297943115,
+          "category_l1": "tops",
+          "category_l3": "polo shirt",
+          "color": "white"
+        },
+        {
+          "product_id": "P000160",
+          "score": 0.26429784297943115,
+          "category_l1": "tops",
+          "category_l3": "shirt",
+          "color": "white"
+        },
+        {
+          "product_id": "P000301",
+          "score": 0.26429784297943115,
+          "category_l1": "tops",
+          "category_l3": "knitted vest",
+          "color": "white"
+        },
+        {
+          "product_id": "P000314",
+          "score": 0.26429784297943115,
+          "category_l1": "tops",
+          "category_l3": "sweatshirt",
+          "color": "white"
+        },
+        {
+          "product_id": "P000421",
+          "score": 0.26429784297943115,
+          "category_l1": "tops",
+          "category_l3": "hoodie",
+          "color": "white"
+        }
+      ]
+    },
+    {
+      "query": {
+        "raw": "a photo of a pink bag",
+        "encoded": "a photo of a pink bag",
+        "applied_aliases": [],
+        "unknown_terms": []
+      },
+      "hits": [
+        {
+          "product_id": "P000029",
+          "score": 0.33783039450645447,
+          "category_l1": "accessories",
+          "category_l3": "crossbody bag",
+          "color": "pink"
+        },
+        {
+          "product_id": "P000226",
+          "score": 0.33783039450645447,
+          "category_l1": "accessories",
+          "category_l3": "backpack",
+          "color": "pink"
+        },
+        {
+          "product_id": "P000549",
+          "score": 0.33783039450645447,
+          "category_l1": "accessories",
+          "category_l3": "backpack",
+          "color": "pink"
+        },
+        {
+          "product_id": "P001957",
+          "score": 0.33783039450645447,
+          "category_l1": "accessories",
+          "category_l3": "backpack",
+          "color": "pink"
+        },
+        {
+          "product_id": "P002141",
+          "score": 0.33783039450645447,
+          "category_l1": "accessories",
+          "category_l3": "backpack",
+          "color": "pink"
+        }
+      ]
+    }
+  ],
+  "bm25_alias_sanity": [
+    {
+      "product_id": "P000333",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P000366",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001271",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001289",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001356",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001726",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001730",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001943",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P001979",
+      "score": 5.19949036602521
+    },
+    {
+      "product_id": "P002211",
+      "score": 5.19949036602521
+    }
+  ],
+  "final_search_acceptance": "UNMEASURED",
+  "mrr": null,
+  "ndcg_at_10": null,
+  "http_p95_ms": null,
+  "limitations": [
+    "ANN overlap compares vectors, not human/attribute relevance",
+    "self-content retrieval is a duplicate sanity test, not quality evaluation",
+    "cross-modal category/color rankings are recorded without a fabricated quality threshold",
+    "B2b frozen queries, HTTP service, full test quality and latency remain unmeasured",
+    "seed is fixed; threaded HNSW insertion can vary across platforms/runs"
+  ]
+}

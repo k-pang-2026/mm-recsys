@@ -1,0 +1,44 @@
+{
+  "status": "COMPLETE",
+  "fingerprint": "269036d55b67d7034f53cd6dfe96740925103693126af9dce84753470016e447",
+  "identity": {
+    "version": 1,
+    "scale": "dev",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "catalog_sha256": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "ids_fingerprint": "bab494a7921a3cdb67629a82025f07ff180518f5bfccd6252094a0bbc3426608",
+    "text_content_fingerprint": "4457397f39231cde2fbfabe1c1f97cc2757ee5fd42be726aee7440abbf63bb5d",
+    "image_content_fingerprint": "ada1ce846e124f6f8522cf293564ee917dffaee1c2f5f0db1e27285989f1cdff",
+    "encoder": {
+      "model": "openai/clip-vit-base-patch32",
+      "model_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+      "processor_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+      "projection_dim": 512,
+      "normalization": "L2",
+      "dtype": "float32",
+      "max_text_length": 77,
+      "preprocess_version": "observable-alias-v1",
+      "alias_fingerprint": "f1ddf126ff623d88c4dde30db83f930230be468b78ea622e01496fb40dd4e7da",
+      "transformers": "4.46.3",
+      "torch": "2.6.0+cpu",
+      "device": "cpu"
+    }
+  },
+  "count": 10000,
+  "content_cache": {
+    "text": {
+      "unique_contents": 1439,
+      "cache_hits": 8561
+    },
+    "image": {
+      "unique_contents": 256,
+      "cache_hits": 9744
+    }
+  },
+  "files": {
+    "text.npy": "bba3facbb8ab7180ac4c84c2086db3e7537fce0a6530c48d621cf17037ece593",
+    "image.npy": "e6a105bf39467b26989a3173ed4e962e10febe05f6cea73c83335071e3abc7d6",
+    "item_ids.json": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+    "text_audit.json": "b6c7dd61441c8af3eeec32c7766bcd45b0f2ed3308b3a682a29859d3b85c9bc1"
+  }
+}

@@ -1,2 +1,25 @@
 # A owns this overlay; top-level key stays search.
-search: {}
+search:
+  device: cpu
+  torch_threads: 1
+  local_files_only: true
+  embedding_chunk_size: 256
+  artifact_subdir: search
+  deduplicate_vectors: true
+  modes:
+    text: text
+    image: image
+    hybrid: text
+  faiss:
+    ef_search: 32
+  query_fusion:
+    text_weight: 0.75
+    image_weight: 0.25
+  evaluation:
+    version: observable-query-v1
+    valid_seed: 42001
+    test_seed: 42002
+    text_style_probability: 0.5
+    korean_probability: 0.5
+    ef_search_sweep: [32, 64, 128, 256]
+    fusion_sweep: [0.25, 0.5, 0.75]
