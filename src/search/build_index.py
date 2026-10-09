@@ -7,6 +7,7 @@ import shutil
 import tempfile
 from pathlib import Path
 import faiss
+import numpy as np
 
 from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.config import load_config
@@ -29,7 +30,8 @@ def build_indexes(cfg: dict) -> Path:
     bundle = current_bundle(cfg); embeddings = bundle['manifest']
     identity = {'version': 1, 'embedding_fingerprint': embeddings['fingerprint'],
                 'ids_fingerprint': fingerprint(bundle['ids']), 'faiss': cfg['search']['faiss'],
-                'fusion': cfg['search']['fusion'], 'seed': cfg['seed'], 'faiss_version': faiss.__version__}
+                'fusion': cfg['search']['fusion'], 'seed': cfg['seed'], 'faiss_version': faiss.__version__,
+                'deduplicate_vectors': cfg['search'].get('deduplicate_vectors', False)}
     key = fingerprint(identity); base = search_root(cfg)/'indexes'; base.mkdir(parents=True, exist_ok=True)
     target = base/key
     if target.exists():
@@ -42,11 +44,24 @@ def build_indexes(cfg: dict) -> Path:
         vectors = {'text': bundle['text'], 'image': bundle['image'],
                    'hybrid': fuse(bundle['text'], bundle['image'], cfg['search']['fusion'])}
         for mode, values in vectors.items():
-            index = make_index(values, cfg['search']['faiss'], cfg['seed'])
+            if identity['deduplicate_vectors']:
+                lookup = {}; members = []; first = []
+                for position, vector in enumerate(values):
+                    content = vector.tobytes()
+                    if content not in lookup:
+                        lookup[content] = len(members); members.append([]); first.append(position)
+                    members[lookup[content]].append(position)
+                indexed = np.ascontiguousarray(values[first])
+                write_json(staging/f'{mode}_members.json', members)
+            else:
+                indexed = values
+            index = make_index(indexed, cfg['search']['faiss'], cfg['seed'])
             faiss.write_index(index, str(staging/f'{mode}.faiss'))
             print(f'{mode}: {index.ntotal} indexed vectors, IP {cfg["search"]["faiss"]["type"]}', flush=True)
         write_json(staging/'item_ids.json', bundle['ids'])
         names = ['item_ids.json', *[f'{mode}.faiss' for mode in vectors]]
+        if identity['deduplicate_vectors']:
+            names.extend(f'{mode}_members.json' for mode in vectors)
         write_json(staging/'manifest.json', {'status': 'COMPLETE', 'fingerprint': key, 'identity': identity,
                    'count': len(bundle['ids']), 'projection_dim': vectors['text'].shape[1],
                    'files': {name: file_hash(staging/name) for name in names}})
@@ -72,7 +87,8 @@ def current_indexes(cfg: dict) -> tuple[Path, dict]:
     identity = manifest['identity']
     if (identity['embedding_fingerprint'] != bundle['manifest']['fingerprint'] or
             identity['faiss'] != cfg['search']['faiss'] or identity['fusion'] != cfg['search']['fusion'] or
-            identity['seed'] != cfg['seed']):
+            identity['seed'] != cfg['seed'] or
+            identity.get('deduplicate_vectors', False) != cfg['search'].get('deduplicate_vectors', False)):
         raise ValueError('stale index configuration/embedding version')
     return folder, bundle
 

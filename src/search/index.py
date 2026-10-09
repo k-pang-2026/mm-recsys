@@ -62,32 +62,50 @@ def make_index(vectors: np.ndarray, spec: dict, seed: int) -> faiss.Index:
 
 
 class SearchIndex:
-    def __init__(self, index: faiss.Index, ids: list[str]):
-        if index.metric_type != faiss.METRIC_INNER_PRODUCT or index.ntotal != len(ids):
+    def __init__(self, index: faiss.Index, ids: list[str], members: list[list[int]] | None = None):
+        members = members if members is not None else [[i] for i in range(len(ids))]
+        if index.metric_type != faiss.METRIC_INNER_PRODUCT or index.ntotal != len(members):
             raise ValueError('index metric/ID count mismatch')
         if len(set(ids)) != len(ids) or any(not isinstance(x, str) for x in ids):
             raise ValueError('unique explicit string IDs required')
-        self.index = index; self.ids = ids; self._lock = threading.RLock()
+        flattened = [i for group in members for i in group]
+        if (any(not group for group in members) or any(type(i) is not int for i in flattened)
+                or sorted(flattened) != list(range(len(ids)))):
+            raise ValueError('bucket membership must cover every product exactly once')
+        self.index = index; self.ids = ids; self.members = members; self._lock = threading.RLock()
 
-    def search(self, vectors: np.ndarray, k: int) -> list[list[SearchHit]]:
+    def search(self, vectors: np.ndarray, k: int, eligible_ids: set[str] | None = None) -> list[list[SearchHit]]:
         if isinstance(k, bool) or not isinstance(k, int) or k <= 0:
             raise ValueError('k must be a positive integer')
         check_vectors(vectors, self.index.d)
-        with self._lock:
-            if hasattr(self.index, 'hnsw'):
-                self.index.hnsw.efSearch = max(k, self.index.hnsw.efSearch)
-            scores, labels = self.index.search(np.ascontiguousarray(vectors), k)
-        output = []
-        for row_scores, row_labels in zip(scores, labels):
-            row = []
-            for score, label in zip(row_scores, row_labels):
-                if label == -1:
-                    continue
-                if not 0 <= label < len(self.ids) or not np.isfinite(score):
-                    raise ValueError('FAISS returned invalid label/score')
-                row.append(SearchHit(self.ids[int(label)], float(score)))
-            output.append(row)
-        return output
+        if eligible_ids is not None and not eligible_ids:
+            return [[] for _ in vectors]
+        needed = min(k, self.index.ntotal)
+        while True:
+            with self._lock:
+                if hasattr(self.index, 'hnsw'):
+                    self.index.hnsw.efSearch = max(needed, k, self.index.hnsw.efSearch)
+                scores, labels = self.index.search(np.ascontiguousarray(vectors), needed)
+            output = []
+            for row_scores, row_labels in zip(scores, labels):
+                row = []
+                for score, label in zip(row_scores, row_labels):
+                    if label == -1:
+                        continue
+                    if not 0 <= label < len(self.members) or not np.isfinite(score):
+                        raise ValueError('FAISS returned invalid label/score')
+                    for position in self.members[int(label)]:
+                        id_ = self.ids[position]
+                        if eligible_ids is None or id_ in eligible_ids:
+                            row.append(SearchHit(id_, float(score)))
+                            if len(row) == k:
+                                break
+                    if len(row) == k:
+                        break
+                output.append(row)
+            if needed == self.index.ntotal or all(len(row) >= k for row in output):
+                return output
+            needed = min(self.index.ntotal, max(needed+1, needed*2))
 
     @classmethod
     def load(cls, folder: Path, mode: str, embedding_fingerprint: str | None = None) -> 'SearchIndex':
@@ -98,7 +116,10 @@ class SearchIndex:
             raise ValueError('incomplete or corrupt index manifest')
         if embedding_fingerprint and manifest['identity']['embedding_fingerprint'] != embedding_fingerprint:
             raise ValueError('stale index for embedding bundle')
-        if set(manifest['files']) != {'item_ids.json', 'text.faiss', 'image.faiss', 'hybrid.faiss'}:
+        expected_files = {'item_ids.json', 'text.faiss', 'image.faiss', 'hybrid.faiss'}
+        if manifest['identity'].get('deduplicate_vectors'):
+            expected_files.update(f'{kind}_members.json' for kind in ('text', 'image', 'hybrid'))
+        if set(manifest['files']) != expected_files:
             raise ValueError('incomplete index file manifest')
         for name, digest in manifest['files'].items():
             if Path(name).name != name or file_hash(folder/name) != digest:
@@ -112,4 +133,5 @@ class SearchIndex:
         expected_class = faiss.IndexHNSWFlat if kind == 'HNSW' else faiss.IndexIVFPQ
         if not isinstance(index, expected_class) or index.d != manifest['projection_dim']:
             raise ValueError('serialized FAISS type/dimension differs from manifest')
-        return cls(index, ids)
+        members = json.loads((folder/f'{mode}_members.json').read_text()) if manifest['identity'].get('deduplicate_vectors') else None
+        return cls(index, ids, members)

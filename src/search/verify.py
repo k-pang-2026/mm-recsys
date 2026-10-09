@@ -47,7 +47,10 @@ def verify(cfg: dict) -> dict:
                      fuse(bundle['text'], bundle['image'], cfg['search']['fusion']))]
     for name, mode, queries, vectors in combinations:
         loaded = SearchIndex.load(folder, mode, bundle['manifest']['fingerprint'])
-        scores, labels = loaded.index.search(queries, cfg['search']['evaluation']['ann_recall_k'])
+        hits = loaded.search(queries, cfg['search']['evaluation']['ann_recall_k'])
+        positions = {id_: i for i, id_ in enumerate(bundle['ids'])}
+        scores = np.array([[hit.score for hit in row] for row in hits], np.float32)
+        labels = np.array([[positions[hit.product_id] for hit in row] for row in hits])
         diagnostics[name] = ann_agreement(vectors, queries, scores, labels, scores.shape[1])
         again = SearchIndex.load(folder, mode, bundle['manifest']['fingerprint'])
         if loaded.search(queries, 10) != again.search(queries, 10):
