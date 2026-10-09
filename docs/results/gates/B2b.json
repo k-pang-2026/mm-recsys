@@ -1,0 +1,167 @@
+{
+  "step": "B2b",
+  "owner": "A",
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python scripts/check_environment.py",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.simulator.generate",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.queries",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.build_embeddings",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.build_index",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.verify --output docs/results/search_integrity_full.json",
+      "exit_code": 0
+    },
+    {
+      "command": "env HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.eval_search --split test",
+      "exit_code": 0
+    },
+    {
+      "command": "env -u SEARCH_MODEL_DIR HF_HOME=\"$PWD/.cache/huggingface\" HF_HUB_OFFLINE=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.benchmark --output docs/results/experiments/A/search_http_recheck_full.json --require-target",
+      "exit_code": 0
+    },
+    {
+      "command": "env PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.search.finalize --require-pass",
+      "exit_code": 0
+    },
+    {
+      "command": "env -u SCALE PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "src/search/__init__.py",
+    "src/search/api.py",
+    "src/search/benchmark.py",
+    "src/search/bm25.py",
+    "src/search/build_embeddings.py",
+    "src/search/build_index.py",
+    "src/search/encoder.py",
+    "src/search/eval_search.py",
+    "src/search/eval_support.py",
+    "src/search/finalize.py",
+    "src/search/index.py",
+    "src/search/locking.py",
+    "src/search/queries.py",
+    "src/search/searcher.py",
+    "src/search/service.py",
+    "src/search/testing.py",
+    "src/search/text.py",
+    "src/search/verify.py",
+    "tests/test_encoder.py",
+    "tests/test_index.py",
+    "tests/test_search_api.py",
+    "tests/test_search_artifacts.py",
+    "tests/test_search_buckets.py",
+    "tests/test_search_evaluation.py",
+    "tests/test_search_finalize.py",
+    "tests/test_search_queries.py",
+    "config/search.yaml",
+    "docs/search_report.md",
+    "docs/contributions/A.md",
+    "docs/results/search_b2a_dev.json",
+    "docs/results/search_b2a_embeddings_manifest_dev.json",
+    "docs/results/search_b2a_environment.json",
+    "docs/results/search_b2a_indexes_manifest_dev.json",
+    "docs/results/search_b2b_embeddings_manifest_full.json",
+    "docs/results/search_b2b_environment.json",
+    "docs/results/search_b2b_indexes_manifest_full.json",
+    "docs/results/search_latency_full.json",
+    "docs/results/search_metrics.json",
+    "docs/results/search_metrics_full.json",
+    "docs/results/search_queries_dev.json",
+    "docs/results/search_queries_full.json",
+    "docs/results/search_runtime_selection.json",
+    "docs/results/search_selection_full.json",
+    "docs/results/search_test_full.json",
+    "docs/results/search_valid_full.json",
+    "docs/results/experiments/A/search_latency_threads1_full.json",
+    "docs/results/experiments/A/search_latency_threads2_full.json",
+    "docs/results/experiments/A/search_latency_threads4_full.json",
+    "docs/results/experiments/A/search_test_threads4_full.json",
+    "docs/results/search_integrity_full.json",
+    "docs/results/experiments/A/search_http_recheck_full.json"
+  ],
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "config_fingerprint": "2a5dc4f5dd1afa886485c4f0a43eb4b5615c06545e7d9c223f3e5602b91d9894",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "src/search/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/search/api.py": "60ac30b21eb430fe0da40bbc5f08a28f2fc40da427f54b78f864176c388d0992",
+    "src/search/benchmark.py": "4c101534e3a30a297582b8de0b0e1973851c1ea37b4b489ffa2bd7cde8fb3e0f",
+    "src/search/bm25.py": "6d739624d1b803fa50c1f5aae13ae95276d5fba5017c73e596ed453a3aa3eecd",
+    "src/search/build_embeddings.py": "bd25c7ee208f045b3af2d84dbdde4035787616d0c494436dcf2647e08071b974",
+    "src/search/build_index.py": "279a8452b20304e82432ac721d3c33ce6bfaae579ad1842f6c2564edd490d738",
+    "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e",
+    "src/search/eval_search.py": "aed65cb2875fa0e1f168699199e4f50300bc3c4b0e6e5351c6d806c78ee361dc",
+    "src/search/eval_support.py": "ad8365ee8891c5dc18c3ca2ddfaa1aad5ace13890e1b678a4ce18393788ff48f",
+    "src/search/finalize.py": "cba5ad1c4c9f6260f4d6b31b208f0b99d9b940c318ce2eafd656216663085712",
+    "src/search/index.py": "6cafe13858e2134cc1adaadb563a676f8ab6657e67106c5808b96ba82c89bf76",
+    "src/search/locking.py": "0f2a42f4039ace3888633b63a09c1a17435905bb8542a3a979b4dd88667e2338",
+    "src/search/queries.py": "b32aa29f30a5db8204555524e35e1a01f4e4da77203ba72a3568178318321362",
+    "src/search/searcher.py": "ba453ceec4048605e5da79648bbaff39120bc9f2624a90eeb69f116ee03492a2",
+    "src/search/service.py": "9c89676a7bc1fc2f153168d8a67c13544d1af7892d16de0d41e264ea89f08873",
+    "src/search/testing.py": "12efc98dd3651a348e1a35fad03a2c89fc33c1fb8335760e04923f341d4a5fcb",
+    "src/search/text.py": "a8f862a14c61aaf990d2ebf38ebe60668a1e5057d9ed3b98a6bdf55da9084280",
+    "src/search/verify.py": "8dd62633083749b40fd1c2175352eea80ecc20cb0c036523094d3af4fb81ac94",
+    "tests/test_encoder.py": "a49795568bc3bc5dabb6af2d9b1ce8a3f175979f81519658f3652e643d1133b2",
+    "tests/test_index.py": "33283f9c43258a5614c2ca2beb794ad04b3c04dca80f7cbfd05daee1f78d87eb",
+    "tests/test_search_api.py": "7986e9f1bab07db1acc711fb67a22c1a08b8815415d4e35be5f41fcf265e5122",
+    "tests/test_search_artifacts.py": "fa40b85014885951b1b718b82afec9f6ad028e69a4e0e4ea047d6f1e262a9f61",
+    "tests/test_search_buckets.py": "f22e7886f36796f09ffca84209cde238795d84da0c68765876b046faf8e22e3d",
+    "tests/test_search_evaluation.py": "aa38d9906b5d6cd66281e91372101ef76bd9b6072b9fa46992c5057f6cf893d0",
+    "tests/test_search_finalize.py": "d9d25b7fef7343c16bd0fedc0a83c998f457654777b3beeb335448ebc35c29d5",
+    "tests/test_search_queries.py": "a1a86386e169968a68088ad578a1cf41cbeb7c406f60f2913c41c7389261b4e1",
+    "config/search.yaml": "5a81c24829fa34fdfeea77f084aff15c80640c7733dcc5e95985a7bbbae7acb8",
+    "docs/search_report.md": "9c7b6a24d71452ca5426cb15055d4f9dc51bd4da8ce73b30022d4bfe360dae0f",
+    "docs/contributions/A.md": "32f256652bf57fb428e2402c30ba0ee45e283fd84ff59bb7b55949c417631a09",
+    "docs/results/search_b2a_dev.json": "8ffe794b678120464dd69a7818d82d3de75fa9621befa7fdab225444ea809b8c",
+    "docs/results/search_b2a_embeddings_manifest_dev.json": "ef21606c697d79bb4644373cfc140179bd23a73214d65525f5f1060f00d6624f",
+    "docs/results/search_b2a_environment.json": "ea9f733eb9bdde95a1d7ab6eba276265790e0c06c8950666c4f9225a3ad11013",
+    "docs/results/search_b2a_indexes_manifest_dev.json": "88725bdb5294ec739420bafce60bb640ed3669f7f00a1a965e40cb2e3af9661e",
+    "docs/results/search_b2b_embeddings_manifest_full.json": "affdf2e1a6d1801b0cf7ee67e36a4c048faf23d66068ca0e6bb994f770e51002",
+    "docs/results/search_b2b_environment.json": "ea9f733eb9bdde95a1d7ab6eba276265790e0c06c8950666c4f9225a3ad11013",
+    "docs/results/search_b2b_indexes_manifest_full.json": "67f887eb8091a8c0a56e43db8a5971a211ca707f4c65469dc2e3f86a979ffe4c",
+    "docs/results/search_latency_full.json": "af5a86c1886a650d12604797b1e6ea153123ac88f726f14e742445a0997b0f8f",
+    "docs/results/search_metrics.json": "4fff46541c60e9080a1d50147efe9ef5110d76d6e57321cc3091c816692de917",
+    "docs/results/search_metrics_full.json": "4fff46541c60e9080a1d50147efe9ef5110d76d6e57321cc3091c816692de917",
+    "docs/results/search_queries_dev.json": "c9b239c93bb375ea85d36edf60f2d6838ba17db730f0870bf65f019cd86c940c",
+    "docs/results/search_queries_full.json": "68b4a41f0dfe153b729e75d8fcebeeacb9afc7823aaefb11cccef92941a10c9d",
+    "docs/results/search_runtime_selection.json": "8545b2c496cdde17d63b1f8bb09f22bc846c7db832bee946ff29c5ad73bf828f",
+    "docs/results/search_selection_full.json": "ca8ef4279cd029a4b337808a890b23a5a54920a70b529325bd45a2880b714afe",
+    "docs/results/search_test_full.json": "8e181809b62a0320a667d9f2838180f9379ad9f85b90562eb7b67ba8fafb24b9",
+    "docs/results/search_valid_full.json": "219dc3c472a76504e70dc5a3b5f75cc485e65d88220ce98bdb18d1e356dad10b",
+    "docs/results/experiments/A/search_latency_threads1_full.json": "af5a86c1886a650d12604797b1e6ea153123ac88f726f14e742445a0997b0f8f",
+    "docs/results/experiments/A/search_latency_threads2_full.json": "d314c9181cc52d4e31b16242e949583c0b50d4dc07487cc5587d8f61a5b0d0d7",
+    "docs/results/experiments/A/search_latency_threads4_full.json": "2592beddb70ebe8c58817635abbde87bb288ec31a71dce1c5164a374ef0bce0d",
+    "docs/results/experiments/A/search_test_threads4_full.json": "e67553949477bf8f51ca016084470fae24cc23b684f0ebcf9d75f3117a4579f0",
+    "docs/results/search_integrity_full.json": "1a622867ee48d91463a3387298c29631ae377f02f5d726fcd3866594e2e3ac00",
+    "docs/results/experiments/A/search_http_recheck_full.json": "8e536e11612f5d6c2f58105cf3568abd80900c7c57c6f3a7fc615d17f82240e5"
+  },
+  "commit_summary_ko": "멀티모달 검색 API와 전체 규모 품질 및 HTTP 성능 검증 구현"
+}

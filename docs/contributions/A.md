@@ -31,3 +31,39 @@
 - 사용자 최신 지시에 따라 충돌·원격 gate·CI·품질·필수 리뷰/보호 규칙을 확인한 PR은
   자동 병합하도록 구현했다. 푸시 전 설명·허가 규칙은 유지한다. 병합 직전 head/base SHA
   변경을 확인하고 CI 대기·차단 상태를 보존하며 같은 PR의 병합 재시도를 지원한다.
+
+## B2a — 검색 인코더·산출물·인덱스 기반
+
+이제원(A) 담당 단계의 구현·실행을 Codex가 수행했다. 지정 reviewer는 박정욱(B)이며
+실제 팀원 리뷰가 수행됐다고 주장하지 않는다.
+
+- 실제 고정 CLIP projected text/image 인코더, 공통 한국어 별칭, RGB/길이/FP32/norm 검증을 구현했다.
+- 내용 기반 캐시, 완료 청크 해시 검증/중단 재개, 동시 쓰기 제한, 원자적 임베딩 발행을 구현했다.
+- dev 10,000개 `(10000,512)` 양 모달 임베딩과 explicit IP의 text/image/hybrid HNSW를 생성했다.
+- FAISS mapping·설정·해시 검증, -1 label 제외, save/load parity, IVFPQ 표본/차원 검사를 구현했다.
+- BM25와 관측 속성 relevance/exact·ANN 진단을 추가하고 실제 query 전처리로 저장 벡터 재현을 확인했다.
+- image/cross-modal ANN 일치율 미달과 일부 cross-modal 색 오검색을 숨기지 않고
+  [검색 보고서](../search_report.md)에 남겼다. full 품질·API·지연은 B2b에서 측정한다.
+
+근거: [B2a 실측](../results/search_b2a_dev.json), [환경 검사](../results/search_b2a_environment.json),
+[B2a gate](../results/gates/B2a.json). 실제 로컬 커밋/푸시 상태는 Git 이력과 발행 증거로 확인한다.
+
+## B2b — 검색 API·full 품질·HTTP 성능
+
+- 전체 product ID를 보존하는 unique-vector HNSW membership과 cutoff 가용성 필터를 구현했다.
+- 실제 입력을 인코딩하는 text/image/hybrid Searcher·SearchService factory와
+  공통 FastAPI를 감싸는 JSON/multipart API 어댑터를 구현했다. C 소유 파일은 변경하지 않았다.
+- 점수 측정 전에 valid/test 각 모드 200개의 독립 쿼리와 관측 속성 기반 multi-relevant 정답을 고정했다.
+- valid에서 모드별 gallery·fusion·efSearch를 선택했다. full test 600개의 MRR/NDCG@10은
+  0.931667이고 text/image/hybrid 모두 개별 기준을 통과했다. BM25가 더 높은 결과도 보존했다.
+- 실제 CPU localhost HTTP로 각 모드 10 warm-up+100 serial 요청을 측정했다.
+  hybrid p95 4-thread 276.784ms, 2-thread 206.986ms 미달을 보존하고 valid 요청으로
+  1 thread를 선택했다. 최종 최대 모드 p95는 178.251ms다.
+- 고정 test per-query, BM25/ANN, source hash, 개별 HTTP 지연, CPU 비교 및 단계별 gate를 남겼다.
+  보고한 수치·코호트·모델/데이터·관측 p95 불일치를 최종 요약에서 차단한다.
+- 로컬 모델 cache와 무관한 missing-model 계약 테스트, 실제 양 모달 fusion, JSON/multipart
+  검증·lifespan 1회 로드·손상 산출물·동결 쿼리·membership·요약 검증 테스트를 추가했다.
+
+근거: [검색 보고서](../search_report.md), [full 검색 결과](../results/search_metrics.json),
+[B2b gate](../results/gates/B2b.json). 검색 단계 완료와 전체 추천/Docker 종합 완료는 구분한다.
+지정 reviewer는 박정욱(B)이며 실제 리뷰·원격 B2b 푸시/병합 여부는 GitHub 증거로 확인한다.

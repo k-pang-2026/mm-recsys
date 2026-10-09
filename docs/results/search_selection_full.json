@@ -1,0 +1,29 @@
+{
+  "scale": "full",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "query_fingerprint": "40cc39d0beba4397a402e8f07041179f0ad30e3d0f2611389965628ee7ade6a1",
+  "selected_on": "valid",
+  "selected": {
+    "text": {
+      "gallery": "text",
+      "text_weight": 0.5,
+      "ef_search": 32
+    },
+    "image": {
+      "gallery": "image",
+      "text_weight": 0.5,
+      "ef_search": 32
+    },
+    "hybrid": {
+      "gallery": "text",
+      "text_weight": 0.75,
+      "ef_search": 32
+    }
+  },
+  "gallery_fusion": {
+    "text_weight": 0.5,
+    "image_weight": 0.5
+  },
+  "source": "docs/results/search_valid_full.json",
+  "sha256": "219dc3c472a76504e70dc5a3b5f75cc485e65d88220ce98bdb18d1e356dad10b"
+}

@@ -1,0 +1,158 @@
+{
+  "stage": "B2b",
+  "scale": "full",
+  "status": "PASS",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "model_fingerprint": "f3c8565bc420a9f945c04a803783b926b3c96ff7700c2a7fcdc3b2b1c8ee15cd",
+  "config_fingerprint": "2a5dc4f5dd1afa886485c4f0a43eb4b5615c06545e7d9c223f3e5602b91d9894",
+  "evaluation_fingerprint": "ec6cdefb8fd049721f9f1fb2f57eeff6bd976790ec6fba2e996d19d0a28e7b60",
+  "split": "test",
+  "primary": {
+    "queries": 600,
+    "mrr": 0.9316666666666666,
+    "ndcg_at_10": 0.9316666666666666,
+    "mean_relevant_items": 465.47833333333335
+  },
+  "metrics": {
+    "mrr": 0.9316666666666666,
+    "ndcg_at_10": 0.9316666666666666,
+    "search_p95_ms": 178.25088519944075
+  },
+  "per_mode": {
+    "text": {
+      "quality": {
+        "mode": "text",
+        "gallery": "text",
+        "text_weight": 0.75,
+        "ef_search": 32,
+        "queries": 200,
+        "mrr": 0.94,
+        "ndcg_at_10": 0.94,
+        "mean_relevant_items": 85.09,
+        "ann_vs_exact": {
+          "k": 10,
+          "queries": 200,
+          "label_overlap_recall": 1.0,
+          "exact_score_tie_aware_agreement": 1.0,
+          "max_reported_score_error": 2.980232238769531e-07,
+          "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+        }
+      },
+      "latency": {
+        "p50_ms": 45.80112950043258,
+        "p95_ms": 52.14903964979385,
+        "p99_ms": 53.54434198969106
+      },
+      "status": "PASS",
+      "bm25": {
+        "queries": 200,
+        "mrr": 1.0,
+        "ndcg_at_10": 1.0,
+        "mean_relevant_items": 85.09
+      },
+      "bm25_relative_change": {
+        "mrr": -0.06000000000000005,
+        "ndcg_at_10": -0.06000000000000005
+      }
+    },
+    "image": {
+      "quality": {
+        "mode": "image",
+        "gallery": "image",
+        "text_weight": 0.75,
+        "ef_search": 32,
+        "queries": 200,
+        "mrr": 0.88,
+        "ndcg_at_10": 0.88,
+        "mean_relevant_items": 1223.21,
+        "ann_vs_exact": {
+          "k": 10,
+          "queries": 200,
+          "label_overlap_recall": 1.0,
+          "exact_score_tie_aware_agreement": 1.0,
+          "max_reported_score_error": 4.76837158203125e-07,
+          "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+        }
+      },
+      "latency": {
+        "p50_ms": 98.8321505001295,
+        "p95_ms": 137.80577470020032,
+        "p99_ms": 182.50233853957099
+      },
+      "status": "PASS",
+      "bm25": {
+        "status": "NOT_APPLICABLE",
+        "reason": "image-only has no text query"
+      }
+    },
+    "hybrid": {
+      "quality": {
+        "mode": "hybrid",
+        "gallery": "text",
+        "text_weight": 0.75,
+        "ef_search": 32,
+        "queries": 200,
+        "mrr": 0.975,
+        "ndcg_at_10": 0.975,
+        "mean_relevant_items": 88.135,
+        "ann_vs_exact": {
+          "k": 10,
+          "queries": 200,
+          "label_overlap_recall": 1.0,
+          "exact_score_tie_aware_agreement": 1.0,
+          "max_reported_score_error": 3.5762786865234375e-07,
+          "interpretation": "ANN vs exact vector search; not relevance MRR/NDCG"
+        }
+      },
+      "latency": {
+        "p50_ms": 135.04404349987453,
+        "p95_ms": 178.25088519944075,
+        "p99_ms": 222.3471983302352
+      },
+      "status": "PASS",
+      "bm25": {
+        "queries": 200,
+        "mrr": 1.0,
+        "ndcg_at_10": 1.0,
+        "mean_relevant_items": 88.135
+      },
+      "bm25_relative_change": {
+        "mrr": -0.025000000000000022,
+        "ndcg_at_10": -0.025000000000000022
+      }
+    }
+  },
+  "sources": {
+    "quality": {
+      "path": "docs/results/search_test_full.json",
+      "sha256": "8e181809b62a0320a667d9f2838180f9379ad9f85b90562eb7b67ba8fafb24b9"
+    },
+    "latency": {
+      "path": "docs/results/search_latency_full.json",
+      "sha256": "af5a86c1886a650d12604797b1e6ea153123ac88f726f14e742445a0997b0f8f"
+    },
+    "valid_selection": {
+      "path": "docs/results/search_valid_full.json",
+      "sha256": "219dc3c472a76504e70dc5a3b5f75cc485e65d88220ce98bdb18d1e356dad10b"
+    },
+    "http_recheck": {
+      "path": "docs/results/experiments/A/search_http_recheck_full.json",
+      "sha256": "8e536e11612f5d6c2f58105cf3568abd80900c7c57c6f3a7fc615d17f82240e5"
+    }
+  },
+  "checks": {
+    "json_and_multipart_api": "PASS",
+    "invalid_inputs_422": "PASS",
+    "real_http_serial_benchmark": "PASS",
+    "valid_only_selection": "PASS"
+  },
+  "query_count": 600,
+  "eligible_catalog": 48872,
+  "global_system_acceptance": "UNMEASURED",
+  "limitations": [
+    "synthetic observable-attribute queries, not real shopper relevance",
+    "BM25 performs better on synthetic text/hybrid queries; negative changes are retained",
+    "image BM25 is not applicable",
+    "full recommendation and four-service Docker reproduction remain unmeasured"
+  ]
+}

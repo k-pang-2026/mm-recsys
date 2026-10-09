@@ -1,0 +1,35 @@
+{
+  "status": "COMPLETE",
+  "fingerprint": "7c7dfab7f7e0d1a32419bec24a5cc427a35291568f52e9e918b60e6b4297a577",
+  "identity": {
+    "version": 1,
+    "embedding_fingerprint": "269036d55b67d7034f53cd6dfe96740925103693126af9dce84753470016e447",
+    "ids_fingerprint": "bab494a7921a3cdb67629a82025f07ff180518f5bfccd6252094a0bbc3426608",
+    "faiss": {
+      "type": "HNSW",
+      "metric": "inner_product",
+      "M": 32,
+      "ef_construction": 200,
+      "ef_search": 128,
+      "threads": 4,
+      "nlist": 256,
+      "m": 16,
+      "nbits": 8,
+      "nprobe": 16
+    },
+    "fusion": {
+      "text_weight": 0.5,
+      "image_weight": 0.5
+    },
+    "seed": 42,
+    "faiss_version": "1.9.0"
+  },
+  "count": 10000,
+  "projection_dim": 512,
+  "files": {
+    "item_ids.json": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+    "text.faiss": "898942da7a801d60d606c10a540c9f51cb3d9e95d2c915b3eb832c8804df7efe",
+    "image.faiss": "a112fac73a210e062aab8c8cd0362c40fb88cd9a46991855ca48dc36b797b47b",
+    "hybrid.faiss": "176fe5a1773524c2178270858eb3c08937df3412492b8ee0f7904022cd4f4b05"
+  }
+}
