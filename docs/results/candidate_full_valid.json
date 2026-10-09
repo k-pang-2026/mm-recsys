@@ -1,0 +1,386 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "contract": {
+    "version": "fixed-origin-v1",
+    "split": "valid",
+    "cutoff": "2025-12-25T23:59:57.408000+00:00",
+    "k": 300,
+    "truth": "unique cart/purchase product IDs in evaluation interval; unavailable retained",
+    "catalog": "all products registered <= cutoff",
+    "history": "events strictly < cutoff; frozen",
+    "aggregation": "macro_user; all nonempty-target users",
+    "empty_target_users": "reported; excluded from mean",
+    "exclude_purchased": false,
+    "model": "metadata-only Two Tower; no item-ID residual",
+    "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "evaluation_fingerprint": "d113414c79f45fc49489e093faf6baeb8a5b7c3fab56deaa7edf1519b4379093"
+  },
+  "exact_two_tower": {
+    "recall_at_300": 0.7459132449478697,
+    "macro_users": 7769,
+    "empty_target_users": 2231,
+    "average_truth_size": 1.3794568155489768,
+    "candidate_count_min": 300,
+    "candidate_count_max": 300,
+    "eligible_catalog": 48000,
+    "unavailable_truth_items": 78,
+    "rare_truth_items": 1084,
+    "new_truth_items": 78,
+    "repeated_purchase_truth_items": 1625,
+    "average_recall_upper_bound": 1.0,
+    "cohorts": {
+      "all": {
+        "users": 7769,
+        "recall_at_300": 0.7459132449478697
+      },
+      "cold": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "warm": {
+        "users": 7769,
+        "recall_at_300": 0.7459132449478697
+      },
+      "no_history": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "rare_target": {
+        "users": 1054,
+        "recall_at_300": 0.6192283364958887
+      },
+      "new_target": {
+        "users": 78,
+        "recall_at_300": 0.25213675213675213
+      },
+      "unavailable_target": {
+        "users": 78,
+        "recall_at_300": 0.25213675213675213
+      },
+      "repeat_purchase": {
+        "users": 1580,
+        "recall_at_300": 0.9086497890295359
+      }
+    }
+  },
+  "baselines": {
+    "train_popularity": {
+      "recall_at_300": 0.22812888831681472,
+      "macro_users": 7769,
+      "empty_target_users": 2231,
+      "average_truth_size": 1.3794568155489768,
+      "candidate_count_min": 300,
+      "candidate_count_max": 300,
+      "eligible_catalog": 48000,
+      "unavailable_truth_items": 78,
+      "rare_truth_items": 1084,
+      "new_truth_items": 78,
+      "repeated_purchase_truth_items": 1625,
+      "average_recall_upper_bound": 1.0,
+      "cohorts": {
+        "all": {
+          "users": 7769,
+          "recall_at_300": 0.22812888831681472
+        },
+        "cold": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "warm": {
+          "users": 7769,
+          "recall_at_300": 0.22812888831681472
+        },
+        "no_history": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "rare_target": {
+          "users": 1054,
+          "recall_at_300": 0.06214421252371916
+        },
+        "new_target": {
+          "users": 78,
+          "recall_at_300": 0.07264957264957264
+        },
+        "unavailable_target": {
+          "users": 78,
+          "recall_at_300": 0.07264957264957264
+        },
+        "repeat_purchase": {
+          "users": 1580,
+          "recall_at_300": 0.509493670886076
+        }
+      }
+    },
+    "observed_history_profile": {
+      "recall_at_300": 0.7648131462650707,
+      "macro_users": 7769,
+      "empty_target_users": 2231,
+      "average_truth_size": 1.3794568155489768,
+      "candidate_count_min": 300,
+      "candidate_count_max": 300,
+      "eligible_catalog": 48000,
+      "unavailable_truth_items": 78,
+      "rare_truth_items": 1084,
+      "new_truth_items": 78,
+      "repeated_purchase_truth_items": 1625,
+      "average_recall_upper_bound": 1.0,
+      "cohorts": {
+        "all": {
+          "users": 7769,
+          "recall_at_300": 0.7648131462650707
+        },
+        "cold": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "warm": {
+          "users": 7769,
+          "recall_at_300": 0.7648131462650707
+        },
+        "no_history": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "rare_target": {
+          "users": 1054,
+          "recall_at_300": 0.6212839974699557
+        },
+        "new_target": {
+          "users": 78,
+          "recall_at_300": 0.25213675213675213
+        },
+        "unavailable_target": {
+          "users": 78,
+          "recall_at_300": 0.25213675213675213
+        },
+        "repeat_purchase": {
+          "users": 1580,
+          "recall_at_300": 0.919620253164557
+        }
+      }
+    }
+  },
+  "model_sha256": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+  "bundle_meta": {
+    "contract": {
+      "version": "candidate-bundle-v1",
+      "directory": "models[/full]/v1.0",
+      "files": {
+        "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+        "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+        "item_ids.json": "canonical ordered public IDs, excludes PAD",
+        "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+        "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+        "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+      },
+      "history_inputs": [
+        "observed product IDs before timestamp",
+        "age_group",
+        "gender",
+        "past purchase category/brand distribution and price"
+      ],
+      "item_inputs": [
+        "category_l1",
+        "category_l2",
+        "category_l3",
+        "brand",
+        "color",
+        "style",
+        "price"
+      ],
+      "persona": false,
+      "item_id_residual": false,
+      "normalized": true,
+      "metric": "inner_product"
+    },
+    "scale": "full",
+    "dim": 64,
+    "model_version": "v1.0",
+    "retrieval": "HNSW inner_product; cutoff filtering and adaptive refill",
+    "best_epoch": 7,
+    "best_valid_recall_at_300": 0.7459132449478697,
+    "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "feature_fingerprint": "ef7e6023da73586cd7b2834491040c6fa245314d172b80c9457650742befa654",
+    "config_fingerprint": "74c8d74052b3b1d901d5e38f9322ef6e0544ce3af100a8d6b76b9255214d6906",
+    "training_spec": {
+      "dim": 64,
+      "history_n": 50,
+      "batch_size": 512,
+      "epochs": 20,
+      "patience": 3,
+      "learning_rate": 0.001,
+      "temperature": 0.1,
+      "negatives_per_positive": 4,
+      "loss": "sampled_softmax",
+      "positive_weights": {
+        "view": 0.2,
+        "cart": 0.6,
+        "purchase": 1.0
+      },
+      "faiss": {
+        "type": "HNSW",
+        "metric": "inner_product",
+        "M": 32,
+        "ef_search": 512
+      },
+      "embedding_dim": 16,
+      "hidden_dim": 128,
+      "weight_decay": 0.0001,
+      "threads": 4,
+      "num_workers": 0,
+      "history_pooling": "mean",
+      "item_id_residual": false,
+      "profile_categories": "category_l3",
+      "tiny_fit_steps": 160,
+      "tiny_fit_learning_rate": 0.01
+    },
+    "hashes": {
+      "two_tower.pt": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+      "feature_vocab_scalers.json": "b1a2377641b71422e38ef95141b6ac7882d8677e40a31b527d92b4d30ef0bad9",
+      "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+      "item_index.faiss": "b409816e8195cb49607f56bae753d707756a8c3d659d70fc638bf5d631148c9a",
+      "index_manifest.json": "443679ad155ca73d8f8a2c683c1ef0b459beafda47331968a2b65ed91249f7de"
+    }
+  },
+  "exact_flat_ip": {
+    "recall_at_300": 0.7459132449478697,
+    "macro_users": 7769,
+    "empty_target_users": 2231,
+    "average_truth_size": 1.3794568155489768,
+    "candidate_count_min": 300,
+    "candidate_count_max": 300,
+    "eligible_catalog": 48000,
+    "unavailable_truth_items": 78,
+    "rare_truth_items": 1084,
+    "new_truth_items": 78,
+    "repeated_purchase_truth_items": 1625,
+    "average_recall_upper_bound": 1.0,
+    "cohorts": {
+      "all": {
+        "users": 7769,
+        "recall_at_300": 0.7459132449478697
+      },
+      "cold": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "warm": {
+        "users": 7769,
+        "recall_at_300": 0.7459132449478697
+      },
+      "no_history": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "rare_target": {
+        "users": 1054,
+        "recall_at_300": 0.6192283364958887
+      },
+      "new_target": {
+        "users": 78,
+        "recall_at_300": 0.25213675213675213
+      },
+      "unavailable_target": {
+        "users": 78,
+        "recall_at_300": 0.25213675213675213
+      },
+      "repeat_purchase": {
+        "users": 1580,
+        "recall_at_300": 0.9086497890295359
+      }
+    }
+  },
+  "ann_two_tower": {
+    "recall_at_300": 0.7458488866005921,
+    "macro_users": 7769,
+    "empty_target_users": 2231,
+    "average_truth_size": 1.3794568155489768,
+    "candidate_count_min": 300,
+    "candidate_count_max": 300,
+    "eligible_catalog": 48000,
+    "unavailable_truth_items": 78,
+    "rare_truth_items": 1084,
+    "new_truth_items": 78,
+    "repeated_purchase_truth_items": 1625,
+    "average_recall_upper_bound": 1.0,
+    "cohorts": {
+      "all": {
+        "users": 7769,
+        "recall_at_300": 0.7458488866005921
+      },
+      "cold": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "warm": {
+        "users": 7769,
+        "recall_at_300": 0.7458488866005921
+      },
+      "no_history": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "rare_target": {
+        "users": 1054,
+        "recall_at_300": 0.6192283364958887
+      },
+      "new_target": {
+        "users": 78,
+        "recall_at_300": 0.25213675213675213
+      },
+      "unavailable_target": {
+        "users": 78,
+        "recall_at_300": 0.25213675213675213
+      },
+      "repeat_purchase": {
+        "users": 1580,
+        "recall_at_300": 0.9086497890295359
+      }
+    }
+  },
+  "ann_agreement_at_300": 0.9993555584159265,
+  "agreement_denominator": "exact IndexFlatIP top300 IDs, not future truth",
+  "agreement_users": 7769,
+  "boundary_ties": "FAISS top-k tie selection; public-ID order within returned ties",
+  "index_manifest": {
+    "version": "candidate-index-v1",
+    "type": "HNSWFlat",
+    "metric": "inner_product",
+    "normalized": true,
+    "dim": 64,
+    "ntotal": 50000,
+    "mapping": "FAISS label i -> item_ids.json[i] -> table row i+1",
+    "M": 32,
+    "ef_construction": 200,
+    "ef_search": 512,
+    "build_threads": 1,
+    "faiss_version": "1.9.0",
+    "model_sha256": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+    "feature_fingerprint": "ef7e6023da73586cd7b2834491040c6fa245314d172b80c9457650742befa654",
+    "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "config_fingerprint": "74c8d74052b3b1d901d5e38f9322ef6e0544ce3af100a8d6b76b9255214d6906",
+    "item_ids_sha256": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "vectors_sha256": "e98fdfc67b281ff47e28fe2270ee72a433aab34dc6e0aa85afa1d5222077e696",
+    "index_sha256": "b409816e8195cb49607f56bae753d707756a8c3d659d70fc638bf5d631148c9a",
+    "catalog_filter": "created_at <= request cutoff"
+  },
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "environment": {
+    "python": "3.12.13",
+    "torch": "2.6.0",
+    "numpy": "2.1.3",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "threads": 1,
+    "device": "cpu"
+  }
+}

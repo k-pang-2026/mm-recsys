@@ -1,0 +1,67 @@
+{
+  "step": "B3a",
+  "owner": "B",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m src.recommendation.diagnose_candidate --report docs/results/candidate_training_dev.json --output docs/results/candidate_diagnostics_dev.json",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "src/recommendation/features.py",
+    "src/recommendation/datasets.py",
+    "src/recommendation/two_tower.py",
+    "src/recommendation/train_two_tower.py",
+    "src/recommendation/candidate.py",
+    "src/recommendation/baselines.py",
+    "src/recommendation/eval_candidate.py",
+    "src/recommendation/diagnose_candidate.py",
+    "config/recommend.yaml",
+    "tests/test_two_tower.py",
+    "docs/recommend_report.md",
+    "docs/contributions/B.md",
+    "docs/results/candidate_training_dev.json",
+    "docs/results/candidate_dev_valid.json",
+    "docs/results/candidate_diagnostics_dev.json"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "0ee2907e9e1fc458ee1581c4b62dc00c1e633c189580d13afb43f07bf885c84f",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "src/recommendation/features.py": "2be600ee6cf1137123e98c74cf54e8938174069fad4b3a22182e177fb2ee02a2",
+    "src/recommendation/datasets.py": "d671fe9f74ebb2df412ebe60abb1e4fb75d04677d86e6b908b460f1fd082a85d",
+    "src/recommendation/two_tower.py": "d1fd64b7dc0398524476c5f0069f37b0fb96662a8443a7dd74bd96a087a1fdee",
+    "src/recommendation/train_two_tower.py": "74cdd2e01bca91cd21ec71a0521eaacfa1cdb2fff32cc8b836e840b1f12a87a8",
+    "src/recommendation/candidate.py": "25105a2363bbfb25be3abfbd04fac890bdc248d4af7ab9a19659fd5a723c84ca",
+    "src/recommendation/baselines.py": "ee4212555bb71173c93d0112f6252269ee5d1b81ab55c08689f6cf0269496ac1",
+    "src/recommendation/eval_candidate.py": "db3e381b23c7ac410af469234b12a8d6b42e5aad52e4ea6494c474de1e71edaf",
+    "src/recommendation/diagnose_candidate.py": "56bc152473e5cf5c4c83265e399e015e33d61802a985a0433d8f6bd0e3ea1940",
+    "config/recommend.yaml": "0f7fac508e9ac8725e263198a9287b4731803571f842f5eb6e6ca327e3a0213e",
+    "tests/test_two_tower.py": "50060a534754da704cf8681571d7bb58be2887573a6e15090e701530e8968836",
+    "docs/recommend_report.md": "c4cc878d26c7a365feebae0173d24a344526f8e64814b2295eafcb01b8ccfa81",
+    "docs/contributions/B.md": "4540b26af4dba0e6dd6ebea3dd855333b31578fb63ed73a27a755f47ee1ddf74",
+    "docs/results/candidate_training_dev.json": "26fc8fe9459138f1b2d13940d0ba64c481dc459db61ae98ecb943cdabaa58b5f",
+    "docs/results/candidate_dev_valid.json": "5f531ef459b163164ac258557e7d9e70c584ebbc07a707cf5bf68574f3e7ca29",
+    "docs/results/candidate_diagnostics_dev.json": "3ec2e0890bfdf3ef4b97f2b8b8babc53a6597e8699323dd9350ffd57a6bced12"
+  },
+  "commit_summary_ko": "시점 누출을 막는 투타워 학습과 전체 카탈로그 후보 평가 구현"
+}
