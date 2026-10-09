@@ -1,0 +1,248 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "dev",
+  "contract": {
+    "version": "fixed-origin-v1",
+    "split": "valid",
+    "cutoff": "2025-12-25T23:59:47.040000+00:00",
+    "k": 300,
+    "truth": "unique cart/purchase product IDs in evaluation interval; unavailable retained",
+    "catalog": "all products registered <= cutoff",
+    "history": "events strictly < cutoff; frozen",
+    "aggregation": "macro_user; all nonempty-target users",
+    "empty_target_users": "reported; excluded from mean",
+    "exclude_purchased": false,
+    "model": "metadata-only Two Tower; no item-ID residual",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "evaluation_fingerprint": "d113414c79f45fc49489e093faf6baeb8a5b7c3fab56deaa7edf1519b4379093"
+  },
+  "exact_two_tower": {
+    "recall_at_300": 0.8190661478599222,
+    "macro_users": 1542,
+    "empty_target_users": 458,
+    "average_truth_size": 1.3878080415045395,
+    "candidate_count_min": 300,
+    "candidate_count_max": 300,
+    "eligible_catalog": 9600,
+    "unavailable_truth_items": 19,
+    "rare_truth_items": 188,
+    "new_truth_items": 19,
+    "repeated_purchase_truth_items": 498,
+    "average_recall_upper_bound": 1.0,
+    "cohorts": {
+      "all": {
+        "users": 1542,
+        "recall_at_300": 0.8190661478599222
+      },
+      "cold": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "warm": {
+        "users": 1542,
+        "recall_at_300": 0.8190661478599222
+      },
+      "no_history": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "rare_target": {
+        "users": 181,
+        "recall_at_300": 0.6224677716390423
+      },
+      "new_target": {
+        "users": 19,
+        "recall_at_300": 0.3245614035087719
+      },
+      "unavailable_target": {
+        "users": 19,
+        "recall_at_300": 0.3245614035087719
+      },
+      "repeat_purchase": {
+        "users": 476,
+        "recall_at_300": 0.9411764705882354
+      }
+    }
+  },
+  "baselines": {
+    "train_popularity": {
+      "recall_at_300": 0.3028534370946822,
+      "macro_users": 1542,
+      "empty_target_users": 458,
+      "average_truth_size": 1.3878080415045395,
+      "candidate_count_min": 300,
+      "candidate_count_max": 300,
+      "eligible_catalog": 9600,
+      "unavailable_truth_items": 19,
+      "rare_truth_items": 188,
+      "new_truth_items": 19,
+      "repeated_purchase_truth_items": 498,
+      "average_recall_upper_bound": 1.0,
+      "cohorts": {
+        "all": {
+          "users": 1542,
+          "recall_at_300": 0.3028534370946822
+        },
+        "cold": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "warm": {
+          "users": 1542,
+          "recall_at_300": 0.3028534370946822
+        },
+        "no_history": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "rare_target": {
+          "users": 181,
+          "recall_at_300": 0.09944751381215469
+        },
+        "new_target": {
+          "users": 19,
+          "recall_at_300": 0.30701754385964913
+        },
+        "unavailable_target": {
+          "users": 19,
+          "recall_at_300": 0.30701754385964913
+        },
+        "repeat_purchase": {
+          "users": 476,
+          "recall_at_300": 0.5280112044817927
+        }
+      }
+    },
+    "observed_history_profile": {
+      "recall_at_300": 0.819390402075227,
+      "macro_users": 1542,
+      "empty_target_users": 458,
+      "average_truth_size": 1.3878080415045395,
+      "candidate_count_min": 300,
+      "candidate_count_max": 300,
+      "eligible_catalog": 9600,
+      "unavailable_truth_items": 19,
+      "rare_truth_items": 188,
+      "new_truth_items": 19,
+      "repeated_purchase_truth_items": 498,
+      "average_recall_upper_bound": 1.0,
+      "cohorts": {
+        "all": {
+          "users": 1542,
+          "recall_at_300": 0.819390402075227
+        },
+        "cold": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "warm": {
+          "users": 1542,
+          "recall_at_300": 0.819390402075227
+        },
+        "no_history": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "rare_target": {
+          "users": 181,
+          "recall_at_300": 0.6187845303867403
+        },
+        "new_target": {
+          "users": 19,
+          "recall_at_300": 0.3771929824561403
+        },
+        "unavailable_target": {
+          "users": 19,
+          "recall_at_300": 0.3771929824561403
+        },
+        "repeat_purchase": {
+          "users": 476,
+          "recall_at_300": 0.9446778711484594
+        }
+      }
+    }
+  },
+  "model_sha256": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+  "bundle_meta": {
+    "contract": {
+      "version": "candidate-bundle-v1",
+      "directory": "models[/full]/v1.0",
+      "files": {
+        "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+        "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+        "item_ids.json": "canonical ordered public IDs, excludes PAD",
+        "meta.json": "model/feature/config/data hashes, dimensions and cutoff"
+      },
+      "planned_B3b": {
+        "item_index.faiss": "HNSW inner-product, aligned with item_ids.json"
+      },
+      "history_inputs": [
+        "observed product IDs before timestamp",
+        "age_group",
+        "gender",
+        "past purchase category/brand distribution and price"
+      ],
+      "item_inputs": [
+        "category_l1",
+        "category_l2",
+        "category_l3",
+        "brand",
+        "color",
+        "style",
+        "price"
+      ],
+      "persona": false,
+      "item_id_residual": false,
+      "normalized": true,
+      "metric": "inner_product"
+    },
+    "scale": "dev",
+    "dim": 64,
+    "model_version": "v1.0",
+    "retrieval": "exact; ANN index not built until B3b",
+    "best_epoch": 8,
+    "best_valid_recall_at_300": 0.8190661478599222,
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "catalog_sha256": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "feature_fingerprint": "b075bf48d6124d7ad0124e458ebe6c23c14398bf4b88f8417b31754ac280f12a",
+    "config_fingerprint": "74c8d74052b3b1d901d5e38f9322ef6e0544ce3af100a8d6b76b9255214d6906",
+    "training_spec": {
+      "dim": 64,
+      "history_n": 50,
+      "batch_size": 512,
+      "epochs": 20,
+      "patience": 3,
+      "learning_rate": 0.001,
+      "temperature": 0.1,
+      "negatives_per_positive": 4,
+      "loss": "sampled_softmax",
+      "positive_weights": {
+        "view": 0.2,
+        "cart": 0.6,
+        "purchase": 1.0
+      },
+      "faiss": {
+        "type": "HNSW",
+        "metric": "inner_product",
+        "M": 32,
+        "ef_search": 512
+      },
+      "embedding_dim": 16,
+      "hidden_dim": 128,
+      "weight_decay": 0.0001,
+      "threads": 4,
+      "num_workers": 0,
+      "history_pooling": "mean",
+      "item_id_residual": false,
+      "profile_categories": "category_l3",
+      "tiny_fit_steps": 160,
+      "tiny_fit_learning_rate": 0.01
+    },
+    "hashes": {
+      "two_tower.pt": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+      "feature_vocab_scalers.json": "a656cc182b684f1899dd2445f17dfc4215b6b95f1bd424b01d4ea07e96b0db66",
+      "item_ids.json": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb"
+    }
+  }
+}
