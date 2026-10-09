@@ -1,0 +1,28 @@
+{
+  "selected_on": "valid requests only",
+  "rule": "minimum worst-mode HTTP p95 among 1/2/4 threads",
+  "selected_threads": 1,
+  "candidates": [
+    {
+      "threads": 1,
+      "max_mode_p95_ms": 178.25088519944075,
+      "target_pass": true,
+      "source": "docs/results/experiments/A/search_latency_threads1_full.json",
+      "sha256": "af5a86c1886a650d12604797b1e6ea153123ac88f726f14e742445a0997b0f8f"
+    },
+    {
+      "threads": 2,
+      "max_mode_p95_ms": 206.9860972494098,
+      "target_pass": false,
+      "source": "docs/results/experiments/A/search_latency_threads2_full.json",
+      "sha256": "d314c9181cc52d4e31b16242e949583c0b50d4dc07487cc5587d8f61a5b0d0d7"
+    },
+    {
+      "threads": 4,
+      "max_mode_p95_ms": 276.78367500016054,
+      "target_pass": false,
+      "source": "docs/results/experiments/A/search_latency_threads4_full.json",
+      "sha256": "2592beddb70ebe8c58817635abbde87bb288ec31a71dce1c5164a374ef0bce0d"
+    }
+  ]
+}
