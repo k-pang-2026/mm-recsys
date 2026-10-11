@@ -36,9 +36,11 @@ flowchart LR
   Rerank --> API
   API --> Dashboard[C: Evaluation / A-B / Streamlit]
   Dataset --> CT[C: Continuous Training]
-  API --> Docker[A: Docker / 컨테이너 성능 검증]
+  API --> Docker[A B10: Docker / 컨테이너 성능 검증]
   Dashboard --> Docker
   CT --> Docker
+  Docker --> Submission[A B11: 제출 문서 / 제출 검증]
+  Submission --> Integration[A INTEGRATE: 최종 통합 / full 검증]
 ```
 
 환경을 직접 실행할 경우 한 명령으로 준비한다.

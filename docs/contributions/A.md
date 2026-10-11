@@ -93,3 +93,6 @@ C의 평가 코드와 원본 A/B·평가·CT 측정은 보존하며 A B11이 이
 이전 Docker 이관 검증은 [v5 gate 보존본](../results/experiments/A/workflow_docker_transfer_v5.json)에 남겼다.
 현재 변경의 실제 검증은 [WORKFLOW gate](../results/gates/WORKFLOW.json)를 따른다.
 B10/B11 구현이나 최종 full 품질 측정을 수행했다는 의미는 아니다.
+
+README 다이어그램에도 A B10 → A B11 → A INTEGRATE의 담당과 순서를 반영했다.
+다이어그램 보완 전 역할 이관 검증은 [v6 gate 보존본](../results/experiments/A/workflow_submission_transfer_v6.json)에 남겼다.

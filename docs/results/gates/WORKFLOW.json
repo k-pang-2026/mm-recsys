@@ -26,6 +26,10 @@
       "exit_code": 0
     },
     {
+      "command": "git show 5c3a3510d7b5d4adaa6abb102c6af0ecd350bbce:docs/results/gates/WORKFLOW.json | cmp - docs/results/experiments/A/workflow_submission_transfer_v6.json",
+      "exit_code": 0
+    },
+    {
       "command": ".venv/bin/python scripts/team.py status",
       "exit_code": 0
     },
@@ -52,21 +56,22 @@
     "scripts/team.py",
     "tests/test_pull_request.py",
     "tests/test_team_workflow.py",
-    "docs/results/experiments/A/workflow_docker_transfer_v5.json"
+    "docs/results/experiments/A/workflow_docker_transfer_v5.json",
+    "docs/results/experiments/A/workflow_submission_transfer_v6.json"
   ],
   "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
   "config_fingerprint": "ee37947102e6d9c3885c9b54ad8f4b27e333915990a98a9a13080bf7cb4f7d3a",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
     "AGENTS.md": "93bb826bf3ea20cd0f3fb9276e0e708961144cee074078f53b537708f2607935",
-    "README.md": "a5eac5d6cdd99945469be910f0cfbbe59faf45b169f688c87226706a83579f73",
+    "README.md": "f1caedd93e970731085c02fd12708816f57b8ebd6f31c21ee741a5bd30f95796",
     "ai_step_prompts_optimized.md": "6e7e0256f6d6a77a851791a6d779cfc8dd4847f75bdf3cc607eae8da7f7068e2",
     "config/team_workflow.yaml": "4d379c215f16a1e5dde890b2b799e9c82b91d1ef59e30bcf2f18e7647e2dbcf0",
     "docs/ai_step_prompts.md": "6e7e0256f6d6a77a851791a6d779cfc8dd4847f75bdf3cc607eae8da7f7068e2",
     "docs/codex_quickstart.md": "cf8724d14c0a6a4f40d1a1ccffdfacf8d8804412a3fcd8395afd779f155fa300",
     "docs/commit_convention.md": "775a049b1d580a86d6845b63e34a69bf12bbfd29ed6634655160d9435e565c54",
     "docs/contracts.md": "d19634dd6abdff86250c779b75766f88a7818f1dc2255361dc8080b3b58bc66c",
-    "docs/contributions/A.md": "131cde69363434b646d0d1360a7056058514835cd0adf1aa55dd6eddf1852225",
+    "docs/contributions/A.md": "740252ba05426dbfad535c603ec29673b6085548c1d14e33335ae8ba276a18d4",
     "docs/pr_workflow.md": "be0ccfa7fb8a1af26b58edfb3c62b96c73ea37cafc4026290a25107d6ac8032d",
     "docs/setup_analysis.md": "eadadd7c1892aaa36eaef0b41c4b721cbab76b76a6cfa2b7d5b37eaffc973fa0",
     "docs/team_workflow.md": "a700b0e2a5199c78e140970bfbcb0b73878933c3f05115ce1d96bdc0cba3f72c",
@@ -75,7 +80,8 @@
     "scripts/team.py": "ad7f7a678c71d27182ffcc8a5e67d0ab765bc2f8106c4860162eaaa59a76fb94",
     "tests/test_pull_request.py": "29e669aba59f37cdd1c65afc35e3e116f123765c96e42c3edde7f5db168ac2e0",
     "tests/test_team_workflow.py": "74ffc17bf83ad38e6e624f3607c3eb6d31f61126873edc11ec2db3284119609f",
-    "docs/results/experiments/A/workflow_docker_transfer_v5.json": "fd0fd7a60a806cf7c9da9a660c5c9f0f0c1d7b25c1d2eb24d49602445539346b"
+    "docs/results/experiments/A/workflow_docker_transfer_v5.json": "fd0fd7a60a806cf7c9da9a660c5c9f0f0c1d7b25c1d2eb24d49602445539346b",
+    "docs/results/experiments/A/workflow_submission_transfer_v6.json": "07953f14fd0d5f336d443e3acb99a98d6e757754546dc1f008abef9f5b88f1ba"
   },
-  "commit_summary_ko": "제출 문서·검증을 A로 이관하고 Docker 이후 통합 순서 정비"
+  "commit_summary_ko": "제출 문서·검증을 A로 이관하고 README 다이어그램과 통합 순서 정비"
 }
