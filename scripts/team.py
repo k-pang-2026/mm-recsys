@@ -55,7 +55,7 @@ def prompt(role: str, step: str) -> str:
 AGENTS.md, docs/codex_quickstart.md, config/team_workflow.yaml, docs/contracts.md,
 ai_step_prompts_optimized.md의 A와 해당 단계 요구사항을 먼저 읽어라.
 config/team_workflow.yaml의 해당 단계 branch(없으면 역할 branch)에서 이전 산출물과 데이터 fingerprint를 확인하라.
-단계별 paths가 있으면 그 소유권을 우선 적용하라. B9 플랫폼 PR → A B10 Docker PR → C B11 제출 PR 순서로 main에 병합하라.
+단계별 paths가 있으면 그 소유권을 우선 적용하라. C B9 플랫폼 PR → A B10 Docker PR → A B11 제출 PR → A INTEGRATE 순서로 main에 병합하라.
 수동 코드 작성 없이 네가 구현·의존성 검사·실제 검증·원인 수정·valid 튜닝을 수행하라.
 완료되면 docs/results/gates/{step}.json과 docs/contributions/{role}.md를 실제 근거로 작성하라.
 docs/commit_convention.md를 읽고 실제 diff의 한국어 요약을 record_gate.py --summary에 넣어라.

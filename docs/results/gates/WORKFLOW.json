@@ -18,7 +18,11 @@
       "exit_code": 0
     },
     {
-      "command": "env -u SCALE PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests",
+      "command": "env -u SCALE PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests/test_team_workflow.py tests/test_pull_request.py tests/test_setup_env.py",
+      "exit_code": 0
+    },
+    {
+      "command": "git show f6fba1ff2e14097bf3aeb3c4c62383e3ccc8c898:docs/results/gates/WORKFLOW.json | cmp - docs/results/experiments/A/workflow_docker_transfer_v5.json",
       "exit_code": 0
     },
     {
@@ -41,37 +45,37 @@
     "docs/contracts.md",
     "docs/contributions/A.md",
     "docs/pr_workflow.md",
-    "docs/search_report.md",
     "docs/setup_analysis.md",
     "docs/team_workflow.md",
     "scripts/pull_request.py",
     "scripts/step_git.py",
     "scripts/team.py",
     "tests/test_pull_request.py",
-    "tests/test_team_workflow.py"
+    "tests/test_team_workflow.py",
+    "docs/results/experiments/A/workflow_docker_transfer_v5.json"
   ],
   "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
-  "config_fingerprint": "4995f9efb79072b032cb052d56cadbfd5648319804748fdc0e1bfb9dc5b95324",
+  "config_fingerprint": "ee37947102e6d9c3885c9b54ad8f4b27e333915990a98a9a13080bf7cb4f7d3a",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
-    "AGENTS.md": "5e69302687db439320c46d4a7ad4291252f28b662296236c4ac6fbee8ef01067",
-    "README.md": "5694e7f9be0bbc113b39a39cebe0fb4e45b0278ed5317a974fd0aab08da44e1a",
-    "ai_step_prompts_optimized.md": "a7d30f95f0ed6e747b00f902ecbcf6e35bebe37d2522caae1865ed972207925b",
-    "config/team_workflow.yaml": "428b5697c6cf55033bce21ff2bed9bc053cd3b208c06e4051eca601cecdfcef5",
-    "docs/ai_step_prompts.md": "a7d30f95f0ed6e747b00f902ecbcf6e35bebe37d2522caae1865ed972207925b",
-    "docs/codex_quickstart.md": "301977729dc053959fac844f384fd79aff4782f0b80320a8ae46b29ca2c9a771",
-    "docs/commit_convention.md": "c411704c0db23d6495ebcfa5cde3af58315c29747a48d566b68f7c8e45a5f80b",
-    "docs/contracts.md": "f7732ce0f7653b3a30ba0874d9feb052ceb954e71e2bfce2d879c89a1ba2a36b",
-    "docs/contributions/A.md": "5608cc62a5c12899463feca6861f39deedf0f60e360cc1f016695ae347e3086a",
-    "docs/pr_workflow.md": "e023218ec5bd383fc237b357db779ce56ee2aaab33dad3aec68d43c4683e08f5",
-    "docs/search_report.md": "e7346ef9822a41419b5577279e3c761ac74b76e99c8c775713ee908ff21cf206",
-    "docs/setup_analysis.md": "9ea44b1d64feecb8f49ae0d05eb5dd843793f902a2074ee62f9187810ac23ae9",
-    "docs/team_workflow.md": "a3c4a3ed3773a3ee3cca26067e46dbb71c54df15882c6cdb506d8e2c325a4630",
-    "scripts/pull_request.py": "cf450ab52f896ec51691604c0aa908e9045938130e90233ee3e2d8800db8a1b6",
-    "scripts/step_git.py": "51f6baa2895364d94014c1663d8c6530787059cf71ee9f367890df1d3ca19b80",
-    "scripts/team.py": "7b1ecf85dd0059c8f35bd2d84f17ee928355b26abee3eb67048b2784b868b836",
-    "tests/test_pull_request.py": "ee6394ebb16dfc60919c8c379615f3761be2dddc60898a179d68455282eafc35",
-    "tests/test_team_workflow.py": "1ed8d672e2ca4a568953a90831966ca83a2e55c695ab6f6ac1a2466a1557ced3"
+    "AGENTS.md": "93bb826bf3ea20cd0f3fb9276e0e708961144cee074078f53b537708f2607935",
+    "README.md": "a5eac5d6cdd99945469be910f0cfbbe59faf45b169f688c87226706a83579f73",
+    "ai_step_prompts_optimized.md": "6e7e0256f6d6a77a851791a6d779cfc8dd4847f75bdf3cc607eae8da7f7068e2",
+    "config/team_workflow.yaml": "4d379c215f16a1e5dde890b2b799e9c82b91d1ef59e30bcf2f18e7647e2dbcf0",
+    "docs/ai_step_prompts.md": "6e7e0256f6d6a77a851791a6d779cfc8dd4847f75bdf3cc607eae8da7f7068e2",
+    "docs/codex_quickstart.md": "cf8724d14c0a6a4f40d1a1ccffdfacf8d8804412a3fcd8395afd779f155fa300",
+    "docs/commit_convention.md": "775a049b1d580a86d6845b63e34a69bf12bbfd29ed6634655160d9435e565c54",
+    "docs/contracts.md": "d19634dd6abdff86250c779b75766f88a7818f1dc2255361dc8080b3b58bc66c",
+    "docs/contributions/A.md": "131cde69363434b646d0d1360a7056058514835cd0adf1aa55dd6eddf1852225",
+    "docs/pr_workflow.md": "be0ccfa7fb8a1af26b58edfb3c62b96c73ea37cafc4026290a25107d6ac8032d",
+    "docs/setup_analysis.md": "eadadd7c1892aaa36eaef0b41c4b721cbab76b76a6cfa2b7d5b37eaffc973fa0",
+    "docs/team_workflow.md": "a700b0e2a5199c78e140970bfbcb0b73878933c3f05115ce1d96bdc0cba3f72c",
+    "scripts/pull_request.py": "9815f93cb60dda4f14c9b464fa58d0c9d401dbeee70ba14cca02d06de3892294",
+    "scripts/step_git.py": "81c96943d581190d83be67a6bacb3706e57e8d60cbadab9f1d24855d00f27942",
+    "scripts/team.py": "ad7f7a678c71d27182ffcc8a5e67d0ab765bc2f8106c4860162eaaa59a76fb94",
+    "tests/test_pull_request.py": "29e669aba59f37cdd1c65afc35e3e116f123765c96e42c3edde7f5db168ac2e0",
+    "tests/test_team_workflow.py": "74ffc17bf83ad38e6e624f3607c3eb6d31f61126873edc11ec2db3284119609f",
+    "docs/results/experiments/A/workflow_docker_transfer_v5.json": "fd0fd7a60a806cf7c9da9a660c5c9f0f0c1d7b25c1d2eb24d49602445539346b"
   },
-  "commit_summary_ko": "Docker 담당을 A로 이관하고 역할·소유권·PR 인계 순서 정비"
+  "commit_summary_ko": "제출 문서·검증을 A로 이관하고 Docker 이후 통합 순서 정비"
 }

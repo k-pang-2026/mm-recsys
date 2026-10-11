@@ -213,7 +213,7 @@ def test_preview_is_local_and_contains_quality_limits(tmp_path,monkeypatch):
 
 @pytest.mark.parametrize('step,role,scope,draft',[
     ('B8','C','platform',True),('B9','C','ct',False),('B10','A','docker',False),
-    ('B11','C','platform',False),('WORKFLOW','A','shared',False),
+    ('B11','A','platform',False),('WORKFLOW','A','shared',False),
 ])
 def test_handoff_prs_have_distinct_completed_feature_titles(tmp_path,monkeypatch,step,role,scope,draft):
     import scripts.pull_request as pr
@@ -227,8 +227,11 @@ def test_handoff_prs_have_distinct_completed_feature_titles(tmp_path,monkeypatch
     monkeypatch.setattr(pr,'git',git)
     value={'commands':[{'command':'fixture validation','exit_code':0}],'acceptance':'UNMEASURED',
            'status':'PASS','scale':'dev','data_fingerprint':'fixture'}
+    if step=='WORKFLOW':value['commit_summary_ko']='제출 문서 담당을 A로 이관하고 단계 인계 정비'
     result=render(tmp_path,step,role,plan,value)
     assert result['draft'] is draft and result['head']==branch
     assert f'({scope}):' in result['title']
     assert len(result['title'])<=72
     if step=='B10':assert '검색' not in result['title']
+    if step=='B11':assert result['head']=='feat/A/submission'
+    if step=='WORKFLOW':assert result['title']=='chore(shared): '+value['commit_summary_ko']

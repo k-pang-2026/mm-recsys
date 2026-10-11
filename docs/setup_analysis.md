@@ -25,7 +25,7 @@ traceback 원인이나 Recall 개선 실측을 확보했다는 뜻은 아니다.
 | p.5 | Redis 실시간 피처/≤10ms, Compose 일괄 실행, 독립 API/대시보드 컨테이너 | B6 / C, B10 / A |
 | p.5 | ≥2 A/B 전략, Chi-square **또는** Z-test, p-value/95%CI, 대시보드 | B7,B8 / C |
 | p.5 | HitRate/CTR 모니터·알림·로그량 재학습·모델 버전 | B9 / C |
-| pp.1,5–6,9 | README 아키텍처/실행, docs 실험 리포트, GitHub URL, Public 또는 평가자 접근 | B11 + 단계별 Git workflow / C |
+| pp.1,5–6,9 | README 아키텍처/실행, docs 실험 리포트, GitHub URL, Public 또는 평가자 접근 | B11 + 단계별 Git workflow / A |
 | pp.13–14 | 팀원별 역할 및 개인 주요 기여 명시 | team_workflow/contributions/README / A,B,C |
 | pp.9–10 | CPU 가능, 로컬 완결, Docker 자원 조건, warm-up10/serial100/p95, CPU 허용오차 별도 기재 | A2 공통 / B10 A |
 | pp.6–7 | Query理解/MMR/ONNX/Thompson 등 **선택** 보너스 | B12, 자동 실행 금지 |
