@@ -111,9 +111,13 @@ def test_docker_handoff_requires_merged_platform_and_limits_file_ownership():
     plan=team.workflow(ROOT)
     assert all(OWNERS[step]==value['owner'] for step,value in plan['stages'].items())
     assert 'B10' in plan['order']['A'] and 'B10' not in plan['order']['C']
+    assert plan['order']['A'][-3:]==['B10','B11','INTEGRATE']
+    assert plan['order']['C']==['B6','B7','B8','B9']
     assert 'WORKFLOW' not in sum(plan['order'].values(),[])
     for step in ('B9','B10','B11'):assert plan['stages'][step]['pr_ready']
     assert plan['stages']['B10']['branch']=='feat/A/docker'
+    assert plan['stages']['B11']['owner']=='A'
+    assert plan['stages']['B11']['branch']=='feat/A/submission'
     assert set(plan['stages']['B10']['requires'])=={'B2b','B5','B9'}
     assert set(plan['stages']['B11']['requires'])=={'B9','B10'}
     assert 'B10' in plan['stages']['INTEGRATE']['requires']
@@ -121,7 +125,12 @@ def test_docker_handoff_requires_merged_platform_and_limits_file_ownership():
     for path in ('docker/Dockerfile.api','docker-compose.yml','.dockerignore','scripts/prepare_all.sh',
                  'scripts/smoke_test.sh','tests/test_docker.py','docs/results/latency.json'):
         assert owns('A','B10',path) and not owns('C','B9',path)
-    assert owns('A','B10','README.md') and owns('C','B11','README.md')
+    assert owns('A','B10','README.md') and owns('A','B11','README.md')
+    for path in ('README.md','docs/submission/checklist.md','docs/ab_test_report.md','docs/data_sources.md',
+                 'scripts/check_submission.py','tests/test_submission.py','docs/results/final_acceptance.json'):
+        assert owns('A','B11',path) and not owns('C','B9',path)
+    for path in ('src/evaluation/run_all.py','src/serving/main.py','docs/results/ab_test.json','docs/results/ct_log.jsonl'):
+        assert owns('C','B9',path) and not owns('A','B11',path)
     assert not owns('A','B10','src/serving/main.py')
     assert not owns('A','B10','src/search/service.py')
     assert not owns('A','B10','scripts/train_all.py')
@@ -131,7 +140,7 @@ def test_docker_handoff_requires_merged_platform_and_limits_file_ownership():
 
 
 def test_docker_and_submission_handoff_in_independent_clones(tmp_path):
-    """A cannot consume an unmerged B9; C cannot consume an unmerged B10."""
+    """A requires merged B9, then merged B10/B11 even when A owns all later stages."""
     remote=tmp_path/'origin.git';seed=tmp_path/'seed'
     def command(*args,cwd=tmp_path):
         return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
@@ -155,7 +164,7 @@ def test_docker_and_submission_handoff_in_independent_clones(tmp_path):
     assert team.select_stage(a,'A',plan)=='B10'
     team.prepare(c,'C','B6',plan);record(c,['B6','B7','B8','B9'])
     command('git','push','origin','feat/C/platform',cwd=c)
-    assert team.select_stage(c,'C',plan)=='B11'
+    assert team.select_stage(c,'C',plan) is None
     with pytest.raises(ValueError,match='B9 PR not merged'):team.prepare(a,'A','B10',plan)
     assert not command('git','branch','--list','feat/A/docker',cwd=a).strip()
     reviewed_merge('feat/C/platform')
@@ -163,16 +172,19 @@ def test_docker_and_submission_handoff_in_independent_clones(tmp_path):
     assert command('git','branch','--show-current',cwd=a).strip()=='feat/A/docker'
     assert team.dependencies(a,'B10',plan)==[]
     record(a,['B10']);command('git','push','origin','feat/A/docker',cwd=a)
-    with pytest.raises(ValueError,match='B10 PR not merged'):team.prepare(c,'C','B11',plan)
-    assert not (c/'docs/results/gates/B10.json').exists()
+    assert team.select_stage(a,'A',plan)=='B11'
+    with pytest.raises(ValueError,match='B10 PR not merged'):team.prepare(a,'A','B11',plan)
+    assert not command('git','branch','--list','feat/A/submission',cwd=a).strip()
     reviewed_merge('feat/A/docker')
-    team.prepare(c,'C','B11',plan)
-    assert command('git','branch','--show-current',cwd=c).strip()=='feat/C/platform'
-    assert team.dependencies(c,'B11',plan)==[]
-    assert (c/'docs/results/gates/B10.json').exists()
-    record(c,['B11']);command('git','push','origin','feat/C/platform',cwd=c)
+    team.prepare(a,'A','B11',plan)
+    assert command('git','branch','--show-current',cwd=a).strip()=='feat/A/submission'
+    assert team.dependencies(a,'B11',plan)==[]
+    assert (a/'docs/results/gates/B10.json').exists()
+    record(a,['B11']);command('git','push','origin','feat/A/submission',cwd=a)
+    assert team.select_stage(a,'A',plan)=='INTEGRATE'
     with pytest.raises(ValueError,match='B11 PR not merged'):team.prepare(a,'A','INTEGRATE',plan)
-    reviewed_merge('feat/C/platform')
+    assert not command('git','branch','--list','feat/integration',cwd=a).strip()
+    reviewed_merge('feat/A/submission')
     team.prepare(a,'A','INTEGRATE',plan)
     assert command('git','branch','--show-current',cwd=a).strip()=='feat/integration'
     assert team.dependencies(a,'INTEGRATE',plan)==[]
@@ -182,6 +194,9 @@ def test_docker_and_submission_handoff_in_independent_clones(tmp_path):
     ('B10','A','README.md',True),('B10','A','src/serving/main.py',False),
     ('B9','C','docker-compose.yml',False),('WORKFLOW','A','config/team_workflow.yaml',True),
     ('WORKFLOW','A','docker-compose.yml',False),
+    ('B11','A','README.md',True),('B11','A','scripts/check_submission.py',True),
+    ('B11','A','docs/results/ab_test.json',False),('B11','A','src/evaluation/run_all.py',False),
+    ('B9','C','docs/submission/checklist.md',False),
 ])
 def test_commit_helper_enforces_stage_scope(tmp_path,monkeypatch,step,role,path,allowed):
     import scripts.step_git as helper
@@ -206,8 +221,9 @@ def test_commit_helper_enforces_stage_scope(tmp_path,monkeypatch,step,role,path,
         with pytest.raises(ValueError,match='ownership'):helper.main()
 
 
-def test_old_c_docker_assignment_is_rejected_before_git_access(monkeypatch):
+@pytest.mark.parametrize('step',['B10','B11'])
+def test_old_c_docker_or_submission_assignment_is_rejected_before_git_access(monkeypatch,step):
     import scripts.step_git as helper
-    monkeypatch.setattr(sys,'argv',['step_git.py','--step','B10','--role','C','--mode','check'])
+    monkeypatch.setattr(sys,'argv',['step_git.py','--step',step,'--role','C','--mode','check'])
     monkeypatch.setattr(helper,'git',lambda *args,**kwargs:pytest.fail('incorrect role must fail before Git access'))
     with pytest.raises(ValueError,match='owner is A'):helper.main()

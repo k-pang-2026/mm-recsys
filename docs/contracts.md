@@ -76,12 +76,14 @@ data/split/model 경로까지 전환한다. dev 데이터에 full을 덮어쓰�
 A는 B10에서 Docker/Compose, artifacts 준비·smoke orchestration, 컨테이너 성능 검증을 담당한다.
 B2b/B5/B9 PR이 병합된 main의 서비스 factory, 학습 CLI와 Redis/CT 인터페이스를 사용한다.
 C의 B9 CT·서빙 코드를 직접 수정하지 않으며, 필요한 public interface 수정은 담당 PR로 반영한다.
-README Docker 절차는 A B10에서 작성하고, C B11은 B10 PR을 가져온 뒤 최종 제출 문서를 완성한다.
-최종 acceptance JSON은 C B11이 A의 Docker 측정 근거를 해시와 함께 집계하고 A INTEGRATE가 재검증한다.
+README Docker 절차는 A B10에서 작성하고 A B11이 B10 PR 병합 후 최종 제출 문서를 완성한다.
+A B11은 B/C의 모델·평가·A/B·CT 결과와 A의 Docker 측정 근거를 해시와 함께 집계한다.
+제출 문서·검사 스크립트·final 결과는 A 소유이며 C의 평가 코드와 원본 측정은 C 소유로 유지한다.
+A INTEGRATE가 전체 시스템과 최종 acceptance JSON을 재검증한다.
 
 ## 최종 acceptance JSON
 
-C의 `docs/results/final_acceptance.json`은 `scale: full`, `status`, `data_fingerprint`,
+A B11의 `docs/results/final_acceptance.json`은 `scale: full`, `status`, `data_fingerprint`,
 `metrics`, `checks`를 포함한다. `metrics`의 key는 config.targets와 동일하며
 `candidate_count`도 포함한다. 각 값은 `{value, split, status, source, sha256}`이다.
 품질/후보 수는 `split: test`, p95 지연은 `split: benchmark`; `source`는 실제 결과 파일의

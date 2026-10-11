@@ -15,7 +15,8 @@
    브랜치는 `feat/A/search`, `feat/B/recommendation`, `feat/C/platform`을 유지한다.
    SHARED는 `chore/shared-foundation` → main PR로 먼저 병합한 뒤 팀원들이 클론한다.
    A의 B10 Docker는 `feat/A/docker`에서 수행한다. C는 B9 플랫폼 PR을 먼저 병합하고,
-   A B10 Docker PR 병합 후 같은 플랫폼 브랜치에서 B11 제출 PR을 새로 만든다.
+   A는 B10 Docker PR 병합 후 `feat/A/submission`에서 B11 제출 문서 PR을 만든다.
+   C의 담당 단계는 B9까지이며 A가 B10 → B11 → INTEGRATE를 순서대로 수행한다.
    INTEGRATE도 `feat/integration` → main PR로 제출한다. main 직접 커밋/푸시는 금지한다.
 4. Python은 `.venv/bin/python` 또는 Windows `.venv/Scripts/python.exe`를 사용한다.
    환경이 없으면 `bash setup_env.sh . --role=<역할>`을 먼저 실행한다.
@@ -35,8 +36,9 @@
 8. stage별 파일 소유권을 지킨다. 다른 팀원의 변경은 보존하고 의존성은 PR 병합된 main에서
    fetch/merge한다. 다른 역할의 미검토 기능 브랜치를 직접 합치지 않는다.
    단계별 paths가 있으면 역할 기본 소유권보다 우선한다. Docker/Compose/준비·smoke/컨테이너
-   성능은 A B10 소유이며 README의 Docker 절차도 B10에서 작성한다. C는 B10 PR을 가져온 뒤
-   B11에서 제출 문서를 완성한다. 공통 역할 변경은 명시 요청한 WORKFLOW 단계에서 수행한다.
+   성능은 A B10 소유이며 README의 Docker 절차도 B10에서 작성한다. 제출 문서·제출 검사·
+   final acceptance 집계는 A B11 소유이며 C의 평가·A/B·CT 결과를 사용한다.
+   공통 역할 변경은 명시 요청한 WORKFLOW 단계에서 수행한다.
    충돌은 계약에 맞춰 해결·재검증하며 입력이 반드시 필요한 경우만 질문한다.
 9. 데이터·이미지·임베딩·모델·캐시는 커밋하지 않는다. 클론에서 동일 config/seed로 재생성한다.
    결과와 gate는 실제 실행 근거만 기록하며 full 품질 미측정은 UNMEASURED로 남긴다.

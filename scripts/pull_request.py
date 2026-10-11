@@ -18,7 +18,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 
 TITLES={'SHARED':'chore(shared): 공통 개발환경과 3인 병렬 개발 기반 구성',
-        'WORKFLOW':'chore(shared): Docker 담당을 A로 이관하고 팀 개발 순서 정비',
+        'WORKFLOW':'chore(shared): 팀 역할과 단계 실행 계약 정비',
         'B9':'feat(ct): 서빙·평가·지속 학습 플랫폼 구현',
         'B10':'chore(docker): Docker 실행과 컨테이너 성능 검증 구현',
         'B11':'docs(platform): 최종 제출 문서와 검증 근거 정리',
@@ -35,6 +35,8 @@ def render(root: Path,step: str,role: str,plan: dict,value: dict) -> dict:
     commit=git(root,'rev-parse','HEAD')
     titles={'A':'feat(search): 멀티모달 검색 구현','B':'feat(recommendation): 다단계 추천 구현','C':'feat(platform): 서빙·평가·운영 환경 구현'}
     title=TITLES.get(step,titles[role])
+    if step=='WORKFLOW' and value.get('commit_summary_ko'):
+        title='chore(shared): '+value['commit_summary_ko']
     if (step=='SHARED' and value.get('commit_summary_ko')
             and git(root,'ls-tree','--name-only',f'origin/{base}','--','docs/results/gates/SHARED.json')):
         title='chore(shared): '+value['commit_summary_ko']

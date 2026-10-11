@@ -11,7 +11,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 OWNERS={'SHARED':'A','WORKFLOW':'A','INTEGRATE':'A','P0':'A','B0':'A','B1':'A','B2a':'A','B2b':'A',
-        'B3a':'B','B3b':'B','B4':'B','B5':'B','B6':'C','B7':'C','B8':'C','B9':'C','B10':'A','B11':'C'}
+        'B3a':'B','B3b':'B','B4':'B','B5':'B','B6':'C','B7':'C','B8':'C','B9':'C','B10':'A','B11':'A'}
 
 
 def commit_message(step: str, role: str, files: list[str], value: dict, plan: dict | None) -> str:
