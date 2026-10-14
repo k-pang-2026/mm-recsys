@@ -1,0 +1,139 @@
+{
+  "plan": "User B4/B5 execution plan 2026-10-14",
+  "workspace": "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup",
+  "original": "87e5dac5e5c42b07906dd53c85110cbdb1b66718",
+  "base": "9154479",
+  "original_pending": "preserved",
+  "phases": {
+    "baseline": "done",
+    "scoring": "done",
+    "valid_selection": "done",
+    "test": "done",
+    "api_latency": "done",
+    "commit": "receipt recorded externally by standard helper; consult .team/ranking_followup_delivery.json"
+  },
+  "remote": "gh pr view 8 failed: error connecting to api.github.com",
+  "authorization": "local implementation/checks/one B5 commit; no push/PR until explicit approval",
+  "resume": "Finish reports/scope, record real B5 gate, standard helper one local commit via scoped Draft renderer; no push/PR until PR8 live merged/latestmain and explicit finalSHA approval.",
+  "complete": false,
+  "checks": {
+    "baseline_verifier": "exit0; original quality FAIL",
+    "baseline_B_tests": "47 passed exit0",
+    "scoring_tests": "12 passed exit0",
+    "compile": "exit0",
+    "B_tests": "61 passed exit0 incl restored PR8 CTR tests",
+    "full_regression": "212 passed/10 failed/1 skipped exit1; raw .team/condense-logs/774665fbe20cc88c.log",
+    "common_baseline": "33 passed exit0 on unchanged PR8 clone",
+    "common_isolated": "33 passed exit0 on followup clone",
+    "CTR_verifier": "exit0 full test AUC0.963370",
+    "pip_check": "exit0",
+    "TCP_probe": "bind PermissionError Errno1; UNMEASURED",
+    "valid": "exit0; 10000 users/7769 truth/50000 catalog; ctr selected, feasible violations0",
+    "ordered_full_regression": "215 passed/9 failed/1 skipped exit1; raw .team/condense-logs/39d71a6338ac99a9.log; 8 OpenMP+1 C fixture",
+    "additional_B_tests": "15 scoring/state/API tests passed exit0; includes load-once and both MAB API/offline equality",
+    "test": "exit0; CTR frozen policy HitRate.698803 NDCG.340204 Coverage.419480; feasible violations0",
+    "v2_verifier": "exit0 implementationPASS/qualityPASS/asgiPASS/tcpUNMEASURED/commonUNMEASURED",
+    "B4_latency": "nativep95=71.091108ms ASGIp95=71.853268ms; errors0;10warmup100serial",
+    "B5_latency": "nativep95=79.612687ms ASGIp95=80.442634ms; errors0; live session/reward PASS",
+    "TCP_final": "PermissionError Errno1 localhostbind; UNMEASURED",
+    "B_final_gate": "68 passed, all seven commands exit0; structuralPASS, acceptanceUNMEASURED"
+  },
+  "processes": {},
+  "limits": [
+    "PR8 merge status unavailable: GitHub API network failed",
+    "TCP probe PermissionError Errno1: UNMEASURED",
+    "C default store MAB/Redis and Docker unmeasured",
+    "native checkpoint runner previously unavailable; recoverable project state retained"
+  ],
+  "boundary_ready": true,
+  "baseline_artifact_hashes": {
+    "docs/results/ranking_pr_scope.json": "1fe95a145e461f51a0d10ee863ca16f7ce884297e9184c7d32f28f5af405878d",
+    "docs/results/ranking_training_full.json": "a4a7b5a594b6aee50903e7102813a81cb41e0d5e1d3175b6c608cbbdf8aefb23",
+    "docs/results/ranking_ctr_regression_limits.json": "20dc1d296c4816ca9405d306e6e90f8e6f1c089856ef4754703a869482d3694f",
+    "docs/results/ranking_metrics.json": "967247cf659e39633ebcfb58a45ccc2b1ebc9109b007188b806e3b6f44417eb6",
+    "docs/results/ranking_selection_full.json": "8bfd0eea1280806382c423eb3fae3630bb332f4e5b888242529d3856631f8548",
+    "docs/results/ranking_latency_full_b5.json": "2e27481f5746510a4891feeaa9fe5646eeb8d82340c1bb87571b92bb5fd3ec67",
+    "docs/results/ranking_full_test_b5.json": "3fe941f7222d28c6f9877fafc8248dfc5bf539902d25baaec37007072f88d11a",
+    "docs/results/ranking_execution_state.json": "e30fbfca83fa2fe463cc3df006fa827428ac60e1e84f4496f4b3faf194926f34",
+    "docs/results/ranking_labels_full.json": "79efe2baaa2027308789af29610d40cd6b0fe94fc3e0df7d8e5cc9540fce0cae",
+    "docs/results/ranking_preservation.json": "90f3e750094bd4ee1adf63d14c0a282b30ccea6e5af17302e94e7b13d2b322e6",
+    "docs/results/ranking_external_limits.json": "991c63a5c65174f5186ad61a2e681f381f669864799548db957aa33955826f67",
+    "docs/results/ranking_training_dev.json": "05b50d2f30df5000393b2c6e1b2a5866db9ce54428ef21d6f4c69d1e02f752db",
+    "docs/results/ranking_classification_full_test.json": "1aa798efbb01cedd598c8857e9cc7f986d4fa65c7bc96e0fcfcc487963e4bf6e",
+    "docs/results/session_training_dev.json": "411e53fe0b301f57c509a985de3dbb3d09c624e8d9e6796615b5bcc9a465cff5",
+    "docs/results/ranking_latency_full_b4.json": "885894ee9eec72b0e9ff4271b0bea0c0be0988acb7243c2d752c0f21910ef047",
+    "docs/results/ranking_label_limitation.json": "ab4693dcebe62454f15e667b869439539eb22f1893e32add29bc6eec31899b95",
+    "docs/results/ranking_labels_dev.json": "02963f64dc172de3dd3ded2e9c3c99969f41676a5dc41efa2878e7aec8dac5d4",
+    "docs/results/session_training_full.json": "3fd9de52f84166a0fecdbe46a0464bb834bc7974d191a921dccd2417629f096f",
+    "docs/results/ranking_full_valid.json": "3e3c741d285dd9415485a21d787aed0c441291a43f45da8b671c31e2ae239aba",
+    "docs/results/ranking_selection_dev.json": "5a53a015539eda5bdfc879289f887fcaa296804b7042a387dd9f6c0fa4573131",
+    "docs/results/ranking_dev_candidate.json": "7c8432b1e6fc764256ef992cab731696575c7abf3d939ead7ab0676749e6c748",
+    "docs/results/ranking_dev_valid.json": "88e1bb1ceb45bb493c31a34502797bfe6e18cdb3c8ab324ae6363bc6ca0812fd",
+    "docs/results/experiments/B/reranking_frozen_oracle.py": "48ab7334aa46aa6233250e3eb02d9b5ae844f0d5e4d204fb51077182a6248fd5",
+    "docs/results/experiments/B/reranking_constraint_validation.json": "7bf21cda10e8b4a9036ecd30276c01fcd9c76422749d228af5dd3d6a491218a7",
+    "docs/results/experiments/B/reranking_order_v1.py": "88d43e85a85864eb5951d0ae2201c0faaf8c9325dd599ec22a23aa288cc15e51",
+    "docs/results/experiments/B/ranking_gate_B4_full_fixture_failure.json": "32a6c0b4df7e83b6ee56270477e28bf38cce34bc08686633bbb094a49c2472da",
+    "docs/results/experiments/B/ranking_latency_full_b5_before_diversity.json": "4fd21e182e83e7fc4fec266b29b733f03a8dab6a962783f9b694d885f96fac2b",
+    "docs/results/experiments/B/ranking_legacy_selection_full.json": "981ac9b9702259bad40517af3d628da8b3022c5ea6f31ca695a03656b38b986a",
+    "docs/results/experiments/B/ranking_full_test_b5_before_diversity.json": "b6301fefea3aee3158a8436a1ae55ac3012ce8ebabc0a73d0fd0aed20af847a1",
+    "docs/results/experiments/B/reranking_order_differential.json": "c644f1a17cbad99d6dfa97a639ff36790351acfa7abf0363b366a3ada08385bc"
+  },
+  "native_checkpoint": {
+    "status": "UNAVAILABLE",
+    "command": "python3 /Users/fhqhqhdk/.agents/skills/context-checkpoint/scripts/ctx.py --help",
+    "exit_code": 1,
+    "error": "ModuleNotFoundError: context_optimizer",
+    "fallback": "recoverable project state here; native context policy unchanged"
+  },
+  "selected_policy": {
+    "strategy": "ctr",
+    "source": "docs/results/ranking_policy_selection_full.json",
+    "frozen": true
+  },
+  "accepted_plan": "docs/results/experiments/B/ranking_followup_plan.json",
+  "baseline_original_pending": {
+    "path": "../mm-recsys/.team/pending_publication.json",
+    "content": {
+      "step": "B4",
+      "role": "B",
+      "branch": "feat/B/recommendation",
+      "commit": "87e5dac5e5c42b07906dd53c85110cbdb1b66718",
+      "status": "AWAITING_USER_APPROVAL"
+    }
+  },
+  "remote_evidence": {
+    "current_live": "gh pr view8 failed connection; merge UNVERIFIED",
+    "cached_previous": "../mm-recsys-b4-ctr-pr/.team/pr/live_status_user_verified.json; earlier user query OPEN Draft SHA9154479, not current verification",
+    "origin_main_cached": "bf9321b5e0cfbb0591610835871f8a0c4e3798dc"
+  },
+  "memory_receipts": [
+    "b4-b5-scoring-valid-20261014-01",
+    "b4-b5-scoring-test-20261014-02"
+  ],
+  "phase": "B implementation/quality/ASGI verified; one local commit procedure ready; remote/common prerequisites blocked",
+  "remaining": [
+    "PR8 live merged confirmation and latest main sync: blocked by GitHub network",
+    "exact synchronized finalSHA user approval before push/new Draft PR",
+    "default C memory/Redis MAB/session and C fixture OPEN",
+    "A batch/handoff and whole-suite OpenMP failure OPEN",
+    "TCP localhost bind unavailable; Redis/Docker/final acceptance UNMEASURED"
+  ],
+  "next_action": "Read .team/ranking_followup_delivery.json and .team/pending_publication.json for actual local commit receipt; restore GitHub access, verify PR8 merged, synchronize main, recheck affected evidence, explain finalSHA then request publish approval.",
+  "command_failures": [
+    {
+      "command": "PYTHONPATH unset .team/finalize_report.py",
+      "exit_code": 1,
+      "reason": "script cannot import src; no report mutation; rerun with PYTHONPATH=."
+    },
+    {
+      "command": ".team/scoped_b5_step.py --step B5 --role B --mode commit",
+      "exit_code": 1,
+      "reason": "generated title exceeds72 characters; stopped before staging; Korean summary shortened and gate re-recorded"
+    },
+    {
+      "command": "B5 gate rerecord after title correction",
+      "exit_code": 1,
+      "reason": "two nested verifier processes SIGABRT OpenMP SHM179; standalone both exit0; failed gate/logs preserved in experiments/B/ranking_gate_runtime_failure"
+    }
+  ]
+}

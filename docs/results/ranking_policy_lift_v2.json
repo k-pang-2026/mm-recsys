@@ -1,0 +1,39 @@
+{
+  "version": "frozen-policy-lift-v2",
+  "new": {
+    "hit_rate_at_50": 0.6988030184751496,
+    "ndcg_at_50": 0.34020427867311476,
+    "coverage": 0.41948,
+    "unique_recommended_items": 20974
+  },
+  "previous_b5": {
+    "hit_rate_at_50": 0.0482695810564663,
+    "ndcg_at_50": 0.011031498795543935,
+    "coverage": 0.65054,
+    "unique_recommended_items": 32527
+  },
+  "two_tower": {
+    "hit_rate_at_50": 0.5697371844912829,
+    "ndcg_at_50": 0.17892229426146625,
+    "coverage": 0.61798,
+    "unique_recommended_items": 30899
+  },
+  "delta": {
+    "two_tower": {
+      "hit_rate_at_50": 0.12906583398386673,
+      "ndcg_at_50": 0.1612819844116485,
+      "coverage": -0.19849999999999995
+    },
+    "b5": {
+      "hit_rate_at_50": 0.6505334374186833,
+      "ndcg_at_50": 0.3291727798775708,
+      "coverage": -0.23106
+    }
+  },
+  "cohorts": {
+    "coverage_users": 10000,
+    "truth_users": 7686,
+    "catalog_items": 50000
+  },
+  "test_previously_observed": true
+}

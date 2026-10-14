@@ -1,0 +1,627 @@
+{
+  "version": "b4-b5-evidence-v2",
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "implementation": "PASS",
+  "recommendation_quality": "PASS",
+  "environment": {
+    "asgi": "PASS",
+    "tcp": "UNMEASURED"
+  },
+  "common_integration": "UNMEASURED",
+  "policy_selection": "SELECTED",
+  "policy": {
+    "strategy": "ctr"
+  },
+  "valid_comparison": [
+    {
+      "name": "ctr_cvr",
+      "metrics": {
+        "hit_rate_at_50": 0.04093190886858025,
+        "ndcg_at_50": 0.008253163236427474,
+        "coverage": 0.64422,
+        "unique_recommended_items": 32211
+      },
+      "checks": {
+        "hit_rate_at_50": false,
+        "ndcg_at_50": false,
+        "coverage": true,
+        "feasible_pool_constraints": true
+      }
+    },
+    {
+      "name": "ctr",
+      "metrics": {
+        "hit_rate_at_50": 0.7015059853262968,
+        "ndcg_at_50": 0.3604827796212322,
+        "coverage": 0.42336,
+        "unique_recommended_items": 21168
+      },
+      "checks": {
+        "hit_rate_at_50": true,
+        "ndcg_at_50": true,
+        "coverage": true,
+        "feasible_pool_constraints": true
+      }
+    },
+    {
+      "name": "rank_fusion_0.25",
+      "metrics": {
+        "hit_rate_at_50": 0.5599176213154846,
+        "ndcg_at_50": 0.22812984667105413,
+        "coverage": 0.52222,
+        "unique_recommended_items": 26111
+      },
+      "checks": {
+        "hit_rate_at_50": true,
+        "ndcg_at_50": true,
+        "coverage": true,
+        "feasible_pool_constraints": true
+      }
+    },
+    {
+      "name": "rank_fusion_0.50",
+      "metrics": {
+        "hit_rate_at_50": 0.6354743210194362,
+        "ndcg_at_50": 0.27460607848255225,
+        "coverage": 0.47828,
+        "unique_recommended_items": 23914
+      },
+      "checks": {
+        "hit_rate_at_50": true,
+        "ndcg_at_50": true,
+        "coverage": true,
+        "feasible_pool_constraints": true
+      }
+    },
+    {
+      "name": "rank_fusion_0.75",
+      "metrics": {
+        "hit_rate_at_50": 0.6914660831509847,
+        "ndcg_at_50": 0.3193285403150898,
+        "coverage": 0.43924,
+        "unique_recommended_items": 21962
+      },
+      "checks": {
+        "hit_rate_at_50": true,
+        "ndcg_at_50": true,
+        "coverage": true,
+        "feasible_pool_constraints": true
+      }
+    },
+    {
+      "name": "two_tower",
+      "metrics": {
+        "hit_rate_at_50": 0.5685416398506886,
+        "ndcg_at_50": 0.17956063295256605,
+        "coverage": 0.61326,
+        "unique_recommended_items": 30663
+      },
+      "checks": {
+        "hit_rate_at_50": true,
+        "ndcg_at_50": true,
+        "coverage": true,
+        "feasible_pool_constraints": true
+      }
+    }
+  ],
+  "test": {
+    "name": "ctr",
+    "operational": true,
+    "policy": {
+      "strategy": "ctr"
+    },
+    "metrics": {
+      "hit_rate_at_50": 0.6988030184751496,
+      "ndcg_at_50": 0.34020427867311476,
+      "coverage": 0.41948,
+      "unique_recommended_items": 20974
+    },
+    "checks": {
+      "hit_rate_at_50": true,
+      "ndcg_at_50": true,
+      "coverage": true,
+      "feasible_pool_constraints": true
+    },
+    "diagnostics": {
+      "infeasible_candidate_pools": 2313,
+      "constraint_violations": 2313,
+      "feasible_pool_violations": 0,
+      "violation_examples": [
+        {
+          "user_id": "U000001",
+          "returned_ids": [
+            "P000543",
+            "P031159",
+            "P001484",
+            "P000580",
+            "P001334",
+            "P046160",
+            "P000558",
+            "P002556",
+            "P019020",
+            "P000959",
+            "P002914",
+            "P007335",
+            "P007871",
+            "P017193",
+            "P007400",
+            "P010437",
+            "P010594",
+            "P007777",
+            "P002529",
+            "P004612",
+            "P006576",
+            "P006242",
+            "P007566",
+            "P000309",
+            "P002118",
+            "P009978",
+            "P002808",
+            "P014484",
+            "P021804",
+            "P017684",
+            "P005663",
+            "P049877",
+            "P012361",
+            "P022616",
+            "P032191",
+            "P048075",
+            "P025247",
+            "P049913",
+            "P013005",
+            "P014377",
+            "P013361",
+            "P029105",
+            "P049861",
+            "P019709",
+            "P020631",
+            "P012258",
+            "P036386",
+            "P025562",
+            "P031347",
+            "P037211"
+          ],
+          "requested": 50,
+          "returned": 50,
+          "exploration_slots": 2,
+          "new_available": 7,
+          "diversity_capacity": 11,
+          "diversity_feasible_for_returned": false,
+          "candidate_category_counts": {
+            "blazer": 297,
+            "loafers": 3
+          },
+          "diagnostics": [
+            "diversity_infeasible_with_remaining_quotas"
+          ],
+          "violations": [
+            "diversity"
+          ],
+          "status": "INFEASIBLE"
+        },
+        {
+          "user_id": "U000003",
+          "returned_ids": [
+            "P000423",
+            "P043229",
+            "P000273",
+            "P001471",
+            "P000501",
+            "P001227",
+            "P001772",
+            "P001644",
+            "P010656",
+            "P000817",
+            "P001303",
+            "P047697",
+            "P004979",
+            "P016708",
+            "P004251",
+            "P028458",
+            "P019396",
+            "P013570",
+            "P000835",
+            "P004306",
+            "P005172",
+            "P002419",
+            "P007544",
+            "P021986",
+            "P027319",
+            "P022807",
+            "P010538",
+            "P040595",
+            "P021629",
+            "P028984",
+            "P030795",
+            "P037929",
+            "P039485",
+            "P018931",
+            "P034903",
+            "P018632",
+            "P016204",
+            "P019307",
+            "P016065",
+            "P004818",
+            "P041160",
+            "P033406",
+            "P008039",
+            "P024144",
+            "P026053",
+            "P001030",
+            "P018996",
+            "P047452",
+            "P025158",
+            "P030733"
+          ],
+          "requested": 50,
+          "returned": 50,
+          "exploration_slots": 2,
+          "new_available": 4,
+          "diversity_capacity": 14,
+          "diversity_feasible_for_returned": false,
+          "candidate_category_counts": {
+            "cap": 296,
+            "bucket hat": 4
+          },
+          "diagnostics": [
+            "diversity_infeasible_with_remaining_quotas"
+          ],
+          "violations": [
+            "diversity"
+          ],
+          "status": "INFEASIBLE"
+        },
+        {
+          "user_id": "U000004",
+          "returned_ids": [
+            "P001646",
+            "P048587",
+            "P000309",
+            "P001112",
+            "P001693",
+            "P007638",
+            "P001136",
+            "P003526",
+            "P004188",
+            "P005730",
+            "P042012",
+            "P004404",
+            "P014727",
+            "P006015",
+            "P026017",
+            "P002704",
+            "P006354",
+            "P004856",
+            "P008592",
+            "P013130",
+            "P005928",
+            "P003610",
+            "P025030",
+            "P011751",
+            "P007081",
+            "P005940",
+            "P024005",
+            "P007581",
+            "P007278",
+            "P038337",
+            "P042052",
+            "P020308",
+            "P008850",
+            "P007549",
+            "P005612",
+            "P020415",
+            "P003833",
+            "P011241",
+            "P008083",
+            "P040086",
+            "P026035",
+            "P022778",
+            "P024119",
+            "P015833",
+            "P041615",
+            "P032988",
+            "P028932",
+            "P036025",
+            "P014505",
+            "P008621"
+          ],
+          "requested": 50,
+          "returned": 50,
+          "exploration_slots": 2,
+          "new_available": 8,
+          "diversity_capacity": 17,
+          "diversity_feasible_for_returned": false,
+          "candidate_category_counts": {
+            "bermuda shorts": 295,
+            "blazer": 4,
+            "denim shorts": 1
+          },
+          "diagnostics": [
+            "diversity_infeasible_with_remaining_quotas"
+          ],
+          "violations": [
+            "diversity"
+          ],
+          "status": "INFEASIBLE"
+        },
+        {
+          "user_id": "U000007",
+          "returned_ids": [
+            "P000103",
+            "P039375",
+            "P000512",
+            "P001057",
+            "P001353",
+            "P001657",
+            "P000105",
+            "P000517",
+            "P016110",
+            "P003709",
+            "P000276",
+            "P022978",
+            "P001874",
+            "P000538",
+            "P045333",
+            "P004570",
+            "P002830",
+            "P023222",
+            "P003158",
+            "P003111",
+            "P035011",
+            "P000386",
+            "P004276",
+            "P009496",
+            "P004725",
+            "P000713",
+            "P004136",
+            "P005565",
+            "P002620",
+            "P000515",
+            "P009786",
+            "P007269",
+            "P004897",
+            "P019027",
+            "P003942",
+            "P003803",
+            "P002313",
+            "P004743",
+            "P027417",
+            "P008169",
+            "P011908",
+            "P004268",
+            "P004720",
+            "P007776",
+            "P011768",
+            "P037234",
+            "P010335",
+            "P036761",
+            "P006881",
+            "P010881"
+          ],
+          "requested": 50,
+          "returned": 50,
+          "exploration_slots": 2,
+          "new_available": 3,
+          "diversity_capacity": 23,
+          "diversity_feasible_for_returned": false,
+          "candidate_category_counts": {
+            "knitted vest": 293,
+            "sweatshirt": 3,
+            "polo shirt": 1,
+            "mini skirt": 2,
+            "tote bag": 1
+          },
+          "diagnostics": [
+            "diversity_infeasible_with_remaining_quotas"
+          ],
+          "violations": [
+            "diversity"
+          ],
+          "status": "INFEASIBLE"
+        },
+        {
+          "user_id": "U000011",
+          "returned_ids": [
+            "P000104",
+            "P028333",
+            "P002470",
+            "P001678",
+            "P000299",
+            "P001108",
+            "P001705",
+            "P006569",
+            "P001757",
+            "P000115",
+            "P008662",
+            "P000530",
+            "P001141",
+            "P002189",
+            "P000155",
+            "P006321",
+            "P003830",
+            "P011843",
+            "P014321",
+            "P007041",
+            "P036231",
+            "P001291",
+            "P003685",
+            "P025879",
+            "P023646",
+            "P001771",
+            "P018242",
+            "P001035",
+            "P009950",
+            "P018686",
+            "P001417",
+            "P007644",
+            "P008898",
+            "P014441",
+            "P032615",
+            "P024856",
+            "P017770",
+            "P005962",
+            "P049618",
+            "P028962",
+            "P002428",
+            "P041315",
+            "P008096",
+            "P019737",
+            "P001624",
+            "P048756",
+            "P017517",
+            "P002332",
+            "P030266",
+            "P032695"
+          ],
+          "requested": 50,
+          "returned": 50,
+          "exploration_slots": 2,
+          "new_available": 1,
+          "diversity_capacity": 2,
+          "diversity_feasible_for_returned": false,
+          "candidate_category_counts": {
+            "polo shirt": 300
+          },
+          "diagnostics": [
+            "diversity_infeasible_with_remaining_quotas"
+          ],
+          "violations": [
+            "diversity"
+          ],
+          "status": "INFEASIBLE"
+        }
+      ],
+      "mean_absolute_rank_shift": 48.01463666666674,
+      "category_counts": {
+        "blazer": 14975,
+        "loafers": 13307,
+        "chinos": 11783,
+        "sweatshirt": 13186,
+        "sneakers": 11329,
+        "trench coat": 8539,
+        "sandals": 12853,
+        "mini skirt": 12205,
+        "cargo pants": 10036,
+        "long skirt": 15356,
+        "denim shorts": 12451,
+        "cap": 10245,
+        "bucket hat": 8903,
+        "bermuda shorts": 8886,
+        "crossbody bag": 7785,
+        "tote bag": 6718,
+        "belt": 7450,
+        "bomber jacket": 10122,
+        "knitted vest": 14559,
+        "polo shirt": 15239,
+        "pleated skirt": 11918,
+        "oxford shoes": 10229,
+        "jeans": 11246,
+        "t-shirt": 14358,
+        "sweater": 15559,
+        "hoodie": 10312,
+        "heels": 12702,
+        "cardigan": 13600,
+        "shirt": 12760,
+        "pea coat": 11428,
+        "fleece jacket": 9955,
+        "canvas shoes": 8881,
+        "padded vest": 12054,
+        "puffer jacket": 11714,
+        "hiking shoes": 10643,
+        "slip-on shoes": 11290,
+        "denim jacket": 11002,
+        "beanie": 8909,
+        "boots": 10584,
+        "gloves": 8867,
+        "scarf": 9429,
+        "backpack": 5180,
+        "long coat": 8716,
+        "athletic shorts": 9096,
+        "blouse": 13641
+      },
+      "largest_category_share": 0.031118,
+      "cohorts": {
+        "cold": {
+          "truth_users": 0,
+          "hit_rate_at_50": 0.0
+        },
+        "warm": {
+          "truth_users": 7686,
+          "hit_rate_at_50": 0.6988030184751496
+        }
+      },
+      "exposure_count": 500000
+    }
+  },
+  "classification": {
+    "ctr": {
+      "auc": 0.9633700393677938,
+      "auc_status": "MEASURED",
+      "logloss": 0.1610541309648597,
+      "samples": 225422,
+      "positives": 56639,
+      "denominator": "observed exposures"
+    },
+    "cvr": {
+      "auc": null,
+      "auc_status": "UNDEFINED_SINGLE_CLASS",
+      "logloss": 8.51986463493398e-07,
+      "samples": 56261,
+      "positives": 0,
+      "denominator": "observed clicked exposures"
+    }
+  },
+  "latencies": {
+    "b4": {
+      "native": {
+        "p50_ms": 22.29762550268788,
+        "p95_ms": 71.09110834862803,
+        "p99_ms": 90.53397869603945
+      },
+      "asgi_http": {
+        "p50_ms": 23.101437502191402,
+        "p95_ms": 71.8532684506499,
+        "p99_ms": 91.27850697725084
+      },
+      "startup_model_loading_ms": 13772.89787499467
+    },
+    "b5": {
+      "native": {
+        "p50_ms": 26.765832997625694,
+        "p95_ms": 79.6126871355227,
+        "p99_ms": 85.74311499833158
+      },
+      "asgi_http": {
+        "p50_ms": 27.493249988765456,
+        "p95_ms": 80.44263367046368,
+        "p99_ms": 86.49320359283621
+      },
+      "startup_model_loading_ms": 13828.108625020832
+    }
+  },
+  "checks": {
+    "B3b_preserved": true,
+    "model_feature_hashes": true,
+    "policy_selection_rule": true,
+    "single_frozen_test": true,
+    "b4": true,
+    "b5": true
+  },
+  "test_previously_observed": true,
+  "limits": [
+    "30min CVR policy retained; zero purchase positives and undefined CVR AUC",
+    "ASGI B memory injection only; default C store MAB/Redis/Docker integration remains OPEN",
+    "PR8 merge/latest main synchronization not verified: GitHub API network unavailable"
+  ],
+  "sources": {
+    "docs/results/ranking_policy_selection_full.json": "341347b30fc34546743f0da800dd502c94b3e671bf59e4ca8d8eaa56ef5de26c",
+    "docs/results/ranking_policy_full_valid.json": "7f4606c13bf64f7813593542657d337d00ca794b59ebe7ce2e0cbfb379a65fea",
+    "docs/results/ranking_full_valid.json": "3e3c741d285dd9415485a21d787aed0c441291a43f45da8b671c31e2ae239aba",
+    "docs/results/ranking_policy_full_test.json": "ea6eac90c4ea109f32fdfd3f8564b7c36411a71ea9c520aa9e362cf411efbc96",
+    "docs/results/ranking_full_test_b5.json": "3fe941f7222d28c6f9877fafc8248dfc5bf539902d25baaec37007072f88d11a",
+    "docs/results/ranking_latency_full_b4_v2.json": "800cd3d29fdc6abad5c2f5cdf71a83b91909069704397a5978a4c1b8e2e1d01f",
+    "docs/results/ranking_latency_full_b5_v2.json": "de41eb371c1258509c65fa290a1effaee573e1dda172ca6c4a8c5fc054d3e03b",
+    "docs/results/ranking_tcp_full_b5_v2.json": "2b345278c1b046f4cd57fa228cdbcf7e185e120ec88181dbe43dc9bec1d9a53c"
+  }
+}

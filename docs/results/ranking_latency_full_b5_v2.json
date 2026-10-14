@@ -1,0 +1,3474 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "stage": "B5",
+  "scale": "full",
+  "warmup": 10,
+  "requests": 100,
+  "concurrency": 1,
+  "top_n": 50,
+  "startup_model_loading_ms": 13828.108625020832,
+  "errors": 0,
+  "request_records": [
+    {
+      "index": 0,
+      "warmup": true,
+      "user_id": "U000001",
+      "http_status": 200,
+      "http_elapsed_ms": 35.92933400068432,
+      "pipeline_latency": {
+        "candidate_ms": 3.841084020677954,
+        "ranking_ms": 21.853624988580123,
+        "reranking_ms": 8.420458005275577,
+        "total_ms": 34.115167014533654
+      }
+    },
+    {
+      "index": 1,
+      "warmup": true,
+      "user_id": "U000002",
+      "http_status": 200,
+      "http_elapsed_ms": 27.69716701004654,
+      "pipeline_latency": {
+        "candidate_ms": 2.419292024569586,
+        "ranking_ms": 20.44229197781533,
+        "reranking_ms": 3.980041015893221,
+        "total_ms": 26.841625018278137
+      }
+    },
+    {
+      "index": 2,
+      "warmup": true,
+      "user_id": "U000003",
+      "http_status": 200,
+      "http_elapsed_ms": 94.19133301707916,
+      "pipeline_latency": {
+        "candidate_ms": 2.010666998103261,
+        "ranking_ms": 83.1923329969868,
+        "reranking_ms": 8.241500006988645,
+        "total_ms": 93.44450000207871
+      }
+    },
+    {
+      "index": 3,
+      "warmup": true,
+      "user_id": "U000004",
+      "http_status": 200,
+      "http_elapsed_ms": 31.915833009406924,
+      "pipeline_latency": {
+        "candidate_ms": 2.233958017313853,
+        "ranking_ms": 20.96691698534414,
+        "reranking_ms": 7.982750015798956,
+        "total_ms": 31.18362501845695
+      }
+    },
+    {
+      "index": 4,
+      "warmup": true,
+      "user_id": "U000005",
+      "http_status": 200,
+      "http_elapsed_ms": 26.765499991597608,
+      "pipeline_latency": {
+        "candidate_ms": 1.937166991410777,
+        "ranking_ms": 20.615874993382022,
+        "reranking_ms": 3.47520801005885,
+        "total_ms": 26.02824999485165
+      }
+    },
+    {
+      "index": 5,
+      "warmup": true,
+      "user_id": "U000006",
+      "http_status": 200,
+      "http_elapsed_ms": 27.84399999654852,
+      "pipeline_latency": {
+        "candidate_ms": 2.019417006522417,
+        "ranking_ms": 21.358583006076515,
+        "reranking_ms": 3.706832998432219,
+        "total_ms": 27.08483301103115
+      }
+    },
+    {
+      "index": 6,
+      "warmup": true,
+      "user_id": "U000007",
+      "http_status": 200,
+      "http_elapsed_ms": 31.48399997735396,
+      "pipeline_latency": {
+        "candidate_ms": 1.9819999870378524,
+        "ranking_ms": 20.90433400007896,
+        "reranking_ms": 7.817208010237664,
+        "total_ms": 30.703541997354478
+      }
+    },
+    {
+      "index": 7,
+      "warmup": true,
+      "user_id": "U000008",
+      "http_status": 200,
+      "http_elapsed_ms": 28.59187501599081,
+      "pipeline_latency": {
+        "candidate_ms": 2.1666670218110085,
+        "ranking_ms": 21.394541981862858,
+        "reranking_ms": 4.16662500356324,
+        "total_ms": 27.727834007237107
+      }
+    },
+    {
+      "index": 8,
+      "warmup": true,
+      "user_id": "U000009",
+      "http_status": 200,
+      "http_elapsed_ms": 28.364583005895838,
+      "pipeline_latency": {
+        "candidate_ms": 2.245250012492761,
+        "ranking_ms": 21.780500013846904,
+        "reranking_ms": 3.5389999975450337,
+        "total_ms": 27.5647500238847
+      }
+    },
+    {
+      "index": 9,
+      "warmup": true,
+      "user_id": "U000010",
+      "http_status": 200,
+      "http_elapsed_ms": 35.419249994447455,
+      "pipeline_latency": {
+        "candidate_ms": 6.534375017508864,
+        "ranking_ms": 22.86816597916186,
+        "reranking_ms": 5.121624999446794,
+        "total_ms": 34.52416599611752
+      }
+    },
+    {
+      "index": 10,
+      "warmup": false,
+      "user_id": "U000011",
+      "http_status": 200,
+      "http_elapsed_ms": 36.89745799056254,
+      "pipeline_latency": {
+        "candidate_ms": 1.9531660072971135,
+        "ranking_ms": 25.256749999243766,
+        "reranking_ms": 8.91666699317284,
+        "total_ms": 36.12658299971372
+      }
+    },
+    {
+      "index": 11,
+      "warmup": false,
+      "user_id": "U000012",
+      "http_status": 200,
+      "http_elapsed_ms": 141.62329197279178,
+      "pipeline_latency": {
+        "candidate_ms": 2.1194999862927943,
+        "ranking_ms": 129.3252500181552,
+        "reranking_ms": 9.242375002941117,
+        "total_ms": 140.6871250073891
+      }
+    },
+    {
+      "index": 12,
+      "warmup": false,
+      "user_id": "U000013",
+      "http_status": 200,
+      "http_elapsed_ms": 27.92262498405762,
+      "pipeline_latency": {
+        "candidate_ms": 2.6997500099241734,
+        "ranking_ms": 20.49587498186156,
+        "reranking_ms": 3.8890830182936043,
+        "total_ms": 27.08470801007934
+      }
+    },
+    {
+      "index": 13,
+      "warmup": false,
+      "user_id": "U000014",
+      "http_status": 200,
+      "http_elapsed_ms": 32.234499987680465,
+      "pipeline_latency": {
+        "candidate_ms": 1.9965830142609775,
+        "ranking_ms": 21.241749986074865,
+        "reranking_ms": 8.243291988037527,
+        "total_ms": 31.48162498837337
+      }
+    },
+    {
+      "index": 14,
+      "warmup": false,
+      "user_id": "U000015",
+      "http_status": 200,
+      "http_elapsed_ms": 26.705583004513755,
+      "pipeline_latency": {
+        "candidate_ms": 1.946583011886105,
+        "ranking_ms": 20.101666974369437,
+        "reranking_ms": 3.9084170130081475,
+        "total_ms": 25.95666699926369
+      }
+    },
+    {
+      "index": 15,
+      "warmup": false,
+      "user_id": "U000016",
+      "http_status": 200,
+      "http_elapsed_ms": 26.462874986464158,
+      "pipeline_latency": {
+        "candidate_ms": 1.7389999993611127,
+        "ranking_ms": 20.2432090009097,
+        "reranking_ms": 3.64045801688917,
+        "total_ms": 25.622667017159984
+      }
+    },
+    {
+      "index": 16,
+      "warmup": false,
+      "user_id": "U000017",
+      "http_status": 200,
+      "http_elapsed_ms": 27.45237498311326,
+      "pipeline_latency": {
+        "candidate_ms": 1.8269159772899002,
+        "ranking_ms": 21.19091700296849,
+        "reranking_ms": 3.692333004437387,
+        "total_ms": 26.710165984695777
+      }
+    },
+    {
+      "index": 17,
+      "warmup": false,
+      "user_id": "U000018",
+      "http_status": 200,
+      "http_elapsed_ms": 27.8236250160262,
+      "pipeline_latency": {
+        "candidate_ms": 2.0792919967789203,
+        "ranking_ms": 21.107083011884242,
+        "reranking_ms": 3.906291996827349,
+        "total_ms": 27.09266700549051
+      }
+    },
+    {
+      "index": 18,
+      "warmup": false,
+      "user_id": "U000019",
+      "http_status": 200,
+      "http_elapsed_ms": 25.664790999144316,
+      "pipeline_latency": {
+        "candidate_ms": 1.9078330078627914,
+        "ranking_ms": 19.599749997723848,
+        "reranking_ms": 3.471874981187284,
+        "total_ms": 24.979457986773923
+      }
+    },
+    {
+      "index": 19,
+      "warmup": false,
+      "user_id": "U000020",
+      "http_status": 200,
+      "http_elapsed_ms": 80.28416702290997,
+      "pipeline_latency": {
+        "candidate_ms": 1.8053329840768129,
+        "ranking_ms": 73.51474999450147,
+        "reranking_ms": 4.12887500715442,
+        "total_ms": 79.4489579857327
+      }
+    },
+    {
+      "index": 20,
+      "warmup": false,
+      "user_id": "U000021",
+      "http_status": 200,
+      "http_elapsed_ms": 26.88487499835901,
+      "pipeline_latency": {
+        "candidate_ms": 1.9692500063683838,
+        "ranking_ms": 20.617166999727488,
+        "reranking_ms": 3.5968750016763806,
+        "total_ms": 26.183292007772252
+      }
+    },
+    {
+      "index": 21,
+      "warmup": false,
+      "user_id": "U000022",
+      "http_status": 200,
+      "http_elapsed_ms": 26.63454198045656,
+      "pipeline_latency": {
+        "candidate_ms": 1.9022499909624457,
+        "ranking_ms": 20.246416999725625,
+        "reranking_ms": 3.726499999174848,
+        "total_ms": 25.87516698986292
+      }
+    },
+    {
+      "index": 22,
+      "warmup": false,
+      "user_id": "U000023",
+      "http_status": 200,
+      "http_elapsed_ms": 27.14783401461318,
+      "pipeline_latency": {
+        "candidate_ms": 1.9102499936707318,
+        "ranking_ms": 19.91091700620018,
+        "reranking_ms": 4.464625002583489,
+        "total_ms": 26.2857920024544
+      }
+    },
+    {
+      "index": 23,
+      "warmup": false,
+      "user_id": "U000024",
+      "http_status": 200,
+      "http_elapsed_ms": 27.223459008382633,
+      "pipeline_latency": {
+        "candidate_ms": 1.9754999957513064,
+        "ranking_ms": 20.595292007783428,
+        "reranking_ms": 3.9265420055016875,
+        "total_ms": 26.49733400903642
+      }
+    },
+    {
+      "index": 24,
+      "warmup": false,
+      "user_id": "U000025",
+      "http_status": 200,
+      "http_elapsed_ms": 27.170458022737876,
+      "pipeline_latency": {
+        "candidate_ms": 1.8712920136749744,
+        "ranking_ms": 20.579832984367386,
+        "reranking_ms": 4.002792004030198,
+        "total_ms": 26.453917002072558
+      }
+    },
+    {
+      "index": 25,
+      "warmup": false,
+      "user_id": "U000026",
+      "http_status": 200,
+      "http_elapsed_ms": 26.499667001189664,
+      "pipeline_latency": {
+        "candidate_ms": 1.8095829873345792,
+        "ranking_ms": 20.21408299333416,
+        "reranking_ms": 3.6840840184595436,
+        "total_ms": 25.707749999128282
+      }
+    },
+    {
+      "index": 26,
+      "warmup": false,
+      "user_id": "U000027",
+      "http_status": 200,
+      "http_elapsed_ms": 26.198584004305303,
+      "pipeline_latency": {
+        "candidate_ms": 1.8045420001726598,
+        "ranking_ms": 19.60354100447148,
+        "reranking_ms": 4.056375008076429,
+        "total_ms": 25.46445801272057
+      }
+    },
+    {
+      "index": 27,
+      "warmup": false,
+      "user_id": "U000028",
+      "http_status": 200,
+      "http_elapsed_ms": 25.76279200729914,
+      "pipeline_latency": {
+        "candidate_ms": 1.7199160065501928,
+        "ranking_ms": 19.705374987097457,
+        "reranking_ms": 3.689959004987031,
+        "total_ms": 25.11524999863468
+      }
+    },
+    {
+      "index": 28,
+      "warmup": false,
+      "user_id": "U000029",
+      "http_status": 200,
+      "http_elapsed_ms": 79.81333299539983,
+      "pipeline_latency": {
+        "candidate_ms": 1.7383329977747053,
+        "ranking_ms": 73.29899998148903,
+        "reranking_ms": 4.054792021634057,
+        "total_ms": 79.0921250008978
+      }
+    },
+    {
+      "index": 29,
+      "warmup": false,
+      "user_id": "U000030",
+      "http_status": 200,
+      "http_elapsed_ms": 26.544166990788653,
+      "pipeline_latency": {
+        "candidate_ms": 2.165874990168959,
+        "ranking_ms": 19.935207994421944,
+        "reranking_ms": 3.707458992721513,
+        "total_ms": 25.808541977312416
+      }
+    },
+    {
+      "index": 30,
+      "warmup": false,
+      "user_id": "U000031",
+      "http_status": 200,
+      "http_elapsed_ms": 30.330541980220005,
+      "pipeline_latency": {
+        "candidate_ms": 2.0903749973513186,
+        "ranking_ms": 20.246500003850088,
+        "reranking_ms": 7.211457996163517,
+        "total_ms": 29.548332997364923
+      }
+    },
+    {
+      "index": 31,
+      "warmup": false,
+      "user_id": "U000032",
+      "http_status": 200,
+      "http_elapsed_ms": 25.372167001478374,
+      "pipeline_latency": {
+        "candidate_ms": 1.6755839751567692,
+        "ranking_ms": 19.494583015330136,
+        "reranking_ms": 3.565416991477832,
+        "total_ms": 24.735583981964737
+      }
+    },
+    {
+      "index": 32,
+      "warmup": false,
+      "user_id": "U000033",
+      "http_status": 200,
+      "http_elapsed_ms": 29.469083005096763,
+      "pipeline_latency": {
+        "candidate_ms": 1.6932919970713556,
+        "ranking_ms": 19.611916010035202,
+        "reranking_ms": 7.486208982300013,
+        "total_ms": 28.79141698940657
+      }
+    },
+    {
+      "index": 33,
+      "warmup": false,
+      "user_id": "U000034",
+      "http_status": 200,
+      "http_elapsed_ms": 25.761583005078137,
+      "pipeline_latency": {
+        "candidate_ms": 1.7097920062951744,
+        "ranking_ms": 19.311416981508955,
+        "reranking_ms": 4.059750004671514,
+        "total_ms": 25.080958992475644
+      }
+    },
+    {
+      "index": 34,
+      "warmup": false,
+      "user_id": "U000035",
+      "http_status": 200,
+      "http_elapsed_ms": 30.71408299729228,
+      "pipeline_latency": {
+        "candidate_ms": 1.6925839881878346,
+        "ranking_ms": 19.662958016851917,
+        "reranking_ms": 8.631082979263738,
+        "total_ms": 29.98662498430349
+      }
+    },
+    {
+      "index": 35,
+      "warmup": false,
+      "user_id": "U000036",
+      "http_status": 200,
+      "http_elapsed_ms": 25.639250001404434,
+      "pipeline_latency": {
+        "candidate_ms": 1.7330840055365115,
+        "ranking_ms": 19.407749990932643,
+        "reranking_ms": 3.8433749869000167,
+        "total_ms": 24.98420898336917
+      }
+    },
+    {
+      "index": 36,
+      "warmup": false,
+      "user_id": "U000037",
+      "http_status": 200,
+      "http_elapsed_ms": 25.393542018719018,
+      "pipeline_latency": {
+        "candidate_ms": 1.652417005971074,
+        "ranking_ms": 19.323207990964875,
+        "reranking_ms": 3.7741250125691295,
+        "total_ms": 24.749750009505078
+      }
+    },
+    {
+      "index": 37,
+      "warmup": false,
+      "user_id": "U000038",
+      "http_status": 200,
+      "http_elapsed_ms": 76.14541598013602,
+      "pipeline_latency": {
+        "candidate_ms": 1.597333000972867,
+        "ranking_ms": 65.08374999975786,
+        "reranking_ms": 8.780957985436544,
+        "total_ms": 75.46204098616727
+      }
+    },
+    {
+      "index": 38,
+      "warmup": false,
+      "user_id": "U000039",
+      "http_status": 200,
+      "http_elapsed_ms": 25.54029200109653,
+      "pipeline_latency": {
+        "candidate_ms": 1.9130840082652867,
+        "ranking_ms": 19.250790996011347,
+        "reranking_ms": 3.7420000007841736,
+        "total_ms": 24.905875005060807
+      }
+    },
+    {
+      "index": 39,
+      "warmup": false,
+      "user_id": "U000040",
+      "http_status": 200,
+      "http_elapsed_ms": 30.183915980160236,
+      "pipeline_latency": {
+        "candidate_ms": 1.6653750208206475,
+        "ranking_ms": 19.37216697842814,
+        "reranking_ms": 8.518250018823892,
+        "total_ms": 29.55579201807268
+      }
+    },
+    {
+      "index": 40,
+      "warmup": false,
+      "user_id": "U000041",
+      "http_status": 200,
+      "http_elapsed_ms": 25.822958996286616,
+      "pipeline_latency": {
+        "candidate_ms": 1.564708014484495,
+        "ranking_ms": 19.689999986439943,
+        "reranking_ms": 3.9141669985838234,
+        "total_ms": 25.16887499950826
+      }
+    },
+    {
+      "index": 41,
+      "warmup": false,
+      "user_id": "U000042",
+      "http_status": 200,
+      "http_elapsed_ms": 25.517874979414046,
+      "pipeline_latency": {
+        "candidate_ms": 1.6455839795526117,
+        "ranking_ms": 19.463291013380513,
+        "reranking_ms": 3.729874995769933,
+        "total_ms": 24.838749988703057
+      }
+    },
+    {
+      "index": 42,
+      "warmup": false,
+      "user_id": "U000043",
+      "http_status": 200,
+      "http_elapsed_ms": 25.32499999506399,
+      "pipeline_latency": {
+        "candidate_ms": 1.5972919936757535,
+        "ranking_ms": 19.400958000915125,
+        "reranking_ms": 3.721124987350777,
+        "total_ms": 24.719374981941655
+      }
+    },
+    {
+      "index": 43,
+      "warmup": false,
+      "user_id": "U000044",
+      "http_status": 200,
+      "http_elapsed_ms": 25.81487499992363,
+      "pipeline_latency": {
+        "candidate_ms": 1.6714580124244094,
+        "ranking_ms": 19.458541995845735,
+        "reranking_ms": 4.003082984127104,
+        "total_ms": 25.13308299239725
+      }
+    },
+    {
+      "index": 44,
+      "warmup": false,
+      "user_id": "U000045",
+      "http_status": 200,
+      "http_elapsed_ms": 25.251499988371506,
+      "pipeline_latency": {
+        "candidate_ms": 1.5946250059641898,
+        "ranking_ms": 19.249499979196116,
+        "reranking_ms": 3.796959004830569,
+        "total_ms": 24.641083989990875
+      }
+    },
+    {
+      "index": 45,
+      "warmup": false,
+      "user_id": "U000046",
+      "http_status": 200,
+      "http_elapsed_ms": 71.67004200164229,
+      "pipeline_latency": {
+        "candidate_ms": 1.595874986378476,
+        "ranking_ms": 65.53429100313224,
+        "reranking_ms": 3.8651670038234442,
+        "total_ms": 70.99533299333416
+      }
+    },
+    {
+      "index": 46,
+      "warmup": false,
+      "user_id": "U000047",
+      "http_status": 200,
+      "http_elapsed_ms": 25.853416009340435,
+      "pipeline_latency": {
+        "candidate_ms": 1.9879589963238686,
+        "ranking_ms": 19.3264159897808,
+        "reranking_ms": 3.868208994390443,
+        "total_ms": 25.18258398049511
+      }
+    },
+    {
+      "index": 47,
+      "warmup": false,
+      "user_id": "U000048",
+      "http_status": 200,
+      "http_elapsed_ms": 29.811165994033217,
+      "pipeline_latency": {
+        "candidate_ms": 1.5742499963380396,
+        "ranking_ms": 19.83475001179613,
+        "reranking_ms": 7.758791995001957,
+        "total_ms": 29.167792003136128
+      }
+    },
+    {
+      "index": 48,
+      "warmup": false,
+      "user_id": "U000049",
+      "http_status": 200,
+      "http_elapsed_ms": 25.845124997431412,
+      "pipeline_latency": {
+        "candidate_ms": 1.626709010452032,
+        "ranking_ms": 19.455290981568396,
+        "reranking_ms": 4.120417026570067,
+        "total_ms": 25.202417018590495
+      }
+    },
+    {
+      "index": 49,
+      "warmup": false,
+      "user_id": "U000050",
+      "http_status": 200,
+      "http_elapsed_ms": 26.12370898714289,
+      "pipeline_latency": {
+        "candidate_ms": 1.6271249915007502,
+        "ranking_ms": 19.889459013938904,
+        "reranking_ms": 3.956458007451147,
+        "total_ms": 25.4730420128908
+      }
+    },
+    {
+      "index": 50,
+      "warmup": false,
+      "user_id": "U000051",
+      "http_status": 200,
+      "http_elapsed_ms": 25.74379200814292,
+      "pipeline_latency": {
+        "candidate_ms": 1.7130409833043814,
+        "ranking_ms": 19.58479202585295,
+        "reranking_ms": 3.751999989617616,
+        "total_ms": 25.049832998774946
+      }
+    },
+    {
+      "index": 51,
+      "warmup": false,
+      "user_id": "U000052",
+      "http_status": 200,
+      "http_elapsed_ms": 32.053250004537404,
+      "pipeline_latency": {
+        "candidate_ms": 1.665374991716817,
+        "ranking_ms": 20.786624983884394,
+        "reranking_ms": 8.925875008571893,
+        "total_ms": 31.377874984173104
+      }
+    },
+    {
+      "index": 52,
+      "warmup": false,
+      "user_id": "U000053",
+      "http_status": 200,
+      "http_elapsed_ms": 26.18608297780156,
+      "pipeline_latency": {
+        "candidate_ms": 1.7639999859966338,
+        "ranking_ms": 19.923208019463345,
+        "reranking_ms": 3.77333298092708,
+        "total_ms": 25.46054098638706
+      }
+    },
+    {
+      "index": 53,
+      "warmup": false,
+      "user_id": "U000054",
+      "http_status": 200,
+      "http_elapsed_ms": 26.02520800428465,
+      "pipeline_latency": {
+        "candidate_ms": 1.6669580072630197,
+        "ranking_ms": 19.584416993893683,
+        "reranking_ms": 4.125083010876551,
+        "total_ms": 25.376458012033254
+      }
+    },
+    {
+      "index": 54,
+      "warmup": false,
+      "user_id": "U000055",
+      "http_status": 200,
+      "http_elapsed_ms": 77.28741702158004,
+      "pipeline_latency": {
+        "candidate_ms": 1.6546249971725047,
+        "ranking_ms": 71.05437500285916,
+        "reranking_ms": 3.873374982504174,
+        "total_ms": 76.58237498253584
+      }
+    },
+    {
+      "index": 55,
+      "warmup": false,
+      "user_id": "U000056",
+      "http_status": 200,
+      "http_elapsed_ms": 26.100708986632526,
+      "pipeline_latency": {
+        "candidate_ms": 1.899249997222796,
+        "ranking_ms": 19.44304199423641,
+        "reranking_ms": 4.07970801461488,
+        "total_ms": 25.422000006074086
+      }
+    },
+    {
+      "index": 56,
+      "warmup": false,
+      "user_id": "U000057",
+      "http_status": 200,
+      "http_elapsed_ms": 25.51891698385589,
+      "pipeline_latency": {
+        "candidate_ms": 1.6509999986737967,
+        "ranking_ms": 19.459790986729786,
+        "reranking_ms": 3.750083997147158,
+        "total_ms": 24.86087498255074
+      }
+    },
+    {
+      "index": 57,
+      "warmup": false,
+      "user_id": "U000058",
+      "http_status": 200,
+      "http_elapsed_ms": 25.68629098823294,
+      "pipeline_latency": {
+        "candidate_ms": 1.6619579982943833,
+        "ranking_ms": 19.660749996546656,
+        "reranking_ms": 3.665083000669256,
+        "total_ms": 24.987790995510295
+      }
+    },
+    {
+      "index": 58,
+      "warmup": false,
+      "user_id": "U000059",
+      "http_status": 200,
+      "http_elapsed_ms": 25.39350002189167,
+      "pipeline_latency": {
+        "candidate_ms": 1.5949590015225112,
+        "ranking_ms": 19.3343750142958,
+        "reranking_ms": 3.8377500022761524,
+        "total_ms": 24.767084018094465
+      }
+    },
+    {
+      "index": 59,
+      "warmup": false,
+      "user_id": "U000060",
+      "http_status": 200,
+      "http_elapsed_ms": 29.602875001728535,
+      "pipeline_latency": {
+        "candidate_ms": 1.5121249889489263,
+        "ranking_ms": 18.97574999020435,
+        "reranking_ms": 8.514125016517937,
+        "total_ms": 29.001999995671213
+      }
+    },
+    {
+      "index": 60,
+      "warmup": false,
+      "user_id": "U000061",
+      "http_status": 200,
+      "http_elapsed_ms": 25.56045798701234,
+      "pipeline_latency": {
+        "candidate_ms": 1.5482919989153743,
+        "ranking_ms": 19.5448329905048,
+        "reranking_ms": 3.8421250064857304,
+        "total_ms": 24.935249995905906
+      }
+    },
+    {
+      "index": 61,
+      "warmup": false,
+      "user_id": "U000062",
+      "http_status": 200,
+      "http_elapsed_ms": 25.62091700383462,
+      "pipeline_latency": {
+        "candidate_ms": 1.6383749898523092,
+        "ranking_ms": 19.30549999815412,
+        "reranking_ms": 4.075000004377216,
+        "total_ms": 25.018874992383644
+      }
+    },
+    {
+      "index": 62,
+      "warmup": false,
+      "user_id": "U000063",
+      "http_status": 200,
+      "http_elapsed_ms": 71.74591600778513,
+      "pipeline_latency": {
+        "candidate_ms": 1.534292008727789,
+        "ranking_ms": 65.30916699557565,
+        "reranking_ms": 4.2421249963808805,
+        "total_ms": 71.08558400068432
+      }
+    },
+    {
+      "index": 63,
+      "warmup": false,
+      "user_id": "U000064",
+      "http_status": 200,
+      "http_elapsed_ms": 26.287041982868686,
+      "pipeline_latency": {
+        "candidate_ms": 1.9019169849343598,
+        "ranking_ms": 19.502583018038422,
+        "reranking_ms": 4.175332986051217,
+        "total_ms": 25.579832989024
+      }
+    },
+    {
+      "index": 64,
+      "warmup": false,
+      "user_id": "U000065",
+      "http_status": 200,
+      "http_elapsed_ms": 27.80416700989008,
+      "pipeline_latency": {
+        "candidate_ms": 1.916542008984834,
+        "ranking_ms": 21.21870798873715,
+        "reranking_ms": 3.894958004821092,
+        "total_ms": 27.030208002543077
+      }
+    },
+    {
+      "index": 65,
+      "warmup": false,
+      "user_id": "U000066",
+      "http_status": 200,
+      "http_elapsed_ms": 28.894332994241267,
+      "pipeline_latency": {
+        "candidate_ms": 1.8497499986551702,
+        "ranking_ms": 22.038666997104883,
+        "reranking_ms": 4.302582994569093,
+        "total_ms": 28.190999990329146
+      }
+    },
+    {
+      "index": 66,
+      "warmup": false,
+      "user_id": "U000067",
+      "http_status": 200,
+      "http_elapsed_ms": 26.306915999157354,
+      "pipeline_latency": {
+        "candidate_ms": 1.6949580167420208,
+        "ranking_ms": 19.713207992026582,
+        "reranking_ms": 4.209292004816234,
+        "total_ms": 25.617458013584837
+      }
+    },
+    {
+      "index": 67,
+      "warmup": false,
+      "user_id": "U000068",
+      "http_status": 200,
+      "http_elapsed_ms": 31.38583299005404,
+      "pipeline_latency": {
+        "candidate_ms": 1.6021670016925782,
+        "ranking_ms": 19.81420800439082,
+        "reranking_ms": 9.275458985939622,
+        "total_ms": 30.69183399202302
+      }
+    },
+    {
+      "index": 68,
+      "warmup": false,
+      "user_id": "U000069",
+      "http_status": 200,
+      "http_elapsed_ms": 32.19712499412708,
+      "pipeline_latency": {
+        "candidate_ms": 1.7004999972414225,
+        "ranking_ms": 20.448333001695573,
+        "reranking_ms": 9.351792017696425,
+        "total_ms": 31.50062501663342
+      }
+    },
+    {
+      "index": 69,
+      "warmup": false,
+      "user_id": "U000070",
+      "http_status": 200,
+      "http_elapsed_ms": 26.908209023531526,
+      "pipeline_latency": {
+        "candidate_ms": 1.7804999952204525,
+        "ranking_ms": 20.280875003663823,
+        "reranking_ms": 4.130415996769443,
+        "total_ms": 26.19179099565372
+      }
+    },
+    {
+      "index": 70,
+      "warmup": false,
+      "user_id": "U000071",
+      "http_status": 200,
+      "http_elapsed_ms": 27.039250009693205,
+      "pipeline_latency": {
+        "candidate_ms": 1.7023330146912485,
+        "ranking_ms": 20.57595900259912,
+        "reranking_ms": 4.049332987051457,
+        "total_ms": 26.327625004341826
+      }
+    },
+    {
+      "index": 71,
+      "warmup": false,
+      "user_id": "U000072",
+      "http_status": 200,
+      "http_elapsed_ms": 83.45349997398444,
+      "pipeline_latency": {
+        "candidate_ms": 1.770665985532105,
+        "ranking_ms": 76.44041700405069,
+        "reranking_ms": 4.512457991950214,
+        "total_ms": 82.723540981533
+      }
+    },
+    {
+      "index": 72,
+      "warmup": false,
+      "user_id": "U000073",
+      "http_status": 200,
+      "http_elapsed_ms": 32.67874999437481,
+      "pipeline_latency": {
+        "candidate_ms": 2.0289169915486127,
+        "ranking_ms": 20.36341599887237,
+        "reranking_ms": 9.554542019031942,
+        "total_ms": 31.946875009452924
+      }
+    },
+    {
+      "index": 73,
+      "warmup": false,
+      "user_id": "U000074",
+      "http_status": 200,
+      "http_elapsed_ms": 28.47595899947919,
+      "pipeline_latency": {
+        "candidate_ms": 2.170958003262058,
+        "ranking_ms": 21.208583988482133,
+        "reranking_ms": 4.366540990304202,
+        "total_ms": 27.746082982048392
+      }
+    },
+    {
+      "index": 74,
+      "warmup": false,
+      "user_id": "U000075",
+      "http_status": 200,
+      "http_elapsed_ms": 27.534124994417652,
+      "pipeline_latency": {
+        "candidate_ms": 1.8935420084744692,
+        "ranking_ms": 20.282499986933544,
+        "reranking_ms": 4.645458015147597,
+        "total_ms": 26.82150001055561
+      }
+    },
+    {
+      "index": 75,
+      "warmup": false,
+      "user_id": "U000076",
+      "http_status": 200,
+      "http_elapsed_ms": 27.312458987580612,
+      "pipeline_latency": {
+        "candidate_ms": 1.8119169981218874,
+        "ranking_ms": 20.538875018246472,
+        "reranking_ms": 4.238249995978549,
+        "total_ms": 26.58904201234691
+      }
+    },
+    {
+      "index": 76,
+      "warmup": false,
+      "user_id": "U000077",
+      "http_status": 200,
+      "http_elapsed_ms": 28.5585829988122,
+      "pipeline_latency": {
+        "candidate_ms": 1.9272909848950803,
+        "ranking_ms": 21.108334010932595,
+        "reranking_ms": 4.739625001093373,
+        "total_ms": 27.775249996921048
+      }
+    },
+    {
+      "index": 77,
+      "warmup": false,
+      "user_id": "U000078",
+      "http_status": 200,
+      "http_elapsed_ms": 28.498624975327402,
+      "pipeline_latency": {
+        "candidate_ms": 1.9294169906061143,
+        "ranking_ms": 21.21645800070837,
+        "reranking_ms": 4.397375014377758,
+        "total_ms": 27.543250005692244
+      }
+    },
+    {
+      "index": 78,
+      "warmup": false,
+      "user_id": "U000079",
+      "http_status": 200,
+      "http_elapsed_ms": 28.08258298318833,
+      "pipeline_latency": {
+        "candidate_ms": 2.064000000245869,
+        "ranking_ms": 21.026959002483636,
+        "reranking_ms": 4.268624994438142,
+        "total_ms": 27.359583997167647
+      }
+    },
+    {
+      "index": 79,
+      "warmup": false,
+      "user_id": "U000080",
+      "http_status": 200,
+      "http_elapsed_ms": 85.93633401324041,
+      "pipeline_latency": {
+        "candidate_ms": 1.8034999957308173,
+        "ranking_ms": 76.15879201330245,
+        "reranking_ms": 7.225832989206538,
+        "total_ms": 85.1881249982398
+      }
+    },
+    {
+      "index": 80,
+      "warmup": false,
+      "user_id": "U000081",
+      "http_status": 200,
+      "http_elapsed_ms": 28.47891699639149,
+      "pipeline_latency": {
+        "candidate_ms": 2.064915985101834,
+        "ranking_ms": 21.133625006768852,
+        "reranking_ms": 4.540583991911262,
+        "total_ms": 27.73912498378195
+      }
+    },
+    {
+      "index": 81,
+      "warmup": false,
+      "user_id": "U000082",
+      "http_status": 200,
+      "http_elapsed_ms": 27.25629199994728,
+      "pipeline_latency": {
+        "candidate_ms": 2.077374985674396,
+        "ranking_ms": 19.994708010926843,
+        "reranking_ms": 4.450207983609289,
+        "total_ms": 26.522290980210528
+      }
+    },
+    {
+      "index": 82,
+      "warmup": false,
+      "user_id": "U000083",
+      "http_status": 200,
+      "http_elapsed_ms": 26.79904198157601,
+      "pipeline_latency": {
+        "candidate_ms": 1.7238330037798733,
+        "ranking_ms": 20.075792010175064,
+        "reranking_ms": 4.332790995249525,
+        "total_ms": 26.132416009204462
+      }
+    },
+    {
+      "index": 83,
+      "warmup": false,
+      "user_id": "U000084",
+      "http_status": 200,
+      "http_elapsed_ms": 26.671125000575557,
+      "pipeline_latency": {
+        "candidate_ms": 1.6771249938756227,
+        "ranking_ms": 19.811167003354058,
+        "reranking_ms": 4.475749999983236,
+        "total_ms": 25.964041997212917
+      }
+    },
+    {
+      "index": 84,
+      "warmup": false,
+      "user_id": "U000085",
+      "http_status": 200,
+      "http_elapsed_ms": 27.001417009159923,
+      "pipeline_latency": {
+        "candidate_ms": 1.8249160202685744,
+        "ranking_ms": 20.088791992748156,
+        "reranking_ms": 4.413582995766774,
+        "total_ms": 26.327291008783504
+      }
+    },
+    {
+      "index": 85,
+      "warmup": false,
+      "user_id": "U000086",
+      "http_status": 200,
+      "http_elapsed_ms": 26.00879201781936,
+      "pipeline_latency": {
+        "candidate_ms": 1.6919170157052577,
+        "ranking_ms": 19.56975000211969,
+        "reranking_ms": 4.070040973601863,
+        "total_ms": 25.33170799142681
+      }
+    },
+    {
+      "index": 86,
+      "warmup": false,
+      "user_id": "U000087",
+      "http_status": 200,
+      "http_elapsed_ms": 26.42054099123925,
+      "pipeline_latency": {
+        "candidate_ms": 1.7098749813158065,
+        "ranking_ms": 19.738458009669557,
+        "reranking_ms": 4.305667011067271,
+        "total_ms": 25.754000002052635
+      }
+    },
+    {
+      "index": 87,
+      "warmup": false,
+      "user_id": "U000088",
+      "http_status": 200,
+      "http_elapsed_ms": 79.9047909968067,
+      "pipeline_latency": {
+        "candidate_ms": 1.674458006164059,
+        "ranking_ms": 73.30658397404477,
+        "reranking_ms": 4.165291000390425,
+        "total_ms": 79.14633298059925
+      }
+    },
+    {
+      "index": 88,
+      "warmup": false,
+      "user_id": "U000089",
+      "http_status": 200,
+      "http_elapsed_ms": 28.267040994251147,
+      "pipeline_latency": {
+        "candidate_ms": 2.072208997560665,
+        "ranking_ms": 21.070999995572492,
+        "reranking_ms": 4.3362079886719584,
+        "total_ms": 27.479416981805116
+      }
+    },
+    {
+      "index": 89,
+      "warmup": false,
+      "user_id": "U000090",
+      "http_status": 200,
+      "http_elapsed_ms": 26.97870900738053,
+      "pipeline_latency": {
+        "candidate_ms": 1.9113750022370368,
+        "ranking_ms": 20.065958000486717,
+        "reranking_ms": 4.234041989548132,
+        "total_ms": 26.211374992271885
+      }
+    },
+    {
+      "index": 90,
+      "warmup": false,
+      "user_id": "U000091",
+      "http_status": 200,
+      "http_elapsed_ms": 27.894915983779356,
+      "pipeline_latency": {
+        "candidate_ms": 1.9005410140380263,
+        "ranking_ms": 20.80812500207685,
+        "reranking_ms": 4.424708982696757,
+        "total_ms": 27.133374998811632
+      }
+    },
+    {
+      "index": 91,
+      "warmup": false,
+      "user_id": "U000092",
+      "http_status": 200,
+      "http_elapsed_ms": 28.03270798176527,
+      "pipeline_latency": {
+        "candidate_ms": 1.8023339798673987,
+        "ranking_ms": 20.543000020552427,
+        "reranking_ms": 4.740749980555847,
+        "total_ms": 27.086083980975673
+      }
+    },
+    {
+      "index": 92,
+      "warmup": false,
+      "user_id": "U000093",
+      "http_status": 200,
+      "http_elapsed_ms": 29.2004169896245,
+      "pipeline_latency": {
+        "candidate_ms": 1.9575839978642762,
+        "ranking_ms": 21.221875009359792,
+        "reranking_ms": 5.224624997936189,
+        "total_ms": 28.404084005160257
+      }
+    },
+    {
+      "index": 93,
+      "warmup": false,
+      "user_id": "U000094",
+      "http_status": 200,
+      "http_elapsed_ms": 29.66195798944682,
+      "pipeline_latency": {
+        "candidate_ms": 2.236959000583738,
+        "ranking_ms": 21.40374999726191,
+        "reranking_ms": 5.262207996565849,
+        "total_ms": 28.9029169944115
+      }
+    },
+    {
+      "index": 94,
+      "warmup": false,
+      "user_id": "U000095",
+      "http_status": 200,
+      "http_elapsed_ms": 29.561458009993657,
+      "pipeline_latency": {
+        "candidate_ms": 2.0467090071178973,
+        "ranking_ms": 21.381124999606982,
+        "reranking_ms": 5.165040987776592,
+        "total_ms": 28.59287499450147
+      }
+    },
+    {
+      "index": 95,
+      "warmup": false,
+      "user_id": "U000096",
+      "http_status": 200,
+      "http_elapsed_ms": 27.601915993727744,
+      "pipeline_latency": {
+        "candidate_ms": 2.121416007867083,
+        "ranking_ms": 20.075209002243355,
+        "reranking_ms": 4.679832985857502,
+        "total_ms": 26.87645799596794
+      }
+    },
+    {
+      "index": 96,
+      "warmup": false,
+      "user_id": "U000097",
+      "http_status": 200,
+      "http_elapsed_ms": 85.67079098429531,
+      "pipeline_latency": {
+        "candidate_ms": 1.8626660166773945,
+        "ranking_ms": 78.63666699267924,
+        "reranking_ms": 4.401332989800721,
+        "total_ms": 84.90066599915735
+      }
+    },
+    {
+      "index": 97,
+      "warmup": false,
+      "user_id": "U000098",
+      "http_status": 200,
+      "http_elapsed_ms": 27.974041004199535,
+      "pipeline_latency": {
+        "candidate_ms": 2.0779999904334545,
+        "ranking_ms": 20.427791983820498,
+        "reranking_ms": 4.6806670143269,
+        "total_ms": 27.186458988580853
+      }
+    },
+    {
+      "index": 98,
+      "warmup": false,
+      "user_id": "U000099",
+      "http_status": 200,
+      "http_elapsed_ms": 27.01912500197068,
+      "pipeline_latency": {
+        "candidate_ms": 1.8172090058214962,
+        "ranking_ms": 20.275582995964214,
+        "reranking_ms": 4.228583013173193,
+        "total_ms": 26.321375014958903
+      }
+    },
+    {
+      "index": 99,
+      "warmup": false,
+      "user_id": "U000100",
+      "http_status": 200,
+      "http_elapsed_ms": 26.862667000386864,
+      "pipeline_latency": {
+        "candidate_ms": 1.8008750048466027,
+        "ranking_ms": 19.844249996822327,
+        "reranking_ms": 4.516332992352545,
+        "total_ms": 26.161457994021475
+      }
+    },
+    {
+      "index": 100,
+      "warmup": false,
+      "user_id": "U000101",
+      "http_status": 200,
+      "http_elapsed_ms": 32.12670798529871,
+      "pipeline_latency": {
+        "candidate_ms": 1.7187079938594252,
+        "ranking_ms": 20.296041999245062,
+        "reranking_ms": 9.393208019901067,
+        "total_ms": 31.407958013005555
+      }
+    },
+    {
+      "index": 101,
+      "warmup": false,
+      "user_id": "U000102",
+      "http_status": 200,
+      "http_elapsed_ms": 28.175291983643547,
+      "pipeline_latency": {
+        "candidate_ms": 1.9470840052235872,
+        "ranking_ms": 20.804124971618876,
+        "reranking_ms": 4.716625000583008,
+        "total_ms": 27.46783397742547
+      }
+    },
+    {
+      "index": 102,
+      "warmup": false,
+      "user_id": "U000103",
+      "http_status": 200,
+      "http_elapsed_ms": 30.150208971463144,
+      "pipeline_latency": {
+        "candidate_ms": 1.7297090089414269,
+        "ranking_ms": 19.737666007131338,
+        "reranking_ms": 7.989249977981672,
+        "total_ms": 29.456624994054437
+      }
+    },
+    {
+      "index": 103,
+      "warmup": false,
+      "user_id": "U000104",
+      "http_status": 200,
+      "http_elapsed_ms": 26.6267079859972,
+      "pipeline_latency": {
+        "candidate_ms": 1.6731249925214797,
+        "ranking_ms": 19.75216600112617,
+        "reranking_ms": 4.517334018601105,
+        "total_ms": 25.942625012248755
+      }
+    },
+    {
+      "index": 104,
+      "warmup": false,
+      "user_id": "U000105",
+      "http_status": 200,
+      "http_elapsed_ms": 31.925874995067716,
+      "pipeline_latency": {
+        "candidate_ms": 1.8426250026095659,
+        "ranking_ms": 20.037458976730704,
+        "reranking_ms": 9.311583009548485,
+        "total_ms": 31.191666988888755
+      }
+    },
+    {
+      "index": 105,
+      "warmup": false,
+      "user_id": "U000106",
+      "http_status": 200,
+      "http_elapsed_ms": 85.63908300129697,
+      "pipeline_latency": {
+        "candidate_ms": 1.7181250150315464,
+        "ranking_ms": 73.69737498811446,
+        "reranking_ms": 9.519165992969647,
+        "total_ms": 84.93466599611565
+      }
+    },
+    {
+      "index": 106,
+      "warmup": false,
+      "user_id": "U000107",
+      "http_status": 200,
+      "http_elapsed_ms": 32.399707997683436,
+      "pipeline_latency": {
+        "candidate_ms": 2.1821249974891543,
+        "ranking_ms": 19.92283301660791,
+        "reranking_ms": 9.564959007548168,
+        "total_ms": 31.669917021645233
+      }
+    },
+    {
+      "index": 107,
+      "warmup": false,
+      "user_id": "U000108",
+      "http_status": 200,
+      "http_elapsed_ms": 32.55291699315421,
+      "pipeline_latency": {
+        "candidate_ms": 1.7738750029820949,
+        "ranking_ms": 22.025292011676356,
+        "reranking_ms": 7.999041001312435,
+        "total_ms": 31.798208015970886
+      }
+    },
+    {
+      "index": 108,
+      "warmup": false,
+      "user_id": "U000109",
+      "http_status": 200,
+      "http_elapsed_ms": 28.705042001092806,
+      "pipeline_latency": {
+        "candidate_ms": 1.8602920172270387,
+        "ranking_ms": 20.941249997122213,
+        "reranking_ms": 4.9848750059027225,
+        "total_ms": 27.786417020251974
+      }
+    },
+    {
+      "index": 109,
+      "warmup": false,
+      "user_id": "U000110",
+      "http_status": 200,
+      "http_elapsed_ms": 30.295917007606477,
+      "pipeline_latency": {
+        "candidate_ms": 2.2029159881640226,
+        "ranking_ms": 22.167749993968755,
+        "reranking_ms": 5.095667002024129,
+        "total_ms": 29.466332984156907
+      }
+    }
+  ],
+  "scoring": {
+    "strategy": "ctr"
+  },
+  "policy_fingerprint": "55131cbc261fef60992dce3e2cd7255a1e2f0d1c6391a5f27349303a7eea233f",
+  "artifact_hashes": {
+    "two_tower.pt": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+    "item_index.faiss": "b409816e8195cb49607f56bae753d707756a8c3d659d70fc638bf5d631148c9a",
+    "ranking/deepfm.pt": "28ec1ab82c4f264f063adb924549a48afabcb4b17e4bdc1667c8248090917ae3",
+    "ranking/features.json": "19649521b6b2414c8d21af2f494fac2ceac5724bb264dfac721b42cb29ebdab5",
+    "session/session.pt": "41d23f445bf66ed6a8fe1b76beb017b2602d740a6202817480f6a216a8bcf2a6"
+  },
+  "config_fingerprint": "09774d305ced2dbb5227765dfbcffb5c1b9788ee2f2573e50ac3726ff8de788b",
+  "native": {
+    "p50_ms": 26.765832997625694,
+    "p95_ms": 79.6126871355227,
+    "p99_ms": 85.74311499833158
+  },
+  "asgi_http": {
+    "p50_ms": 27.493249988765456,
+    "p95_ms": 80.44263367046368,
+    "p99_ms": 86.49320359283621
+  },
+  "stage_percentiles": {
+    "candidate_ms": {
+      "p50_ms": 1.802916987799108,
+      "p95_ms": 2.166129140823614,
+      "p99_ms": 2.2415869106771447
+    },
+    "ranking_ms": {
+      "p50_ms": 20.22864599712193,
+      "p95_ms": 73.52388124418212,
+      "p99_ms": 79.14355282293425
+    },
+    "reranking_ms": {
+      "p50_ms": 4.240187496179715,
+      "p95_ms": 9.313593459955882,
+      "p99_ms": 9.554646188917104
+    }
+  },
+  "native_elapsed_ms": [
+    36.12658299971372,
+    140.6871250073891,
+    27.08470801007934,
+    31.48162498837337,
+    25.95666699926369,
+    25.622667017159984,
+    26.710165984695777,
+    27.09266700549051,
+    24.979457986773923,
+    79.4489579857327,
+    26.183292007772252,
+    25.87516698986292,
+    26.2857920024544,
+    26.49733400903642,
+    26.453917002072558,
+    25.707749999128282,
+    25.46445801272057,
+    25.11524999863468,
+    79.0921250008978,
+    25.808541977312416,
+    29.548332997364923,
+    24.735583981964737,
+    28.79141698940657,
+    25.080958992475644,
+    29.98662498430349,
+    24.98420898336917,
+    24.749750009505078,
+    75.46204098616727,
+    24.905875005060807,
+    29.55579201807268,
+    25.16887499950826,
+    24.838749988703057,
+    24.719374981941655,
+    25.13308299239725,
+    24.641083989990875,
+    70.99533299333416,
+    25.18258398049511,
+    29.167792003136128,
+    25.202417018590495,
+    25.4730420128908,
+    25.049832998774946,
+    31.377874984173104,
+    25.46054098638706,
+    25.376458012033254,
+    76.58237498253584,
+    25.422000006074086,
+    24.86087498255074,
+    24.987790995510295,
+    24.767084018094465,
+    29.001999995671213,
+    24.935249995905906,
+    25.018874992383644,
+    71.08558400068432,
+    25.579832989024,
+    27.030208002543077,
+    28.190999990329146,
+    25.617458013584837,
+    30.69183399202302,
+    31.50062501663342,
+    26.19179099565372,
+    26.327625004341826,
+    82.723540981533,
+    31.946875009452924,
+    27.746082982048392,
+    26.82150001055561,
+    26.58904201234691,
+    27.775249996921048,
+    27.543250005692244,
+    27.359583997167647,
+    85.1881249982398,
+    27.73912498378195,
+    26.522290980210528,
+    26.132416009204462,
+    25.964041997212917,
+    26.327291008783504,
+    25.33170799142681,
+    25.754000002052635,
+    79.14633298059925,
+    27.479416981805116,
+    26.211374992271885,
+    27.133374998811632,
+    27.086083980975673,
+    28.404084005160257,
+    28.9029169944115,
+    28.59287499450147,
+    26.87645799596794,
+    84.90066599915735,
+    27.186458988580853,
+    26.321375014958903,
+    26.161457994021475,
+    31.407958013005555,
+    27.46783397742547,
+    29.456624994054437,
+    25.942625012248755,
+    31.191666988888755,
+    84.93466599611565,
+    31.669917021645233,
+    31.798208015970886,
+    27.786417020251974,
+    29.466332984156907
+  ],
+  "asgi_http_elapsed_ms": [
+    36.89745799056254,
+    141.62329197279178,
+    27.92262498405762,
+    32.234499987680465,
+    26.705583004513755,
+    26.462874986464158,
+    27.45237498311326,
+    27.8236250160262,
+    25.664790999144316,
+    80.28416702290997,
+    26.88487499835901,
+    26.63454198045656,
+    27.14783401461318,
+    27.223459008382633,
+    27.170458022737876,
+    26.499667001189664,
+    26.198584004305303,
+    25.76279200729914,
+    79.81333299539983,
+    26.544166990788653,
+    30.330541980220005,
+    25.372167001478374,
+    29.469083005096763,
+    25.761583005078137,
+    30.71408299729228,
+    25.639250001404434,
+    25.393542018719018,
+    76.14541598013602,
+    25.54029200109653,
+    30.183915980160236,
+    25.822958996286616,
+    25.517874979414046,
+    25.32499999506399,
+    25.81487499992363,
+    25.251499988371506,
+    71.67004200164229,
+    25.853416009340435,
+    29.811165994033217,
+    25.845124997431412,
+    26.12370898714289,
+    25.74379200814292,
+    32.053250004537404,
+    26.18608297780156,
+    26.02520800428465,
+    77.28741702158004,
+    26.100708986632526,
+    25.51891698385589,
+    25.68629098823294,
+    25.39350002189167,
+    29.602875001728535,
+    25.56045798701234,
+    25.62091700383462,
+    71.74591600778513,
+    26.287041982868686,
+    27.80416700989008,
+    28.894332994241267,
+    26.306915999157354,
+    31.38583299005404,
+    32.19712499412708,
+    26.908209023531526,
+    27.039250009693205,
+    83.45349997398444,
+    32.67874999437481,
+    28.47595899947919,
+    27.534124994417652,
+    27.312458987580612,
+    28.5585829988122,
+    28.498624975327402,
+    28.08258298318833,
+    85.93633401324041,
+    28.47891699639149,
+    27.25629199994728,
+    26.79904198157601,
+    26.671125000575557,
+    27.001417009159923,
+    26.00879201781936,
+    26.42054099123925,
+    79.9047909968067,
+    28.267040994251147,
+    26.97870900738053,
+    27.894915983779356,
+    28.03270798176527,
+    29.2004169896245,
+    29.66195798944682,
+    29.561458009993657,
+    27.601915993727744,
+    85.67079098429531,
+    27.974041004199535,
+    27.01912500197068,
+    26.862667000386864,
+    32.12670798529871,
+    28.175291983643547,
+    30.150208971463144,
+    26.6267079859972,
+    31.925874995067716,
+    85.63908300129697,
+    32.399707997683436,
+    32.55291699315421,
+    28.705042001092806,
+    30.295917007606477
+  ],
+  "sample_responses": [
+    {
+      "user_id": "U000011",
+      "recommendations": [
+        {
+          "product_id": "P000104",
+          "score": 0.9996540546417236,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P009138",
+          "score": 0.934675395488739,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P001108",
+          "score": 0.9976897239685059,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000299",
+          "score": 0.9968859553337097,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001705",
+          "score": 0.9965985417366028,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001678",
+          "score": 0.9965789914131165,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002470",
+          "score": 0.9965745210647583,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000530",
+          "score": 0.9954062700271606,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000115",
+          "score": 0.9951517581939697,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000155",
+          "score": 0.9949830770492554,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006569",
+          "score": 0.9942771792411804,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001757",
+          "score": 0.993614912033081,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001141",
+          "score": 0.9935593605041504,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003830",
+          "score": 0.993154764175415,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008662",
+          "score": 0.992333173751831,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001291",
+          "score": 0.9923021793365479,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002189",
+          "score": 0.9909998774528503,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006321",
+          "score": 0.9886690974235535,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001771",
+          "score": 0.987845242023468,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014321",
+          "score": 0.9875196218490601,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003685",
+          "score": 0.9858766794204712,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007041",
+          "score": 0.9856477975845337,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001624",
+          "score": 0.9847293496131897,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001035",
+          "score": 0.9845874309539795,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036231",
+          "score": 0.984214186668396,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011843",
+          "score": 0.9838903546333313,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001417",
+          "score": 0.98271644115448,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009950",
+          "score": 0.9813758134841919,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002332",
+          "score": 0.9804937243461609,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032615",
+          "score": 0.9804583191871643,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008898",
+          "score": 0.9793749451637268,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018242",
+          "score": 0.9792688488960266,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002514",
+          "score": 0.9791865348815918,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005962",
+          "score": 0.9789122939109802,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025879",
+          "score": 0.9788032174110413,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P041315",
+          "score": 0.9781588315963745,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008096",
+          "score": 0.9778717160224915,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P023646",
+          "score": 0.9777548909187317,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014441",
+          "score": 0.9776763916015625,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018686",
+          "score": 0.9770998954772949,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017517",
+          "score": 0.9762322902679443,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002428",
+          "score": 0.9756966829299927,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007644",
+          "score": 0.9754823446273804,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039577",
+          "score": 0.9735791087150574,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049618",
+          "score": 0.9732239842414856,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022750",
+          "score": 0.9727875590324402,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048535",
+          "score": 0.9722970128059387,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032695",
+          "score": 0.9708229303359985,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028962",
+          "score": 0.9707448482513428,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008267",
+          "score": 0.9702544212341309,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.9531660072971135,
+        "ranking_ms": 25.256749999243766,
+        "reranking_ms": 8.91666699317284,
+        "total_ms": 36.12658299971372
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000012",
+      "recommendations": [
+        {
+          "product_id": "P027794",
+          "score": 0.9411548376083374,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P035094",
+          "score": 0.8571659326553345,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P001876",
+          "score": 0.785775363445282,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001085",
+          "score": 0.9993126392364502,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000154",
+          "score": 0.9976352453231812,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001319",
+          "score": 0.9973230957984924,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000367",
+          "score": 0.9966722726821899,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001128",
+          "score": 0.9951496720314026,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002632",
+          "score": 0.9947277903556824,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005282",
+          "score": 0.9933552742004395,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003393",
+          "score": 0.9929439425468445,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000339",
+          "score": 0.9924941062927246,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003884",
+          "score": 0.9908332228660583,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000044",
+          "score": 0.9908288717269897,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003321",
+          "score": 0.9887881875038147,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007287",
+          "score": 0.9859469532966614,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011961",
+          "score": 0.9858912825584412,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009079",
+          "score": 0.985648512840271,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011411",
+          "score": 0.9832173585891724,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005493",
+          "score": 0.9822596311569214,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006508",
+          "score": 0.9813944101333618,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004496",
+          "score": 0.9812247157096863,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002988",
+          "score": 0.9806053638458252,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003464",
+          "score": 0.9803347587585449,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011804",
+          "score": 0.979438066482544,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007505",
+          "score": 0.9772512912750244,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013126",
+          "score": 0.9770864844322205,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002397",
+          "score": 0.9769282937049866,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013469",
+          "score": 0.976893961429596,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030553",
+          "score": 0.976669192314148,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008578",
+          "score": 0.9763265252113342,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P023955",
+          "score": 0.9758628606796265,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002737",
+          "score": 0.9755309224128723,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006005",
+          "score": 0.9749095439910889,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P021548",
+          "score": 0.9732869267463684,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010222",
+          "score": 0.9718545079231262,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P016332",
+          "score": 0.9716575145721436,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017736",
+          "score": 0.9712079763412476,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034778",
+          "score": 0.9696329832077026,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000397",
+          "score": 0.9667196273803711,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018452",
+          "score": 0.9656118154525757,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P019286",
+          "score": 0.9655871391296387,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010750",
+          "score": 0.9648750424385071,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000661",
+          "score": 0.9614061713218689,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018355",
+          "score": 0.960343062877655,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P027789",
+          "score": 0.9602075219154358,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047142",
+          "score": 0.9589942097663879,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014216",
+          "score": 0.9585664868354797,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004578",
+          "score": 0.9581186771392822,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049074",
+          "score": 0.9577307105064392,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 2.1194999862927943,
+        "ranking_ms": 129.3252500181552,
+        "reranking_ms": 9.242375002941117,
+        "total_ms": 140.6871250073891
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000013",
+      "recommendations": [
+        {
+          "product_id": "P000686",
+          "score": 0.9989755153656006,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P013450",
+          "score": 0.9418602585792542,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000448",
+          "score": 0.8813410997390747,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000002",
+          "score": 0.9989504218101501,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000586",
+          "score": 0.998539924621582,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002023",
+          "score": 0.8199200630187988,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001281",
+          "score": 0.9979695677757263,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000705",
+          "score": 0.9974000453948975,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003290",
+          "score": 0.8187411427497864,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008242",
+          "score": 0.9961676001548767,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000814",
+          "score": 0.9958969354629517,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002865",
+          "score": 0.794147789478302,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003416",
+          "score": 0.9947022795677185,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003163",
+          "score": 0.9941946864128113,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004480",
+          "score": 0.7830597758293152,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001579",
+          "score": 0.9933772683143616,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036922",
+          "score": 0.9933311343193054,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001070",
+          "score": 0.7225605845451355,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004675",
+          "score": 0.9931051135063171,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009128",
+          "score": 0.9930550456047058,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003655",
+          "score": 0.6373752355575562,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P015685",
+          "score": 0.9922608733177185,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P015742",
+          "score": 0.991784930229187,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004483",
+          "score": 0.6188695430755615,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018778",
+          "score": 0.9916768074035645,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003333",
+          "score": 0.9914616346359253,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003525",
+          "score": 0.6137941479682922,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009793",
+          "score": 0.9912823438644409,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001477",
+          "score": 0.990830659866333,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005572",
+          "score": 0.5930712819099426,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001510",
+          "score": 0.990459680557251,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004450",
+          "score": 0.9901890158653259,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009269",
+          "score": 0.5904611349105835,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004717",
+          "score": 0.9900616407394409,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P015367",
+          "score": 0.9884599447250366,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006530",
+          "score": 0.5805366039276123,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013048",
+          "score": 0.9877320528030396,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012232",
+          "score": 0.9873656034469604,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012287",
+          "score": 0.5778533816337585,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006378",
+          "score": 0.9870362877845764,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P046765",
+          "score": 0.987001895904541,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011318",
+          "score": 0.5741477608680725,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P019998",
+          "score": 0.9867483377456665,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P035551",
+          "score": 0.986638069152832,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009340",
+          "score": 0.5709824562072754,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018986",
+          "score": 0.9864985942840576,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049527",
+          "score": 0.9863965511322021,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001999",
+          "score": 0.5611077547073364,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043856",
+          "score": 0.9862944483757019,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P016480",
+          "score": 0.98511803150177,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 2.6997500099241734,
+        "ranking_ms": 20.49587498186156,
+        "reranking_ms": 3.8890830182936043,
+        "total_ms": 27.08470801007934
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000014",
+      "recommendations": [
+        {
+          "product_id": "P000137",
+          "score": 0.999893307685852,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P022141",
+          "score": 0.9731302857398987,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000610",
+          "score": 0.8562994003295898,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000212",
+          "score": 0.9997484087944031,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000919",
+          "score": 0.9989491105079651,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001233",
+          "score": 0.7915223836898804,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004410",
+          "score": 0.9983413219451904,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008766",
+          "score": 0.9980833530426025,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049634",
+          "score": 0.08574898540973663,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002896",
+          "score": 0.9978958368301392,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000455",
+          "score": 0.997742772102356,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007487",
+          "score": 0.9973846077919006,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000742",
+          "score": 0.9972942471504211,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000047",
+          "score": 0.997175931930542,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005626",
+          "score": 0.9961888194084167,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030983",
+          "score": 0.9954364895820618,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P016483",
+          "score": 0.9953527450561523,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002115",
+          "score": 0.9950557947158813,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007496",
+          "score": 0.9945013523101807,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007257",
+          "score": 0.99433434009552,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005526",
+          "score": 0.9942008256912231,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010019",
+          "score": 0.993712842464447,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032228",
+          "score": 0.9936777949333191,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005409",
+          "score": 0.9933972358703613,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017605",
+          "score": 0.9923480749130249,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010539",
+          "score": 0.9882903099060059,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P040753",
+          "score": 0.9879300594329834,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002369",
+          "score": 0.9875820875167847,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029863",
+          "score": 0.9864296913146973,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022065",
+          "score": 0.9864180088043213,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012621",
+          "score": 0.9862443804740906,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012273",
+          "score": 0.9862319827079773,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025271",
+          "score": 0.9861818552017212,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034127",
+          "score": 0.9859395027160645,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028045",
+          "score": 0.9856957793235779,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005827",
+          "score": 0.9850125312805176,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009204",
+          "score": 0.984955370426178,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P041850",
+          "score": 0.9846654534339905,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042359",
+          "score": 0.9823212623596191,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000031",
+          "score": 0.9822188019752502,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043503",
+          "score": 0.9820833206176758,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018273",
+          "score": 0.9816281199455261,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029192",
+          "score": 0.9814846515655518,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045482",
+          "score": 0.9814704060554504,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P027158",
+          "score": 0.981266975402832,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P041168",
+          "score": 0.9807789325714111,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P035693",
+          "score": 0.9803769588470459,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022261",
+          "score": 0.9802361130714417,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044782",
+          "score": 0.9798903465270996,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038305",
+          "score": 0.9796401858329773,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.9965830142609775,
+        "ranking_ms": 21.241749986074865,
+        "reranking_ms": 8.243291988037527,
+        "total_ms": 31.48162498837337
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000015",
+      "recommendations": [
+        {
+          "product_id": "P000088",
+          "score": 0.999607264995575,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P046840",
+          "score": 0.938886284828186,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000539",
+          "score": 0.9585334062576294,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002301",
+          "score": 0.9981049299240112,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001495",
+          "score": 0.9967424273490906,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000242",
+          "score": 0.9535107612609863,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003524",
+          "score": 0.996717631816864,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003375",
+          "score": 0.9953201413154602,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000158",
+          "score": 0.9211803078651428,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005697",
+          "score": 0.9927236437797546,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003945",
+          "score": 0.9922258853912354,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005352",
+          "score": 0.8577487468719482,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014319",
+          "score": 0.9919329285621643,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004045",
+          "score": 0.9918045997619629,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017852",
+          "score": 0.7102325558662415,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006543",
+          "score": 0.9914906620979309,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014998",
+          "score": 0.9896281957626343,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001923",
+          "score": 0.6799392104148865,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010789",
+          "score": 0.9884482026100159,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002373",
+          "score": 0.988171398639679,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010450",
+          "score": 0.6535640358924866,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007026",
+          "score": 0.9874247908592224,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P041814",
+          "score": 0.9866997003555298,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000378",
+          "score": 0.6131269335746765,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003626",
+          "score": 0.9863616228103638,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005722",
+          "score": 0.9859988689422607,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006912",
+          "score": 0.576431393623352,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007154",
+          "score": 0.9858390688896179,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028000",
+          "score": 0.9854621887207031,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012228",
+          "score": 0.5697439312934875,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012366",
+          "score": 0.9851919412612915,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017280",
+          "score": 0.983659029006958,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007557",
+          "score": 0.5687421560287476,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005027",
+          "score": 0.9829127788543701,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P041420",
+          "score": 0.9821383953094482,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034124",
+          "score": 0.5473316311836243,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P020317",
+          "score": 0.9807701110839844,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006587",
+          "score": 0.9787978529930115,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P020411",
+          "score": 0.5469763875007629,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026563",
+          "score": 0.978698194026947,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029403",
+          "score": 0.9777767658233643,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001621",
+          "score": 0.5390934348106384,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012608",
+          "score": 0.9776340126991272,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022081",
+          "score": 0.9772489070892334,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013678",
+          "score": 0.536689281463623,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044602",
+          "score": 0.9765561819076538,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008613",
+          "score": 0.9761004447937012,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047437",
+          "score": 0.5104427933692932,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039125",
+          "score": 0.9754627346992493,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009281",
+          "score": 0.9748762249946594,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.946583011886105,
+        "ranking_ms": 20.101666974369437,
+        "reranking_ms": 3.9084170130081475,
+        "total_ms": 25.95666699926369
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    }
+  ],
+  "live_flow": {
+    "status": "PASS",
+    "user_id": "U000001",
+    "clicked_product": "P001816",
+    "before": {
+      "user_id": "U000001",
+      "recommendations": [
+        {
+          "product_id": "P000543",
+          "score": 0.9996483325958252,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P029765",
+          "score": 0.9795859456062317,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P001484",
+          "score": 0.9560207724571228,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000580",
+          "score": 0.9990642666816711,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000558",
+          "score": 0.9986112117767334,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P046160",
+          "score": 0.20724435150623322,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001334",
+          "score": 0.9985112547874451,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000959",
+          "score": 0.9979749321937561,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P019020",
+          "score": 0.14141246676445007,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002556",
+          "score": 0.9975312948226929,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.9591249874792993,
+        "ranking_ms": 22.715500002959743,
+        "reranking_ms": 2.878875005990267,
+        "total_ms": 27.55349999642931
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "after": {
+      "user_id": "U000001",
+      "recommendations": [
+        {
+          "product_id": "P005966",
+          "score": 0.02563595212996006,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P023814",
+          "score": 4.278710025173993e-11,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P021878",
+          "score": 1.065334001570939e-10,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033653",
+          "score": 0.009636040776968002,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P046531",
+          "score": 0.0039147138595581055,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005759",
+          "score": 7.26142620379995e-19,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042771",
+          "score": 4.6126864617690444e-05,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026258",
+          "score": 4.6749895621367443e-11,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002747",
+          "score": 6.040774902407112e-19,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034122",
+          "score": 4.670889716673621e-11,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 2.335917000891641,
+        "ranking_ms": 22.624292003456503,
+        "reranking_ms": 3.7691660108976066,
+        "total_ms": 28.72937501524575
+      },
+      "session_context": {
+        "recent_clicks": [
+          "P001816",
+          "P001816",
+          "P001816"
+        ],
+        "session_interest": "t-shirt"
+      }
+    },
+    "recommendations_changed": true,
+    "recent_clicks": [
+      "P001816",
+      "P001816",
+      "P001816"
+    ],
+    "session_interest": "t-shirt",
+    "feedback": {
+      "product_id": "P005966",
+      "before": {
+        "exposures": 5,
+        "reward": 0.0
+      },
+      "click": {
+        "exposures": 5,
+        "reward": 0.2
+      },
+      "purchase": {
+        "exposures": 5,
+        "reward": 1.0
+      },
+      "duplicate_applied": false
+    },
+    "store": "B RecommendationFeatureStore injected into unchanged shared create_app; default C store not connected"
+  },
+  "measurement_scope": "shared FastAPI paths with injected B memory adapter; ASGI TestClient HTTP transport, no TCP/Redis/container",
+  "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.13",
+    "device": "cpu",
+    "cache": "no response cache",
+    "threads": 1,
+    "cpu": "arm",
+    "logical_cpus": 10,
+    "python_hash_seed": "42",
+    "omp_num_threads": "1",
+    "ram": "unmeasured",
+    "packages": {
+      "torch": "2.6.0",
+      "numpy": "2.1.3",
+      "fastapi": "0.115.6",
+      "faiss-cpu": "1.9.0",
+      "httpx": "0.28.1"
+    }
+  },
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "source_hashes": {
+    "src/recommendation/bench_ranking.py": "7dfa4c3ef6fafdd2cea1ed5c2b0839529872c1595ad0f8f16257183b50030a73",
+    "src/recommendation/recommender.py": "a73d8db2149dc25a36f3ce8e8e043cc9ff38486def36ea8fe2bd746d9814d6d5",
+    "src/recommendation/scoring.py": "935f752f0cb8b3c016c121bbd7ab5ce86622c01b697f6d2d0c321fcc5ab31bb0",
+    "src/recommendation/service.py": "2806bb63737fda671b117e5b7c7c05201fb46e983e8c8ff498b9871a43c46ee5"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "cases": 200,
+  "failures": 0,
+  "scope": "configured-order correction; default frozen pipeline remains identical, no model/quality tuning",
+  "oracle_sha256": "48ab7334aa46aa6233250e3eb02d9b5ae844f0d5e4d204fb51077182a6248fd5",
+  "current_sha256": "88d43e85a85864eb5951d0ae2201c0faaf8c9325dd599ec22a23aa288cc15e51"
+}

@@ -1,0 +1,79 @@
+{
+  "step": "B4",
+  "owner": "B",
+  "status": "FAIL",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests",
+      "exit_code": 1
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_candidate --metrics docs/results/candidate_metrics.json",
+      "exit_code": 0
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_ranking",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "docs/results/ranking_metrics.json",
+    "docs/results/ranking_full_test_b5.json",
+    "docs/results/ranking_training_full.json",
+    "docs/results/session_training_full.json",
+    "docs/results/ranking_latency_full_b4.json",
+    "docs/results/ranking_latency_full_b5.json",
+    "docs/recommend_report.md",
+    "docs/contributions/B.md",
+    "config/recommend.yaml",
+    "src/recommendation/train_two_tower.py",
+    "src/recommendation/deepfm.py",
+    "src/recommendation/ranking_labels.py",
+    "src/recommendation/ranking_features.py",
+    "src/recommendation/train_deepfm.py",
+    "src/recommendation/recommender.py",
+    "src/recommendation/service.py",
+    "src/recommendation/reranking.py",
+    "src/recommendation/mab.py",
+    "src/recommendation/feature_store.py",
+    "src/recommendation/session.py",
+    "src/recommendation/train_session.py"
+  ],
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "config_fingerprint": "e7617403cd147af0a10167e87d9cb4d0ef94dd36d461b112098de10ff2fd70ca",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "docs/results/ranking_metrics.json": "967247cf659e39633ebcfb58a45ccc2b1ebc9109b007188b806e3b6f44417eb6",
+    "docs/results/ranking_full_test_b5.json": "3fe941f7222d28c6f9877fafc8248dfc5bf539902d25baaec37007072f88d11a",
+    "docs/results/ranking_training_full.json": "a4a7b5a594b6aee50903e7102813a81cb41e0d5e1d3175b6c608cbbdf8aefb23",
+    "docs/results/session_training_full.json": "3fd9de52f84166a0fecdbe46a0464bb834bc7974d191a921dccd2417629f096f",
+    "docs/results/ranking_latency_full_b4.json": "885894ee9eec72b0e9ff4271b0bea0c0be0988acb7243c2d752c0f21910ef047",
+    "docs/results/ranking_latency_full_b5.json": "2e27481f5746510a4891feeaa9fe5646eeb8d82340c1bb87571b92bb5fd3ec67",
+    "docs/recommend_report.md": "aa7aab7c3d8bf4859fb40d4efa57d6dd5cf45f93fb7983869a246025e02d77bc",
+    "docs/contributions/B.md": "2cb40f0cb47401e6e493f2ca6a6418f32d70a7bc8b70323b4be5698f5553852f",
+    "config/recommend.yaml": "39dbf16c3c0528fd4cbc3f8293afbfab926fbaece97497d7aa9d593effc891f3",
+    "src/recommendation/train_two_tower.py": "f4320a12f31e7bc21aea127fb0ae4819fe8fd085882be0ee9978a01c4ca0c254",
+    "src/recommendation/deepfm.py": "2933f21129e5d8b72b002df718568876a59218ba3522c814a78d0d470a7dd2ea",
+    "src/recommendation/ranking_labels.py": "106e94afa9acc2cdd62c8b7a2de20d138a9e5c95b3993f3353b2cf0a52c59128",
+    "src/recommendation/ranking_features.py": "129d35ca3314b904ca7b5c699d610b2a4f16d1a0d5c64ccff789a157f3334aa1",
+    "src/recommendation/train_deepfm.py": "38cb2d3d10f1e57d7bece76439a98b09cce8c876f6170f3673219664cf9e78ed",
+    "src/recommendation/recommender.py": "9da651c4e06610871a857b6aeba8d10858db97d463815d8698ff2503fb93f616",
+    "src/recommendation/service.py": "2806bb63737fda671b117e5b7c7c05201fb46e983e8c8ff498b9871a43c46ee5",
+    "src/recommendation/reranking.py": "65ee38c19a7041c2109c7a364d69e17f42d1e37242cb00845bb079b851eff812",
+    "src/recommendation/mab.py": "f9a6f019900d5542ef5fb6c556363dcd8255ebc546eaa9b50c63228e85a3ec46",
+    "src/recommendation/feature_store.py": "e7b772d4076934eb0b712ce1dfe4ada8fb4ca4a79039225d7a004e92135064c2",
+    "src/recommendation/session.py": "75da1c433e1edf72b7f6a01d2746e8921727b5448ac9e4490a50319199ea8d70",
+    "src/recommendation/train_session.py": "531ee66afbd34bec8fef6e958f52807d46fcb69eed4777a5482c4405250974e9"
+  },
+  "commit_summary_ko": "DeepFM·재랭킹·세션 추천 구현과 full 검증 및 공통 연결 인계"
+}

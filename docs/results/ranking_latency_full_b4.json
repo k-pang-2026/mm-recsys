@@ -1,0 +1,1828 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "stage": "B4",
+  "scale": "full",
+  "warmup": 10,
+  "requests": 100,
+  "concurrency": 1,
+  "native": {
+    "p50_ms": 24.62933349306695,
+    "p95_ms": 90.01360805923468,
+    "p99_ms": 93.38032041545378
+  },
+  "asgi_http": {
+    "p50_ms": 25.387187997694127,
+    "p95_ms": 90.85393189743627,
+    "p99_ms": 94.16345958190509
+  },
+  "stage_percentiles": {
+    "candidate_ms": {
+      "p50_ms": 1.9082705039181747,
+      "p95_ms": 2.5431458481762084,
+      "p99_ms": 3.418825001863302
+    },
+    "ranking_ms": {
+      "p50_ms": 22.173187498992775,
+      "p95_ms": 87.85156874655513,
+      "p99_ms": 90.87611767434285
+    },
+    "reranking_ms": {
+      "p50_ms": 0.43025049671996385,
+      "p95_ms": 0.8518020949850325,
+      "p99_ms": 0.9219710907200354
+    }
+  },
+  "native_elapsed_ms": [
+    24.1417920042295,
+    23.67491601034999,
+    83.52258299419191,
+    22.30875000532251,
+    24.281334000988863,
+    24.188040988519788,
+    22.727666990249418,
+    22.99958298681304,
+    23.701291996985674,
+    24.02333400095813,
+    23.625457994057797,
+    89.95345800940413,
+    22.85525000479538,
+    22.757583006750792,
+    22.716791994753294,
+    23.095583004760556,
+    24.14720800879877,
+    23.782333999406546,
+    23.45370799594093,
+    23.654999997233972,
+    82.44845800800249,
+    22.968833000049926,
+    24.50795899494551,
+    23.389916997984983,
+    24.186334005207755,
+    24.337916998774745,
+    23.476874994230457,
+    23.808000012650155,
+    80.32041699334513,
+    23.245040996698663,
+    23.32837499852758,
+    23.052208009175956,
+    23.974124997039326,
+    23.36687500064727,
+    23.61887499864679,
+    22.8543749981327,
+    23.28258298803121,
+    88.87825001147576,
+    27.006459000403993,
+    24.443457994493656,
+    23.690333997365087,
+    23.519290989497676,
+    24.149000004399568,
+    23.349499999312684,
+    24.960084003396332,
+    24.239834005129524,
+    91.15645900601521,
+    25.054457990336232,
+    25.006416995893233,
+    23.768750004819594,
+    24.54600000055507,
+    25.06237500347197,
+    25.156999996397644,
+    24.229999995441176,
+    24.655500004882924,
+    92.57237499696203,
+    25.162334000924602,
+    24.44495899544563,
+    24.021583987632766,
+    25.560665992088616,
+    25.253167012124322,
+    24.260582998977043,
+    24.335833004442975,
+    26.691125007346272,
+    92.56341699801851,
+    24.9222499987809,
+    24.937457987107337,
+    24.38129200891126,
+    24.377416004426777,
+    26.03554200322833,
+    25.42637499573175,
+    25.764041012735106,
+    24.514709002687596,
+    84.41362499434035,
+    25.79120799782686,
+    24.982416987768374,
+    25.144541999907233,
+    24.648416991112754,
+    25.663499996881,
+    25.00758398673497,
+    24.61024999502115,
+    25.11508300085552,
+    93.31174999533687,
+    26.28020799602382,
+    25.13379100128077,
+    24.950750012067147,
+    24.92962501128204,
+    24.847375010722317,
+    25.634249992435798,
+    24.665832999744453,
+    26.937625007121824,
+    100.16879200702533,
+    43.593666996457614,
+    33.955874998355284,
+    28.590499990968965,
+    29.183500009821728,
+    29.743042003246956,
+    30.50937499210704,
+    28.08045801066328,
+    26.636124996002764
+  ],
+  "asgi_http_elapsed_ms": [
+    25.015749997692183,
+    24.392916006036103,
+    84.23337498970795,
+    23.05579200037755,
+    25.03883300232701,
+    25.003458998980932,
+    23.498166992794722,
+    23.792417006916367,
+    24.513292009942234,
+    24.85358400736004,
+    24.432874997728504,
+    90.79795899742749,
+    23.601375010912307,
+    23.438499993062578,
+    23.47820899740327,
+    23.903666995465755,
+    24.940874995081685,
+    24.532583003747277,
+    24.176500010071322,
+    24.333666995516978,
+    83.16466701216996,
+    23.741999990306795,
+    25.24012500362005,
+    24.080791990854777,
+    24.930500003392808,
+    25.115374999586493,
+    24.19474998896476,
+    24.524540989659727,
+    81.0522910032887,
+    23.965625005075708,
+    24.056082998868078,
+    23.783708005794324,
+    24.712291997275315,
+    24.1834999906132,
+    24.394834006670862,
+    23.55324999371078,
+    23.95974998944439,
+    89.85616700374521,
+    27.915917002246715,
+    25.266750002629124,
+    24.450041993986815,
+    24.227667003287934,
+    25.041166998562403,
+    24.132999998982996,
+    25.680708000436425,
+    25.033665995579213,
+    91.91741699760314,
+    25.890125005389564,
+    25.881583991576917,
+    24.608708001323976,
+    25.351749995024875,
+    25.845500000286847,
+    25.943875007214956,
+    24.99204099876806,
+    25.577624997822568,
+    93.49441700032912,
+    26.12612499797251,
+    25.365916997543536,
+    24.795000004814938,
+    26.337999996030703,
+    26.073667002492584,
+    25.013916994794272,
+    25.087417001486756,
+    27.410791997681372,
+    93.38570800900925,
+    25.73412499623373,
+    25.7137090084143,
+    25.10495799651835,
+    25.163041995256208,
+    26.87145900563337,
+    26.25566600181628,
+    26.558042009128258,
+    25.280290996306576,
+    85.16391599550843,
+    26.625417012837715,
+    25.876583997160196,
+    25.915709004038945,
+    25.40845899784472,
+    26.426374999573454,
+    25.738750002346933,
+    25.36162499745842,
+    25.860624999040738,
+    94.08850000181701,
+    27.01191599771846,
+    25.96899999480229,
+    25.698582991026342,
+    25.661958003183827,
+    25.569500008714385,
+    26.366250007413328,
+    25.547541998093948,
+    27.71437499905005,
+    101.58445801062044,
+    45.71616700559389,
+    35.375833002035506,
+    29.459624987794086,
+    30.068792009842582,
+    30.56841599754989,
+    31.558917005895637,
+    29.449542009388097,
+    27.907374998903833
+  ],
+  "sample_responses": [
+    {
+      "user_id": "U000011",
+      "recommendations": [
+        {
+          "product_id": "P031782",
+          "score": 4.884938373944658e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036898",
+          "score": 3.905426763234354e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045662",
+          "score": 2.7854014667677562e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007954",
+          "score": 2.760444433799747e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013773",
+          "score": 2.697538590071269e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002020",
+          "score": 2.661406468471017e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006736",
+          "score": 2.151865057670177e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014691",
+          "score": 2.0647374868870694e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026587",
+          "score": 2.0602178817108463e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P023014",
+          "score": 1.999584959416767e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006605",
+          "score": 1.5491376627665976e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008556",
+          "score": 1.4398709004617705e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017116",
+          "score": 1.4218566645254893e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008821",
+          "score": 1.356289321303994e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049515",
+          "score": 1.3014007189601773e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P020321",
+          "score": 1.1928587458076567e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002537",
+          "score": 1.1431446067522444e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026412",
+          "score": 9.410895457015456e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048705",
+          "score": 8.280624992119956e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014684",
+          "score": 7.960247044858093e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010502",
+          "score": 7.687354442245664e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036079",
+          "score": 7.649538554671542e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032759",
+          "score": 6.392957452479309e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036870",
+          "score": 6.309282523514481e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048791",
+          "score": 6.168112895443834e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042754",
+          "score": 5.969071265911341e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030562",
+          "score": 5.875292114800035e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034995",
+          "score": 5.51391397818346e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P037160",
+          "score": 5.354228345411105e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011066",
+          "score": 4.998482639080593e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032404",
+          "score": 4.326470280126282e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010235",
+          "score": 3.6880283440891837e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042823",
+          "score": 3.520760072373008e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048394",
+          "score": 3.3020106289007034e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049060",
+          "score": 3.1184123751130943e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034970",
+          "score": 2.742505658334671e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007661",
+          "score": 2.5426725612162637e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P021476",
+          "score": 2.396104961579354e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048675",
+          "score": 2.0533066620673918e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012358",
+          "score": 1.9896329592553053e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049698",
+          "score": 1.9519428391331917e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030843",
+          "score": 1.783892586600111e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012478",
+          "score": 1.7189681210567909e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011734",
+          "score": 1.6952193500948537e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043549",
+          "score": 1.6598071387371321e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018688",
+          "score": 1.4980292668224232e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022490",
+          "score": 1.495466077361396e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010893",
+          "score": 1.416979191317183e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008513",
+          "score": 1.4018166239349733e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P031319",
+          "score": 1.3463404382237781e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 2.0045830024173483,
+        "ranking_ms": 21.994541995809413,
+        "reranking_ms": 0.14266700600273907,
+        "total_ms": 24.1417920042295
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000012",
+      "recommendations": [
+        {
+          "product_id": "P045317",
+          "score": 2.5424137621576914e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P021383",
+          "score": 4.012313484930141e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029539",
+          "score": 3.518542065778646e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044056",
+          "score": 3.2360569844451514e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048093",
+          "score": 2.9675014615732076e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038258",
+          "score": 1.9132780212580136e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036917",
+          "score": 1.3463195673319578e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048084",
+          "score": 1.1212632520596691e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P040920",
+          "score": 7.87791937261785e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049745",
+          "score": 5.3286148144751286e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045068",
+          "score": 5.155703880314888e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049587",
+          "score": 4.942887868756782e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033289",
+          "score": 4.894275631474321e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P023004",
+          "score": 4.1226032055372355e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039564",
+          "score": 3.6423897345526715e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018611",
+          "score": 3.450876601618011e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029467",
+          "score": 3.260064134337319e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043060",
+          "score": 3.1884559689764405e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007843",
+          "score": 3.0485281589691035e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045630",
+          "score": 2.4229926333559082e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034020",
+          "score": 2.300108312093454e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018673",
+          "score": 2.2931360450914248e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032378",
+          "score": 2.2691389240693527e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045089",
+          "score": 1.9990551843539726e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004057",
+          "score": 1.8567722839400898e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024621",
+          "score": 1.612669247002662e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018293",
+          "score": 1.5326569901457157e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024694",
+          "score": 1.5234475397233986e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013697",
+          "score": 1.490733433234543e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025130",
+          "score": 1.48590026323751e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025397",
+          "score": 1.2470545903971002e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036807",
+          "score": 9.563657578002226e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042118",
+          "score": 9.243396961744216e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024275",
+          "score": 8.749497132397917e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038548",
+          "score": 8.533345335686934e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P023050",
+          "score": 7.575140161138454e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P021823",
+          "score": 6.107408669916254e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018558",
+          "score": 6.0650341526639635e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034971",
+          "score": 6.0570135976864125e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044147",
+          "score": 5.819806255972582e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030074",
+          "score": 5.391919515854073e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014650",
+          "score": 5.252483493175912e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044612",
+          "score": 4.745546979738422e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P020959",
+          "score": 4.544021747960626e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038863",
+          "score": 4.518684874925882e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044862",
+          "score": 4.0894598227507115e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P046316",
+          "score": 4.02655830905466e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048807",
+          "score": 3.6780529556539824e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039107",
+          "score": 3.553833879873245e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025255",
+          "score": 3.4918408090131234e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.9814160041278228,
+        "ranking_ms": 21.557250001933426,
+        "reranking_ms": 0.13625000428874046,
+        "total_ms": 23.67491601034999
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000013",
+      "recommendations": [
+        {
+          "product_id": "P048803",
+          "score": 1.6690964474257164e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P040444",
+          "score": 1.4730525013748746e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048820",
+          "score": 1.249435938825011e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048994",
+          "score": 1.248898852173816e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007623",
+          "score": 1.0292030357302029e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P046928",
+          "score": 1.0015068879461533e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032184",
+          "score": 5.245626930874478e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010208",
+          "score": 4.9033256702959646e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038113",
+          "score": 4.3966363210724835e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033170",
+          "score": 4.122828855114384e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043193",
+          "score": 3.855884050094939e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018084",
+          "score": 3.024888147037594e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013949",
+          "score": 2.878218971209649e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P019568",
+          "score": 2.715570349425163e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007185",
+          "score": 2.702239067274917e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048206",
+          "score": 2.2748425051229842e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030967",
+          "score": 1.9380039294279033e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043371",
+          "score": 1.8996445177521873e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P040861",
+          "score": 1.8160670992202477e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P037423",
+          "score": 1.6084627119800077e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011651",
+          "score": 1.2660345658659956e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038982",
+          "score": 1.26110347886026e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033232",
+          "score": 1.1542172382791871e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029138",
+          "score": 1.0544630998172901e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P048576",
+          "score": 1.043472084997013e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030306",
+          "score": 9.634549153489727e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P027945",
+          "score": 9.194529936951221e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045205",
+          "score": 8.954446918381462e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039732",
+          "score": 8.4330490114355e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010622",
+          "score": 7.664207369608139e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011904",
+          "score": 7.161033376522352e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030112",
+          "score": 6.967770527628548e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034760",
+          "score": 6.81169962489926e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P040874",
+          "score": 6.577574212564014e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039720",
+          "score": 6.575447312833459e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032483",
+          "score": 6.304791910581977e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011068",
+          "score": 5.4306428975872244e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002735",
+          "score": 5.412755679323582e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P037155",
+          "score": 4.453148241730922e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P035577",
+          "score": 4.210275096632908e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030433",
+          "score": 3.766322259087353e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033375",
+          "score": 3.5350771822892455e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043880",
+          "score": 3.4213577151644354e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P031294",
+          "score": 3.399693153472512e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030183",
+          "score": 3.235540285876997e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P037745",
+          "score": 3.0119896563717474e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P039695",
+          "score": 2.939964327284346e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047027",
+          "score": 2.850758417169549e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047218",
+          "score": 2.830181657540137e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038834",
+          "score": 2.682308339674376e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.9926249951822683,
+        "ranking_ms": 81.3899580098223,
+        "reranking_ms": 0.1399999891873449,
+        "total_ms": 83.52258299419191
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000014",
+      "recommendations": [
+        {
+          "product_id": "P032782",
+          "score": 3.9326620302274073e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047668",
+          "score": 3.1336340315137046e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P035582",
+          "score": 1.813377871256669e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042820",
+          "score": 1.8114393177722649e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P019168",
+          "score": 1.7014590691227793e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018464",
+          "score": 1.165198444457935e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P008368",
+          "score": 9.005907049839182e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028739",
+          "score": 7.757690838458217e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007664",
+          "score": 7.060916115035967e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042694",
+          "score": 6.12887968457973e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011660",
+          "score": 3.0310847012665273e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011431",
+          "score": 2.9447473105792543e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030005",
+          "score": 2.2514816752508895e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022955",
+          "score": 2.1548128542993664e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038127",
+          "score": 1.5507387718773427e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029192",
+          "score": 1.2826128641162463e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034796",
+          "score": 1.2159310423765987e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022784",
+          "score": 8.705164274971575e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042029",
+          "score": 8.510151879525217e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044782",
+          "score": 7.481281287286153e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025129",
+          "score": 5.291387716443302e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022141",
+          "score": 5.220151822062742e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P029681",
+          "score": 5.126851566439154e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043511",
+          "score": 4.67663915541339e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P037141",
+          "score": 3.3831588585838714e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P035408",
+          "score": 3.2102953159170297e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034271",
+          "score": 2.9853606345759667e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030893",
+          "score": 2.7983452889428738e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P027544",
+          "score": 2.475849988011771e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P009053",
+          "score": 2.377612589096875e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024014",
+          "score": 1.6275076337001339e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026784",
+          "score": 1.627330921451513e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013828",
+          "score": 1.6044061864923121e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014043",
+          "score": 1.5180810354311269e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044214",
+          "score": 1.3541184326113886e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P025317",
+          "score": 1.2263763350447835e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036192",
+          "score": 1.1932155245553697e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045046",
+          "score": 1.0912160288052437e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012872",
+          "score": 9.746257552639519e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P040605",
+          "score": 8.569231157046784e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P022065",
+          "score": 7.665047838050052e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P031514",
+          "score": 7.447416486538452e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P049032",
+          "score": 7.149612937173641e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011502",
+          "score": 6.146129828187919e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028034",
+          "score": 5.501195236379351e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005507",
+          "score": 5.258545178583819e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034886",
+          "score": 5.131484413144162e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028763",
+          "score": 4.856435345116153e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012471",
+          "score": 4.820157982776436e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P018885",
+          "score": 4.759996408906515e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.90245799603872,
+        "ranking_ms": 20.26825000939425,
+        "reranking_ms": 0.1380419998895377,
+        "total_ms": 22.30875000532251
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    {
+      "user_id": "U000015",
+      "recommendations": [
+        {
+          "product_id": "P047366",
+          "score": 5.38070317468442e-11,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P020291",
+          "score": 5.756636053261266e-12,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P004564",
+          "score": 8.08436705166532e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034328",
+          "score": 2.528110370787068e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P031012",
+          "score": 2.050956789383801e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P044296",
+          "score": 1.9111623362436797e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024896",
+          "score": 1.754019835192161e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042406",
+          "score": 1.259053218670772e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033942",
+          "score": 1.224560139704775e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043471",
+          "score": 1.2126312053020033e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P027968",
+          "score": 1.060517640502287e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017852",
+          "score": 1.0322053270710868e-13,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024633",
+          "score": 8.486237428918797e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P023759",
+          "score": 6.379418477850396e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043941",
+          "score": 4.3623026875884777e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026410",
+          "score": 3.181207399827017e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024149",
+          "score": 2.04915243979956e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P032205",
+          "score": 1.7642723897483628e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P043400",
+          "score": 1.5957104615525047e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P035878",
+          "score": 1.5938679954856372e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014027",
+          "score": 1.0732555421916635e-14,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047846",
+          "score": 7.899395384775715e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030980",
+          "score": 7.338283491064787e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017240",
+          "score": 6.3144142048627856e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042048",
+          "score": 6.292792418334699e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014037",
+          "score": 6.278266226805761e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042715",
+          "score": 5.973264062059591e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P017723",
+          "score": 5.4931132715131236e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036088",
+          "score": 4.774822132461425e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P030192",
+          "score": 4.3062659524134485e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P003626",
+          "score": 4.080798063832089e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P012228",
+          "score": 3.5286458728789804e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P024326",
+          "score": 3.495455522115531e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P010789",
+          "score": 2.929158516217986e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036817",
+          "score": 2.7991633110116846e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P011753",
+          "score": 2.7859517146168857e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042950",
+          "score": 2.7486765474653025e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P021867",
+          "score": 2.71639950997723e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P028330",
+          "score": 2.4148335461398338e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P045820",
+          "score": 2.3796848552023325e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002373",
+          "score": 2.3193089819967564e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P046840",
+          "score": 2.2747641545753632e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P014998",
+          "score": 2.2618189500424758e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P034665",
+          "score": 2.075599603621565e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P020443",
+          "score": 1.309324683382621e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047418",
+          "score": 1.286715362317154e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P047437",
+          "score": 1.2506797220047591e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P036458",
+          "score": 1.1969921268298214e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P038493",
+          "score": 1.1381684415000888e-15,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P033607",
+          "score": 9.677584356440876e-16,
+          "reason": "DeepFM 클릭·구매 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.6878750029718503,
+        "ranking_ms": 22.429166987421922,
+        "reranking_ms": 0.1642920105950907,
+        "total_ms": 24.281334000988863
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    }
+  ],
+  "live_flow": {},
+  "measurement_scope": "shared FastAPI paths with injected B memory adapter; ASGI TestClient HTTP transport, no TCP/Redis/container",
+  "environment": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.13",
+    "device": "cpu",
+    "cache": "no response cache",
+    "threads": 1,
+    "ram": "sandbox unavailable"
+  },
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6"
+}

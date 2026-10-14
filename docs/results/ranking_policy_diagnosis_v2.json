@@ -1,0 +1,34 @@
+{
+  "version": "inference-ablation-v2",
+  "source": "docs/results/ranking_policy_full_valid.json",
+  "source_sha256": "7f4606c13bf64f7813593542657d337d00ca794b59ebe7ce2e0cbfb379a65fea",
+  "unchanged_candidate_prediction_sha256": "f9b3735a71b9b999d294e0ee24a811870730778210a9f0acfd1338d20e30c5f7",
+  "observations": [
+    "same candidates and predicted CTR/CVR pairs used for all operational policies",
+    "per-policy exposure statistics and RNG isolated",
+    "30min CVR target has zero positive purchases and undefined AUC",
+    "CTR beats CTRxCVR in full valid quality; rank fusion improves as CTR weight rises",
+    "all policies have2240 candidate pools with insufficient diversity capacity; feasible pool violations0",
+    "300 cold users have no valid cart/purchase truth; cold quality cannot be estimated"
+  ],
+  "ctr_minus_ctr_cvr": {
+    "hit_rate_at_50": 0.6605740764577166,
+    "ndcg_at_50": 0.3522296163848047,
+    "coverage": -0.22086
+  },
+  "mean_absolute_rank_shift_from_candidates": {
+    "ctr_cvr": 92.62183866666636,
+    "ctr": 48.131808000000156,
+    "rank_fusion_0.25": 11.505915333333284,
+    "rank_fusion_0.50": 25.602209999999932,
+    "rank_fusion_0.75": 38.764240666666545
+  },
+  "supported_inference": "Multiplying by the unidentifiable CVR head disrupts useful candidate/CTR ordering in this retained dataset; controlled scoring ablation supports choosing CTR for inference without changing trained artifacts. Classification AUC alone did not establish ranking quality.",
+  "unresolved": [
+    "no cold cohort relevance estimate",
+    "candidate diversity infeasibility not fixed by scoring",
+    "test was previously inspected and is not fresh independent evidence",
+    "default C store/Redis/Docker integration unverified"
+  ],
+  "decision": "Select highest eligible valid NDCG: ctr; do not use test to retune"
+}

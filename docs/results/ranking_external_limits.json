@@ -1,0 +1,25 @@
+{
+  "tcp_http": {
+    "status": "BLOCKED",
+    "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m uvicorn src.serving.main:app --host 127.0.0.1 --port 18084",
+    "exit_code": 1,
+    "startup": "completed; model factory loaded",
+    "error": "[Errno 1] attempting to bind 127.0.0.1:18084: operation not permitted",
+    "available_evidence": "Unchanged shared FastAPI ASGI TestClient paths with B memory adapter; real TCP/curl latency remains UNMEASURED"
+  },
+  "native_checkpoint": {
+    "status": "UNAVAILABLE",
+    "error": "Installed skill ctx.py references missing /Users/Shared/AI-Exchange/projects/context-optimizer",
+    "recovery": "docs/results/ranking_execution_state.json preserves phases, commands, processes and resume point"
+  },
+  "common_integration": "UNMEASURED; A and C OPEN handoffs remain unapplied",
+  "remote_publication": "NOT_EXECUTED; no new B4/B5 push approval",
+  "C_TEST_003": {
+    "status": "OPEN",
+    "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m pytest -q tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success",
+    "exit_code": 1,
+    "error": "normal trained model returns200; old test requires503",
+    "B_fixture_checks": "independent missing/healthy/corrupt startup tests PASS",
+    "default_dev_regression": "176 passed; full C fixture isolation still unapplied"
+  }
+}

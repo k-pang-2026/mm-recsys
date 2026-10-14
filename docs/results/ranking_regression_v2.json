@@ -1,0 +1,44 @@
+{
+  "version": "b5-followup-regression-v2",
+  "scale": "full",
+  "full_suite_status": "FAIL",
+  "attempts": [
+    {
+      "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full REDIS_HOST=localhost .venv/bin/python -m pytest -q",
+      "passed": 212,
+      "failed": 10,
+      "skipped": 1,
+      "exit_code": 1,
+      "raw_log": ".team/condense-logs/774665fbe20cc88c.log",
+      "preserved_raw_log": "docs/results/experiments/B/774665fbe20cc88c.txt"
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full REDIS_HOST=localhost .venv/bin/python .team/regression_order.py",
+      "passed": 215,
+      "failed": 9,
+      "skipped": 1,
+      "exit_code": 1,
+      "raw_log": ".team/condense-logs/39d71a6338ac99a9.log",
+      "preserved_raw_log": "docs/results/experiments/B/39d71a6338ac99a9.txt"
+    }
+  ],
+  "diagnosis": {
+    "C-TEST-003": "default real model returns200; C absence fixture expects503; Redislocalhost access denied; no C edits",
+    "A_common_runtime": "whole suite subprocess fork raises OMP Error179 SHM denial and SIGABRT; common33 tests pass isolated in unchanged PR8 and followup; order alone did not resolve full run",
+    "causal_status": "OpenMP runtime/whole-suite interaction observed; exact root mechanism unresolved; not attributed to new scoring without further evidence"
+  },
+  "isolated_checks": {
+    "unchanged_PR8_common": "33 passed exit0",
+    "followup_common": "33 passed exit0",
+    "B_related": "61 passed exit0; followed by added API/state tests"
+  },
+  "common_integration": "UNMEASURED",
+  "real_redis": "SKIPPED/UNMEASURED",
+  "handoffs": [
+    "C-TEST-003",
+    "C-MAB-001",
+    "C-SESSION-002",
+    "A-BATCH-001",
+    "A-HANDOFF-002"
+  ]
+}

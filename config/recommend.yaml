@@ -1,11 +1,11 @@
 # B owns this overlay; top-level key stays recommend.
 recommend:
+  scoring:
+    strategy: ctr
   candidate_config_snapshot: docs/results/candidate_config_original.json
   ranking:
     embedding_dim: 16
-    hidden_dims:
-    - 128
-    - 64
+    hidden_dims: [128, 64]
     learning_rate: 0.001
     weight_decay: 0.0001
     batch_size: 1024
@@ -15,6 +15,32 @@ recommend:
     attribution_seconds: 1800
     cvr_loss_weight: 1.0
     cross_features: true
+  reranking:
+    category_field: category_l3
+    pipeline: [cold_start, new_item, exploration, diversity]
+    cold_sort: popularity_growth
+    trend_days: 3
+    growth_weight: 0.5
+  mab:
+    arm: item
+    exploration_slots: 2
+    ucb_coefficient: 1.41421356237
+    exposure_ttl_seconds: 1800
+    click_reward: 0.2
+    purchase_reward: 1.0
+  session:
+    enabled: true
+    hidden_dim: 64
+    max_length: 20
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    batch_size: 1024
+    epochs: 20
+    patience: 3
+    session_weight: 0.3
+    long_term_weight: 0.7
+    negatives: 64
+    temperature: 0.1
   candidate:
     embedding_dim: 16
     hidden_dim: 128

@@ -1,0 +1,42 @@
+{
+  "selection_split": "valid",
+  "best_epoch": 11,
+  "model_sha256": "28ec1ab82c4f264f063adb924549a48afabcb4b17e4bdc1667c8248090917ae3",
+  "config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+  "selected_valid": {
+    "ctr": {
+      "auc": 0.9717606591988743,
+      "logloss": 0.13577365417633777,
+      "samples": 224642,
+      "positives": 56453,
+      "denominator": "observed exposures"
+    },
+    "cvr": {
+      "auc": null,
+      "logloss": 5.756268628398115e-07,
+      "samples": 56063,
+      "positives": 0,
+      "denominator": "observed clicked exposures"
+    }
+  },
+  "decision": "Freeze DeepFM epoch11 selected by valid CTR AUC and GRU epoch20 by valid next-view loss before opening test. User retains 30min CVR attribution; no tuning of a single-class CVR target. Any quality miss is reported without test-driven changes.",
+  "session_model_sha256": "41d23f445bf66ed6a8fe1b76beb017b2602d740a6202817480f6a216a8bcf2a6",
+  "session_selection_source": "docs/results/session_training_full.json",
+  "source_hashes": {
+    "docs/results/ranking_training_full.json": "a4a7b5a594b6aee50903e7102813a81cb41e0d5e1d3175b6c608cbbdf8aefb23",
+    "docs/results/session_training_full.json": "3fd9de52f84166a0fecdbe46a0464bb834bc7974d191a921dccd2417629f096f",
+    "config/recommend.yaml": "39dbf16c3c0528fd4cbc3f8293afbfab926fbaece97497d7aa9d593effc891f3",
+    "src/recommendation/reranking.py": "65ee38c19a7041c2109c7a364d69e17f42d1e37242cb00845bb079b851eff812"
+  },
+  "post_freeze_equivalent_correction": {
+    "original_reranking_sha256": "48ab7334aa46aa6233250e3eb02d9b5ae844f0d5e4d204fb51077182a6248fd5",
+    "differential_source": "docs/results/experiments/B/reranking_order_differential.json",
+    "validated_predecessor": "docs/results/experiments/B/reranking_order_v1.py"
+  },
+  "post_freeze_constraint_repair": {
+    "validation_source": "docs/results/experiments/B/reranking_constraint_validation.json",
+    "before_test_source": "docs/results/experiments/B/ranking_full_test_b5_before_diversity.json",
+    "before_test_sha256": "b6301fefea3aee3158a8436a1ae55ac3012ce8ebabc0a73d0fd0aed20af847a1",
+    "reason": "A required rare-category item placed early could consume the only separator and falsely declare feasible diversity impossible. Fix completion feasibility, not model/score tuning."
+  }
+}
