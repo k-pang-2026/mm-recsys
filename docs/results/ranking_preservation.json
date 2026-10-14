@@ -1,0 +1,33 @@
+{
+  "version": "b4-b5-preservation-v1",
+  "original_recommend_fingerprint": "74c8d74052b3b1d901d5e38f9322ef6e0544ce3af100a8d6b76b9255214d6906",
+  "hashes": {
+    "models/full/v1.0/item_index.faiss": "b409816e8195cb49607f56bae753d707756a8c3d659d70fc638bf5d631148c9a",
+    "models/full/v1.0/index_manifest.json": "443679ad155ca73d8f8a2c683c1ef0b459beafda47331968a2b65ed91249f7de",
+    "models/full/v1.0/item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "models/full/v1.0/feature_vocab_scalers.json": "b1a2377641b71422e38ef95141b6ac7882d8677e40a31b527d92b4d30ef0bad9",
+    "models/full/v1.0/two_tower.pt": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+    "models/full/v1.0/meta.json": "3b289edffa08643b892a183a07badaf29c8a907f34ee1749ba97c7c8d217d499",
+    "models/v1.0/item_ids.json": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+    "models/v1.0/feature_vocab_scalers.json": "a656cc182b684f1899dd2445f17dfc4215b6b95f1bd424b01d4ea07e96b0db66",
+    "models/v1.0/two_tower.pt": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+    "models/v1.0/meta.json": "b9bed7d88240d17cc4190881372b7cdbddcf5ba1964b4917569f54c95e8899ec",
+    "docs/results/candidate_metrics.json": "ccbfcc11e812001142e3bc63a911be1356a9fade00bf4d1a51bfaf0ad8d25420",
+    "docs/results/candidate_selection.json": "4ae5300734530f77fad00ef70c1d9738d3d583c16d5d414e0880a97c1b8e3bfb",
+    "docs/results/candidate_training_full.json": "ed7a8ec3d5333f79a942782a599740dc71b26fbcfe3402f0864bb1692e86dcf6",
+    "docs/results/candidate_full_valid.json": "8c61558625b9bcdf3f99ca3c705c8a81f82f61f9ba08ffe98ca604c418275988",
+    "docs/results/candidate_full_test.json": "059e764a0aa023676579c5945c7f9cfb91b1ea2e968d9103886553cdff2ce165",
+    "docs/results/candidate_benchmark_full_test.json": "c1468e1107e4dc2635cd43f91e4b2682c4707e9021c17b6fbed35fd9b7a0660e",
+    "data/full/products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "data/full/users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+    "data/full/events.parquet": "efc8d3d1e31c616845356a48cd9c5300a77db82164b07fee6c74771e664dd529",
+    "data/full/impressions.parquet": "4f9064dc3781e68c916c4068f095788d24a444812cc6a86f5447da84fd6de609",
+    "data/full/split/train.parquet": "48ec6861964ddcabafec4d7ed36f3523eb8380e8858526768efbb5579b30c8ff",
+    "data/full/split/test.parquet": "e2b53a80f793628ebd57b8afd77a59de49a536adbe139b9d19c18e12e67a4814",
+    "data/full/split/valid.parquet": "34abd1620303a22a3b69948ee705b58726f12a7c4990069da6d6d010a7c8f889",
+    "data/full/split_manifest.json": "3852ef89c0435e334ed9f417b6c1b6a3ce4d582d5b417db8d796d2e010b3db47"
+  },
+  "baseline_verification": "B3b verifier exit0 before config edit",
+  "baseline_commit": "161eee5",
+  "acceptance": "UNMEASURED"
+}

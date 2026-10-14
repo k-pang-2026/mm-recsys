@@ -174,3 +174,46 @@ OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_candi
 UNMEASURED이며, B3b 후보 생성 자체는 `candidate_metrics.json`에서 PASS다.
 구조 gate는 `docs/results/gates/B3b.json`, 담당 변경과 검증은 `docs/contributions/B.md`에 기록한다.
 full data fingerprint: `0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6`.
+
+
+## 1차 PR — DeepFM 오프라인 CTR AUC까지 (2026-10-14)
+
+사용자가 통과 항목 중 DeepFM test CTR AUC까지 먼저 PR로 분리하도록 요청했다.
+이 PR은 B3b 후보 생성 기준선을 보존하고 CTR/CVR 라벨·시점 피처·PyTorch DeepFM·학습·독립 분류 평가를 제공한다.
+추천 API, 주입 환경 지연, 최종 순위 품질, B5 재랭킹/MAB/세션/Coverage는 구현·검증 범위에서 제외한다.
+기존 전체 구현과 실패 측정은 원본 작업 공간에 보존했으며 이 PR을 B4 전체 또는 B5 완료로 취급하지 않는다.
+
+학습: embedding16, DNN[128,64], AdamW lr0.001, batch1024, 최대20epoch, patience3.
+train에서 vocabulary/통계만 적합하고 예측 시점 이전 이력만 사용한다. valid 선택 epoch11을 동결해 test를 평가한다.
+CTR은 노출과 연결된 view를 클릭 대리값으로 사용한다. 현재 생성기는 노출/view 시간이 같다.
+position, impression_id, request_id, event_type, persona는 예측 입력에서 제외한다.
+구매는 같은 사용자·상품·세션의 최근 선행 view에30분 내 귀속하며 split 경계의 미관측 음성은 검열한다.
+
+기존 동결 test CTR AUC는0.9633700394, LogLoss0.161054131이고 관측 노출225,422건/클릭56,639건이다.
+선택 valid AUC는0.9717606592다. 독립 CLI로 같은 동결 모델을 재평가해 `ranking_classification_full_test.json`에 저장한다.
+30분 CVR 구매 양성은0건으로 AUC가 미정의다. CVR LogLoss가 낮아도 전환 학습 성공이 아니다.
+이전 전체 실험의 최종 추천 HitRate/NDCG는 목표 미달이었다. CTR 통과를 추천 품질 개선이나 전체 acceptance로 확대하지 않는다.
+이번 부분 PR은 Draft로 유지하고 전체 acceptance는 UNMEASURED다.
+
+재현 명령(기존 full 데이터·동결 모델 필요; 모델·데이터는 Git에 넣지 않음):
+
+```bash
+# 새 클론에서는 먼저 동일 config/seed로 후보·DeepFM 모델을 준비한다.
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.train_deepfm
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.eval_deepfm --split test
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_deepfm --metrics docs/results/ranking_classification_full_test.json
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_candidate --metrics docs/results/candidate_metrics.json
+```
+
+현재 작업에서는 원본 학습·선택 결과를 보존하고 재학습 없이 같은 체크포인트를 평가한다.
+후보 설정 호환성은 검증된 원본 설정 snapshot과 candidate scope hash로 확인하여 B3b 모델·인덱스를 덮어쓰지 않는다.
+A·C 인계5건과 다음 시작 지시는 `docs/contributions/B.md`에 있다. 공통 파일은 수정하지 않았다.
+다른 클론으로 자동 전달하거나 실행하는 기능은 없으며 A-HANDOFF-002 적용이 필요하다.
+
+
+부분 PR 재평가에서 CTR AUC0.9633700393677938과 LogLoss0.1610541309648597을 동일하게 재현했다.
+후보 verifier와 기존 보존 해시 검사가 통과했다. 전체 로컬 회귀는191통과/1실패/1skip이고,
+기본 Redis 주소(redis:6379) 접속 불가로 C의 기존 API fixture recent_clicks 검사가 실패했다.
+공식 CI plugin도 실제 Redis가 필요하며 같은 실패가 확인됐다. 이 환경 결과와 B 소유 구조 gate를 구분한다.
+원본 기본 Redis 환경 실패는 `ranking_ctr_regression_limits.json`에 보존하며 C 공통 파일을 수정하지 않는다.
+GitHub CI의 실제 Redis 서비스 검사와 원격 PR은 아직 확인하지 못했다.

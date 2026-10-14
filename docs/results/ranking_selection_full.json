@@ -1,0 +1,25 @@
+{
+  "selection_split": "valid",
+  "best_epoch": 11,
+  "model_sha256": "28ec1ab82c4f264f063adb924549a48afabcb4b17e4bdc1667c8248090917ae3",
+  "config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+  "selected_valid": {
+    "ctr": {
+      "auc": 0.9717606591988743,
+      "logloss": 0.13577365417633777,
+      "samples": 224642,
+      "positives": 56453,
+      "denominator": "observed exposures"
+    },
+    "cvr": {
+      "auc": null,
+      "logloss": 5.756268628398115e-07,
+      "samples": 56063,
+      "positives": 0,
+      "denominator": "observed clicked exposures"
+    }
+  },
+  "decision": "Select epoch11 by valid CTR AUC before test; retain 30min attribution and disclose CVR zero positives.",
+  "training_source": "docs/results/ranking_training_full.json",
+  "training_source_sha256": "a4a7b5a594b6aee50903e7102813a81cb41e0d5e1d3175b6c608cbbdf8aefb23"
+}
