@@ -2,7 +2,7 @@
   "step": "B4",
   "owner": "B",
   "status": "PASS",
-  "scale": "dev",
+  "scale": "full",
   "acceptance": "UNMEASURED",
   "commands": [
     {
@@ -49,8 +49,8 @@
     "src/recommendation/verify_deepfm.py",
     "tests/test_deepfm.py"
   ],
-  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
-  "config_fingerprint": "285e39a3144c0e3344cad7f5a8488c26d8e917d7ddd0ad3627182674cc2e0e3d",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "config_fingerprint": "2d182b60749f62c2b9809b77f805a529b8ccf5397016de0cf5309d7a38fa73f0",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
     "config/recommend.yaml": "9710ad8b204e43bbc6abd997906fb049db07261445fcacfeb3002432ccb34221",
@@ -75,5 +75,5 @@
     "src/recommendation/verify_deepfm.py": "48f270e8e395501e440308dd4aeca3d687926ab1447683dd79575c6985512de8",
     "tests/test_deepfm.py": "b54b251c5505551764bec564d6570701a8ca5ff2263c6b3c753994c86b24d878"
   },
-  "commit_summary_ko": "DeepFM 오프라인 CTR 학습·검증과 A·C 인계 범위 분리"
+  "commit_summary_ko": "DeepFM full 검증 게이트의 규모·데이터 식별자 정정"
 }
