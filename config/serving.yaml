@@ -6,3 +6,17 @@ serving:
     max_connections: 32
     write_retries: 8
     db: 0
+  ab_test:
+    control: popularity
+    treatment: full_pipeline
+    users_per_group: 5000
+    days: 30
+    top_n: 10
+    # Dev keeps the same population fraction and duration; full uses 5,000/arm.
+    dev_population_fraction: 0.2
+    outcome:
+      click_base: 0.35
+      category_weight: 1.0
+      price_penalty: 2.0
+      position_decay: 0.25
+      conversion_multiplier: 1.0

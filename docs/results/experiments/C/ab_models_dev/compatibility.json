@@ -1,0 +1,153 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "seed": 42,
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "data_hashes": {
+    "products.parquet": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "users.parquet": "4bba9847f5e6eebbed0ef6d7341de5c58705f65b12498277195d9a01e9a8b66d",
+    "events.parquet": "8d0c0a2251b35dc3904d89a8f1ee474a408ea25cb49a20fbedd20e036147ead9",
+    "impressions.parquet": "76882c3a4c213aa248556b700eb62cb4a507bbc6bf71586f6daedce436e2d692",
+    "image_manifest.json": "01c938b16d5415bf9917a60eec845184dd3ad670a24cfd67ba9d4f927ccd7178",
+    "split/train.parquet": "7fab795ba193a2c50a6d906934d7222596c4bc742d78a2b979cfd0cb02fcd82e",
+    "split/valid.parquet": "6b7adf05d79c13c89fae1d0e3b8612bb6cd9e46b2ef8909a6e5a45ae9262ea14",
+    "split/test.parquet": "bb8a202c26da77b0dca241f6cfabd0a2c70aa34366acf326773dabcf6b15cd08"
+  },
+  "candidate": {
+    "contract": {
+      "version": "candidate-bundle-v1",
+      "directory": "models[/full]/v1.0",
+      "files": {
+        "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+        "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+        "item_ids.json": "canonical ordered public IDs, excludes PAD",
+        "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+        "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+        "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+      },
+      "history_inputs": [
+        "observed product IDs before timestamp",
+        "age_group",
+        "gender",
+        "past purchase category/brand distribution and price"
+      ],
+      "item_inputs": [
+        "category_l1",
+        "category_l2",
+        "category_l3",
+        "brand",
+        "color",
+        "style",
+        "price"
+      ],
+      "persona": false,
+      "item_id_residual": false,
+      "normalized": true,
+      "metric": "inner_product"
+    },
+    "scale": "dev",
+    "dim": 64,
+    "model_version": "v1.0",
+    "retrieval": "HNSW inner_product; cutoff filtering and adaptive refill",
+    "best_epoch": 8,
+    "best_valid_recall_at_300": 0.8190661478599222,
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "catalog_sha256": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "feature_fingerprint": "b075bf48d6124d7ad0124e458ebe6c23c14398bf4b88f8417b31754ac280f12a",
+    "config_fingerprint": "d076a6b312828c687fece88ece9149fc88575efb03c1e54fdbca1e1c4a898c11",
+    "candidate_scope_fingerprint": "ad7020b9d9c427830b1b3378024dc4f60213fa495284b8f1578d8e80bf419241",
+    "training_spec": {
+      "dim": 64,
+      "history_n": 50,
+      "batch_size": 512,
+      "epochs": 20,
+      "patience": 3,
+      "learning_rate": 0.001,
+      "temperature": 0.1,
+      "negatives_per_positive": 4,
+      "loss": "sampled_softmax",
+      "positive_weights": {
+        "view": 0.2,
+        "cart": 0.6,
+        "purchase": 1.0
+      },
+      "faiss": {
+        "type": "HNSW",
+        "metric": "inner_product",
+        "M": 32,
+        "ef_search": 512
+      },
+      "embedding_dim": 16,
+      "hidden_dim": 128,
+      "weight_decay": 0.0001,
+      "threads": 4,
+      "num_workers": 0,
+      "history_pooling": "mean",
+      "item_id_residual": false,
+      "profile_categories": "category_l3",
+      "tiny_fit_steps": 160,
+      "tiny_fit_learning_rate": 0.01
+    },
+    "hashes": {
+      "two_tower.pt": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+      "feature_vocab_scalers.json": "a656cc182b684f1899dd2445f17dfc4215b6b95f1bd424b01d4ea07e96b0db66",
+      "item_ids.json": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+      "item_index.faiss": "73a1736744dc0e0f3b3954c0fb925b2fd4f97f0da8eefadaf4d0bd524c6c8ee8",
+      "index_manifest.json": "51c3c7d423c6944416193b50ee642da24ab53196835718df0be59737b801b803"
+    }
+  },
+  "index": {
+    "version": "candidate-index-v1",
+    "type": "HNSWFlat",
+    "metric": "inner_product",
+    "normalized": true,
+    "dim": 64,
+    "ntotal": 10000,
+    "mapping": "FAISS label i -> item_ids.json[i] -> table row i+1",
+    "M": 32,
+    "ef_construction": 200,
+    "ef_search": 512,
+    "build_threads": 1,
+    "faiss_version": "1.9.0",
+    "model_sha256": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+    "feature_fingerprint": "b075bf48d6124d7ad0124e458ebe6c23c14398bf4b88f8417b31754ac280f12a",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "catalog_sha256": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "config_fingerprint": "d076a6b312828c687fece88ece9149fc88575efb03c1e54fdbca1e1c4a898c11",
+    "item_ids_sha256": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+    "vectors_sha256": "f7fe0dbf09b13f629fc5cb39d5d57eec1d3cee0d16b62f118f1bfd8c1a481503",
+    "index_sha256": "73a1736744dc0e0f3b3954c0fb925b2fd4f97f0da8eefadaf4d0bd524c6c8ee8",
+    "catalog_filter": "created_at <= request cutoff"
+  },
+  "ranking": {
+    "version": "deepfm-bundle-v1",
+    "scale": "dev",
+    "best_epoch": 18,
+    "selection_split": "valid",
+    "config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+    "feature_fingerprint": "f62e07ed19420ff79a853ae67587a0caf24803fb25a30742d384d9d9a91c3a42",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "catalog_sha256": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "hashes": {
+      "deepfm.pt": "7961891fecffbb0539c66fed57cc9693f1feccbf4dc6fe9296d8c12645c6164a",
+      "features.json": "d0888ea743e0b7e165981e31a0ef438cad43364c3c61a8cfc51c6f4361c4485b"
+    },
+    "ranking_score": "P(click)*P(purchase|click)"
+  },
+  "session": {
+    "version": "gru-session-v1",
+    "best_epoch": 20,
+    "selection_split": "valid",
+    "config_fingerprint": "12d7a11dba82d761489faa26a9e86e7aae20ccbbde9b4ec9cdb8a7e7db759c14",
+    "candidate_sha256": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "hashes": {
+      "session.pt": "9fd441c5d01d712040e356f9a05075516d719d03580bc3d261a6ac27050a1b12",
+      "item_ids.json": "1e22a996e0d5a69f911af6c5a4429a6d44c3e15afa3e3778c74887dcfeb5ceae"
+    }
+  },
+  "checks": "dataset/image hashes; candidate config/dimension/ID mapping/index; ranking/session config/data/model checksums; service load",
+  "test_outcomes_read": false,
+  "acceptance": "UNMEASURED",
+  "portability": "same config/seed; model bytes and floating-point results may differ across OS/Python"
+}

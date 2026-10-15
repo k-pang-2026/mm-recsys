@@ -1,0 +1,15 @@
+{
+  "status": "ARCHIVED_EXPLORATORY",
+  "reason": "initial shared adaptive bandit let one user affect another; independent-user inference not accepted; replaced with independent per-user bandit states before final B7 gate",
+  "source_sha256": "381e0087804ca908eca88d3545fa0534d82dcaa668068690a520d9d6648c62c7",
+  "ctr": {
+    "control": 0.24783333333333332,
+    "treatment": 0.20283333333333334
+  },
+  "cvr": {
+    "control": 0.011516666666666666,
+    "treatment": 0.008766666666666667
+  },
+  "acceptance": "UNMEASURED",
+  "treatment_advantage_injected": false
+}

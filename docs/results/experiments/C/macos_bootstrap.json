@@ -1,0 +1,79 @@
+{
+  "status": "PASS",
+  "date_kst": "2026-10-15",
+  "role": "C",
+  "owner": "박채영",
+  "branch": "feat/C/platform",
+  "reviewed_main": "e5f1840c7845c2002675abc759b782a7eccd5e74",
+  "fetch_refspecs": [
+    "+refs/heads/main:refs/remotes/origin/main",
+    "+refs/heads/feat/C/platform:refs/remotes/origin/feat/C/platform"
+  ],
+  "setup": {
+    "command": "source ../.devtools/activate.sh; export RUN_REDIS_TESTS=1 PYTEST_ADDOPTS='-p src.serving.pytest_support'; bash setup_env.sh . --role=C",
+    "exit_code": 0,
+    "skips": [],
+    "final_log_sha256": "21635a4cf185763d0614871d32ccbdb57e7cbb5d053ea08b36c765249b9ab328",
+    "tests": "242 passed during full setup; subsequent C regression 243 passed"
+  },
+  "tools": {
+    "git": "git version 2.56.0",
+    "python": "3.11.17",
+    "bash": "5.2.37",
+    "docker_desktop": "4.95.0 (242831)",
+    "docker": "29.8.2",
+    "compose": "5.6.0",
+    "cpu_cores": 10,
+    "ram_bytes": 25769803776,
+    "docker_memory_bytes": 8319504384
+  },
+  "auth": {
+    "github": "NOT_AUTHENTICATED; public clone/PR read succeeded; gh auth login needed before publish",
+    "codex": "Logged in using ChatGPT",
+    "docker": "unauthenticated public redis:7 pull succeeded"
+  },
+  "adjustments": [
+    "local conda-forge Git/Python/GitHub CLI/Bash under ../.devtools/runtime; no system Python replacement",
+    "macOS Bash3.2 empty-array nounset failure avoided with Bash5.2; shared setup unchanged",
+    "Docker Desktop official Apple Silicon build under ../.devtools; Rosetta emulation disabled after startup error; native ARM engine running",
+    "C pytest adapter isolates implicit API model-absent tests; actual bundles checked separately"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "data_matches_prior_C_B6": true,
+  "data_ignored": true,
+  "models_ignored": true,
+  "search_embeddings": "NOT_REGENERATED; B7 uses recommendation only; pinned CLIP inference passed",
+  "remote_history": [
+    {
+      "number": 8,
+      "html_url": "https://github.com/k-pang-2026/mm-recsys/pull/8",
+      "merged_at": "2026-10-15T01:57:51Z",
+      "merge_commit_sha": "e5f1840c7845c2002675abc759b782a7eccd5e74"
+    },
+    {
+      "number": 6,
+      "html_url": "https://github.com/k-pang-2026/mm-recsys/pull/6",
+      "merged_at": "2026-10-09T03:38:30Z",
+      "merge_commit_sha": "1c1bfa9956e18d3f0b6fc29b03c783d7b18b9046"
+    },
+    {
+      "number": 3,
+      "html_url": "https://github.com/k-pang-2026/mm-recsys/pull/3",
+      "merged_at": "2026-10-09T02:40:31Z",
+      "merge_commit_sha": "c63415d68497b484b643e3a5d9f91b94a2b11cc7"
+    },
+    {
+      "number": 2,
+      "html_url": "https://github.com/k-pang-2026/mm-recsys/pull/2",
+      "merged_at": "2026-10-08T16:15:49Z",
+      "merge_commit_sha": "46aae2189b0654443b762c9756c0dd5d1a38773e"
+    }
+  ],
+  "completed_C": [
+    "B6"
+  ],
+  "current": "B7",
+  "next": "B8 after local B7 publication; B2b already merged",
+  "full_acceptance": "UNMEASURED",
+  "resume_environment": "source .team/activate.sh"
+}
