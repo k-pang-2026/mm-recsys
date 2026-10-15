@@ -1,0 +1,88 @@
+{
+  "step": "B7",
+  "owner": "C",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.ab_test --output .team/ab-repeat-dev.json",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && .venv/bin/python -m src.evaluation.verify_ab --repeat .team/ab-repeat-dev.json",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && .venv/bin/python -m mypy --follow-imports=skip --no-incremental --cache-dir=/dev/null src/evaluation/ab_test.py src/evaluation/ab_statistics.py src/evaluation/ab_prepare.py src/evaluation/verify_ab.py src/serving/pytest_support.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m compileall -q src/evaluation/ab_test.py src/evaluation/ab_statistics.py src/evaluation/ab_prepare.py src/evaluation/verify_ab.py src/serving/pytest_support.py tests/test_ab.py",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "docs/results/ab_test.json",
+    "docs/results/experiments/C/ab_initial_design_review.json",
+    "docs/results/experiments/C/ab_models_dev/candidate_training.json",
+    "docs/results/experiments/C/ab_models_dev/compatibility.json",
+    "docs/results/experiments/C/ab_models_dev/ranking_labels_dev.json",
+    "docs/results/experiments/C/ab_models_dev/ranking_selection_dev.json",
+    "docs/results/experiments/C/ab_models_dev/ranking_training_dev.json",
+    "docs/results/experiments/C/ab_models_dev/session_training_dev.json",
+    "docs/results/experiments/C/ab_verification_dev.json",
+    "docs/results/experiments/C/feature_macos_dev.json",
+    "docs/results/experiments/C/macos_bootstrap.json",
+    "docs/results/experiments/C/macos_data_diagnostics_dev.json",
+    "docs/results/experiments/C/macos_environment.json",
+    "src/evaluation/ab_prepare.py",
+    "src/evaluation/ab_statistics.py",
+    "src/evaluation/ab_test.py",
+    "src/evaluation/verify_ab.py",
+    "tests/test_ab.py",
+    "config/serving.yaml",
+    "docs/contributions/C.md",
+    "src/serving/pytest_support.py",
+    "docs/results/experiments/C/ab_verification_dev.json"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "1434a8cbdb12e65f36c89698f69a62c8e11e2aa350016ee5794bb244d732d996",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "docs/results/ab_test.json": "7272f87fc5247c4a0ca1d7610bc84fceab4ff3187cd9a54ed9363d1aa37499fc",
+    "docs/results/experiments/C/ab_initial_design_review.json": "137a48c4411374a6e459ad2bfc72d304091c4bba018a146ff76024ffd41fd1b0",
+    "docs/results/experiments/C/ab_models_dev/candidate_training.json": "e8702d0f2a6045fd27de7a7a4fddf8337b0262c034b00d8e35574a9400b61e40",
+    "docs/results/experiments/C/ab_models_dev/compatibility.json": "d0cd79bc36e94551de9ddb7efa7345ef9eed8776d8505ba7d506a1df18fa650e",
+    "docs/results/experiments/C/ab_models_dev/ranking_labels_dev.json": "02963f64dc172de3dd3ded2e9c3c99969f41676a5dc41efa2878e7aec8dac5d4",
+    "docs/results/experiments/C/ab_models_dev/ranking_selection_dev.json": "ca288cca69333c7e4b7502b312866d1218c3a84c2560870a46b3ebda56afc758",
+    "docs/results/experiments/C/ab_models_dev/ranking_training_dev.json": "cc6bd8e7f55f804088db441a4cd86c0b7244e5133146b50b786f4d40d9e2abcf",
+    "docs/results/experiments/C/ab_models_dev/session_training_dev.json": "727d4585eaaa35f3f40eebe2d1b586108ec87fb5e71b8efe9b2b67fa65d83607",
+    "docs/results/experiments/C/ab_verification_dev.json": "e2006502b6dd4e6ad93a035bf95cbab5eba914ca9e7176064468a77327092455",
+    "docs/results/experiments/C/feature_macos_dev.json": "5b91f273b301dc648afe5dadda061d5f8decd54d8651f8e2dfb3281205002db5",
+    "docs/results/experiments/C/macos_bootstrap.json": "c0a2bcc9cd3ac4ca6c78094a2d7c9a39fa92560522b4fd9e7882de81d5f26d76",
+    "docs/results/experiments/C/macos_data_diagnostics_dev.json": "c9569d6b8ee91143cf18cbbafe49b454081ff6152d075442c24eff9ee563994e",
+    "docs/results/experiments/C/macos_environment.json": "870a00260f5c6d72e1bf9b5a81d4afa4ef99c7c7c1ede71a277806f5b9bc647b",
+    "src/evaluation/ab_prepare.py": "52e803c86aadb8f27f52cdfaeffaa98ead3c3991a2c2a7631246ffe1ea8bb1c1",
+    "src/evaluation/ab_statistics.py": "44c8a6017b6acea1e30df50213d1875253c4c80fe1267d6aa51a410ad5552487",
+    "src/evaluation/ab_test.py": "2a418dcf2091f39640e0c67c536e41f6dad06365077274a609ad50c5f73e9177",
+    "src/evaluation/verify_ab.py": "599a965747b5799f02031e47715e95c24dadc9cb3aa0404b2f9a44e815974490",
+    "tests/test_ab.py": "74888115829330dece05ca15068db964dbd2a6ca91a6ff25baa0cf47f9b66651",
+    "config/serving.yaml": "902ef105762debbae01cbd378ff8b0c3ce3134d6e60994d7f907f19a0c5e5e49",
+    "docs/contributions/C.md": "b046c44734f5a4a3354384b878522c19333894090f0ec8daac4c6f010b8810ce",
+    "src/serving/pytest_support.py": "1db8c0c5f75d98e16b6202c31f5c513e495a80fc533697cdd524807af580dfd2"
+  },
+  "commit_summary_ko": "사용자 단위 A/B 시뮬레이션과 macOS 개발환경 검증 구현"
+}

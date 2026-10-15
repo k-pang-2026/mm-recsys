@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 import uuid
 from collections.abc import Iterator
+from pathlib import Path
 
 import pytest
 from redis.exceptions import RedisError
@@ -14,9 +15,18 @@ from src.serving.memory_store import MemoryFeatureStore
 
 
 @pytest.fixture(autouse=True)
-def isolate_default_api_store(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]:
+def isolate_default_api_store(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Iterator[None]:
     namespace = "mm-recsys:test-api:" + uuid.uuid4().hex
     stores: list[RedisFeatureStore | MemoryFeatureStore] = []
+    original_config = main.load_config
+
+    def default_config() -> dict:
+        # Implicit create_app() tests assert absent-model behavior. Keep their
+        # state independent of locally regenerated bundles; explicit fixture
+        # configs and the real CLI model checks retain their actual paths.
+        cfg = original_config()
+        cfg['paths']['model_dir'] = str(tmp_path / 'unprepared-api-models')
+        return cfg
 
     def factory(cfg: dict) -> RedisFeatureStore | MemoryFeatureStore:
         isolated = copy.deepcopy(cfg)
@@ -26,6 +36,7 @@ def isolate_default_api_store(monkeypatch: pytest.MonkeyPatch) -> Iterator[None]
         return store
 
     monkeypatch.setattr(main, "create_feature_store", factory)
+    monkeypatch.setattr(main, "load_config", default_config)
     try:
         yield
     finally:
