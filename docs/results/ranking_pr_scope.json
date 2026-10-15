@@ -1,0 +1,61 @@
+{
+  "version": "b4-offline-ctr-pr-v1",
+  "requested_by": "user follow-up 2026-10-14",
+  "included": [
+    "B3b baseline preservation",
+    "CTR/CVR labels and event-time features",
+    "DeepFM training and valid selection",
+    "offline full-test CTR AUC verification",
+    "A/C OPEN handoff comments"
+  ],
+  "excluded": [
+    "recommendation service/API wiring",
+    "ASGI API latency claims",
+    "ranked recommendation quality acceptance",
+    "B5 reranking/MAB/session/Coverage implementation and tests"
+  ],
+  "ctr_target": 0.7,
+  "attribution_seconds": 1800,
+  "cvr_limit": "zero positives; AUC undefined; conversion learning unverified",
+  "overall_acceptance": "UNMEASURED",
+  "review": "DRAFT_PARTIAL_B4",
+  "B4_complete": false,
+  "B5_complete": false,
+  "handoffs": {
+    "A-BATCH-001": "OPEN",
+    "A-HANDOFF-002": "OPEN",
+    "C-MAB-001": "OPEN",
+    "C-SESSION-002": "OPEN",
+    "C-TEST-003": "OPEN"
+  },
+  "automatic_handoff_execution": false,
+  "preserved_combined_local_commit": "87e5dac5e5c42b07906dd53c85110cbdb1b66718",
+  "scope_audit": {
+    "status": "PASS",
+    "changed_files_excluding_gate": [
+      "config/recommend.yaml",
+      "docs/contributions/B.md",
+      "docs/recommend_report.md",
+      "docs/results/candidate_config_original.json",
+      "docs/results/ranking_classification_full_test.json",
+      "docs/results/ranking_ctr_regression_limits.json",
+      "docs/results/ranking_label_limitation.json",
+      "docs/results/ranking_labels_full.json",
+      "docs/results/ranking_pr_scope.json",
+      "docs/results/ranking_preservation.json",
+      "docs/results/ranking_selection_full.json",
+      "docs/results/ranking_training_full.json",
+      "src/recommendation/bundle_compat.py",
+      "src/recommendation/deepfm.py",
+      "src/recommendation/eval_deepfm.py",
+      "src/recommendation/ranking_features.py",
+      "src/recommendation/ranking_labels.py",
+      "src/recommendation/train_deepfm.py",
+      "src/recommendation/train_two_tower.py",
+      "src/recommendation/verify_deepfm.py",
+      "tests/test_deepfm.py"
+    ],
+    "no_API_or_B5_implementation": true,
+    "no_A_C_common_file_edits": true
+  }
+}

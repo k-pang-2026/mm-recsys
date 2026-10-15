@@ -1,0 +1,40 @@
+{
+  "version": "b5-followup-pr-v2",
+  "review": "DRAFT_B_OWNED_IMPLEMENTATION",
+  "implementation": "PASS",
+  "recommendation_quality": "PASS",
+  "overall_acceptance": "UNMEASURED",
+  "common_integration": "UNMEASURED",
+  "full_regression": "FAIL",
+  "included": [
+    "B4 API factory and model readiness/load-once",
+    "shared ctr_cvr/ctr/rank_fusion policy",
+    "valid comparison/frozen single test",
+    "B5 reranking/MAB/session/memory adapter",
+    "B injection ASGI latency and TCP bench path",
+    "A/C OPEN handoffs"
+  ],
+  "excluded": [
+    "C default memory/Redis integration",
+    "Docker/final acceptance",
+    "PR8 head/title/scope changes",
+    "remote push/PR before explicit finalSHA approval"
+  ],
+  "preserved_original_sha": "87e5dac5e5c42b07906dd53c85110cbdb1b66718",
+  "pr8_head": "915447939115071437bb031dae9233ed29265e8d",
+  "pr8_live_merge": "UNVERIFIED network failure",
+  "main_sync": "BLOCKED pending live PR8 merge and network",
+  "handoffs": {
+    "A-BATCH-001": "OPEN",
+    "A-HANDOFF-002": "OPEN",
+    "C-MAB-001": "OPEN",
+    "C-SESSION-002": "OPEN",
+    "C-TEST-003": "OPEN"
+  },
+  "evidence": {
+    "docs/results/ranking_metrics_v2.json": "6c63d69d814706323972f0dd777d3c9a34888395671d5ddab653b51bc4d40616",
+    "docs/results/ranking_policy_selection_full.json": "341347b30fc34546743f0da800dd502c94b3e671bf59e4ca8d8eaa56ef5de26c",
+    "docs/results/ranking_regression_v2.json": "40d918719158951ca4c7cb63cbb424f90f457e12f0e8353ec68da2981a00186c",
+    "docs/results/ranking_tcp_full_b5_v2.json": "2b345278c1b046f4cd57fa228cdbcf7e185e120ec88181dbe43dc9bec1d9a53c"
+  }
+}

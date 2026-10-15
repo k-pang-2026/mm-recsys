@@ -1,0 +1,15 @@
+{
+  "stage": "B5",
+  "scale": "full",
+  "status": "UNMEASURED",
+  "transport": "localhost TCP HTTP",
+  "warmup": 10,
+  "requests": 100,
+  "concurrency": 1,
+  "top_n": 50,
+  "scoring": {
+    "strategy": "ctr_cvr"
+  },
+  "selection": null,
+  "reason": "localhost bind unavailable: PermissionError: [Errno 1] Operation not permitted"
+}

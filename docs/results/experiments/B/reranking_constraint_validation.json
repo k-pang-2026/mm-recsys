@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "oracle_cases": 4044,
+  "failures": 0,
+  "rare_required_new_item": "PASS",
+  "scope": "functional constraint repair on independently exhaustive small sequences; frozen models/score/labels unchanged",
+  "source_sha256": "65ee38c19a7041c2109c7a364d69e17f42d1e37242cb00845bb079b851eff812"
+}

@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "source": "models/v1.0",
+  "derived": "models/b4-dev-candidate/v1.0",
+  "index": {
+    "version": "candidate-index-v1",
+    "type": "HNSWFlat",
+    "metric": "inner_product",
+    "normalized": true,
+    "dim": 64,
+    "ntotal": 10000,
+    "mapping": "FAISS label i -> item_ids.json[i] -> table row i+1",
+    "M": 32,
+    "ef_construction": 200,
+    "ef_search": 512,
+    "build_threads": 1,
+    "faiss_version": "1.9.0",
+    "model_sha256": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+    "feature_fingerprint": "b075bf48d6124d7ad0124e458ebe6c23c14398bf4b88f8417b31754ac280f12a",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "catalog_sha256": "d6f474eb1712e2f3ef98d6306c3adf17899adb8b45e998be4fa8d10cff2289bb",
+    "config_fingerprint": "74c8d74052b3b1d901d5e38f9322ef6e0544ce3af100a8d6b76b9255214d6906",
+    "item_ids_sha256": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+    "vectors_sha256": "f7fe0dbf09b13f629fc5cb39d5d57eec1d3cee0d16b62f118f1bfd8c1a481503",
+    "index_sha256": "73a1736744dc0e0f3b3954c0fb925b2fd4f97f0da8eefadaf4d0bd524c6c8ee8",
+    "catalog_filter": "created_at <= request cutoff"
+  }
+}

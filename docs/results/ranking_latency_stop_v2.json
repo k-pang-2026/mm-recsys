@@ -1,0 +1,111 @@
+{
+  "version": "latency-stop-record-v2",
+  "Q0": "all stated latency numbers come from recorded110 requests,100 measured; no speedup claim",
+  "Q1": {
+    "target": "internal and ASGI p95<=200ms",
+    "measured": {
+      "B4": {
+        "native": {
+          "p50_ms": 22.29762550268788,
+          "p95_ms": 71.09110834862803,
+          "p99_ms": 90.53397869603945
+        },
+        "asgi_http": {
+          "p50_ms": 23.101437502191402,
+          "p95_ms": 71.8532684506499,
+          "p99_ms": 91.27850697725084
+        }
+      },
+      "B5": {
+        "native": {
+          "p50_ms": 26.765832997625694,
+          "p95_ms": 79.6126871355227,
+          "p99_ms": 85.74311499833158
+        },
+        "asgi_http": {
+          "p50_ms": 27.493249988765456,
+          "p95_ms": 80.44263367046368,
+          "p99_ms": 86.49320359283621
+        }
+      }
+    }
+  },
+  "Q2": {
+    "runnable": true,
+    "candidates": 300,
+    "top_n": 50,
+    "requests": 100,
+    "warmup": 10,
+    "concurrency": 1
+  },
+  "Q3": {
+    "scope": "instrumented candidate/ranking/reranking stage percentiles",
+    "values": {
+      "B4": {
+        "candidate_ms": {
+          "p50_ms": 1.6845630016177893,
+          "p95_ms": 2.21324019075837,
+          "p99_ms": 2.469873005175032
+        },
+        "ranking_ms": {
+          "p50_ms": 20.215396012645215,
+          "p95_ms": 69.32989230117526,
+          "p99_ms": 88.06727466115267
+        },
+        "reranking_ms": {
+          "p50_ms": 0.2914375072577968,
+          "p95_ms": 0.6529566133394837,
+          "p99_ms": 0.6950912394677293
+        }
+      },
+      "B5": {
+        "candidate_ms": {
+          "p50_ms": 1.802916987799108,
+          "p95_ms": 2.166129140823614,
+          "p99_ms": 2.2415869106771447
+        },
+        "ranking_ms": {
+          "p50_ms": 20.22864599712193,
+          "p95_ms": 73.52388124418212,
+          "p99_ms": 79.14355282293425
+        },
+        "reranking_ms": {
+          "p50_ms": 4.240187496179715,
+          "p95_ms": 9.313593459955882,
+          "p99_ms": 9.554646188917104
+        }
+      }
+    },
+    "hotspot": "not investigated: target met"
+  },
+  "Q4": "UNAVAILABLE: per-unit cost/queue decomposition not required for a met target",
+  "Q5": "No optimization candidate or performance transformation applied",
+  "Q6": {
+    "result": "p95 criterion met in recorded B injected flow",
+    "environment": {
+      "platform": "macOS-26.6.2-arm64-arm-64bit",
+      "python": "3.12.13",
+      "device": "cpu",
+      "cache": "no response cache",
+      "threads": 1,
+      "cpu": "arm",
+      "logical_cpus": 10,
+      "python_hash_seed": "42",
+      "omp_num_threads": "1",
+      "ram": "unmeasured",
+      "packages": {
+        "torch": "2.6.0",
+        "numpy": "2.1.3",
+        "fastapi": "0.115.6",
+        "faiss-cpu": "1.9.0",
+        "httpx": "0.28.1"
+      }
+    },
+    "baseline_comparison": "not used to claim a speedup"
+  },
+  "Q7": "Target met, stopped. Scoring is a user-authorized policy change, validated by same-input API/offline and legacy scorer tests; no optimization equivalence claim. TCP/Redis/Docker remain unmeasured.",
+  "sources": [
+    "docs/results/ranking_latency_full_b4_v2.json",
+    "docs/results/ranking_latency_full_b5_v2.json"
+  ]
+}

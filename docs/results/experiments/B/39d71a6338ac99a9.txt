@@ -1,0 +1,842 @@
+$ .venv/bin/python .team/regression_order.py
+
+.............FF.FF....FFF..F............................................ [ 32%]
+............s........................................................... [ 64%]
+.........................................................F.............. [ 96%]
+.........                                                                [100%]
+=================================== FAILURES ===================================
+____________ GitHelperTests.test_main_and_existing_staging_rejected ____________
+
+self = <test_setup_env.GitHelperTests testMethod=test_main_and_existing_staging_rejected>
+
+    def setUp(self) -> None:
+        spec = importlib.util.spec_from_file_location('step_git', ROOT / 'scripts/step_git.py')
+        self.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.module)
+        self.temp = tempfile.TemporaryDirectory(prefix='mm-git-check-', dir='/tmp')
+        self.repo = Path(self.temp.name)
+        for args in [('init', '-q', '-b', 'main'), ('config', 'user.name', 'Test Fixture'),
+                     ('config', 'user.email', 'fixture@example.invalid'),
+                     ('remote', 'add', 'origin', 'https://github.com/example/test.git'),
+                     ('switch', '-c', 'feat/A/B2a-fixture')]:
+            result = run('git', *args, cwd=self.repo)
+>           self.assertEqual(result.returncode, 0, result.stderr)
+E           AssertionError: -6 != 0 :
+
+tests/test_setup_env.py:153: AssertionError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+______ GitHelperTests.test_main_is_rejected_even_when_workflow_assigns_it ______
+
+self = <test_setup_env.GitHelperTests testMethod=test_main_is_rejected_even_when_workflow_assigns_it>
+
+    def setUp(self) -> None:
+        spec = importlib.util.spec_from_file_location('step_git', ROOT / 'scripts/step_git.py')
+        self.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.module)
+        self.temp = tempfile.TemporaryDirectory(prefix='mm-git-check-', dir='/tmp')
+        self.repo = Path(self.temp.name)
+        for args in [('init', '-q', '-b', 'main'), ('config', 'user.name', 'Test Fixture'),
+                     ('config', 'user.email', 'fixture@example.invalid'),
+                     ('remote', 'add', 'origin', 'https://github.com/example/test.git'),
+                     ('switch', '-c', 'feat/A/B2a-fixture')]:
+            result = run('git', *args, cwd=self.repo)
+>           self.assertEqual(result.returncode, 0, result.stderr)
+E           AssertionError: -6 != 0 :
+
+tests/test_setup_env.py:153: AssertionError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+______ GitHelperTests.test_publish_scopes_commit_and_reports_push_failure ______
+
+self = <test_setup_env.GitHelperTests testMethod=test_publish_scopes_commit_and_reports_push_failure>
+
+    def test_publish_scopes_commit_and_reports_push_failure(self) -> None:
+        # The push is intercepted locally; this test never accesses GitHub.
+        shim_dir = self.repo / 'test-bin'
+        shim_dir.mkdir()
+        shim = shim_dir / 'git'
+        real_git = shutil.which('git')
+        shim.write_text('#!' + sys.executable + '\nimport os, sys\n'
+                        'if sys.argv[1] == "push": sys.exit(41)\n'
+                        'os.execv(' + repr(real_git) + ', [' + repr(real_git) + '] + sys.argv[1:])\n')
+        shim.chmod(0o755)
+        (self.repo / 'unrelated.txt').write_text('preserve me')
+        env = {**os.environ, 'PATH': str(shim_dir) + os.pathsep + os.environ['PATH']}
+        prepared = self.helper('--mode', 'commit')
+>       self.assertEqual(prepared.returncode, 0, prepared.stdout + prepared.stderr)
+E       AssertionError: -6 != 0 :
+
+tests/test_setup_env.py:216: AssertionError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+__ GitHelperTests.test_publish_without_approval_does_not_stage_commit_or_push __
+
+self = <test_setup_env.GitHelperTests testMethod=test_publish_without_approval_does_not_stage_commit_or_push>
+
+    def setUp(self) -> None:
+        spec = importlib.util.spec_from_file_location('step_git', ROOT / 'scripts/step_git.py')
+        self.module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.module)
+        self.temp = tempfile.TemporaryDirectory(prefix='mm-git-check-', dir='/tmp')
+        self.repo = Path(self.temp.name)
+        for args in [('init', '-q', '-b', 'main'), ('config', 'user.name', 'Test Fixture'),
+                     ('config', 'user.email', 'fixture@example.invalid'),
+                     ('remote', 'add', 'origin', 'https://github.com/example/test.git'),
+                     ('switch', '-c', 'feat/A/B2a-fixture')]:
+            result = run('git', *args, cwd=self.repo)
+>           self.assertEqual(result.returncode, 0, result.stderr)
+E           AssertionError: -6 != 0 :
+
+tests/test_setup_env.py:153: AssertionError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+_ test_prepare_uses_only_verified_dependencies_merged_through_main[PASS-True] __
+
+tmp_path = PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_prepare_uses_only_verifie0')
+dependency_status = 'PASS', merged = True
+
+    @pytest.mark.parametrize('dependency_status,merged',[('PASS',True),('PASS',False),('FAIL',True)])
+    def test_prepare_uses_only_verified_dependencies_merged_through_main(tmp_path,dependency_status,merged):
+        remote=tmp_path/'origin.git';seed=tmp_path/'seed';clone=tmp_path/'C'
+        def command(*args,cwd=tmp_path):
+            return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+        command('git','init','--bare','--initial-branch=main',str(remote))
+        command('git','clone',str(remote),str(seed))
+>       command('git','config','user.name','Automation Fixture',cwd=seed)
+
+tests/test_team_workflow.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_team_workflow.py:66: in command
+    return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (('git', 'config', 'user.name', 'Automation Fixture'),)
+kwargs = {'cwd': PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_prepare_uses_only_verifie0/seed'), 'stderr': -1, 'stdout': -1, 'text': True}
+process = <Popen: returncode: -6 args: ('git', 'config', 'user.name', 'Automation Fixt...>
+stdout = '', stderr = '', retcode = -6
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '('git', 'config', 'user.name', 'Automation Fixture')' died with <Signals.SIGABRT: 6>.
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:571: CalledProcessError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+_ test_prepare_uses_only_verified_dependencies_merged_through_main[PASS-False] _
+
+tmp_path = PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_prepare_uses_only_verifie1')
+dependency_status = 'PASS', merged = False
+
+    @pytest.mark.parametrize('dependency_status,merged',[('PASS',True),('PASS',False),('FAIL',True)])
+    def test_prepare_uses_only_verified_dependencies_merged_through_main(tmp_path,dependency_status,merged):
+        remote=tmp_path/'origin.git';seed=tmp_path/'seed';clone=tmp_path/'C'
+        def command(*args,cwd=tmp_path):
+            return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+        command('git','init','--bare','--initial-branch=main',str(remote))
+        command('git','clone',str(remote),str(seed))
+        command('git','config','user.name','Automation Fixture',cwd=seed)
+        command('git','config','user.email','fixture@example.invalid',cwd=seed)
+        folder=seed/'docs/results/gates';folder.mkdir(parents=True)
+        (folder/'SHARED.json').write_text(json.dumps({'status':'PASS'}))
+        command('git','add','docs',cwd=seed);command('git','commit','-m','common fixture',cwd=seed)
+        command('git','push','origin','main',cwd=seed)
+        command('git','switch','-c','feat/B/recommendation',cwd=seed)
+        (folder/'B5.json').write_text(json.dumps({'status':dependency_status}))
+>       command('git','add','docs',cwd=seed);command('git','commit','-m','B fixture',cwd=seed)
+
+tests/test_team_workflow.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_team_workflow.py:66: in command
+    return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (('git', 'add', 'docs'),)
+kwargs = {'cwd': PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_prepare_uses_only_verifie1/seed'), 'stderr': -1, 'stdout': -1, 'text': True}
+process = <Popen: returncode: -6 args: ('git', 'add', 'docs')>, stdout = ''
+stderr = '', retcode = -6
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '('git', 'add', 'docs')' died with <Signals.SIGABRT: 6>.
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:571: CalledProcessError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+_ test_prepare_uses_only_verified_dependencies_merged_through_main[FAIL-True] __
+
+tmp_path = PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_prepare_uses_only_verifie2')
+dependency_status = 'FAIL', merged = True
+
+    @pytest.mark.parametrize('dependency_status,merged',[('PASS',True),('PASS',False),('FAIL',True)])
+    def test_prepare_uses_only_verified_dependencies_merged_through_main(tmp_path,dependency_status,merged):
+        remote=tmp_path/'origin.git';seed=tmp_path/'seed';clone=tmp_path/'C'
+        def command(*args,cwd=tmp_path):
+            return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+        command('git','init','--bare','--initial-branch=main',str(remote))
+        command('git','clone',str(remote),str(seed))
+        command('git','config','user.name','Automation Fixture',cwd=seed)
+        command('git','config','user.email','fixture@example.invalid',cwd=seed)
+        folder=seed/'docs/results/gates';folder.mkdir(parents=True)
+        (folder/'SHARED.json').write_text(json.dumps({'status':'PASS'}))
+        command('git','add','docs',cwd=seed);command('git','commit','-m','common fixture',cwd=seed)
+        command('git','push','origin','main',cwd=seed)
+        command('git','switch','-c','feat/B/recommendation',cwd=seed)
+        (folder/'B5.json').write_text(json.dumps({'status':dependency_status}))
+        command('git','add','docs',cwd=seed);command('git','commit','-m','B fixture',cwd=seed)
+        command('git','push','origin','feat/B/recommendation',cwd=seed)
+        command('git','clone',str(remote),str(clone))
+        command('git','config','user.name','Automation Fixture',cwd=clone)
+        command('git','config','user.email','fixture@example.invalid',cwd=clone)
+>       plan=team.workflow(ROOT);team.prepare(clone,'C','B6',plan)
+
+tests/test_team_workflow.py:82: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_prepare_uses_only_verifie2/C')
+role = 'C', step = 'B6'
+plan = {'auto_push': False, 'base_branch': 'main', 'order': {'A': ['B2a', 'B2b', 'B10', 'B11', 'INTEGRATE'], 'B': ['B3a', 'B3... 'C': ['src/serving/', 'src/evaluation/', 'src/ct/', 'dashboard/', 'scripts/train_all', 'tests/test_redis', ...]}, ...}
+
+    def prepare(root: Path, role: str, step: str, plan: dict) -> None:
+        if git('status','--porcelain',root=root):
+            raise ValueError('local changes present; finish/publish prior work before automatic branch synchronization')
+        git('fetch','origin',root=root)
+        branch=plan['stages'][step].get('branch',plan['team'][role]['branch'])
+        if branch==plan['base_branch']:raise ValueError('development must use a feature branch; main changes go through PR')
+        # Check cross-role dependencies before creating/synchronizing any development branch.
+        for required in plan['stages'][step]['requires']:
+            own_branch=plan['stages'][required].get('branch',plan['team'][plan['stages'][required]['owner']]['branch'])
+            if own_branch==branch:continue
+            source=f"origin/{plan['base_branch']}"
+            try:evidence=git('show',f'{source}:docs/results/gates/{required}.json',root=root)
+            except subprocess.CalledProcessError:
+>               raise ValueError(f'{required} PR not merged into {source} yet') from None
+E               ValueError: SHARED PR not merged into origin/main yet
+
+scripts/team.py:89: ValueError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+___________ test_docker_and_submission_handoff_in_independent_clones ___________
+
+tmp_path = PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_docker_and_submission_han0')
+
+    def test_docker_and_submission_handoff_in_independent_clones(tmp_path):
+        """A requires merged B9, then merged B10/B11 even when A owns all later stages."""
+        remote=tmp_path/'origin.git';seed=tmp_path/'seed'
+        def command(*args,cwd=tmp_path):
+            return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+        def clone(name):
+            path=tmp_path/name;command('git','clone',str(remote),str(path))
+            command('git','config','user.name','Workflow Fixture',cwd=path)
+            command('git','config','user.email','fixture@example.invalid',cwd=path)
+            return path
+        def record(path,steps):
+            folder=path/'docs/results/gates';folder.mkdir(parents=True,exist_ok=True)
+            for step in steps:(folder/f'{step}.json').write_text(json.dumps({'status':'PASS','acceptance':'UNMEASURED'}))
+            command('git','add','docs',cwd=path);command('git','commit','-m','workflow fixture',cwd=path)
+        def reviewed_merge(branch):
+            command('git','fetch','origin',cwd=seed)
+            command('git','merge','--no-edit',f'origin/{branch}',cwd=seed)
+            command('git','push','origin','main',cwd=seed)
+        command('git','init','--bare','--initial-branch=main',str(remote))
+        seed=clone('seed');record(seed,['SHARED','B2a','B2b','B5'])
+>       command('git','push','origin','main',cwd=seed)
+
+tests/test_team_workflow.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_team_workflow.py:146: in command
+    return subprocess.run(args,cwd=cwd,text=True,capture_output=True,check=True).stdout
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = None, capture_output = True, timeout = None, check = True
+popenargs = (('git', 'push', 'origin', 'main'),)
+kwargs = {'cwd': PosixPath('/private/var/folders/km/_1_1x78175s0pkx210lr4xr00000gn/T/pytest-of-fhqhqhdk/pytest-28/test_docker_and_submission_han0/seed'), 'stderr': -1, 'stdout': -1, 'text': True}
+process = <Popen: returncode: -6 args: ('git', 'push', 'origin', 'main')>
+stdout = '', stderr = '', retcode = -6
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout (seconds) is given and the process takes too long,
+         a TimeoutExpired exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '('git', 'push', 'origin', 'main')' died with <Signals.SIGABRT: 6>.
+
+/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:571: CalledProcessError
+----------------------------- Captured stderr call -----------------------------
+OMP: Error #179: Function Can't open SHM failed:
+OMP: System error #0: Undefined error: 0
+_____________ test_unimplemented_models_never_report_empty_success _____________
+
+    def test_unimplemented_models_never_report_empty_success():
+        with TestClient(create_app()) as client:
+            assert client.get('/health').status_code==200
+            assert client.get('/ready').status_code==503
+            assert client.post('/api/search',json={}).status_code==422
+            assert client.post('/api/search',json={'query_text':'black shirt'}).status_code==503
+>           assert client.get('/api/recommend',params={'user_id':'new'}).status_code==503
+E           AssertionError: assert 200 == 503
+E            +  where 200 = <Response [200 OK]>.status_code
+E            +    where <Response [200 OK]> = get('/api/recommend', params={'user_id': 'new'})
+E            +      where get = <starlette.testclient.TestClient object at 0x13c85d340>.get
+
+tests/test_serving_contract.py:13: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:49 Redis get_features unavailable; using empty features: Error 1 connecting to localhost:6379. Operation not permitted.
+=============================== warnings summary ===============================
+../mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+../mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_setup_env.py::GitHelperTests::test_main_and_existing_staging_rejected
+FAILED tests/test_setup_env.py::GitHelperTests::test_main_is_rejected_even_when_workflow_assigns_it
+FAILED tests/test_setup_env.py::GitHelperTests::test_publish_scopes_commit_and_reports_push_failure
+FAILED tests/test_setup_env.py::GitHelperTests::test_publish_without_approval_does_not_stage_commit_or_push
+FAILED tests/test_team_workflow.py::test_prepare_uses_only_verified_dependencies_merged_through_main[PASS-True]
+FAILED tests/test_team_workflow.py::test_prepare_uses_only_verified_dependencies_merged_through_main[PASS-False]
+FAILED tests/test_team_workflow.py::test_prepare_uses_only_verified_dependencies_merged_through_main[FAIL-True]
+FAILED tests/test_team_workflow.py::test_docker_and_submission_handoff_in_independent_clones
+FAILED tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success
+9 failed, 215 passed, 1 skipped, 2 warnings in 231.15s (0:03:51)
+
+--- stderr ---
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 21 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 152 in setUp
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 586 in _callSetUp
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 630 in run
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 690 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/unittest.py", line 351 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 21 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 152 in setUp
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 586 in _callSetUp
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 630 in run
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 690 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/unittest.py", line 351 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 21 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 167 in helper
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 215 in test_publish_scopes_commit_and_reports_push_failure
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 589 in _callTestMethod
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 634 in run
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 690 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/unittest.py", line 351 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 21 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_setup_env.py", line 152 in setUp
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 586 in _callSetUp
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 630 in run
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/unittest/case.py", line 690 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/unittest.py", line 351 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 66 in command
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 69 in test_prepare_uses_only_verified_dependencies_merged_through_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 159 in pytest_pyfunc_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 1627 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 66 in command
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 77 in test_prepare_uses_only_verified_dependencies_merged_through_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 159 in pytest_pyfunc_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 1627 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/scripts/team.py", line 49 in git
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/scripts/team.py", line 87 in prepare
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 82 in test_prepare_uses_only_verified_dependencies_merged_through_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 159 in pytest_pyfunc_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 1627 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)
+Fatal Python error: Aborted
+
+Current thread 0x00000001f472e180 (most recent call first):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1885 in _execute_child
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1026 in __init__
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_2/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 548 in run
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 146 in command
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys-b5-followup/tests/test_team_workflow.py", line 162 in test_docker_and_submission_handoff_in_independent_clones
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 159 in pytest_pyfunc_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/python.py", line 1627 in runtest
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 174 in pytest_runtest_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 242 in <lambda>
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 341 in from_call
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 241 in call_and_report
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 132 in runtestprotocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/runner.py", line 113 in pytest_runtest_protocol
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 362 in pytest_runtestloop
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 337 in _main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 283 in wrap_session
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/main.py", line 330 in pytest_cmdline_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 175 in main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/_pytest/config/__init__.py", line 201 in console_main
+  File "/Users/Shared/workspace/project/K-Pang_capstone/mm-recsys/.venv/lib/python3.12/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+
+Extension modules: yaml._yaml, numpy._core._multiarray_umath, numpy.linalg._umath_linalg, faiss._swigfaiss, pyarrow.lib, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, pandas._libs.tslibs.ccalendar, pandas._libs.tslibs.np_datetime, pandas._libs.tslibs.dtypes, pandas._libs.tslibs.base, pandas._libs.tslibs.nattype, pandas._libs.tslibs.timezones, pandas._libs.tslibs.fields, pandas._libs.tslibs.timedeltas, pandas._libs.tslibs.tzconversion, pandas._libs.tslibs.timestamps, pandas._libs.properties, pandas._libs.tslibs.offsets, pandas._libs.tslibs.strptime, pandas._libs.tslibs.parsing, pandas._libs.tslibs.conversion, pandas._libs.tslibs.period, pandas._libs.tslibs.vectorized, pandas._libs.ops_dispatch, pandas._libs.missing, pandas._libs.hashtable, pandas._libs.algos, pandas._libs.interval, pandas._libs.lib, pyarrow._compute, pandas._libs.ops, pandas._libs.hashing, pandas._libs.arrays, pandas._libs.tslib, pandas._libs.sparse, pandas._libs.internals, pandas._libs.indexing, pandas._libs.index, pandas._libs.writers, pandas._libs.join, pandas._libs.window.aggregations, pandas._libs.window.indexers, pandas._libs.reshape, pandas._libs.groupby, pandas._libs.json, pandas._libs.parsers, pandas._libs.testing, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special, PIL._imaging, sklearn.__check_build._check_build, scipy._lib._ccallback_c, charset_normalizer.md, charset_normalizer.cd, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg._matfuncs_expm, scipy.linalg._linalg_pythran, scipy.linalg.cython_blas, scipy.linalg._decomp_update, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.special._ellip_harm_2, scipy.spatial._ckdtree, scipy._lib.messagestream, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._group_columns, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._cython_nnls, scipy._lib._uarray._uarray, scipy.linalg._decomp_interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.optimize._direct, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.interpolate._dierckx, scipy.interpolate._ppoly, scipy.interpolate._interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, scipy.interpolate._bspl, scipy.special.cython_special, scipy.stats._stats, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._biasedurn, scipy.stats._stats_pythran, scipy.stats._levy_stable.levyst, scipy.stats._ansari_swilk_statistics, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.ndimage._nd_image, scipy.ndimage._rank_filter_1d, _ni_label, scipy.ndimage._ni_label, sklearn.utils._isfinite, sklearn.utils.sparsefuncs_fast, sklearn.utils.murmurhash, sklearn.utils._openmp_helpers, sklearn.metrics.cluster._expected_mutual_info_fast, sklearn.preprocessing._csr_polynomial_expansion, sklearn.preprocessing._target_encoder_fast, sklearn.metrics._dist_metrics, sklearn.metrics._pairwise_distances_reduction._datasets_pair, sklearn.utils._cython_blas, sklearn.metrics._pairwise_distances_reduction._base, sklearn.metrics._pairwise_distances_reduction._middle_term_computer, sklearn.utils._heap, sklearn.utils._sorting, sklearn.metrics._pairwise_distances_reduction._argkmin, sklearn.metrics._pairwise_distances_reduction._argkmin_classmode, sklearn.utils._vector_sentinel, sklearn.metrics._pairwise_distances_reduction._radius_neighbors, sklearn.metrics._pairwise_distances_reduction._radius_neighbors_classmode, sklearn.metrics._pairwise_fast (total: 173)

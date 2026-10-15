@@ -1,0 +1,104 @@
+{
+  "plan": "User-approved B4→B5 continuous plan 2026-10-13",
+  "scope": "B only; common changes via handoff comments",
+  "phases": {
+    "baseline": "done",
+    "labels_features": "done",
+    "deepfm_api": "done",
+    "reranking_mab": "done",
+    "session_adapter": "done",
+    "review_handoff": "done"
+  },
+  "checks": {
+    "candidate_baseline": "exit0",
+    "baseline_pytest": "154 passed exit0",
+    "labels_rerank_tests": "10 passed exit0",
+    "full_deepfm": "PASS epoch11 valid CTR AUC 0.971761",
+    "dev_session": "PASS epoch20 reload",
+    "full_session": "PASS epoch20 reload; train-only/valid selection",
+    "full_live_api": "PASS three clicks recommendation/interest changed, max reward and duplicate feedback",
+    "regression": "180 passed, explicit missing-model environment, exit0",
+    "pip_check": "exit0",
+    "full_valid_quality": {
+      "status": "FAIL",
+      "two_tower_hit50": 0.5685416398506886,
+      "deepfm_hit50": 0.05135796112755824,
+      "deepfm_ndcg50": 0.010103263395711083,
+      "source": "docs/results/ranking_full_valid.json"
+    },
+    "C_503_full_audit": "expected dependency failure: actual ready model returns200 vs C test expecting503; C-TEST-003 OPEN",
+    "constraint_oracle": "4044 exhaustive cases PASS; rare required-item separator regression PASS",
+    "full_regression": "179 passed / C model-absence test failed (OPEN C-TEST-003); preserved failure gate",
+    "B4_gate": "PASS/acceptance UNMEASURED",
+    "metrics_verifier": "exit0; quality FAIL; B3b originals preserved",
+    "B5_constraint_reevaluation": "10000 users, infeasible pools2313, feasible-pool violations0",
+    "B5_gate": "PASS/acceptance UNMEASURED",
+    "B5_commit": {
+      "command": "OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python scripts/step_git.py --step B5 --role B --mode commit",
+      "exit_code": 1,
+      "error": "another stage is awaiting push approval; finish that reviewed commit first"
+    }
+  },
+  "processes": {},
+  "resume": "Read B handoff comments and current pending exact SHA. A must implement approved batch commit path; C must connect default memory/Redis and isolate 503 fixture. Do not rerun completed training/test to recover replies.",
+  "common_integration": "UNMEASURED",
+  "decision": "User confirmed 30min attribution; CVR AUC undefined due to zero positives; original data preserved",
+  "failures": [
+    {
+      "command": "eval_ranking --split valid (dev)",
+      "exit_code": 1,
+      "reason": "original dev B3a candidate has no ANN; derived copy built instead",
+      "raw_evidence": ".team/condense-logs"
+    }
+  ],
+  "decisions": [
+    "Freeze DeepFM epoch11 selected by valid CTR AUC and GRU epoch20 by valid next-view loss before opening test. User retains 30min CVR attribution; no tuning of a single-class CVR target. Any quality miss is reported without test-driven changes."
+  ],
+  "native_checkpoint": "UNAVAILABLE: skill ctx.py references absent context-optimizer package; recoverable state saved here",
+  "memory_receipt": {
+    "status": "committed",
+    "request_id": "b4-b5-cvr-policy-20261013-01",
+    "claim_uid": "20261013-c62b499ccb4"
+  },
+  "limits": [
+    "TCP bind denied by sandbox, ASGI injection validated",
+    "default C store MAB not connected",
+    "A/C handoffs OPEN",
+    "native ctx runner missing; project recovery state saved"
+  ],
+  "remaining": [
+    "A-BATCH-001/A-HANDOFF-002 OPEN",
+    "C-MAB-001/C-SESSION-002/C-TEST-003 OPEN",
+    "full recommendation HitRate/NDCG FAIL under retained labels; no test retuning",
+    "B5 gate and latest handoff/state update uncommitted; pending B4 preserved",
+    "real TCP/Redis/Docker validation UNMEASURED"
+  ],
+  "phase": "B implementation/verification delivered; common integration and B5 commit blocked",
+  "complete": false,
+  "boundary_ready": true,
+  "command_failures": [
+    {
+      "command": "initial full-scope B4 regression gate",
+      "exit_code": 1,
+      "evidence": "docs/results/experiments/B/ranking_gate_B4_full_fixture_failure.json"
+    },
+    {
+      "command": "record_gate with non-Korean summary",
+      "exit_code": 1,
+      "effect": "rejected before checks; Korean summary corrected"
+    }
+  ],
+  "B_local_complete": true,
+  "commit": {
+    "B4": "87e5dac5e5c42b07906dd53c85110cbdb1b66718",
+    "includes": "B4/B5 implementation code and measured reports",
+    "B5": "BLOCKED by B4 pending publication; no helper bypass",
+    "pending_file": ".team/pending_publication.json",
+    "push": "NOT_EXECUTED",
+    "PR": "NOT_UPDATED"
+  },
+  "memory_receipts": [
+    "b4-b5-cvr-policy-20261013-01",
+    "b4-b5-final-lessons-20261014-01"
+  ]
+}

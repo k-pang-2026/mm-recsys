@@ -95,6 +95,7 @@ def bundle_contract() -> dict:
 
 def save_bundle(path: Path, model: TwoTower, encoder: FeatureEncoder, table, cfg: dict,
                 data: dict, best_epoch: int, recall: float) -> dict:
+    from src.recommendation.bundle_compat import candidate_scope
     path.mkdir(parents=True, exist_ok=True)
     state_path = path / 'two_tower.pt'
     temporary = path / '.two_tower.pt.tmp'
@@ -107,6 +108,7 @@ def save_bundle(path: Path, model: TwoTower, encoder: FeatureEncoder, table, cfg
                 data_fingerprint=data['manifest']['generation_fingerprint'],
                 catalog_sha256=data['manifest']['file_hashes']['products.parquet'],
                 feature_fingerprint=encoder.digest, config_fingerprint=fingerprint(cfg['recommend']),
+                candidate_scope_fingerprint=fingerprint(candidate_scope(cfg['recommend'])),
                 training_spec=cfg['recommend']['candidate'],
                 hashes={name: file_hash(path / name) for name in ['two_tower.pt', 'feature_vocab_scalers.json', 'item_ids.json']})
     write_json(path / 'meta.json', meta)
@@ -119,8 +121,10 @@ def load_bundle(path: Path, data: dict, cfg: dict):
     meta = json.loads((path / 'meta.json').read_text())
     if meta['data_fingerprint'] != data['manifest']['generation_fingerprint'] or meta['catalog_sha256'] != data['manifest']['file_hashes']['products.parquet']:
         raise ValueError('stale bundle/data')
-    if meta['config_fingerprint'] != fingerprint(cfg['recommend']):
-        raise ValueError('bundle/recommend config mismatch')
+    if meta.get('candidate_scope_fingerprint') is not None or meta['config_fingerprint'] != fingerprint(cfg['recommend']):
+        # B4/B5 overlays must not rewrite the B3b model/index/config evidence.
+        from src.recommendation.bundle_compat import validate_candidate_config
+        validate_candidate_config(meta, cfg)
     for name, digest in meta['hashes'].items():
         if file_hash(path / name) != digest:
             raise ValueError(f'bundle checksum mismatch: {name}')

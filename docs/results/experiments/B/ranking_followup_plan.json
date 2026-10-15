@@ -1,0 +1,39 @@
+{
+  "version": "2026-10-14-user-approved",
+  "source": "user supplied B4/B5 implementation plan in this session",
+  "scope": "B-owned paths only; preserve PR8 9154479 and original87e5dac pending; no learning reruns",
+  "phases": [
+    "preservation and independent clone",
+    "shared inference scoring and independent stores/RNG",
+    "full valid compare 5 operational policies + TwoTower; freeze highest eligible NDCG then HitRate/Coverage/earliest",
+    "only single frozen policy on previously observed full test",
+    "API session MAB and latency10warmup/100serial/top50",
+    "B5 one local helper commit; remote after PR8 merged/main sync and explicit newSHA approval"
+  ],
+  "criteria": {
+    "CTR_AUC": 0.7,
+    "HitRate50": 0.2,
+    "NDCG50": 0.08,
+    "Coverage": 0.2,
+    "Coverage_users": 10000,
+    "catalog_denominator": 50000,
+    "native_ASGI_p95_ms": 200,
+    "rerank_feasible_violations": 0
+  },
+  "constraints": [
+    "attribution1800s retained; original labels/data/targets/failures preserved",
+    "cold<5; new<=7days when possible; maxcategoryrun2; exploration<=2; epsilon/UCB item/category",
+    "same-user latest exposure click.2/purchase1/maxTTL/idempotenteventIDs",
+    "sessionGRU.3 longterm.7; threeclick adaptation",
+    "default C memory/Redis/Docker integration unresolved; tcp separately measured or UNMEASURED"
+  ],
+  "handoffs": [
+    "A-BATCH-001",
+    "A-HANDOFF-002",
+    "C-MAB-001",
+    "C-SESSION-002",
+    "C-TEST-003"
+  ],
+  "recovery": "read ranking_followup_state.json and actual session/result files; never rerun completed training/evaluation/push for response recovery",
+  "publication": "local only; no push or PR8 head/title change; GitHub network and merged status prerequisites to publish"
+}

@@ -1,0 +1,214 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "split": "test",
+  "classification": {
+    "ctr": {
+      "auc": 0.9633700393677938,
+      "auc_status": "MEASURED",
+      "logloss": 0.1610541309648597,
+      "samples": 225422,
+      "positives": 56639,
+      "denominator": "observed exposures"
+    },
+    "cvr": {
+      "auc": null,
+      "auc_status": "UNDEFINED_SINGLE_CLASS",
+      "logloss": 8.51986463493398e-07,
+      "samples": 56261,
+      "positives": 0,
+      "denominator": "observed clicked exposures"
+    }
+  },
+  "labels": {
+    "version": "linked-view-last-view-v1",
+    "rows": 226556,
+    "clicks": 56639,
+    "conversions": 0,
+    "ctr_observed": 225422,
+    "cvr_observed": 56261,
+    "censored": 1512,
+    "censored_cvr_negatives": 378,
+    "unassigned_purchases": 44623,
+    "window_seconds": 1800,
+    "start": "2025-12-29T00:00:00+00:00",
+    "end": "2025-12-31T23:59:57.408000+00:00",
+    "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+    "cvr_denominator": "observed linked clicked exposures only",
+    "same_timestamp_view_exposure": 563756,
+    "excluded_inputs": [
+      "position",
+      "impression_id",
+      "request_id",
+      "event_type",
+      "persona"
+    ]
+  },
+  "metrics": {
+    "two_tower": {
+      "hit_rate_at_50": 0.5697371844912829,
+      "ndcg_at_50": 0.17892229426146625,
+      "coverage": 0.61798,
+      "unique_recommended_items": 30899
+    },
+    "deepfm": {
+      "hit_rate_at_50": 0.059718969555035126,
+      "ndcg_at_50": 0.010915772987912992,
+      "coverage": 0.61258,
+      "unique_recommended_items": 30629
+    },
+    "b5": {
+      "hit_rate_at_50": 0.0482695810564663,
+      "ndcg_at_50": 0.011031498795543935,
+      "coverage": 0.65054,
+      "unique_recommended_items": 32527
+    }
+  },
+  "deepfm_absolute_lift": {
+    "hit_rate_at_50": -0.5100182149362478,
+    "ndcg_at_50": -0.16800652127355326,
+    "coverage": -0.00539999999999996
+  },
+  "truth_users": 7686,
+  "coverage_users": 10000,
+  "cold_users": 300,
+  "catalog_items": 50000,
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "cutoff": "2025-12-28T23:59:57.408000+00:00",
+  "contract": "fixed origin; nonempty unique cart/purchase truth; unavailable truth retained; coverage denominator full catalog",
+  "session_evaluation": "no within-evaluation session clicks in fixed-origin metrics; live adaptation tested separately",
+  "b5_constraint_violations": 2313,
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "b5_infeasible_candidate_pools": 2313,
+  "b5_feasible_pool_violations": 0,
+  "b5_violation_types": {
+    "diversity": 2313
+  },
+  "b5_violation_examples": [
+    {
+      "user_id": "U000001",
+      "requested": 50,
+      "returned": 50,
+      "exploration_slots": 2,
+      "new_available": 7,
+      "diversity_capacity": 11,
+      "diversity_feasible_for_returned": false,
+      "candidate_category_counts": {
+        "blazer": 297,
+        "loafers": 3
+      },
+      "diagnostics": [
+        "diversity_infeasible_with_remaining_quotas"
+      ],
+      "violations": [
+        "diversity"
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "user_id": "U000003",
+      "requested": 50,
+      "returned": 50,
+      "exploration_slots": 2,
+      "new_available": 4,
+      "diversity_capacity": 14,
+      "diversity_feasible_for_returned": false,
+      "candidate_category_counts": {
+        "cap": 296,
+        "bucket hat": 4
+      },
+      "diagnostics": [
+        "diversity_infeasible_with_remaining_quotas"
+      ],
+      "violations": [
+        "diversity"
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "user_id": "U000004",
+      "requested": 50,
+      "returned": 50,
+      "exploration_slots": 2,
+      "new_available": 8,
+      "diversity_capacity": 17,
+      "diversity_feasible_for_returned": false,
+      "candidate_category_counts": {
+        "bermuda shorts": 295,
+        "blazer": 4,
+        "denim shorts": 1
+      },
+      "diagnostics": [
+        "diversity_infeasible_with_remaining_quotas"
+      ],
+      "violations": [
+        "diversity"
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "user_id": "U000007",
+      "requested": 50,
+      "returned": 50,
+      "exploration_slots": 2,
+      "new_available": 3,
+      "diversity_capacity": 23,
+      "diversity_feasible_for_returned": false,
+      "candidate_category_counts": {
+        "knitted vest": 293,
+        "sweatshirt": 3,
+        "polo shirt": 1,
+        "mini skirt": 2,
+        "tote bag": 1
+      },
+      "diagnostics": [
+        "diversity_infeasible_with_remaining_quotas"
+      ],
+      "violations": [
+        "diversity"
+      ],
+      "status": "INFEASIBLE"
+    },
+    {
+      "user_id": "U000011",
+      "requested": 50,
+      "returned": 50,
+      "exploration_slots": 2,
+      "new_available": 1,
+      "diversity_capacity": 2,
+      "diversity_feasible_for_returned": false,
+      "candidate_category_counts": {
+        "polo shirt": 300
+      },
+      "diagnostics": [
+        "diversity_infeasible_with_remaining_quotas"
+      ],
+      "violations": [
+        "diversity"
+      ],
+      "status": "INFEASIBLE"
+    }
+  ],
+  "config_fingerprint": "e6a468b9d6dc5714410db806f3b12996c829d47a3fa985d49a84dcaf9708784b",
+  "ranking_model_sha256": "28ec1ab82c4f264f063adb924549a48afabcb4b17e4bdc1667c8248090917ae3",
+  "candidate_model_sha256": "1344d43ac8bf136d25d3a17ca1b83163b820a0c63ddbcfa603a33889b5e55c9f",
+  "elapsed_seconds": 729.2149558329984,
+  "reused_unchanged_measurements": {
+    "source": "docs/results/experiments/B/ranking_full_test_b5_before_diversity.json",
+    "sha256": "b6301fefea3aee3158a8436a1ae55ac3012ce8ebabc0a73d0fd0aed20af847a1",
+    "scope": "CTR/CVR classification and Two Tower/DeepFM baseline metrics from same frozen model/data; only B5 constraints re-executed"
+  },
+  "checks": {
+    "ctr_auc": true,
+    "hit_rate_at_50": false,
+    "ndcg_at_50": false,
+    "coverage": true
+  },
+  "measured_quality_status": "FAIL"
+}

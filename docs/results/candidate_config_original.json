@@ -1,0 +1,66 @@
+{
+  "candidate_k": 300,
+  "top_n": 10,
+  "exclude_purchased": false,
+  "candidate": {
+    "dim": 64,
+    "history_n": 50,
+    "batch_size": 512,
+    "epochs": 20,
+    "patience": 3,
+    "learning_rate": 0.001,
+    "temperature": 0.1,
+    "negatives_per_positive": 4,
+    "loss": "sampled_softmax",
+    "positive_weights": {
+      "view": 0.2,
+      "cart": 0.6,
+      "purchase": 1.0
+    },
+    "faiss": {
+      "type": "HNSW",
+      "metric": "inner_product",
+      "M": 32,
+      "ef_search": 512
+    },
+    "embedding_dim": 16,
+    "hidden_dim": 128,
+    "weight_decay": 0.0001,
+    "threads": 4,
+    "num_workers": 0,
+    "history_pooling": "mean",
+    "item_id_residual": false,
+    "profile_categories": "category_l3",
+    "tiny_fit_steps": 160,
+    "tiny_fit_learning_rate": 0.01
+  },
+  "evaluation": {
+    "cutoff_policy": "fixed_origin",
+    "target_events": [
+      "cart",
+      "purchase"
+    ],
+    "aggregation": "macro_user",
+    "k": 300,
+    "coverage_top_n": 50,
+    "coverage_users": 10000,
+    "min_history": 0
+  },
+  "mab": {
+    "algo": "epsilon_greedy",
+    "epsilon": 0.1
+  },
+  "new_item_days": 7,
+  "max_consecutive_same_category": 2,
+  "cold_start_min_events": 5,
+  "baselines": {
+    "category_weight": 1.0,
+    "brand_weight": 1.0,
+    "price_weight": 0.25,
+    "popularity_weight": 0.25
+  },
+  "diagnostics": {
+    "rare_max_train_events": 2,
+    "cold_max_history": 4
+  }
+}

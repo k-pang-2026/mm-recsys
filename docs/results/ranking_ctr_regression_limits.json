@@ -1,0 +1,35 @@
+{
+  "scope": "local regression audit on cached origin/main plus offline B4 only",
+  "default_backend": "redis",
+  "attempts": [
+    {
+      "command": "OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m pytest -q tests",
+      "exit_code": 1,
+      "passed": 191,
+      "failed": 1,
+      "skipped": 1,
+      "tool_session": 75868
+    },
+    {
+      "command": "OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "exit_code": 1,
+      "passed": 191,
+      "failed": 1,
+      "skipped": 1,
+      "tool_session": 30132
+    }
+  ],
+  "failure": "tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success",
+  "diagnostic": "recent_clicks expected ['p'], got []; Redis redis:6379 DNS unavailable; append_event/get_features returned empty features",
+  "interpretation": "environment dependency; full common CI is not PASS and real Redis test was skipped; no C source/test was edited",
+  "ci_environment": "GitHub workflow provisions Redis7 with RUN_REDIS_TESTS=1; actual remote CI not observed",
+  "memory_check": "single existing fixture separately evaluated with explicit runtime memory-store configuration; does not establish real Redis or B4/B5 API acceptance",
+  "handoff": "C-TEST-003 / C-SESSION-002 OPEN",
+  "explicit_memory_fixture": {
+    "passed": 1,
+    "exit_code": 0,
+    "test": "tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success",
+    "method": "runtime cfg.serving.feature_store=memory only; original test unchanged",
+    "scope": "existing C fixture only; real Redis, B4/B5 API integration not established"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "status": "VERIFIED_LIMITATION",
+  "scale": "full",
+  "split": "train",
+  "purchase_count": 35508,
+  "same_user_item_session_prior_view_count": 35508,
+  "within_30min": 0,
+  "min_gap_seconds": 25176.096,
+  "median_gap_seconds": 50264.064,
+  "attribution_seconds": 1800,
+  "decision": "User explicitly confirmed keeping the 30min plan policy on 2026-10-13; no data or attribution expansion",
+  "implication": "CVR AUC undefined (all negatives); conditional conversion probabilities not identifiable; CTR*CVR scores require this limitation when interpreted",
+  "source": "src/simulator/events.py:make_events vectorized per-user rounds; observed full train timestamp gap audit exit0",
+  "common_acceptance": "UNMEASURED"
+}

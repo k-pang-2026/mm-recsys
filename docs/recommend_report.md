@@ -1,176 +1,119 @@
-# 추천 개발 — B3a 학습 기반 / B3b full ANN 검증
+# B4 추천 API·B5 재랭킹·MAB·세션 최종 검증 v2
 
-담당 B, 예정 검토자 C. dev 구조 검증 단계이며 full test 품질·ANN·지연은 미측정이다.
+B 소유 구현과 B 메모리 주입 환경, 동결 CTR 정책의 full test 추천 품질은 **PASS**다.
+공통 서버/Redis/Docker와 전체 회귀는 완료되지 않았으며 전체 acceptance는 **UNMEASURED**다.
 
-## 고정한 계약
+## 점수 정책과 valid 선택
 
-- primary는 fixed-origin 전체 카탈로그 exact inner-product Recall@300이다.
-- valid cutoff는 train_end이고 히스토리는 `timestamp < cutoff`에 고정한다.
-- 정답은 valid cart/purchase의 고유 상품 ID 집합이다. 검색/null/중복 이벤트는 제외한다.
-- 등록 시점이 cutoff 이후인 정답도 평균 분모에 유지한다. 모든 nonempty-target 사용자를
-  macro 평균에 포함하며 empty/cold/warm/rare/new/repeat/unavailable cohort를 보고한다.
-- eligible catalog가 300개 이상이면 정확히 300개 고유 후보를 반환한다.
-  평가기는 overretrieve 결과도 300개에서 자른다. primary 구매 제외는 false다.
-- train 상품 등록 시점까지 알려진 metadata로 vocabulary와 log-price 평균/표준편차를 fit한다.
-  PAD=0, UNK=1, 상품 ID와 행 번호는 별도 mapping이다. persona와 숨은 생성기 선호는 입력하지 않는다.
-- 학습에서는 동일 timestamp 그룹을 처리한 뒤 히스토리/구매 집계를 갱신한다.
-  타깃 이전 관측 view/cart/purchase와 현재 positive만 네거티브에서 제외한다.
-  미래 positive나 valid/test 정답으로 네거티브를 제외하지 않는다.
-- 각 positive당 등록 완료된 카탈로그에서 uniform random negative 4개를 뽑는다.
-  충분한 pool에서는 고유 4개, 1~3개 pool에서는 replacement와 횟수를 보고한다.
-  가능한 negative가 없으면 오류로 종료한다. 각 sample의 독립 seed 기반 draw는 epoch마다 재사용한다.
-  in-batch/hard-negative를 사용하지 않는다.
+기존 DeepFM epoch11, GRU epoch20, Two Tower·HNSW와 데이터/피처 해시를 재사용했다. 재학습하지 않았다.
+`recommend.scoring`은 학습 설정과 분리되어 모델/인덱스 재생성을 요구하지 않는다.
+API와 평가가 `score_items` 및 `Recommender.rank_products/rerank_items`를 함께 사용한다.
+지원 정책은 `ctr_cvr`(기존 곱 재현), `ctr`, `rank_fusion`이다. 결합 가중치0.25/0.50/0.75,
+q(r)=(M-r)/(M-1), M=1이면1, M=0이면 빈 목록이다. CTR 동점은 상품ID로 안정 정렬하고
+비유한/범위 밖 확률·중복 후보·잘못된 가중치를 거부한다.
 
-## 모델·학습
+5개 운영 정책과 비교 전용 Two Tower를 full valid에서 비교했다. 같은 후보와 예측값을 공유하고
+각 정책의 노출 통계와 RNG를 독립시켰다. fixed-origin에는 세션 클릭/피드백이 없으므로
+노출 TTL만 가상 시계로 만료시키고 누적 arm 통계는 유지했다. 이 시계는 실제 API/지연 측정에 사용하지 않는다.
 
-상품 tower는 L1/L2/L3/brand/color/style의 개별 embedding과 log-price를 MLP에 넣는다.
-사용자 tower는 동일 상품 tower를 통과한 최근 50개 관측 행동의 mean pooling,
-age/gender, 과거 purchase의 category/brand 분포와 가격 평균/관측 여부를 사용한다.
-PAD는 pooling에서 제외하고 두 tower의 64차원 출력은 L2 normalize한다.
-item-ID residual은 없으므로 이 모델 자체가 metadata-only 모델이다.
+| valid 정책 | HitRate@50 | NDCG@50 | Coverage | 가능한 풀 위반 |
+|---|---:|---:|---:|---:|
+| ctr_cvr | 0.040932 | 0.008253 | 0.644220 | 0 |
+| ctr | 0.701506 | 0.360483 | 0.423360 | 0 |
+| rank_fusion_0.25 | 0.559918 | 0.228130 | 0.522220 | 0 |
+| rank_fusion_0.50 | 0.635474 | 0.274606 | 0.478280 | 0 |
+| rank_fusion_0.75 | 0.691466 | 0.319329 | 0.439240 | 0 |
+| two_tower | 0.568542 | 0.179561 | 0.613260 | 0 |
 
-온도 0.1의 positive+4-negative sampled-softmax와 configured view/cart/purchase
-가중치(0.2/0.6/1.0), AdamW를 사용한다. seed 42이고 negative와 shuffle의 RNG를 분리한다.
-CPU 4 threads로 실행했다. loss/margin/norm/분산/gradient/update를 매 epoch 기록하고
-valid 전체 카탈로그 Recall@300으로 best checkpoint를 선택한다.
+목표0.20/0.08/0.20와 가능한 풀 제약을 모두 충족한 운영 정책 중 최고 NDCG인 **CTR**을 선택·동결했다.
+동률 기준은 HitRate→Coverage→실험 순번이며 Two Tower는 운영 선택에서 제외했다.
+선택 기록은 `ranking_policy_selection_full.json`이며 모델/인덱스/피처·데이터·코드·난수·valid 집합 해시를 담는다.
+API 설정도 CTR이다. Cold-start는 기존 인기·최근 상승량 정렬을 유지한다.
 
-실제 train sample 114,966개에서 negative rejected draw 479개, small-pool replacement 0개였다.
-train-only 고정 negative 16개 fixture는 160 update 뒤 loss 1.585549 → 0.000003609,
-positive top1 accuracy 0.375 → 1.0이었다. 이 결과는 학습 경로 점검이며 retrieval 품질은 아니다.
+## 동결 후 full test
 
-## dev valid 관측 결과
+기존에 조회했던 test에서 동결 정책 하나만 평가했다. test를 보고 모델·가중치·정답·임계치를 다시 선택하지 않았다.
+Coverage 사용자는 **10000명**, truth 사용자는 **7686명**, 분모는 전체 상품 **50000개**다.
+정답은 같은 미래 구간의 고유 cart/purchase이며 빈 truth 사용자만 HitRate/NDCG 평균에서 제외하고 불가능한 truth는 유지한다.
 
-| 방법 | Recall@300 |
-|---|---:|
-| train-only popularity | 0.302853 |
-| observed-history category/brand/price | 0.819390 |
-| Two Tower exact | 0.819066 |
+| test 지표 | 기존 CTR×CVR+B5 | 동결 CTR+B5 | 목표 |
+|---|---:|---:|---:|
+| HitRate@50 | 0.048270 | 0.698803 | ≥0.20 |
+| NDCG@50 | 0.011031 | 0.340204 | ≥0.08 |
+| Coverage | 0.650540 | 0.419480 | ≥0.20 |
 
-11 epoch를 실행하고 patience 3으로 종료했다. best는 epoch 8이다.
-체크포인트를 다시 로드한 평가에서도 동일한 Recall을 얻었다.
-eligible 상품 9,600개 중 사용자별 고유 후보 300개를 반환했다.
-macro 사용자 1,542명, empty-target 사용자 458명, 평균 truth 크기 1.387808이다.
-cutoff 이후 등록된 정답 19개도 분모에 유지했다. cold/no-history nonempty-target 사용자는
-이번 valid 구간에서 0명이므로 해당 cohort의 Recall은 null이다. 합성 테스트는 cold 사용자 포함을 검증한다.
+Two Tower test 기준선 HitRate/NDCG/Coverage는 0.569737/0.178922/0.617980다.
+기존 실패 결과와 새 결과를 별도로 보존했다. 델타는 `ranking_policy_lift_v2.json`에 기록했다.
+독립 CTR test AUC **0.963370**는 목표0.70을 통과한다.
+**30분 CVR 귀속, 구매 양성0, CVR AUC 미정의**를 유지한다. 분류 수치는 동일 모델/피처/라벨의 기존 측정에서
+해시로 검증해 재사용했으며 정책 비교 때문에 분류/학습을 반복하지 않았다.
 
-Two Tower는 popularity보다 약 170.45% 높지만 관측 이력 기준보다 약 0.0396% 낮다.
-B3b에서는 먼저 피처·학습 진단을 검토하고 exact/ANN 품질을 분리해 측정한다.
-공통 데이터 진단의 다른 observed-history baseline(0.863057)은 별도 알고리즘이며
-이 문서의 category/brand/price baseline과 동일하지 않다.
-dev valid 수치는 full frozen test Recall≥0.30 또는 latency 통과를 뜻하지 않는다.
+동일 예측의 CTR×CVR 곱은 valid에서 추천 품질을 크게 떨어뜨렸다. CVR이 식별되지 않는 상태에서 곱을 쓰면
+유용한 후보/CTR 순위를 바꾸는 것으로 ablation이 뒷받침한다. `ranking_policy_diagnosis_v2.json`에 관측과 추론을 구분했다.
+valid/test cold 사용자300명은 truth가0명이라 cold 추천 품질을 판단하지 못한다.
+valid2240/test2313개 후보 풀은 다양성 조건 자체가 불가능했다.
+가능한 풀의 최종 위반은0이며 불가능한 풀의 반환ID와 카테고리 수·조건 진단 예시를 결과에 남겼다.
 
-## 모델 bundle과 C 인수 계약
+## API·재랭킹·보상 계약
 
-dev는 `models/v1.0/`, full은 `models/full/v1.0/`을 사용한다.
-`two_tower.pt`는 valid-selected state_dict이며 weights_only로 로드한다.
-`feature_vocab_scalers.json`은 vocabulary/scaler/cutoff/PAD/UNK 정의,
-`item_ids.json`은 PAD를 제외한 정렬된 public ID 목록이다.
-`meta.json`은 dim/metric/version/data/catalog/config/feature/checkpoint 해시와 선택 epoch를 담는다.
-checksum/config/data/ID가 어긋나면 로드가 실패한다.
-`item_index.faiss`와 ANN manifest는 B3b에서 이 mapping에 맞춰 추가한다.
-C는 candidate 평가를 재구현하지 않고 `eval_candidate` 결과를 집계한다.
-API factory·DeepFM·재랭킹 구현은 이후 B4/B5 범위다.
+공유 `GET /api/recommend`, `POST /api/event`, `POST /api/feedback`과 응답 필드를 유지한다.
+모델은 lifespan 시작 때 한 번 로딩하고 피처→후보300→공통 점수→재랭킹→TopN을 수행한다.
+모델 없음503/정상200/손상·해시불일치 시작 오류, 알려진·미등록 사용자와 TopN1~100을 검증했다.
+`score`는 점수 정책의 정렬 점수다. CTR 모드는 CTR 확률, 곱 모드는 CTR×CVR, 결합은 순위 정규화 점수다.
+Cold-start에서는 기존 인기·상승 점수로 대체되므로 reason을 함께 읽는다. 신상품/탐색/다양성 제약 때문에
+최종 출력이 score 내림차순만 따르는 것은 아니다.
 
-## 재실행·근거
+Cold-start<5, 최근 상승/인기, 가능한7일 이내 신상품≥1, 같은 범주 연속≤2, 중복 제거를 유지한다.
+Epsilon-Greedy/UCB 각각100건 무작위 검사와 기존4044건 완전탐색 검사, item/category arm,
+탐색 슬롯≤2와 표시를 검증했다. 동일 사용자·상품의 최근 노출 TTL1800초에 클릭0.2/구매1.0,
+동일 노출 최대 보상, 중복 eventID, 사용자 격리와 미귀속 집계를 유지한다.
+GRU0.3/장기0.7 결합도 그대로다. full 모델에서 클릭3회 후 관심·추천 변화와 피드백 상태 변화를
+`ranking_latency_full_b5_v2.json:live_flow`에 저장했다. B 어댑터 주입 결과이며 기본 C store의 MAB는 OPEN이다.
 
-```bash
-source scripts/local_env.sh
-PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.train_two_tower
-PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid
-.venv/bin/python -m src.recommendation.diagnose_candidate \
-  --report docs/results/candidate_training_dev.json \
-  --output docs/results/candidate_diagnostics_dev.json
-.venv/bin/python -m pytest -q tests
-```
+## 지연과 환경
 
-학습 설정은 `config/recommend.yaml` / `config.yaml`에 저장한다.
-test는 `--split test`를 명시했을 때만 읽는다. B3a에서는 실행하지 않았다.
-데이터·모델·캐시는 커밋하지 않는다.
-측정 근거는 `docs/results/candidate_training_dev.json`、`candidate_dev_valid.json`、
-`candidate_diagnostics_dev.json`과 `gates/B3a.json`에 저장한다.
-로컬 학습 로그는 `.team/train_B3a.log`。
-data fingerprint: `3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c`。
+warmup10, 순차100, 동시성1, Top50을 고정하고 평가 종료 뒤 각 벤치를 순서대로 측정했다.
 
-
-## B3b — full ANN과 최종 측정 (2026-10-09)
-
-상품 50,000개, 사용자 10,000명,
-이벤트 1,000,000개의 별도 `data/full/` 데이터로 학습·평가했다.
-seed 42, 기존 mean pooling/64차원/temperature 0.1 설정을 유지했다.
-10 epoch 중 valid Recall로 epoch 7을 선택했고, 재로드 결과도 일치했다.
-새 hyperparameter ablation이나 데이터/정답 변경은 하지 않았다.
-valid ANN Recall과 지연을 확인한 뒤 `candidate_selection.json`에 선택을 고정하고
-처음으로 test를 평가했다. training 보고서의 stage 필드는 기존 B3a 학습 진단 형식이며,
-실제 B3b bundle 계약은 그 보고서의 `bundle.contract`와 `ann` manifest에 기록된다.
-
-| 측정 | full valid | full frozen test |
+| p95(ms) | 내부 전체 | ASGI HTTP |
 |---|---:|---:|
-| train-only popularity Recall@300 | 0.228129 | 0.234984 |
-| observed-history profile Recall@300 | 0.764813 | 0.766795 |
-| Two Tower IndexFlatIP Recall@300 | 0.745913 | 0.746281 |
-| Two Tower HNSW Recall@300 | 0.745849 | 0.746281 |
-| ANN/exact 후보 agreement@300 | 0.999356 | 0.999360 |
+| B4 | 71.091 | 71.853 |
+| B5 | 79.613 | 80.443 |
 
-미래 정답 Recall과 exact 후보 집합 agreement는 다른 분모다.
-Two Tower는 test popularity 대비 217.59% 높지만,
-관측 이력 profile 대비 -2.68% 낮다.
-관측 이력 기준의 우위를 숨기거나 popularity/profile union을 primary Two Tower로 계산하지 않았다.
-최종 기준 0.30은 충족했으므로 test 결과를 보고 모델을 다시 선택하지 않았다.
+각 p95≤200ms, 오류0이다. p50/p99·단계별 지연·110건 원시 요청·대표 응답5개·CPU/스레드/패키지/
+모델·정책 해시는 벤치 JSON에 있다. B4/B5 시작·모델 로딩은 각각13772.898/13828.109ms이며 요청 지연과 분리했다.
+이는 공유 FastAPI에 B 저장소를 주입한 ASGI 왕복이다. 실제 TCP 벤치 앱/CLI도 구현했으나
+localhost bind가 PermissionError Errno1로 거부되어 **TCP UNMEASURED**다. Redis/Docker 측정도 미완료다.
+목표를 통과했으므로 추가 성능 최적화를 하지 않았으며 전후 속도 개선 비율은 주장하지 않는다.
 
-test macro 대상 7,686명, empty-target 2,314명,
-cutoff 당시 eligible 카탈로그 48,872개이며, 모든 대상에 고유 후보 300개를 반환했다.
-등록 시점 이후여서 검색 불가능한 정답 58개도 Recall 분모에 남겼다.
-cohort별 결과는 `candidate_full_test.json`과 `candidate_metrics.json`에 있다.
+## 회귀·인계·전달
 
-### 저장·검증 계약
+B 검사는 gate에서 직접 실행한다. API/평가 일치, 동점·빈/단일 후보·비유한값, 모델1회 로딩,
+품질 미달 CLI 실패 종료, 독립 CTR/candidate verifier·pip check·compile·diff 검사를 포함한다.
+전체 회귀 첫 시도212통과/10실패/1skip, 공통 검사 우선 시도215통과/9실패/1skip으로 **전체 FAIL**이다.
+실패는 C의 모델 없음 fixture와 OpenMP SHM 하위 프로세스 오류다. 공통33검사는 원본 PR8 클론과
+후속 클론에서 단독 통과했지만 전체 통과를 대신하지 않는다. 정확한 원인은 공통 인계에서 추가 확인해야 한다.
+원시 실패 로그와 명령은 `ranking_regression_v2.json` 및 `experiments/B/*.txt`에 보존했다.
+커밋 전 gate 재기록의 독립 CTR/후보 검증2건도 OpenMP SHM Err179로 한 번 실패했다.
+두 명령의 단독 재실행은 각각exit0이며 실패 gate/로그는 `experiments/B/ranking_gate_runtime_failure/`에 보존했다.
+최종 gate는 표준 record_gate로 다시 실행한 실제 근거다.
+A-BATCH-001/A-HANDOFF-002/C-MAB-001/C-SESSION-002/C-TEST-003은 모두 OPEN이다.
 
-`models/full/v1.0/item_index.faiss`는 전체 public ID 목록과 같은 순서의 normalized
-HNSWFlat/IP이다. M=32, efConstruction=200, efSearch=512이며 단일 스레드로 구축했다.
-FAISS label i는 `item_ids.json[i]`와 상품 table row i+1에 대응한다.
-후보 생성에서는 cutoff 등록일/구매 제외를 적용하고, 부족하면 검색 범위를 두 배씩 확대한다.
--1 label/PAD/중복을 제외하며, 충분한 카탈로그에서 300개를 못 얻으면 오류로 종료한다.
-`index_manifest.json`과 `meta.json`에 model/data/catalog/config/feature/mapping/index/vector 해시를 저장한다.
-모델 재생성, ID mapping, checksum, index metric/shape가 어긋나면 로드가 실패한다.
-exact reference는 HNSW의 Flat storage에서 동일 벡터를 읽어 `IndexFlatIP`에 넣는다.
-동점에서 FAISS가 선택한 top-k 경계 집합은 달라질 수 있으며, 반환된 동점 안에서는 public ID로 정렬한다.
+원본87e5dac의 게시 대기와 PR8 9154479의 오프라인 범위/head/title을 보존했다.
+후속 클론은9154479 위의 B 소유 변경이며 공통 서버/스키마/C 저장소를 수정하지 않았다.
+GitHub API 연결 실패로 PR8 현재 병합/최신main 동기화는 미검증이다. 한 번의 B5 로컬 커밋과 Draft 미리보기만
+준비하고 실제 push/새 PR은 PR8 병합·최신main 확인 후 정확한 최종 SHA의 명시 승인으로 진행한다.
+기존 SHA 승인을 재사용하지 않는다. 이번 B4 gate는 PR8 당시 오프라인 이력이고 API 증거는 새 B5 gate에 포함한다.
 
-### 지연과 macOS 복구
+## 재현과 재개
 
-native CPU, GPU 미사용, 실제 추론 스레드 1개에서 10 warm-up 후
-100 serial 요청으로 측정했다. 모델/인덱스 로드를 제외한 메모리 이력 조회, 시점 필터,
-피처 구성, user tower, FAISS, 후보 필터/refill, public ID 복원을 포함했다.
-HTTP 왕복/Redis I/O는 제외되며 결과/사용자 벡터 캐시는 사용하지 않았다.
-p50=1.272ms, p95=1.369ms, p99=1.466ms,
-최소 고유 후보=300개다. p95 기준 100ms를 충족했다.
-RAM은 sandbox가 `sysctl hw.memsize` 접근을 거부하여 미측정이다. Docker 측정은 아니다.
-
-초기 valid ANN 실행은 exit139로 실패했다. macOS 충돌 보고서의 공통 스택은 `libomp.dylib`였고,
-[PyTorch의 macOS ARM/FAISS 충돌 보고](https://github.com/pytorch/pytorch/issues/149201)와 부합한다.
-이 환경에서는 두 pinned 라이브러리의 병렬 런타임 충돌을 피하도록 `runtime.py`가
-추론을 단일 스레드로 설정한다. 학습 설정·선택 모델·평가 기준은 유지했다.
-HNSW 벡터 검증은 Flat storage를 직접 읽어 generic 병렬 reconstruction도 피한다.
-수정 후 valid/test/benchmark는 정상 종료했다. 실패·보조 함수 import 오류·복구 근거는
-`candidate_runtime_failures.json`에 보존했다. 단일 스레드 설정은 패키지 자체의 근본 수정은 아니다.
-
-### 재현과 gate
+저장된 full 평가를 응답 복구 목적으로 반복하지 않는다. 새 valid 비교는 별도 output/selection 경로에서 실행하며
+동결 test 경로는 선택 기록·소스·모델·설정·임계치 일치를 요구한다. 세부 상태는 `ranking_followup_state.json`이다.
 
 ```bash
-source scripts/local_env.sh
-SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.simulator.generate
-SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.train_two_tower
-OMP_NUM_THREADS=1 SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split valid --ann
-OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.bench_candidate --split valid --output docs/results/candidate_benchmark_full_valid.json
-OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.diagnose_candidate --report docs/results/candidate_training_full.json --evaluation docs/results/candidate_full_valid.json --benchmark docs/results/candidate_benchmark_full_valid.json --output docs/results/candidate_diagnostics.json
-SCALE=full .venv/bin/python -m src.recommendation.select_candidate
-OMP_NUM_THREADS=1 SCALE=full PYTHONHASHSEED=42 .venv/bin/python -m src.recommendation.eval_candidate --split test --ann
-OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.bench_candidate --split test --output docs/results/candidate_benchmark_full_test.json --evaluation docs/results/candidate_full_test.json --training docs/results/candidate_training_full.json --selection docs/results/candidate_selection.json --metrics docs/results/candidate_metrics.json
+# 동일 환경의 기존 결과를 검증한다. 품질 미달이면 exit1.
+OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.recommendation.verify_ranking --require-quality
+OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_deepfm --metrics docs/results/ranking_classification_full_test.json
 OMP_NUM_THREADS=1 SCALE=full .venv/bin/python -m src.recommendation.verify_candidate --metrics docs/results/candidate_metrics.json
+# TCP bind가 가능한 호스트에서 새 output에 실제 측정한다.
+OMP_NUM_THREADS=1 PYTHONHASHSEED=42 SCALE=full .venv/bin/python -m src.recommendation.bench_ranking --tcp --selection docs/results/ranking_policy_selection_full.json --output docs/results/ranking_tcp_full_b5_host.json
 ```
-
-새 clone에서 위 순서로 실행한다. 이미 선택 파일이 있으면 `select_candidate --verify-existing`로 검증하며, 새 실험은 별도 버전 경로를 사용한다.
-최종 test는 모델 선택 후에만 실행한다. 이미 저장된 성공 결과를 확인할 때는 마지막 verifier를 사용한다.
-검증기는 원본 training/valid/test/benchmark/선택 파일의 해시와 현재 bundle을 대조하고
-저장된 지표에서 B3b 합격 조건을 다시 계산한다. 전체 시스템 종합 acceptance는 후속 단계가 남아
-UNMEASURED이며, B3b 후보 생성 자체는 `candidate_metrics.json`에서 PASS다.
-구조 gate는 `docs/results/gates/B3b.json`, 담당 변경과 검증은 `docs/contributions/B.md`에 기록한다.
-full data fingerprint: `0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6`.

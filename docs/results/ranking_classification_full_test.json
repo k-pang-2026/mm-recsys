@@ -1,0 +1,79 @@
+{
+  "version": "offline-deepfm-classification-v1",
+  "scale": "full",
+  "split": "test",
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scope": "offline classification only; not API, ranked recommendation quality, or B5 acceptance",
+  "classification": {
+    "ctr": {
+      "auc": 0.9633700393677938,
+      "auc_status": "MEASURED",
+      "logloss": 0.1610541309648597,
+      "samples": 225422,
+      "positives": 56639,
+      "denominator": "observed exposures"
+    },
+    "cvr": {
+      "auc": null,
+      "auc_status": "UNDEFINED_SINGLE_CLASS",
+      "logloss": 8.51986463493398e-07,
+      "samples": 56261,
+      "positives": 0,
+      "denominator": "observed clicked exposures"
+    }
+  },
+  "labels": {
+    "version": "linked-view-last-view-v1",
+    "rows": 226556,
+    "clicks": 56639,
+    "conversions": 0,
+    "ctr_observed": 225422,
+    "cvr_observed": 56261,
+    "censored": 1512,
+    "censored_cvr_negatives": 378,
+    "unassigned_purchases": 44623,
+    "window_seconds": 1800,
+    "start": "2025-12-29T00:00:00+00:00",
+    "end": "2025-12-31T23:59:57.408000+00:00",
+    "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+    "cvr_denominator": "observed linked clicked exposures only",
+    "same_timestamp_view_exposure": 563756,
+    "excluded_inputs": [
+      "position",
+      "impression_id",
+      "request_id",
+      "event_type",
+      "persona"
+    ]
+  },
+  "ctr_auc_target": 0.7,
+  "selection_split": "valid",
+  "best_epoch": 11,
+  "model_sha256": "28ec1ab82c4f264f063adb924549a48afabcb4b17e4bdc1667c8248090917ae3",
+  "feature_fingerprint": "981abcaf8827802b0c3de057990e4ea8f1cda9ff3d781fcf4a4b49da33e0f7ab",
+  "ranking_config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "history_cutoff": "2025-12-28T23:59:57.408000+00:00",
+  "history_policy": "strictly before each exposure, frozen at split origin; popularity fitted on train",
+  "limitations": [
+    "CTR uses linked views as a click proxy; generated exposure/view timestamps coincide",
+    "30min CVR attribution retained; zero positives mean CVR AUC is undefined",
+    "CTR AUC alone does not establish recommendation or conversion quality"
+  ],
+  "sources": {
+    "docs/results/ranking_selection_full.json": "8bfd0eea1280806382c423eb3fae3630bb332f4e5b888242529d3856631f8548",
+    "docs/results/ranking_training_full.json": "a4a7b5a594b6aee50903e7102813a81cb41e0d5e1d3175b6c608cbbdf8aefb23",
+    "src/recommendation/deepfm.py": "2933f21129e5d8b72b002df718568876a59218ba3522c814a78d0d470a7dd2ea",
+    "src/recommendation/ranking_labels.py": "106e94afa9acc2cdd62c8b7a2de20d138a9e5c95b3993f3353b2cf0a52c59128",
+    "src/recommendation/ranking_features.py": "129d35ca3314b904ca7b5c699d610b2a4f16d1a0d5c64ccff789a157f3334aa1",
+    "src/recommendation/train_deepfm.py": "8c5e3c8a2000dad6ad9e0e6cb020d669b63bc6228cb02294a8cfd26c2431e771",
+    "src/recommendation/eval_deepfm.py": "063a6a873823538b41cde5420f4dec0a7af05655802eda2dcf82a1e79e63d18b"
+  }
+}
