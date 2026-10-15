@@ -123,3 +123,98 @@ OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.ab_test --output .team/ab-r
 B7 로컬 커밋은 설명과 명시 허가 후에만 푸시하고 Draft PR을 생성한다.
 다음 담당 단계는 B8이며, 필요한 B2b는 이미 PR #3으로 main에 병합되어 있다.
 C는 B9까지만 담당하고 B10 Docker와 B11 제출은 A에게 인계한다.
+
+## B8 — 통합 평가와 대시보드 (2026-10-15)
+
+역할 C(박채영), 검토자 A/B. PR #9의 두 common CI가 SUCCESS이고 PR이 MERGED인 것을
+원격에서 확인했다. `scripts/team.py prepare C`로 최신 main `035b5dc`를 C 브랜치에
+반영했다. B2b·B7 의존성은 충족됐으며 다른 역할의 미병합 기능 브랜치는 가져오지 않았다.
+
+`src.evaluation.run_all`은 같은 데이터·모델·config로 검색, 후보, 분류, 최종 추천,
+Redis와 실제 HTTP 지연을 측정한다. A/B 소유 모델·검색·학습 소스와 기존 결과 파일은
+수정하지 않는다. 결과는 `docs/results/evaluation_<scale>_<split>.json`에 저장한다.
+데이터·config·모델 manifest·소스 해시, 평가 fingerprint, 환경과 원시 지연 샘플을 포함한다.
+지표마다 값·기준·PASS/FAIL/UNMEASURED와 valid/test/benchmark 구간을 기록한다.
+dev/valid의 기준 통과와 full test 최종 acceptance를 구분한다.
+
+검색은 고정된 독립 쿼리 200개/모드, 관측 가능한 relevance와 CLIP/BM25를 사용한다.
+image-only BM25는 적용 불가이며 가짜 수치를 넣지 않는다. ANN/exact 벡터 일치율은
+relevance 품질과 별도로 기록한다. efSearch/nprobe 진단은 valid에서만 수행하고
+설정을 선택하거나 저장된 인덱스·test 정답을 바꾸지 않는다. 벡터 검색 p95는
+인코딩·HTTP가 제외된 진단이며 API 지연 판정에는 실제 HTTP p95를 사용한다.
+새 C 설정은 `serving.evaluation.nprobe_sweep: [1,4,8,16,32]`다.
+
+필요한 dev 검색 임베딩과 세 인덱스를 동일 config/seed로 재생성했다.
+상품 10,000개의 콘텐츠 중 텍스트 1,439개·이미지 256개만 실제 인코딩하고 나머지는
+동일 콘텐츠 캐시를 사용했다. 고정 CLIP revision, 이미지·catalog·ID mapping·차원과
+임베딩/인덱스 checksum을 실제 로더로 검사했다. 산출물은 `models/search/`에만 두고 커밋하지 않는다.
+초기 macOS ARM 통합 평가가 종료 코드 139로 중단되어, 검색 인덱스를 로드한 뒤
+B의 기존 단일 스레드 inference 정책을 C 평가에도 적용했다. 모델/검색 설정은 유지하고
+실제 실행 스레드를 환경에 기록했다. 복구 근거는 `evaluation_runtime_recovery.json`에 있다.
+
+후보 평가는 동일 벡터의 exact/ANN Recall@300, train-only popularity와 관측 이력 baseline을
+포함한다. 최종 추천은 인기순·Two Tower·DeepFM·전체 파이프라인을 같은 사용자·truth에서 비교한다.
+valid cutoff 이전 이력만 사용하고 미래 cart/purchase 고유 ID를 truth로 유지한다.
+검색 불가능한 미래 상품도 truth에서 삭제하지 않는다. Coverage는 정답이 없는 사용자를
+포함한 고정 2,000명의 top50 고유 상품/전체 10,000개 상품으로 계산한다.
+CTR/CVR label 분모·양성 개수를 보고하며 단일 class CVR AUC는 미정의로 남긴다.
+
+실제 dev/valid 품질 측정:
+
+| 지표 | 측정값 | 기준 | 판정 |
+|---|---:|---:|---|
+| MRR | 0.928030 | ≥0.55 | PASS |
+| NDCG@10 | 0.931912 | ≥0.50 | PASS |
+| Recall@300 | 0.819066 | ≥0.30 | PASS |
+| CTR AUC | 0.964822 | ≥0.70 | PASS |
+| HitRate@50 | 0.839170 | ≥0.20 | PASS |
+| NDCG@50 | 0.462911 | ≥0.08 | PASS |
+| Coverage | 0.941100 | ≥0.20 | PASS |
+
+검색 3개 모드와 추천은 실제 shared FastAPI·Redis·localhost TCP HTTP로 측정한다.
+각 모드 10회 워밍업 후 100회 순차 요청이며 검색 판정에는 최악 모드의 p95를 쓴다.
+후보와 Redis도 10회 워밍업·100회 순차 호출이다. 샘플·실제 p50/p95/p99·자원 배정은
+통합 JSON을 따른다. 프로필이 비거나 Redis fallback인 호출로 지연 통과를 만들지 않는다.
+benchmark용 Redis namespace와 서버를 정리하며 사용자의 컨테이너/볼륨을 초기화하지 않는다.
+
+`evaluation_selection_<scale>.json`은 valid의 실행 조건과 불변 snapshot SHA를 기록한다.
+명시적 `--split test`는 그 이후 data/model/config/source가 그대로일 때만 허용한다.
+latency 갱신으로 화면 JSON을 다시 써도 과거 측정 snapshot은 보존한다.
+이번 단계에서는 test 평가나 full 모델/데이터 생성·품질 튜닝을 수행하지 않았다.
+
+대시보드는 검색·추천·A/B 실험·시스템 4개 탭, 5개 Plotly 차트와 기준선을 제공한다.
+설정된 결과 디렉터리를 읽고 API_URL을 사용해 텍스트·이미지·하이브리드 검색과 사용자 추천을 호출한다.
+기준 미달·결과 없음·단일 class·API 장애를 숨기지 않는다. A/B의 음의 lift도 그대로 표시한다.
+실시간 health/ready와 저장된 성능 측정을 구분하고 CT 로그·측정 모델 버전을 보여 준다.
+CT 기록이 없으면 B9 미측정으로 표시한다. `torch`/`faiss`를 import하지 않으며
+기존 독립 대시보드 이미지의 직접 의존성만 사용한다. 결과 디렉터리에 쓰지 않는다.
+Docker/Compose 정의·전체 서비스 컨테이너 성능 검증은 A B10 소유로 유지했다.
+
+검증:
+
+- 전체 회귀 검사 255개 통과. C 변경 8개 모듈의 타입 검사와 pip check 통과.
+- Coverage 분모·미래 truth 유지·평가 freeze·누락/NaN·API 장애·readonly 결과 I/O를 검사했다.
+- 별도 Python 프로세스에서 dashboard import 후 torch/faiss가 로드되지 않음을 확인했다.
+- Streamlit 실제 서버 health/home HTTP 200과 AppTest의 4개 탭·5개 차트 렌더링을 확인했다.
+- 11개 지표의 화면 값/판정이 JSON과 일치했다.
+- 실제 API의 텍스트·이미지·하이브리드 검색 및 사용자 추천이 모두 200, 결과 10개를 반환했다.
+- 실제 API를 연결한 AppTest에서 검색·추천 데모 폼도 예외 없이 실행했다.
+
+재현:
+
+```bash
+source .team/activate.sh
+OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.run_all
+.venv/bin/python -m uvicorn src.search.api:create_app --factory --host 127.0.0.1 --port 8000
+# 별도 터미널, 동일 환경에서
+.venv/bin/streamlit run dashboard/app.py --server.address 127.0.0.1 --server.port 8501
+.venv/bin/python -m src.evaluation.verify_evaluation --dashboard-url http://127.0.0.1:8501
+.venv/bin/python -m pytest -q tests
+```
+
+[통합 결과](../results/evaluation_dev_valid.json),
+[검증·대시보드 근거](../results/experiments/C/evaluation_verification_dev_valid.json)를 참고한다.
+직접 의존성 추가는 없다. 전체 full acceptance, CT, 전체 Compose 재현은 UNMEASURED다.
+라이브 Redis MAB 노출·보상 attribution은 B5 adapter를 사용한 오프라인/B7 실험과 구분하며
+여전히 UNCONNECTED로 공개한다. B8 로컬 커밋은 새 변경 설명과 명시 허가 후에만 푸시한다.
+다음 C 담당 단계는 B9 Continuous Training이다.

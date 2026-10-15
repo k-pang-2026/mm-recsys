@@ -1,0 +1,10 @@
+{
+  "status": "RECOVERED",
+  "initial_command": "OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.run_all",
+  "initial_exit_code": 139,
+  "initial_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "change": "reuse existing src.recommendation.runtime single-thread inference policy after the search index loader; do not change search/model configuration",
+  "observed_retry": "all search/recommendation/HTTP/Redis dev-valid measurements completed; gate commands provide final verification",
+  "platform": "macOS 26.6 arm64; pinned torch2.6.0/faiss1.9.0 wheels",
+  "acceptance": "UNMEASURED"
+}

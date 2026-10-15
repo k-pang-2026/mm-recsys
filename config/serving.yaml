@@ -1,6 +1,8 @@
 # C owns this overlay; shared data and evaluation contracts remain fixed.
 serving:
   feature_store: redis
+  evaluation:
+    nprobe_sweep: [1, 4, 8, 16, 32]
   redis:
     timeout_seconds: 0.2
     max_connections: 32
