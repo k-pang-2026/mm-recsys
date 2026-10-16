@@ -1,0 +1,23 @@
+{
+  "before": {
+    "docs/results/gates/B9.json": "94b492b7fd62603ee5bd588bfa96e7386d1cc895b2dee882324c6a333132e829",
+    "docs/results/gates/B10.json": "894fbc7abd90dfae998184e7c9695740c02fe4d98c1cb76bfb1318c2ffa32314",
+    "docs/results/docker/quality_full_test.json": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+    "docs/results/docker/quality_full_valid.json": "967039f17634d8d0718482dd7b2d2837116ab63e7cb258c152f6199a172461d9",
+    "docs/results/ab_test.json": "7272f87fc5247c4a0ca1d7610bc84fceab4ff3187cd9a54ed9363d1aa37499fc",
+    "docs/results/ct_dev_fixture.json": "273e4fdc959bfff4fa97911b3daf1d90f080b70f359766dd16f6d26b73752461"
+  },
+  "after": {
+    "B9": {
+      "status": "PASS",
+      "artifacts": 26,
+      "changed": {}
+    },
+    "B10": {
+      "status": "PASS",
+      "artifacts": 78,
+      "changed": {}
+    }
+  },
+  "scope": "B9 and B10 measurement/source artifacts unchanged; B11-owned README/contributions supersede historical B10 document hashes; original gates preserved"
+}

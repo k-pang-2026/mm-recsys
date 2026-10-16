@@ -1,0 +1,12 @@
+{
+  "status": "DISCLOSED",
+  "remote_metadata_head": "aa619fb1bcf3f13f179fc3cca56fc3cd3b6bf049",
+  "actual_main_merge": "69f66b256f08350e7d0c1df4356f20efd9c231b5",
+  "actual_merged_parent": "161eee5fff5e92b995995335a571eb0b1e4e3d7d",
+  "failed_read": {
+    "command": "git fetch origin refs/pull/4/head",
+    "exit_code": 128,
+    "error": "fatal: couldn't find remote ref refs/pull/4/head"
+  },
+  "scope": "preserve remote metadata discrepancy; use actual main merge history for contribution attribution"
+}

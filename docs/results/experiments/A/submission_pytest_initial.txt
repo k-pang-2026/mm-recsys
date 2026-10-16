@@ -1,0 +1,2306 @@
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+.......................................FFFFFFFFFFFFF.................... [ 71%]
+........F.FF............................................................ [ 95%]
+.............                                                            [100%]
+=================================== FAILURES ===================================
+________________ test_json_three_modes_share_response_contract _________________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af1d84a0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+image_bytes = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x14\x00\x00\x00\x14\x08\x00\x00\x00\x00\xa8\xe2B\xd1\x00\x00\x00\x14IDATx\x9cc\x9c\xc6\x80\t\x98\xb0\x88\x8d\n\x0e\x98 \x00\x18\x05\x00\xbel88\xa0\x00\x00\x00\x00IEND\xaeB`\x82'
+
+    def test_json_three_modes_share_response_contract(image_bytes):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:41: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af1d84a0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload0] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a1814b60>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a1814b60>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload1] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af1c3e90>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': ' '}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af1c3e90>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload2] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a16fef30>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_image': 'bad'}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a16fef30>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload3] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a168f9e0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_image': 'bm90IGFuIGltYWdl'}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a168f9e0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload4] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af3384d0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': 'shirt', 'top_k': 0}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af3384d0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload5] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a17f43b0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': 'shirt', 'top_k': -1}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a17f43b0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload6] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a18fd9d0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': 'shirt', 'top_k': 101}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a18fd9d0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload7] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a181fa70>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': 'shirt', 'top_k': True}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a181fa70>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload8] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a168cf50>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': 'shirt', 'top_k': '10'}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a168cf50>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload9] _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3e151cc80>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'query_text': 'shirt', 'top_k': 1.5}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3e151cc80>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+____________ test_invalid_json_fails_before_encoder_call[payload10] ____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a178bd10>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+payload = {'extra': 'forbidden', 'query_text': 'shirt'}
+
+    @pytest.mark.parametrize('payload', [{}, {'query_text': ' '}, {'query_image': 'bad'},
+        {'query_image': base64.b64encode(b'not an image').decode()},
+        *[{'query_text': 'shirt', 'top_k': k} for k in (0, -1, 101, True, '10', 1.5)],
+        {'query_text': 'shirt', 'extra': 'forbidden'}])
+    def test_invalid_json_fails_before_encoder_call(payload):
+        searcher = FixtureSearcher()
+>       with TestClient(create_app(search_service=SearchService(searcher))) as client:
+
+tests/test_search_api.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a178bd10>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+________________ test_multipart_image_hybrid_and_invalid_fields ________________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a13fffb0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+image_bytes = b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x14\x00\x00\x00\x14\x08\x00\x00\x00\x00\xa8\xe2B\xd1\x00\x00\x00\x14IDATx\x9cc\x9c\xc6\x80\t\x98\xb0\x88\x8d\n\x0e\x98 \x00\x18\x05\x00\xbel88\xa0\x00\x00\x00\x00IEND\xaeB`\x82'
+
+    def test_multipart_image_hybrid_and_invalid_fields(image_bytes):
+>       with TestClient(create_app(search_service=SearchService(FixtureSearcher()))) as client:
+
+tests/test_search_api.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+src/search/api.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a13fffb0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+_____________ test_unimplemented_models_never_report_empty_success _____________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af1daa50>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+    def test_unimplemented_models_never_report_empty_success():
+>       with TestClient(create_app()) as client:
+
+tests/test_serving_contract.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af1daa50>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+______ test_search_plugin_receives_shared_model_and_preserves_api_schema _______
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af2e04a0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+    def test_search_plugin_receives_shared_model_and_preserves_api_schema():
+        class Fake:
+            def search(self,request):
+                return SearchResponse(search_type='text',results=[SearchItem(product_id='p',name=request.query_text,score=.5,price=100)],latency_ms=1,total_count=1)
+>       with TestClient(create_app(search_service=Fake())) as client:
+
+tests/test_serving_contract.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3af2e04a0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+___________ test_invalid_image_fails_validation_before_model_loading ___________
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a17f58e0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+>           data=read_data(cfg['paths']['data_dir'],'valid')
+
+src/recommendation/service.py:34: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/recommendation/datasets.py:22: in read_data
+    manifest = json.loads((root / 'split_manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/app/data/split_manifest.json'), mode = 'r', buffering = -1
+encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/app/data/split_manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+    def test_invalid_image_fails_validation_before_model_loading():
+>       with TestClient(create_app()) as client:
+
+tests/test_serving_contract.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:34: in lifespan
+    backend = load_record(app.state.ct[2], active, app.state.store)
+src/serving/model_loader.py:27: in load_record
+    service = create_service(cfg, store)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+store = <src.serving.feature_store.RedisFeatureStore object at 0xf2a3a17f58e0>
+
+    def create_service(cfg: dict,store) -> Recommender | None:
+        cfg=copy.deepcopy(cfg)
+        if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
+        candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
+        if not candidate_path.exists(): return None
+        # A B3a bundle explicitly declares its ANN as planned, so no serving model
+        # exists yet. A B3b bundle declaring an existing index still fails if damaged.
+        candidate_meta_path=candidate_path/'meta.json'
+        if candidate_meta_path.exists() and not (candidate_path/'index_manifest.json').exists():
+            declared=json.loads(candidate_meta_path.read_text())
+            if 'planned_B3b' in declared.get('contract',{}) and 'index_manifest.json' not in declared.get('hashes',{}):
+                return None
+        ranking_path=bundle_path(cfg)
+        if not ranking_path.exists(): return None
+        configure_inference(cfg['recommend']['candidate'],with_faiss=True)
+        try:
+            data=read_data(cfg['paths']['data_dir'],'valid')
+            candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
+            index,_=load_index(candidate_path,table,candidate_meta)
+            ranker,ranking_encoder,_=load_ranking(cfg,data)
+            session=None
+            if cfg['recommend']['session']['enabled']:
+                if not session_path(cfg).exists(): return None
+                session,_=load_session(cfg,data,table,candidate_meta)
+            return Recommender(cfg,store,data,candidate,encoder,table,index,ranker,ranking_encoder,session)
+        except FileNotFoundError as error:
+>           raise ValueError('present recommendation bundle is incomplete') from error
+E           ValueError: present recommendation bundle is incomplete
+
+src/recommendation/service.py:44: ValueError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /home/peachpetal/ecommerce/mm-recsys/docs/results/final_submission/pytest.xml -
+=========================== short test summary info ============================
+FAILED tests/test_search_api.py::test_json_three_modes_share_response_contract
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload0]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload1]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload2]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload3]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload4]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload5]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload6]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload7]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload8]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload9]
+FAILED tests/test_search_api.py::test_invalid_json_fails_before_encoder_call[payload10]
+FAILED tests/test_search_api.py::test_multipart_image_hybrid_and_invalid_fields
+FAILED tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success
+FAILED tests/test_serving_contract.py::test_search_plugin_receives_shared_model_and_preserves_api_schema
+FAILED tests/test_serving_contract.py::test_invalid_image_fails_validation_before_model_loading
+16 failed, 285 passed, 2 warnings in 23.11s

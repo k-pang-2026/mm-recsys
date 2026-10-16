@@ -1,0 +1,41 @@
+{
+  "status": "FAIL",
+  "source_url": "https://github.com/k-pang-2026/mm-recsys.git",
+  "commit": "e3af8585e5ed1ab7f2543fd09ca77dbdb6bc4e9b",
+  "checkout": "/tmp/mm-recsys-b11-clone-drdu_23y",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--single-branch",
+        "--branch",
+        "main",
+        "https://github.com/k-pang-2026/mm-recsys.git",
+        "/tmp/mm-recsys-b11-clone-drdu_23y"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "/home/peachpetal/ecommerce/mm-recsys/.venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests"
+      ],
+      "exit_code": 1
+    }
+  ],
+  "tracked_count": 421,
+  "forbidden_tracked": [],
+  "env_tracked": true,
+  "log": {
+    "source": "docs/results/final_submission/clone.txt",
+    "sha256": "e38dd58ebc163790c1cd37d095f03e5363fcbef68443f1c94d1b93eeeaab3750"
+  },
+  "elapsed_seconds": 20.033714701999997,
+  "scope": "real remote clean source clone of reviewed main; pytest reuses existing host .venv; not clean dependency installation or full Docker data/model regeneration",
+  "b11_changes_included": false,
+  "docker_regeneration": "UNMEASURED"
+}

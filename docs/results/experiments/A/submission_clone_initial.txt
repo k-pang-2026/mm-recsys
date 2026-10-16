@@ -1,0 +1,135 @@
+Cloning into '/tmp/mm-recsys-b11-clone-drdu_23y'...
+........................................................................ [ 25%]
+............................E........................................... [ 50%]
+........................................................................ [ 75%]
+........F............................................................... [100%]
+==================================== ERRORS ====================================
+__ ERROR at setup of test_real_redis_session_expiry_and_atomic_deduplication ___
+
+self = <redis.connection.Connection(host=127.0.0.1,port=6379,db=0)>
+
+    def connect(self):
+        "Connects to the Redis server if not already connected"
+        if self._sock:
+            return
+        try:
+>           sock = self.retry.call_with_retry(
+                lambda: self._connect(), lambda error: self.disconnect(error)
+            )
+
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:357: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/retry.py:62: in call_with_retry
+    return do()
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:358: in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:730: in _connect
+    raise err
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <redis.connection.Connection(host=127.0.0.1,port=6379,db=0)>
+
+    def _connect(self):
+        "Create a TCP socket connection"
+        # we want to mimic what socket.create_connection does to support
+        # ipv4/ipv6, but we want to set options prior to calling
+        # socket.connect()
+        err = None
+        for res in socket.getaddrinfo(
+            self.host, self.port, self.socket_type, socket.SOCK_STREAM
+        ):
+            family, socktype, proto, canonname, socket_address = res
+            sock = None
+            try:
+                sock = socket.socket(family, socktype, proto)
+                # TCP_NODELAY
+                sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    
+                # TCP_KEEPALIVE
+                if self.socket_keepalive:
+                    sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+                    for k, v in self.socket_keepalive_options.items():
+                        sock.setsockopt(socket.IPPROTO_TCP, k, v)
+    
+                # set the socket_connect_timeout before we connect
+                sock.settimeout(self.socket_connect_timeout)
+    
+                # connect
+>               sock.connect(socket_address)
+E               ConnectionRefusedError: [Errno 111] Connection refused
+
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:718: ConnectionRefusedError
+
+During handling of the above exception, another exception occurred:
+
+    @pytest.fixture
+    def store():
+        client = redis.Redis(host=os.getenv("REDIS_HOST", "localhost"),
+                             port=int(os.getenv("REDIS_PORT", "6379")),
+                             decode_responses=True, socket_timeout=1, socket_connect_timeout=1)
+>       client.ping()
+
+tests/test_integration_redis.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/commands/core.py:1212: in ping
+    return self.execute_command("PING", **kwargs)
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/client.py:559: in execute_command
+    return self._execute_command(*args, **options)
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/client.py:565: in _execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:1422: in get_connection
+    connection.connect()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <redis.connection.Connection(host=127.0.0.1,port=6379,db=0)>
+
+    def connect(self):
+        "Connects to the Redis server if not already connected"
+        if self._sock:
+            return
+        try:
+            sock = self.retry.call_with_retry(
+                lambda: self._connect(), lambda error: self.disconnect(error)
+            )
+        except socket.timeout:
+            raise TimeoutError("Timeout connecting to server")
+        except OSError as e:
+>           raise ConnectionError(self._error_message(e))
+E           redis.exceptions.ConnectionError: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:363: ConnectionError
+=================================== FAILURES ===================================
+_____________ test_unimplemented_models_never_report_empty_success _____________
+
+    def test_unimplemented_models_never_report_empty_success():
+        with TestClient(create_app()) as client:
+            assert client.get('/health').status_code==200
+            assert client.get('/ready').status_code==503
+            assert client.post('/api/search',json={}).status_code==422
+            assert client.post('/api/search',json={'query_text':'black shirt'}).status_code==503
+            assert client.get('/api/recommend',params={'user_id':'new'}).status_code==503
+            body={'event_id':'e1','user_id':'u','product_id':'p','event_type':'view','category':'tops'}
+>           assert client.post('/api/event',json=body).json()['features']['recent_clicks']==['p']
+E           AssertionError: assert [] == ['p']
+E             
+E             Right contains one more item: 'p'
+E             Use -v to get more diff
+
+tests/test_serving_contract.py:15: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:49 Redis append_event unavailable; using empty features: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+WARNING  src.serving.feature_store:feature_store.py:49 Redis get_features unavailable; using empty features: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+=============================== warnings summary ===============================
+../../home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+../../home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success
+ERROR tests/test_integration_redis.py::test_real_redis_session_expiry_and_atomic_deduplication
+1 failed, 286 passed, 2 warnings, 1 error in 16.59s
