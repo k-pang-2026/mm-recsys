@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "training_sources": {
+    "candidate": {
+      "source": "docs/results/integration/ct_training_candidate_full.json",
+      "sha256": "5d4fe0b94466dc3a064b5608bde8d9b018415d3fa048798e09d5ecbbcd2af0eb"
+    },
+    "ranking": {
+      "source": "docs/results/integration/ct_training_ranking_full.json",
+      "sha256": "e68adc3d371fd4c9bbe5bdf1871350997e55018e7de8077765f1c385af6490c9"
+    },
+    "session": {
+      "source": "docs/results/integration/ct_training_session_full.json",
+      "sha256": "dd642b87312fcc563141b743e41c64005e647e37230565203ca4999f9e61d868"
+    }
+  },
+  "ct_data_manifest": {
+    "source": "docs/results/integration/ct_data_manifest_full.json",
+    "sha256": "22ffb06d948ea16ad896082eb6ad0cfeab7ad6c4f7316aaf86d3c5ce6d796f4e"
+  },
+  "lifecycle": {
+    "source": "docs/results/integration/ct_lifecycle_full.jsonl",
+    "sha256": "5701eed6a49a55d4ed80f5e5349b908e5be8cc09dc81fbcb4c04bbdfbfee28d4"
+  },
+  "scope": "actual full training reports, chronological snapshot manifest and lifecycle copied after run; weights/data/journal not committed"
+}

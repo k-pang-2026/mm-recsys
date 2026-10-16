@@ -62,10 +62,10 @@ def verify(cfg: dict) -> dict:
     query_vectors = encoder.encode_texts(probes)
     image_index = SearchIndex.load(folder, 'image', bundle['manifest']['fingerprint'])
     cross_modal = []
-    for query, hits in zip(probes, image_index.search(query_vectors, 5)):
+    for query, query_hits in zip(probes, image_index.search(query_vectors, 5)):
         cross_modal.append({'query': normalize_text(query).to_dict(), 'hits': [
             dict(asdict(hit), **products.loc[hit.product_id, ['category_l1', 'category_l3', 'color']].to_dict())
-            for hit in hits]})
+            for hit in query_hits]})
     audit = json.loads((bundle['folder']/'text_audit.json').read_text())
     bm25 = BM25Search(bundle['ids'], [record['raw'] for record in audit])
     baseline_hits = bm25.search('검은색 셔츠', 10)

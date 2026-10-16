@@ -6,7 +6,7 @@ from typing import Any
 import yaml
 
 def load_config(path: str | None = None) -> dict[str, Any]:
-    p = Path(path or os.getenv("CONFIG_PATH", "config.yaml"))
+    p = Path(path or os.getenv("CONFIG_PATH") or "config.yaml")
     with p.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     if not isinstance(raw, dict):

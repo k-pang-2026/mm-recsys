@@ -1,6 +1,8 @@
 """One loaded candidate/ranking/session pipeline, batched over 300 candidates."""
 from __future__ import annotations
 
+from typing import Any
+
 import threading
 import time
 import numpy as np
@@ -30,7 +32,9 @@ class Recommender:
         self.history_index=HistoryIndex(self.history,table,popularity_events=data['train'])
         self.candidate=FaissCandidate(candidate,table,table.eligible(self.at),index)
         self.reranker=Reranker(cfg,data['products']); self.rng=np.random.default_rng(cfg['seed']+20)
-        self._lock=threading.RLock(); self.last_diagnostics={}
+        self._lock=threading.RLock(); self.last_diagnostics: dict = {}
+        self.ct_version: str = "v1.0"
+        self.exposure_clock: list[float] = [0.0]
         train=data['train'][data['train'].timestamp<self.at]
         counts=train[train.product_id.notna()].product_id.value_counts()
         anchor=train.timestamp.max(); trend_days=cfg['recommend']['reranking']['trend_days']
@@ -41,7 +45,7 @@ class Recommender:
         self.fallback_scores={pid:float(counts.get(pid,0))/max_count+growth_weight*max(float(recent.get(pid,0)-previous.get(pid,0)),0)/max_count for pid in table.ids[1:]}
         self.fallback_sorted=sorted(self.fallback_scores,key=lambda p:(-self.fallback_scores[p],p))
 
-    def context(self,user_id: str,recent_clicks: list[str]):
+    def context(self,user_id: str,recent_clicks: list[str]) -> Any:
         context=context_for(self.groups.get(user_id,self.history.iloc[:0]),self.user_rows.get(user_id),self.encoder,self.table,self.at,self.cfg['recommend']['candidate']['history_n'])
         known=[self.table.id_to_index[p] for p in recent_clicks if p in self.table.id_to_index and self.table.created[self.table.id_to_index[p]]<=self.at.value]
         if known:
@@ -50,7 +54,7 @@ class Recommender:
             context.history_count+=len(known)
         return context
 
-    def candidate_products(self,user_context,features) -> list[str]:
+    def candidate_products(self,user_context: Any,features: Any) -> list[str]:
         k=self.cfg['recommend']['candidate_k']
         if user_context.history_count<self.cfg['recommend']['cold_start_min_events']:
             allowed=self.candidate.allowed
@@ -62,18 +66,19 @@ class Recommender:
             products=self.candidate.search(vector,k,user_context.purchased if self.cfg['recommend']['exclude_purchased'] else frozenset())[0]
         return products
 
-    def predict_products(self,user_id,products,features) -> np.ndarray:
+    def predict_products(self,user_id: str,products: list[str],features: Any) -> np.ndarray:
         if not products: return np.empty((0,2),dtype=np.float32)
-        sparse,dense=self.ranking_encoder.serving(user_id,products,self.at,self.data['users'],self.table,self.history_index,features.recent_clicks,features.session_clicks)
+        sparse,dense=self.ranking_encoder.serving(user_id,products,self.at,self.data['users'],self.table,self.history_index,features.recent_clicks,features.session_clicks,user_rows=self.user_rows)
         probabilities=self.ranker(torch.from_numpy(sparse),torch.from_numpy(dense)).sigmoid().numpy()
         return probabilities
 
-    def rank_products(self,products,probabilities) -> list[RankedItem]:
+    def rank_products(self,products: list[str],probabilities: Any) -> list[RankedItem]:
         return score_items(products,probabilities,self.scoring)
 
-    def rerank_items(self,items,top_n,user_context):
+    def rerank_items(self,items: Any,top_n: int,user_context: Any) -> tuple[list[RankedItem], dict]:
         if self.cfg['recommend'].get('enable_reranking',True):
-            stats=self.store.arm_statistics() if hasattr(self.store,'arm_statistics') else {}
+            scoped = [item.product_id for item in items] if self.cfg['recommend']['mab']['algo'] == 'epsilon_greedy' else None
+            stats=self.store.arm_statistics(scoped) if hasattr(self.store,'arm_statistics') else {}
             arm_for=self.store.arm_for if hasattr(self.store,'arm_for') else lambda p:p
             items,diagnostics=self.reranker.run(items,top_n,self.at,user_context.history_count,self.fallback_scores,stats,arm_for,self.rng)
         else:
@@ -97,7 +102,9 @@ class Recommender:
             ranking_done=time.perf_counter()
             items,diagnostics=self.rerank_items(items,top_n,user_context)
             # C-MAB-001: shared memory/Redis needs this exposure contract for live learning.
-            if self.cfg['recommend'].get('record_exposures',True) and hasattr(self.store,'record_exposures'): self.store.record_exposures(user_id,[item.product_id for item in items])
+            if self.cfg['recommend'].get('record_exposures',True) and hasattr(self.store,'record_exposures'):
+                recorded = self.store.record_exposures(user_id,[item.product_id for item in items])
+                diagnostics['mab_connection'] = 'CONNECTED' if len(recorded) == len(items) else 'UNAVAILABLE'
             else: diagnostics['mab_connection']='UNCONNECTED; C-MAB-001/C-SESSION-002 OPEN'
             ended=time.perf_counter(); self.last_diagnostics=diagnostics
             interest=features.session_interest

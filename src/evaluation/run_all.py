@@ -124,8 +124,8 @@ def run(cfg: dict, split: str, output: Path | None = None) -> dict:
         search=search, recommendation=rec, candidate_latency=candidate_latency, feature_store=feature,
         api=api, ab=ab, model_version=rec['models']['candidate'].get('model_version', 'unknown'),
         environment=environment(), limitations=['dev/valid is not full test acceptance',
-            'B9 CT and full Compose reproduction are UNMEASURED',
-            'live Redis MAB attribution is UNCONNECTED; offline evaluation uses the B5 adapter'],
+            'CT lifecycle and Compose reproduction are not measured by this evaluator',
+            'offline recommendation uses the B5 adapter; live Redis attribution requires separate execution evidence'],
         evaluation_fingerprint=fingerprint(dict(version=VERSION, split=split, inputs=inputs)),
         test_used_for_selection=False)
     if cfg['scale'] == 'full' and split == 'test' and quality == 'FAIL':

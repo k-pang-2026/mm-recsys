@@ -1,6 +1,8 @@
 """Replay generated outcomes through API/CT interfaces after preparation; no generation."""
 from __future__ import annotations
 
+from typing import Any
+
 import json
 import os
 from pathlib import Path
@@ -14,7 +16,7 @@ from docker.http import request, wait_ready
 from docker.runtime import runtime_config
 
 
-def read_checkpoint(client, key: str, identity: str, total: int) -> dict:
+def read_checkpoint(client: Any, key: str, identity: str, total: int) -> dict:
     raw = client.get(key)
     state = json.loads(raw) if raw else dict(data_fingerprint=identity, offset=0)
     if state.get('data_fingerprint') != identity or type(state.get('offset')) is not int or not 0 <= state['offset'] <= total:
@@ -22,7 +24,7 @@ def read_checkpoint(client, key: str, identity: str, total: int) -> dict:
     return state
 
 
-def send_rows(api: str, rows, categories: dict) -> None:
+def send_rows(api: str, rows: Any, categories: dict) -> None:
     """Checkpoint advances only after both writes; duplicate retries retain event IDs."""
     for row in rows.itertuples(index=False):
         if row.event_type not in ('view', 'cart', 'purchase') or pd.isna(row.product_id):

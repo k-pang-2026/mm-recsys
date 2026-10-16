@@ -1,5 +1,7 @@
 """Separate implementation, recommendation quality, environment and integration gates."""
 from __future__ import annotations
+
+from typing import Any
 import argparse
 import json
 from pathlib import Path
@@ -12,7 +14,7 @@ from src.recommendation.eval_policy import choose,quality_checks
 from src.recommendation.scoring import policy
 
 
-def classification_source(report):
+def classification_source(report: Any) -> Any:
     reuse=report['classification_reuse'];path=Path(reuse['source'])
     if file_hash(path)!=reuse['sha256']:raise ValueError('reused classification source changed')
     old=json.loads(path.read_text())
@@ -21,7 +23,7 @@ def classification_source(report):
     return path
 
 
-def verify(cfg):
+def verify(cfg: dict) -> Any:
     root=Path(cfg['paths']['results_dir'])
     selection_path=root/f'ranking_policy_selection_{cfg["scale"]}.json'
     selection=json.loads(selection_path.read_text())
@@ -107,7 +109,7 @@ def verify(cfg):
         sources={str(p):file_hash(p) for p in sources})
 
 
-def main():
+def main() -> int:
     parser=argparse.ArgumentParser();parser.add_argument('--write',action='store_true');parser.add_argument('--require-quality',action='store_true');args=parser.parse_args()
     cfg=load_config();report=verify(cfg);output=Path(cfg['paths']['results_dir'])/'ranking_metrics_v2.json'
     if args.write:write_json(output,report)

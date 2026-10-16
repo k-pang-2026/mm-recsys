@@ -1,6 +1,8 @@
 """Cold start, new items, bandit slots, then quota-preserving diversity repair."""
 from __future__ import annotations
 
+from typing import Any, Callable
+
 from dataclasses import dataclass, replace
 from collections import Counter
 import math
@@ -20,11 +22,11 @@ class RankedItem:
 
 
 class RerankStrategy(Protocol):
-    def apply(self, items: list[RankedItem], **context) -> list[RankedItem]: ...
+    def apply(self, items: list[RankedItem], **context: Any) -> list[RankedItem]: ...
 
 
 class ColdStart:
-    def apply(self,items,**context):
+    def apply(self,items: Any,**context: Any) -> Any:
         score=context['fallback_scores']
         return [replace(item,score=float(score.get(item.product_id,0)),reason='인기·최근 상승 상품')
                 for item in sorted(items,key=lambda x:(-score.get(x.product_id,0),x.product_id))]
@@ -62,16 +64,16 @@ class Reranker:
             raise ValueError('invalid reranking quotas')
 
     def run(self,items: list[RankedItem],top_n: int,at: pd.Timestamp,history_count: int,
-            fallback_scores: dict,stats: dict,arm_for,rng: np.random.Generator) -> tuple[list[RankedItem],dict]:
+            fallback_scores: dict,stats: dict,arm_for: Callable[[str], str],rng: np.random.Generator) -> tuple[list[RankedItem],dict]:
         if top_n<1: raise ValueError('top_n must be positive')
-        unique={}
+        unique: dict[str, RankedItem] = {}
         for item in items:
             if item.product_id not in self.created or self.created[item.product_id]>at: continue
             unique.setdefault(item.product_id,item)
         pool=sorted(unique.values(),key=lambda x:(-x.score,x.product_id))
         count=min(top_n,len(pool)); slots=min(2,self.spec['mab']['exploration_slots'],count)
         new={item.product_id for item in pool if at-pd.Timedelta(days=self.spec['new_item_days'])<=self.created[item.product_id]<=at}
-        selected_ids=[]; new_anchor=None
+        selected_ids: list[str] = []; new_anchor: str | None = None
         for stage in self.spec['reranking']['pipeline'][:-1]:
             if stage=='cold_start' and history_count<self.spec['cold_start_min_events']:
                 pool=self.cold.apply(pool,fallback_scores=fallback_scores)
@@ -81,14 +83,16 @@ class Reranker:
                 selected_ids=self.bandit.select([item.product_id for item in pool],stats,arm_for,rng,slots)
         # At small N a new item can satisfy both quotas in the same slot.
         if new and slots and not (set(selected_ids)&new):
+            assert new_anchor is not None
             selected_ids[-1]=new_anchor
         mandatory=set(selected_ids)
         if new and count and not mandatory&new:
+            assert new_anchor is not None
             mandatory.add(new_anchor)
         mapped={item.product_id:replace(item,is_exploration=item.product_id in selected_ids,
                 reason='MAB 탐색' if item.product_id in selected_ids else '신상품 추천' if item.product_id in mandatory&new else item.reason) for item in pool}
         # Reserve all quotas before filling; repair from the entire distinct candidate pool.
-        limit=self.spec['max_consecutive_same_category']; output=[]; remaining=set(mapped); required=set(mandatory)
+        limit=self.spec['max_consecutive_same_category']; output: list[RankedItem] = []; remaining=set(mapped); required=set(mandatory)
         available=Counter(self.categories[p] for p in remaining)
         initial_counts=dict(available)
         capacity=diversity_capacity(available,limit)
@@ -107,7 +111,7 @@ class Reranker:
                 if not candidates: break
                 diagnostics.append('diversity_infeasible_with_remaining_quotas')
             # Avoid leaving many required items of the same category to the last slots.
-            def priority(p):
+            def priority(p: Any) -> Any:
                 category=self.categories[p]
                 required_cat=sum(self.categories[q]==category for q in required)
                 return (p in required and required_cat>max(1,(count-len(output))//2),p in required,mapped[p].score,p)

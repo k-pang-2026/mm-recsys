@@ -1,6 +1,8 @@
 """Next-view training within recorded session IDs; valid-only checkpoint selection."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import copy
 import json
@@ -20,13 +22,14 @@ from src.recommendation.train_two_tower import load_bundle
 from src.recommendation.session import SessionEncoder
 
 
-def examples(events: pd.DataFrame,table,max_length: int,start: pd.Timestamp,end: pd.Timestamp) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+def examples(events: pd.DataFrame,table: Any,max_length: int,start: pd.Timestamp,end: pd.Timestamp) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     inputs=[]; targets=[]; times=[]; latest=[]
     views=events[(events.event_type=='view') & events.product_id.notna()].sort_values(['timestamp','event_id'])
     for _,group in views.groupby(['user_id','session_id'],sort=False):
-        history=[]; last_time=None
+        history: list[int] = []; last_time: pd.Timestamp | None = None
         for at,simultaneous in group.groupby('timestamp',sort=True):
             if history and start<=at<=end:
+                assert last_time is not None
                 sequence=np.zeros(max_length,np.int64); recent=history[-max_length:]; sequence[:len(recent)]=recent
                 for row in simultaneous.itertuples(index=False):
                     target=table.id_to_index[str(row.product_id)]
@@ -37,7 +40,7 @@ def examples(events: pd.DataFrame,table,max_length: int,start: pd.Timestamp,end:
     return np.stack(inputs),np.array(targets,np.int64),np.array(times,np.int64),np.array(latest,np.int64)
 
 
-def negative_items(targets: np.ndarray,times: np.ndarray,table,count: int,seed: int) -> torch.Tensor:
+def negative_items(targets: np.ndarray,times: np.ndarray,table: Any,count: int,seed: int) -> torch.Tensor:
     rng=np.random.default_rng(seed); order=np.argsort(table.created); eligible_times=table.created[order]
     result=np.empty((len(targets),count+1),np.int64); result[:,0]=targets
     for i,(target,at) in enumerate(zip(targets,times)):
@@ -50,7 +53,7 @@ def negative_items(targets: np.ndarray,times: np.ndarray,table,count: int,seed: 
 def session_path(cfg: dict) -> Path: return Path(cfg['paths']['model_dir'])/'v1.0'/'session'
 
 
-def load_session(cfg: dict,data: dict,table,candidate_meta: dict) -> tuple[SessionEncoder, dict]:
+def load_session(cfg: dict,data: dict,table: Any,candidate_meta: dict) -> tuple[SessionEncoder, dict]:
     path=session_path(cfg); meta=json.loads((path/'meta.json').read_text())
     if meta['config_fingerprint']!=fingerprint(cfg['recommend']['session']): raise ValueError('session config mismatch')
     if meta['data_fingerprint']!=data['manifest']['generation_fingerprint'] or meta['candidate_sha256']!=candidate_meta['hashes']['two_tower.pt']:
@@ -107,6 +110,8 @@ def train(cfg: dict) -> dict:
         else: stale+=1
         write_json(output,dict(status='RUNNING',scale=cfg['scale'],epochs=epochs,best_epoch=best_epoch))
         if stale>=spec['patience']: break
+    if state is None:
+        raise ValueError("training produced no valid-selected checkpoint")
     model.load_state_dict(state); path=session_path(cfg); path.mkdir(parents=True,exist_ok=True)
     torch.save(model.state_dict(),path/'session.pt'); write_json(path/'item_ids.json',table.ids)
     meta=dict(version='gru-session-v1',best_epoch=best_epoch,selection_split='valid',config_fingerprint=fingerprint(spec),

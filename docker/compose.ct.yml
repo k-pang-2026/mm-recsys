@@ -17,6 +17,7 @@ services:
       OMP_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
       OPENBLAS_NUM_THREADS: "1"
+      RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}
       READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
     volumes:
       - ./data:/app/data

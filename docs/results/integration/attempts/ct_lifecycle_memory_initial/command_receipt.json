@@ -1,0 +1,26 @@
+{
+  "status": "FAIL",
+  "exit_code": 137,
+  "command": [
+    "docker",
+    "wait",
+    "mm-recsys-integrate-v41-ct-lifecycle"
+  ],
+  "source": ".team/checks/INTEGRATE/ct_controlled_full.txt",
+  "sha256": "836ed7e3f8132a61699e1f484abd3b67c709f0461cad828bd0d1fa8d7e3a5054",
+  "seconds": 233.42935026899977,
+  "container_state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": true,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 137,
+    "Error": "",
+    "StartedAt": "2026-10-16T12:34:35.290742693Z",
+    "FinishedAt": "2026-10-16T12:38:54.70086057Z"
+  },
+  "scope": "separate full functional initial-constant-ranker promotion/reload/rollback; natural production training remains RETAINED"
+}

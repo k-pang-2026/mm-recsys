@@ -1,0 +1,47 @@
+{
+  "status": "RUNNING",
+  "phases": {
+    "pause_full_simulator_for_ct": {
+      "status": "PASS",
+      "command": [
+        "docker",
+        "stop",
+        "mm-recsys-integrate-v41-simulator-1"
+      ],
+      "exit_code": 0,
+      "source": ".team/checks/INTEGRATE/pause_full_simulator_for_ct.txt",
+      "sha256": "aa798c5006db3a5becd2b1bc3c582e9efa2d50bd2d517daaad94c2312833e05c",
+      "seconds": 0.5227578739995806
+    },
+    "ct_full": {
+      "status": "FAIL",
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "mm-recsys-integrate-v41",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker-compose.yml",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker/compose.ct.yml",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.override.yml",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.ct-runner.yml",
+        "--profile",
+        "ct",
+        "run",
+        "--rm",
+        "--no-deps",
+        "--no-build",
+        "ct",
+        "python",
+        "scripts/verify_integration_ct.py"
+      ],
+      "exit_code": 1,
+      "source": ".team/checks/INTEGRATE/ct_full.txt",
+      "sha256": "69161916570b371ec8c25ff942c74625e7c53070833e20d5aee1bc52d595d4e7",
+      "seconds": 0.08856882200052496
+    }
+  }
+}

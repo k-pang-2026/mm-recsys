@@ -30,7 +30,7 @@ def service_fixture(root: Path) -> tuple[dict,dict]:
     data_root=Path(cfg['paths']['data_dir']); (data_root/'split').mkdir(parents=True)
     frames={'products.parquet':products,'users.parquet':users,'split/train.parquet':train,'split/valid.parquet':valid}
     for name,frame in frames.items(): frame.to_parquet(data_root/name,index=False)
-    manifest=dict(generation_fingerprint='ranking-fixture-v1',file_hashes={name:file_hash(data_root/name) for name in frames},
+    manifest: dict = dict(generation_fingerprint='ranking-fixture-v1',file_hashes={name:file_hash(data_root/name) for name in frames},
                   boundaries={'train':{'start':train.timestamp.min().isoformat(),'end':train_end.isoformat()},'valid':{'start':valid_end.isoformat(),'end':valid_end.isoformat()}},counts={'products':30,'users':1,'events':7})
     write_json(data_root/'split_manifest.json',manifest)
     data=dict(products=products,users=users,train=train,valid=valid,manifest=manifest)

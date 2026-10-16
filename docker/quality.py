@@ -6,22 +6,34 @@ import json
 import os
 from pathlib import Path
 import time
+from typing import Any
+
+from docker.runtime import runtime_config, configure_process_environment
+
+if __name__ == '__main__':
+    configure_process_environment()
 
 from src.common.artifacts import file_hash, write_json
 from src.common.seed import set_seed
 from src.evaluation.run_all import input_identity, check_frozen, metric_rows
 from src.evaluation.reporting import VERSION, environment
-from docker.runtime import runtime_config
+
+
+def configure_query_encoder(encoder: Any) -> None:
+    from docker.serve import apply_budget
+    from docker.vision import install_query_vision
+    apply_budget(int(os.getenv('SERVING_THREADS', '2')))
+    install_query_vision(encoder)
 
 
 def run(cfg: dict, split: str) -> dict:
     if os.getenv('PYTHONHASHSEED') != str(cfg['seed']):
         raise ValueError('set PYTHONHASHSEED before starting Python')
     started = time.perf_counter()
-    root = Path('docs/results/docker')
+    root = Path(os.getenv('QUALITY_RESULTS_DIR', 'docs/results/docker'))
     inputs = input_identity(cfg)
     inputs['docker_sources'] = {str(p): file_hash(p) for p in
-        (Path('docker/quality.py'), Path('docker/runtime.py'), Path('docker/serve.py'), Path('docker-compose.yml'))}
+        (Path('docker/quality.py'), Path('docker/runtime.py'), Path('docker/serve.py'), Path('docker/vision.py'), Path('docker-compose.yml'))}
     selection = root / f"quality_selection_{cfg['scale']}.json"
     if split == 'test':
         check_frozen(json.loads(selection.read_text()), inputs)
@@ -35,7 +47,12 @@ def run(cfg: dict, split: str) -> dict:
             raise ValueError('smoke and quality models differ')
     from src.evaluation.search import evaluate as search_eval
     from src.evaluation.recommendation import evaluate as recommend_eval
-    search = search_eval(cfg, split)
+    search = search_eval(cfg, split, query_encoder_setup=configure_query_encoder)
+    deployed_vision = smoke['benchmark']['serving_runtime'].get('vision_optimization', {})
+    measured_vision = search['query_encoder_runtime']
+    if any(deployed_vision.get(key) != measured_vision.get(key)
+           for key in ('enabled', 'implementation', 'dtype', 'query_shape', 'process_environment')):
+        raise ValueError('quality and deployed query encoder implementations differ')
     recommendation = recommend_eval(cfg, split)
     bench = smoke['benchmark']
     api = dict(modes=bench['modes'])
@@ -58,9 +75,9 @@ def run(cfg: dict, split: str) -> dict:
         ab=dict(status='UNMEASURED', reason='this run has no matching A/B simulation; historical C dev evidence is separate'),
         latency_source=dict(source=str(smoke_path), sha256=file_hash(smoke_path)),
         elapsed_seconds=time.perf_counter()-started, test_used_for_selection=False,
-        scope='C fixed-origin quality evaluation on prepared Docker artifacts; latency is measured separately',
+        scope='C fixed-origin quality on Docker artifacts with the deployed FP32 query encoder optimization; latency measured separately',
         limitations=['not the B11 final acceptance bundle', 'A/B and CT production improvement are separate',
-            'recommendation quality uses B5 memory adapter; live Redis MAB exposure/reward attribution remains UNCONNECTED'])
+            'fixed-origin recommendation quality uses B5 memory adapter; live Redis state and attributed rewards are measured separately'])
     output = root / f"quality_{cfg['scale']}_{split}.json"
     write_json(output, report)
     write_json(Path(cfg['paths']['results_dir']) / f"evaluation_{cfg['scale']}_{split}.json", report)
@@ -84,14 +101,15 @@ def main() -> int:
         raise ValueError('run quality measurements inside the Docker API image')
     cfg = runtime_config()
     if args.verify_existing:
-        result = json.loads(Path(f"docs/results/docker/quality_{cfg['scale']}_{args.split}.json").read_text())
+        root = Path(os.getenv('QUALITY_RESULTS_DIR', 'docs/results/docker'))
+        result = json.loads((root / f"quality_{cfg['scale']}_{args.split}.json").read_text())
         current = input_identity(cfg)
         current['docker_sources'] = {str(p): file_hash(p) for p in
-            (Path('docker/quality.py'), Path('docker/runtime.py'), Path('docker/serve.py'), Path('docker-compose.yml'))}
+            (Path('docker/quality.py'), Path('docker/runtime.py'), Path('docker/serve.py'), Path('docker/vision.py'), Path('docker-compose.yml'))}
         if result['identity'] != current:
             raise ValueError('quality data/models/config/source changed')
         if args.split == 'test':
-            check_frozen(json.loads(Path(f"docs/results/docker/quality_selection_{cfg['scale']}.json").read_text()), current)
+            check_frozen(json.loads((root / f"quality_selection_{cfg['scale']}.json").read_text()), current)
         source = result['latency_source']
         if file_hash(Path(source['source'])) != source['sha256']:
             raise ValueError('quality latency source changed')

@@ -1,0 +1,49 @@
+{
+  "status": "VERIFIED_FULL_ACCEPTANCE_AWAITING_PUBLICATION",
+  "completed": [
+    "B11 PR13 merged",
+    "Redis MAB native integration tests",
+    "global typing and public signature audit",
+    "full generator 4.1.0 repeated regeneration checksum equality",
+    "serving-diagnostic resident user lookup equivalence",
+    "full cold data/embeddings/index/three-model preparation 2725.892 seconds",
+    "deployed full HTTP/Redis MAB and session response",
+    "exact deployed runtime source identity",
+    "FP32 startup-budget-2 valid 400 query identical top10",
+    "full HTTP latency PASS with original strict thresholds",
+    "full frozen valid/test all 11 numerical targets and candidate count PASS",
+    "current-source full cold preparation and deployed smoke reproduction PASS",
+    "actual full three-model CT retraining, paired valid and consume-once retention; natural result PARTIAL preserves absent rollback",
+    "full AB 5000/arm 30days completed and C statistics verified; measured negative CTR/CVR lift retained",
+    "separate full controlled INITIAL fixture real HTTP promotion/reload/rollback PASS at4GiB after process-lifetime fix; natural RETAINED preserved",
+    "actual full dashboard AppTest four tabs/charts and live search/recommend buttons PASS",
+    "five full executed checks assembled from matching fingerprints and sources",
+    "final native checker delivery PASS and readiness PASS; 336 tests PASS, 2 dependency deprecation warnings; mypy116 runtime+8scripts PASS; pip PASS; public annotations missing0",
+    "strict full acceptance six mandatory checks PASS",
+    "post-acceptance actual full dashboard AppTest PASS and live display PASS"
+  ],
+  "unmeasured": [
+    "optional external dataset validation",
+    "real-user causal lift",
+    "full seeded AB repeat",
+    "other hardware/concurrent-training latency",
+    "browser pixel rendering"
+  ],
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "failed_measurement": {
+    "search_image_p95_ms": 220.594,
+    "search_hybrid_p95_ms": 225.821,
+    "source": "docs/results/integration/attempts/latency_initial/smoke_full.json"
+  },
+  "preserved_failed_attempts": [
+    "latency_initial image220.594 hybrid225.821",
+    "latency_vision_first hybrid203.340"
+  ],
+  "active": {},
+  "mandatory_unfinished": [],
+  "publication": "INTEGRATE local commit preparation; no remote push or PR yet; new commit approval required",
+  "final_acceptance": {
+    "source": "docs/results/final_acceptance.json",
+    "sha256": "f9d8fb53767ce24560b0b68908a2629c181eb7f7cc53c9262a855b62807262b9"
+  }
+}

@@ -1,6 +1,8 @@
 """Record real Docker resources and assert all four core services are running."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import json
 from pathlib import Path
@@ -10,7 +12,7 @@ from src.common.artifacts import write_json
 from docker.http import request
 
 
-def json_command(*args: str):
+def json_command(*args: str) -> Any:
     return json.loads(subprocess.check_output(list(args), text=True, timeout=30))
 
 

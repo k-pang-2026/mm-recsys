@@ -1,0 +1,89 @@
+PREPARE data
+PREPARE embeddings
+REUSE: complete pinned CLIP cache (offline)
+PREPARE indexes
+LOADED FAISS text: vectors=1439, dim=512
+LOADED FAISS image: vectors=256, dim=512
+LOADED FAISS hybrid: vectors=2753, dim=512
+PREPARE recommendation
+REUSE: fully loaded compatible recommendation bundle
+PREPARE warmup
+Redis batch_load_profiles unavailable; using empty features: Timeout reading from socket
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/redis/_parsers/socket.py", line 65, in _read_from_socket
+    data = self._sock.recv(socket_read_size)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/scripts/prepare_all.py", line 155, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/app/scripts/prepare_all.py", line 148, in main
+    stage(cfg, args.stage)
+  File "/app/scripts/prepare_all.py", line 81, in stage
+    print(json.dumps(warmup(cfg, store)), flush=True)
+                     ^^^^^^^^^^^^^^^^^^
+  File "/app/src/serving/warmup_features.py", line 20, in warmup
+    store.batch_load_profiles(profiles)
+  File "/app/src/serving/feature_store.py", line 150, in batch_load_profiles
+    pipe.execute()
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 1530, in execute
+    return conn.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/retry.py", line 65, in call_with_retry
+    fail(error)
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 1532, in <lambda>
+    lambda error: self._disconnect_raise_reset(conn, error),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 1508, in _disconnect_raise_reset
+    raise error
+  File "/usr/local/lib/python3.11/site-packages/redis/retry.py", line 62, in call_with_retry
+    return do()
+           ^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 1531, in <lambda>
+    lambda: execute(conn, stack, raise_on_error),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 1385, in _execute_transaction
+    self.parse_response(connection, "_")
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 1462, in parse_response
+    result = Redis.parse_response(self, connection, command_name, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/client.py", line 584, in parse_response
+    response = connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/connection.py", line 592, in read_response
+    response = self._parser.read_response(disable_decoding=disable_decoding)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/_parsers/resp2.py", line 15, in read_response
+    result = self._read_response(disable_decoding=disable_decoding)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/_parsers/resp2.py", line 25, in _read_response
+    raw = self._buffer.readline()
+          ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/redis/_parsers/socket.py", line 115, in readline
+    self._read_from_socket()
+  File "/usr/local/lib/python3.11/site-packages/redis/_parsers/socket.py", line 78, in _read_from_socket
+    raise TimeoutError("Timeout reading from socket")
+redis.exceptions.TimeoutError: Timeout reading from socket
+Traceback (most recent call last):
+  File "/app/scripts/prepare_all.py", line 155, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/app/scripts/prepare_all.py", line 150, in main
+    prepare(cfg)
+  File "/app/scripts/prepare_all.py", line 128, in prepare
+    raise RuntimeError(f'preparation failed at {name}: exit {result.returncode}')
+RuntimeError: preparation failed at warmup: exit 1
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/app/docker/api_entrypoint.py", line 61, in <module>
+    main()
+  File "/app/docker/api_entrypoint.py", line 42, in main
+    subprocess.run([sys.executable, 'scripts/prepare_all.py'], check=True,
+  File "/usr/local/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/local/bin/python', 'scripts/prepare_all.py']' returned non-zero exit status 1.

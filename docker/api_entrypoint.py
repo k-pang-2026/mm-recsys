@@ -1,6 +1,8 @@
 """Liveness during single-owner preparation, then the shared JSON/multipart API."""
 from __future__ import annotations
 
+from typing import Any
+
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
@@ -25,7 +27,7 @@ class PreparingHandler(BaseHTTPRequestHandler):
 
     do_POST = do_GET
 
-    def log_message(self, *args) -> None:
+    def log_message(self, *args: Any) -> None:
         pass
 
 
@@ -45,9 +47,12 @@ def main() -> None:
         server.shutdown()
         server.server_close()
         thread.join(timeout=5)
-    from docker.runtime import runtime_config, config_path
+    from docker.runtime import runtime_config, config_path, configure_process_environment
     cfg = runtime_config()
     os.environ['CONFIG_PATH'] = str(config_path(cfg))
+    # Native pools read these values at import. The preparation child above
+    # retains the original training environment and configured trainer threads.
+    configure_process_environment()
     from pathlib import Path
     manifest = json.loads((Path(cfg['paths']['data_dir']) / 'split_manifest.json').read_text())
     print(f"PREPARATION COMPLETE; catalog={manifest['counts']['products']}; "

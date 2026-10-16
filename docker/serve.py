@@ -1,6 +1,9 @@
 """Apply one process thread budget after both shared factories have loaded."""
 from __future__ import annotations
 
+from typing import Any, AsyncIterator
+import numpy as np
+
 from contextlib import asynccontextmanager
 from concurrent.futures import ThreadPoolExecutor, wait
 import gc
@@ -34,11 +37,11 @@ class BudgetedBackend:
     def __getattr__(self, name):
         return getattr(self.backend, name)
 
-    def search(self, payload):
+    def search(self, payload: Any) -> Any:
         apply_budget(self.threads)
         return self.backend.search(payload)
 
-    def recommend(self, user_id, top_n):
+    def recommend(self, user_id: str, top_n: int) -> Any:
         apply_budget(self.threads)
         return self.backend.recommend(user_id, top_n)
 
@@ -55,7 +58,7 @@ class ParallelHybridSearcher:
         apply_budget(self.threads)
         return getattr(self.original.encoder, method)([value])
 
-    def encode(self, query_text=None, query_image=None):
+    def encode(self, query_text: str | None=None, query_image: Any=None) -> tuple[str, np.ndarray]:
         has_text = isinstance(query_text, str) and bool(query_text.strip())
         if not has_text or query_image is None:
             return self.original.encode(query_text, query_image)
@@ -67,16 +70,20 @@ class ParallelHybridSearcher:
             wait((text, image))
             return 'hybrid', fuse(text.result(), image.result(), self.original.cfg['search']['query_fusion'])
 
-    def search(self, query_text=None, query_image=None, k=10, cutoff=None):
+    def search(self, query_text: str | None=None, query_image: Any=None, k: int=10, cutoff: Any=None) -> Any:
         mode, vectors = self.encode(query_text, query_image)
         return mode, self.original.retrieve(mode, vectors, k, cutoff)
 
 
-def wrap_backends(shared, threads: int) -> None:
+def wrap_backends(shared: Any, threads: int) -> None:
     for kind in ('search', 'recommend'):
         backend = getattr(shared.state, kind, None)
         if backend is not None and not isinstance(backend, BudgetedBackend):
             pool = getattr(shared.state, 'docker_encoder_pool', None)
+            if kind == 'search':
+                from docker.vision import install_query_vision
+                encoder = getattr(getattr(backend, 'searcher', None), 'encoder', None)
+                shared.state.docker_vision_optimization = install_query_vision(encoder)
             if kind == 'search' and pool is not None:
                 backend.searcher = ParallelHybridSearcher(backend.searcher, pool, threads)
             setattr(shared.state, kind, BudgetedBackend(backend, threads))
@@ -89,7 +96,7 @@ class ReloadBudget:
 
     async def __call__(self, scope, receive, send):
         if scope['type'] == 'http' and scope['path'] == '/api/admin/reload':
-            async def restored(message):
+            async def restored(message: dict) -> None:
                 if message['type'] == 'http.response.start':
                     apply_budget(self.threads)
                     if message['status'] == 200:
@@ -104,7 +111,7 @@ class ReloadBudget:
             await self.app(scope, receive, send)
 
 
-def install_runtime_limits(shared, cfg: dict) -> None:
+def install_runtime_limits(shared: Any, cfg: dict) -> None:
     original = shared.router.lifespan_context
     threads = int(os.getenv('SERVING_THREADS', str(cfg['search']['torch_threads'])))
     if not 1 <= threads <= 32:
@@ -113,7 +120,7 @@ def install_runtime_limits(shared, cfg: dict) -> None:
     shared.add_middleware(ReloadBudget, shared=shared, threads=threads, freeze_heap=freeze_heap)
 
     @asynccontextmanager
-    async def lifespan(application):
+    async def lifespan(application: Any) -> AsyncIterator[None]:
         async with original(application):
             import torch
             import faiss
@@ -122,7 +129,7 @@ def install_runtime_limits(shared, cfg: dict) -> None:
             application.state.docker_encoder_pool = pool if os.getenv('SERVING_PARALLEL_HYBRID', '1') == '1' else None
             wrap_backends(application, threads)
             gc_starts = {}
-            def gc_timing(phase, info):
+            def gc_timing(phase: str, info: dict) -> None:
                 generation = info['generation']
                 if phase == 'start':
                     gc_starts[generation] = time.perf_counter()
@@ -134,6 +141,7 @@ def install_runtime_limits(shared, cfg: dict) -> None:
             state = dict(torch_threads=torch.get_num_threads(), faiss_threads=faiss.omp_get_max_threads(),
                          inference_worker_budget=True,
                          parallel_hybrid=application.state.docker_encoder_pool is not None,
+                         vision_optimization=getattr(application.state, 'docker_vision_optimization', {}),
                          gc_enabled=gc.isenabled(), gc_freeze_enabled=freeze_heap,
                          gc_frozen_objects=gc.get_freeze_count(),
                          configured_search_threads=cfg['search']['torch_threads'],

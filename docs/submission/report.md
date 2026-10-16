@@ -1,35 +1,31 @@
-# 실험·설계·최종 상태 보고서
+# 최종 통합 실험·설계 보고서
 
-수치는 B10 full test JSON에서 집계했다. 새 모델 학습이나 test 재평가를 수행한 결과가 아니다.
-요구사항 페이지는 저장소의 [PDF 분석](../setup_analysis.md) 기준이며, 과제 예시 점수를 측정값으로 사용하지 않는다.
+이 보고서는 INTEGRATE의 실제 full 실행 결과를 집계한다. 원본 B/C/B10/B11 결과와 최초 실패는 보존했다.
+원격 main b40712a(B11 PR #13) clone 위 현재 통합 변경을 적용한 독립 경로에서 검증했다.
+기능 브랜치의 원격 반영 상태는 Git 이력과 PR로 확인하며, 아래 값은 명시된 실행 시점의 snapshot이다.
 
 ## 데이터와 평가 계약
 
-- seed 42, generator 4.0.0, reference_time 2026-01-01 UTC.
-- full: 상품 50,000·사용자 10,000·이벤트 1,000,000·노출 2,255,024.
-- 시간순 train/valid/test 800,000/100,000/100,000. 동률 timestamp는 같은 split이다.
-- valid cutoff: 2025-12-25T23:59:57.408+00:00; test cutoff: 2025-12-28T23:59:57.408+00:00.
-- train으로 vocab/scaler/모델을 학습하고 valid로 epoch/정책을 선택했다. 동결 후 test를 평가했다.
-- 데이터 식별자: `0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6`.
-- 관측 카탈로그 전체에서 top300을 검색한다. 전체 상품 수와 cutoff 당시 가용 상품 수는 구별한다.
-- test Recall truth 사용자 7,686명, 빈 truth 2,314명. 가용 카탈로그 48,872개, 미래 등록 truth 58개를 숨기지 않는다.
-- Coverage는 고정 10,000명의 top50 고유 상품/전체 50,000개다. cold 300명은 test truth가 없어 HitRate를 측정할 수 없다.
-- 설정·원본 파일 SHA·manifest·B10 runtime identity는 [config snapshot](config_snapshot.json)에 있다.
+- seed 42, generator 4.1.0, reference_time 2026-01-01T00:00:00Z.
+- full counts: {'products': 50000, 'users': 10000, 'events': 1000000, 'impressions': 2255024}.
+- split counts: {'train': 800000, 'valid': 100000, 'test': 100000}.
+- data fingerprint: `6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9`.
+- 전체 카탈로그에서 macro-user Recall@300, 미래 cart/purchase 고유 truth, 고정 10,000명의 top50 Coverage를 사용한다.
+- train-only fitting, valid 선택·동결 후 test 재검증이며 K·기준·분모·정답을 바꾸지 않았다.
+- 4.1.0의 올바른 생성 순서는 B10의 원래 올바른 데이터와 같다. 이 test는 과거 관측 이력이 있으며 신규 미관측 holdout으로 주장하지 않는다.
+- H&M·Retailrocket·DeepFashion은 사용자 전달 강사 지시에 따라 개발 후 추가 검증용이다. [결정](dataset_scope.json)은 RESOLVED_OPTIONAL이다.
 
 ## 수식
 
-- MRR@10 = 쿼리별 첫 relevant rank의 역수 평균; top10에 없으면 0.
-- NDCG@K = mean(DCG@K/IDCG@K), DCG = Σ rel_i/log2(i+1), 이진 relevance.
-- Recall@300 = mean_u(|Top300_u ∩ R_u|/|R_u|), R_u는 미래 cart/purchase 고유 상품 집합; 빈 truth 수를 별도 공개한다.
-- HitRate@50 = truth가 있는 사용자 중 top50에 하나 이상 맞힌 비율. NDCG@50도 같은 미래 truth로 평가한다.
-- Coverage = 고정 평가 사용자들의 top50 합집합 크기/전체 카탈로그 크기.
-- AUC = 양성 점수가 음성보다 클 확률 + 동점 확률/2. 단일 class이면 미정의다.
-- 상대 lift = measured/baseline − 1; baseline=0 또는 미측정이면 미정의다.
-- CTR·CVR·사용자 단위 Z-test·군집 CI는 [A/B 보고서](../ab_test_report.md)에 분모와 함께 명시한다.
+MRR@10은 첫 relevant rank의 역수 평균, NDCG@K는 쿼리/사용자별 DCG/IDCG의 평균이다.
+Recall@300은 `mean_u(|Top300_u ∩ R_u|/|R_u|)`이며 빈 truth 수를 별도 보고한다.
+HitRate@50은 truth 사용자 중 적중 비율, Coverage는 고정 평가 대상 top50 합집합/전체 카탈로그다.
+AUC는 양성-음성 순위 확률이며 단일 class에서는 정의되지 않는다. 상대 lift는 `measured/baseline - 1`이다.
+CTR/CVR 분모와 사용자 군집 CI는 [A/B 보고서](../ab_test_report.md)를 따른다.
 
 ## full 목표와 실측
 
-| 지표 | valid | test 또는 별도 benchmark | 기준 | 판정 |
+| 지표 | valid | test 또는 benchmark | 기준 | 판정 |
 |---|---:|---:|---:|---|
 | mrr | 0.948333 | 0.931667 | ≥0.55 | PASS |
 | ndcg_at_10 | 0.948333 | 0.931667 | ≥0.5 | PASS |
@@ -38,34 +34,31 @@
 | hit_rate_at_50 | 0.699833 | 0.700885 | ≥0.2 | PASS |
 | ndcg_at_50 | 0.362061 | 0.342175 | ≥0.08 | PASS |
 | coverage | 0.413780 | 0.415340 | ≥0.2 | PASS |
-| search_p95_ms | 178.893950 | 178.893950 | ≤200 | PASS |
-| recommend_p95_ms | 106.317129 | 106.317129 | ≤200 | PASS |
-| candidate_p95_ms | 4.966624 | 4.966624 | ≤100 | PASS |
-| feature_p95_ms | 0.249760 | 0.249760 | ≤10 | PASS |
-| candidate_count | 300 | 300 | ≥300 | PASS |
+| search_p95_ms | 123.495639 | 123.495639 | ≤200 | PASS |
+| recommend_p95_ms | 54.322763 | 54.322763 | ≤200 | PASS |
+| candidate_p95_ms | 6.821933 | 6.821933 | ≤100 | PASS |
+| feature_p95_ms | 0.394422 | 0.394422 | ≤10 | PASS |
+| candidate_count | ≥300 | 300 | ≥300 | PASS |
 
-p95 지연 행은 valid/test 품질 지표가 아니라 동일한 별도 benchmark 근거다. 모든 nominal 수치가 통과했다.
-CPU ±50ms 안내를 기준 완화에 사용하지 않았다. [원본](../results/docker/quality_full_test.json),
-[동결 valid](../results/docker/quality_full_valid.json), [원시 HTTP](../results/docker/smoke_full.json)를 참조한다.
+지연은 품질 test 지표가 아닌 별도 benchmark다. CPU 오차 안내를 기준 완화에 사용하지 않았다.
+[test 원본](../results/integration/quality_full_test.json), [valid 동결](../results/integration/quality_selection_full.json),
+[원시 HTTP](../results/integration/smoke_full.json)를 대조한다.
 
-## 검색 설계와 baseline
+## 검색과 baseline
 
-CLIP은 이미지와 텍스트를 대조 학습한 공통 벡터 공간으로 투영한다. 카탈로그 벡터를 미리 계산하고
-질의 벡터를 정규화해 inner product로 검색한다. HNSW는 exact 대비 메모리·구축/검색 시간과 recall을 절충한다.
-벡터 ANN/exact 일치율은 정답 relevance의 MRR이나 추천 Recall@300과 다른 지표다.
-text/image/hybrid 각 200개 독립 query의 test MRR/NDCG는 0.940/0.880/0.975다.
-text/hybrid BM25는 모두 1.0으로 CLIP 상대 lift는 −6.0%/−2.5%다. image-only BM25는 적용 불가다.
-합성 속성 키워드가 정확히 일치하는 환경에서 BM25가 유리했으며 CLIP 우세라고 보고하지 않는다.
-각 모드 ANN/exact top10 overlap은 1.0이지만 이는 벡터 검색 일치만 의미한다.
-fusion/index 선택과 trade-off 실험은 [검색 보고서](../search_report.md)에 보존했다.
+CLIP의 같은 pinned FP32 가중치와 전처리를 사용하고, 정규화 벡터를 FAISS HNSW IP로 검색한다.
+관측 속성 relevance와 ANN/exact 일치율은 다른 지표다. 합성 키워드 환경의 BM25 우위도 보존한다.
 
-## 추천 설계와 baseline
+| 모드 | MRR | NDCG@10 | BM25 MRR |
+|---|---:|---:|---:|
+| text | 0.940000 | 0.940000 | 1.0 |
+| image | 0.880000 | 0.880000 | 적용 불가 |
+| hybrid | 0.975000 | 0.975000 | 1.0 |
 
-Two Tower는 사용자 이력/프로필과 상품 속성을 벡터화하고 상품 벡터를 offline FAISS에 색인한다.
-랜덤 negative 1:4는 학습용이며 평가 후보를 5개로 제한하지 않는다. DeepFM은 후보의 user/item/cross/context를
-사용해 순위를 세밀하게 조정한다. 이후 다양성·신규 상품·탐색·세션 정책을 적용한다.
-MAB는 노출과 귀속 보상으로 탐색/활용을 조절하지만 현재 live Redis adapter 연결은 UNCONNECTED다.
-아래 full 품질은 B5 메모리 adapter의 고정 시점 평가다.
+## 추천과 baseline
+
+Two Tower의 전체 후보 top300을 DeepFM으로 순위화한 뒤 다양성·신규·탐색·GRU 세션을 적용한다.
+오프라인 fixed-origin 품질은 B5 메모리 adapter이며, 라이브 Redis 귀속은 별도 실제 HTTP로 확인했다.
 
 | 파이프라인 | HitRate@50 | NDCG@50 | Coverage |
 |---|---:|---:|---:|
@@ -74,37 +67,62 @@ MAB는 노출과 귀속 보상으로 탐색/활용을 조절하지만 현재 liv
 | deepfm | 0.717278 | 0.388956 | 0.426920 |
 | full_pipeline | 0.700885 | 0.342175 | 0.415340 |
 
-| full pipeline 대비 기준 | HitRate 상대 lift | NDCG 상대 lift | Coverage 상대 lift |
-|---|---:|---:|---:|
-| train_popularity | 833.6222% | 2008.4133% | 41434.0000% |
-| two_tower | 22.2096% | 83.8514% | -29.7677% |
-| deepfm | -2.2855% | -12.0273% | -2.7125% |
+정책 제약 후 DeepFM보다 지표가 낮아질 수 있다. 유리한 비교만 선택하지 않는다.
+후보 baseline, 상대 lift, cohort와 분모는 원본 JSON의 `recommendation`에 모두 보존한다.
+CTR/CVR 분류 결과 원본:
 
-후보 Recall@300은 ANN 0.750141, train popularity 0.234984, observed-history baseline 0.766795다.
-ANN의 상대 lift는 각각 219.2313%, -2.1719%다.
-DeepFM 대비 reranking의 품질 감소와 Coverage 감소를 그대로 공개한다. 다양성/탐색 제약을 적용하므로 모든 지표 개선을 보장하지 않는다.
-CTR AUC 표본은 관측 노출 225,422개·양성 56,639개다. CVR은 clicked exposure 56,261개에 구매 양성 0개여서
-AUC가 UNDEFINED_SINGLE_CLASS다. LogLoss 0.000011621은 CVR 예측력의 증거가 아니다.
-CVR 라벨 분모(clicked exposure)는 A/B 보고서의 purchases/impressions 정의와 구분한다.
-valid에서 선택한 CTR scoring, GRU 세션과 장기 선호 결합, 정책별 비교는 [추천 보고서](../recommend_report.md)를 따른다.
+```json
+{
+  "ctr": {
+    "auc": 0.964766793453099,
+    "auc_status": "MEASURED",
+    "logloss": 0.15979980922572484,
+    "samples": 225422,
+    "positives": 56639,
+    "denominator": "observed exposures"
+  },
+  "cvr": {
+    "auc": null,
+    "auc_status": "UNDEFINED_SINGLE_CLASS",
+    "logloss": 1.1620825780078663e-05,
+    "samples": 56261,
+    "positives": 0,
+    "denominator": "observed clicked exposures"
+  }
+}
+```
 
-## 환경과 최적화
+CVR의 단일 class AUC 미정의는 필수 CTR AUC 통과와 별개다. LogLoss만으로 전환 예측력을 주장하지 않는다.
 
-Linux ARM64 CPU, Docker Python 3.11, Torch 2.6.0+cpu, FAISS 1.9.0. 엔진 8 vCPU/약 7.5GiB,
-API 한도 4GiB/4 CPU, 공유 추론 thread 2, 응답 캐시/ONNX 미사용, CT 동시 학습 없음.
-각 모드 warmup 10회·순차 HTTP 100회. HTTP는 인코딩·피처·모델·검색·후처리와 왕복을 포함한다.
-모델/색인은 메모리 적재 상태이며 Redis는 별도 실측했다. 후보 benchmark는 HTTP/Redis I/O를 제외한다.
-full 환경 snapshot에는 swap 사용이 기록되어 있다. OOM 없이 한도 내 완료했지만 swap 0이라고 일반화하지 않는다.
-초기 스레드/순차 hybrid 지연 미달과 GC 원인을 보존한 뒤 valid에서 병렬 인코딩과 GC freeze를 선택했다.
-valid 12개 실제 CLIP 입력의 벡터 오차 0·top10 일치를 확인했다. 자동 GC는 유지한다.
-[B10 보고서](../results/docker/report.md) 및 experiments/A의 실패/재검사 원본을 참조한다.
+## Docker 재현과 성능 수정
 
-## 최종 상태
+빈 data/models에서 데이터·임베딩·인덱스·세 모델을 준비한 실제 시간은 2725.892초다. 이미지 빌드와 최종 API 로딩은 별도다.
+CLIP 사전 학습 다운로드 캐시와 Docker 의존성 레이어만 재사용했다. 데이터는 두 번 독립 생성해 모든 파일·split hash가 같았다.
+첫 YAML 정렬 결함 실행은 새 test 전에 중지하고 데이터·미완료 모델·볼륨·로그를 보존했다.
+4.1.0은 생성 mapping 순서를 식별자에 포함하며 prepare YAML도 순서를 보존한다.
+첫 검색 p95 220.594/225.821ms와 FP32 graph만 적용한 후 hybrid 203.340ms 실패를 모두 보존했다.
+같은 FP32 vision graph와 추론 프로세스 시작 전 CPU 예산 초기화를 적용했다. 학습 환경/가중치는 바꾸지 않았다.
+전체 valid 400개 top10은 모두 같았고 최대 정규화 벡터 차이는 0.0000021160였다.
+query cache identity에는 최적화 구현·batch-one shape·실제 시작 환경을 포함한다. full 품질도 이 경로로 평가했다.
+별도 full CT 기능 fixture의 첫 실행은 paired CTR 뒤 API 준비 중 4GiB OOM 종료됐다. 평가 완료 후 프로세스를 교체해 동일 한도에서 재검증하며 최초 실패는 attempts/ct_lifecycle_memory_initial에 보존한다.
+API 4GiB/4CPU, Linux ARM64 CPU, Torch 2.6.0+cpu·FAISS 1.9.0·Python 3.11, shared serving threads 2다.
+각 모드 warmup 10회·순차 100회이며 CT/A-B 동시 부하 없는 초기 v1.0의 측정이다.
+다른 CPU/GPU·동시 학습 부하·브라우저 픽셀 일치는 측정하지 않았다.
 
-전역 타입/seed/상수 감사는 [감사 범위와 검토](audit_review.md)에 별도 공개한다.
+## A/B와 CT
 
-수치 목표 11개와 후보 수는 B10 full test/benchmark 근거로 PASS다. 최종 전체 acceptance는 **UNMEASURED**다.
-A/B의 dev 음의 lift, controlled CT fixture, 같은 버전 reload는 full 운영 완료와 구별한다.
-fresh-clone 전체 생성·full A/B·full CT·live MAB·전역 타입 감사의 미완료와 P0 해석을
-[제출 체크리스트](checklist.md)에 공개했다. 미측정을 FAIL/PASS로 바꾸지 않는다.
-통합 시 모든 필수 check를 실제 실행하고 최종 C acceptance validator를 통과해야 한다.
+A/B는 5000명/arm·30일·top10의 실제 합성 모의실험이다. 사용자별 적응 상태를 분리한다.
+원본 전체 JSON은 해시 검증되는 [무손실 archive](../results/integration/ab_full_archive.json)에서 복원할 수 있다.
+정확한 사용자 군집 CI·독립 사용자 Z/카이제곱은 원본 verifier로 재계산했다. 양의 lift나 유의성을 성공 조건으로 만들지 않았다.
+CT 실행 상태는 PARTIAL, 재학습 판단은 RETAINED, 실제 reload/rollback은 False다.
+10,000건의 실제 HTTP view 관측을 수집하고 세 모델을 재학습해 같은 valid cohort에서 비교했다.
+자연 재학습이 RETAINED이면 별도 full controlled INITIAL fault 주입 시나리오의 승격·재로딩·롤백은 [분리된 증거](../results/integration/ct_controlled_lifecycle_full.json)를 따른다. 이 시나리오는 운영 품질 개선을 뜻하지 않으며 원래 운영 v1.0과 학습 후보 가중치는 보존한다.
+monitor 성숙도는 명시적으로 query clock을 1시간 전진시킨 기능 시나리오이며 실제 1시간 대기나 운영 CTR 개선이 아니다.
+새 chronological snapshot의 최신 관측은 시간 분할에 따라 보류되며 모든 새 이벤트가 학습 split에 들어간다고 주장하지 않는다.
+[CT 원본](../results/integration/ct_full.json)과 실제 라이프사이클 로그를 확인한다.
+
+## 제출 준비 범위
+
+필수 여섯 검사는 [실행 집계](../results/integration/checks.json)와 최종 checker에서 대조한다.
+공개 저장소 URL과 B11 PR #13 병합은 읽기 전용 원격 snapshot으로 확인했다. 개인 GitHub handle과 실제 팀원 리뷰는 추측하지 않는다.
+외부 과제 시스템에 URL을 입력하는 행위는 수행하지 않았다. 최종 GitHub 반영은 승인된 기능 PR의 병합으로 수행한다.

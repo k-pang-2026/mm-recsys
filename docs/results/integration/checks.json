@@ -1,0 +1,46 @@
+{
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "checks": {
+    "docker_reproduction": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/fresh_checkout.json",
+      "sha256": "d07c5e2a68343160f6cf254ee8160bf20a9daa9b78f41bbcf3f6d95c5c85273b"
+    },
+    "api_schemas": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/smoke_full.json",
+      "sha256": "5d70753ceb7325de4cd6b05ab6293dc058d3be0bb5645bc0c5b1c498379250eb"
+    },
+    "ab_statistics": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/ab_acceptance_full.json",
+      "sha256": "bd7b9a7e180e272f492f6e90871f68f51bb26e2a31478327d66dda9b68ddee2d"
+    },
+    "session_response": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/mab_full.json",
+      "sha256": "786fae21cdeb31bcc5238480b830974b5ee5845282d3ecc87d95d304aa3c87a2"
+    },
+    "ct_retrain_and_rollback": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/ct_acceptance_full.json",
+      "sha256": "37b32308d03b5816d33ae2e81a749961a43704ddee4574916b926147fac8eb58"
+    }
+  },
+  "commands": {
+    "source": "docs/results/integration/commands/executions.json",
+    "sha256": "7553d4f64567a05bfcbf17cf7aebcce709e2c36fe503ccc3acd033968b9254d2"
+  },
+  "limitations": [
+    "full test has prior B10 observation history; current performance changes selected on valid before frozen revalidation",
+    "synthetic A/B is a user-randomized simulation; seeded full repeat unmeasured",
+    "natural CT full training was RETAINED; rollback is a separately measured full-size controlled INITIAL constant-ranker lifecycle, not production lift",
+    "CVR AUC is undefined due to no positive clicked-exposure purchases in this evaluation",
+    "benchmark is initial v1.0 without concurrent training; other hardware/concurrency and browser pixels unmeasured"
+  ]
+}

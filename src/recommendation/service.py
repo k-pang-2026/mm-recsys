@@ -1,6 +1,8 @@
 """B factory uses the shared create_service(cfg, store) contract without editing C."""
 from __future__ import annotations
 
+from typing import Any
+
 import copy
 import json
 import os
@@ -15,7 +17,7 @@ from src.recommendation.train_session import load_session,session_path
 from src.recommendation.recommender import Recommender
 
 
-def create_service(cfg: dict,store) -> Recommender | None:
+def create_service(cfg: dict,store: Any) -> Recommender | None:
     cfg=copy.deepcopy(cfg)
     if os.getenv('RECOMMEND_MODEL_DIR'): cfg['paths']['model_dir']=os.environ['RECOMMEND_MODEL_DIR']
     candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
@@ -32,6 +34,9 @@ def create_service(cfg: dict,store) -> Recommender | None:
     configure_inference(cfg['recommend']['candidate'],with_faiss=True)
     try:
         data=read_data(cfg['paths']['data_dir'],'valid')
+        if hasattr(store, 'configure_categories'):
+            field = cfg['recommend']['reranking']['category_field']
+            store.configure_categories(data['products'].set_index('product_id')[field].astype(str).to_dict())
         candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
         index,_=load_index(candidate_path,table,candidate_meta)
         ranker,ranking_encoder,_=load_ranking(cfg,data)

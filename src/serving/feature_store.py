@@ -5,6 +5,7 @@ import hashlib
 import json
 import logging
 import re
+import uuid
 from collections.abc import Mapping
 from typing import Any, cast
 
@@ -22,7 +23,7 @@ class RedisFeatureStore:
                  db: int = 0, namespace: str = "mm-recsys:dev", history_limit: int = 50,
                  session_ttl: int = 1800, feedback_ttl: int = 86400,
                  timeout: float = 0.2, max_connections: int = 32,
-                 write_retries: int = 8) -> None:
+                 write_retries: int = 8, mab_spec: dict | None = None) -> None:
         if min(history_limit, session_ttl, feedback_ttl, write_retries, max_connections) < 1:
             raise ValueError("limits, TTLs and retry counts must be positive")
         if timeout <= 0 or not re.fullmatch(r"[A-Za-z0-9_.:-]+", namespace):
@@ -32,8 +33,15 @@ class RedisFeatureStore:
         self.feedback_ttl = feedback_ttl
         self.namespace = namespace
         self.write_retries = write_retries
+        self.mab_spec = dict(mab_spec) if mab_spec is not None else None
+        self.categories: dict[str, str] = {}
+        if self.mab_spec is not None:
+            if (self.mab_spec['arm'] not in ('item', 'category')
+                    or self.mab_spec['exposure_ttl_seconds'] <= 0
+                    or not 0 <= self.mab_spec['click_reward'] <= self.mab_spec['purchase_reward'] <= 1):
+                raise ValueError('invalid MAB arm, attribution TTL or rewards')
         self._owned_client = client is None
-        self.client = client if client is not None else redis.Redis(
+        self.client: Any = client if client is not None else redis.Redis(
             connection_pool=redis.ConnectionPool(
                 host=host, port=port, db=db, decode_responses=True,
                 socket_connect_timeout=timeout, socket_timeout=timeout,
@@ -109,19 +117,35 @@ class RedisFeatureStore:
     def update_reward(self, feedback: FeedbackRequest) -> bool:
         seen_key = self.key("feedback", feedback.event_id)
         reward_key = self.key("reward", feedback.product_id)
+        exposure_key = self.key('exposure', feedback.user_id, hashlib.sha256(feedback.product_id.encode()).hexdigest())
         field = {"view": "clicks", "purchase": "purchases"}.get(feedback.event_type)
         try:
             for _ in range(self.write_retries):
                 with self.client.pipeline() as pipe:
                     try:
-                        pipe.watch(seen_key)
+                        pipe.watch(seen_key, exposure_key)
                         if pipe.exists(seen_key):
                             self.available = True
                             return False
+                        exposure = pipe.hgetall(exposure_key) if self.mab_spec is not None else {}
+                        increment = 0.0
+                        reward = 0.0
+                        if exposure and self.mab_spec is not None:
+                            reward = float(self.mab_spec['click_reward'] if feedback.event_type == 'view'
+                                           else self.mab_spec['purchase_reward'] if feedback.event_type == 'purchase' else 0)
+                            increment = max(0.0, reward - float(exposure['reward']))
                         pipe.multi()
                         pipe.set(seen_key, "1", ex=self.feedback_ttl)
                         if field:
                             pipe.hincrby(reward_key, field, 1)
+                        if self.mab_spec is not None:
+                            if exposure:
+                                if increment:
+                                    pipe.hincrbyfloat(self.key('mab', 'statistics'), exposure['arm'] + ':reward', increment)
+                                    # HSET preserves the original attribution expiry; feedback never extends it.
+                                    pipe.hset(exposure_key, 'reward', str(max(float(exposure['reward']), reward)))
+                            else:
+                                pipe.incr(self.key('mab', 'unattributed_feedback'))
                         pipe.execute()
                         self.available = True
                         return True
@@ -131,6 +155,64 @@ class RedisFeatureStore:
         except RedisError as error:
             self._failure("update_reward", error)
             return False
+
+    def configure_categories(self, categories: Mapping[str, str]) -> None:
+        self.categories = dict(categories)
+
+    def arm_for(self, product_id: str) -> str:
+        if self.mab_spec is None:
+            raise ValueError('MAB is not configured')
+        return product_id if self.mab_spec['arm'] == 'item' else self.categories.get(product_id, 'unknown')
+
+    def record_exposures(self, user_id: str, product_ids: list[str]) -> list[str]:
+        if self.mab_spec is None:
+            raise ValueError('MAB is not configured')
+        products = list(dict.fromkeys(product_ids))
+        identifiers = [uuid.uuid4().hex for _ in products]
+        try:
+            with self.client.pipeline(transaction=True) as pipe:
+                for product, identifier in zip(products, identifiers):
+                    arm = self.arm_for(product)
+                    key = self.key('exposure', user_id, hashlib.sha256(product.encode()).hexdigest())
+                    pipe.hincrby(self.key('mab', 'statistics'), arm + ':exposures', 1)
+                    pipe.hset(key, mapping={'identifier': identifier, 'arm': arm, 'reward': '0'})
+                    pipe.expire(key, int(self.mab_spec['exposure_ttl_seconds']))
+                pipe.execute()
+            self.available = True
+            return identifiers
+        except RedisError as error:
+            self._failure('record_exposures', error)
+            return []
+
+    def arm_statistics(self, product_ids: list[str] | None = None) -> dict[str, dict[str, float]]:
+        key = self.key('mab', 'statistics')
+        try:
+            if product_ids is None:
+                values = self.client.hgetall(key)
+            else:
+                fields = [arm + ':' + field for arm in sorted({self.arm_for(p) for p in product_ids})
+                          for field in ('exposures', 'reward')]
+                if not fields:
+                    return {}
+                values = dict(zip(fields, self.client.hmget(key, fields)))
+            result: dict[str, dict[str, float]] = {}
+            for name, value in values.items():
+                if value is not None:
+                    arm, field = name.rsplit(':', 1)
+                    result.setdefault(arm, {'exposures': 0, 'reward': 0.0})[field] = float(value)
+            self.available = True
+            return result
+        except RedisError as error:
+            self._failure('arm_statistics', error)
+            return {}
+
+    @property
+    def unattributed_feedback(self) -> int:
+        try:
+            return int(self.client.get(self.key('mab', 'unattributed_feedback')) or 0)
+        except RedisError as error:
+            self._failure('unattributed_feedback', error)
+            return 0
 
     def batch_load_profiles(self, profiles: Mapping[str, dict], batch_size: int = 1000) -> None:
         if not 1 <= batch_size <= 1000:
@@ -176,4 +258,4 @@ def create_feature_store(cfg: dict) -> MemoryFeatureStore | RedisFeatureStore:
         namespace=options.get("namespace", f"mm-recsys:{cfg['scale']}"),
         timeout=options.get("timeout_seconds", 0.2),
         max_connections=options.get("max_connections", 32),
-        write_retries=options.get("write_retries", 8))
+        write_retries=options.get("write_retries", 8), mab_spec=cfg['recommend']['mab'])

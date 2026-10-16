@@ -1,13 +1,15 @@
 """Exact-vector diagnostics are separate from attribute relevance quality."""
 from __future__ import annotations
 
+
+
 import faiss
 import numpy as np
 import pandas as pd
 from src.search.encoder import check_vectors
 
 
-def exact_search(vectors: np.ndarray, queries: np.ndarray, k: int):
+def exact_search(vectors: np.ndarray, queries: np.ndarray, k: int) -> tuple[np.ndarray, np.ndarray]:
     check_vectors(vectors, vectors.shape[1]); check_vectors(queries, vectors.shape[1])
     if isinstance(k, bool) or not isinstance(k, int) or not 1 <= k <= len(vectors):
         raise ValueError('exact diagnostic k must be within catalog size')
@@ -15,7 +17,7 @@ def exact_search(vectors: np.ndarray, queries: np.ndarray, k: int):
     return index.search(np.ascontiguousarray(queries), k)
 
 
-def ann_agreement(vectors: np.ndarray, queries: np.ndarray, ann_scores, ann_labels, k: int) -> dict:
+def ann_agreement(vectors: np.ndarray, queries: np.ndarray, ann_scores: np.ndarray, ann_labels: np.ndarray, k: int) -> dict:
     exact_scores, exact_labels = exact_search(vectors, queries, k)
     if ann_labels.shape != exact_labels.shape or ann_scores.shape != exact_scores.shape:
         raise ValueError('ANN/exact result shapes differ')

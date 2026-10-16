@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any, AsyncIterator
+
 import importlib
 import importlib.util
 import time
@@ -15,12 +17,12 @@ from src.ct.retrain_trigger import components
 from src.serving.model_loader import load_record
 
 
-def create_app(cfg: dict | None = None, search_service=None, recommend_service=None,
-               feature_store=None) -> FastAPI:
+def create_app(cfg: dict | None = None, search_service: Any=None, recommend_service: Any=None,
+               feature_store: Any=None) -> FastAPI:
     cfg = cfg or load_config()
 
     @asynccontextmanager
-    async def lifespan(app: FastAPI):
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         serving = cfg['serving']
         app.state.store = feature_store if feature_store is not None else create_feature_store(cfg)
         app.state.ct = components(cfg) if serving.get('ct', {}).get('enabled', False) else None
@@ -58,13 +60,13 @@ def create_app(cfg: dict | None = None, search_service=None, recommend_service=N
         return {'status': 'ready'}
 
     @app.post('/api/search', response_model=SearchResponse)
-    def search(payload: SearchRequest, request: Request):
+    def search(payload: SearchRequest, request: Request) -> Any:
         if request.app.state.search is None:
             raise HTTPException(503, 'SearchService unavailable; A implements B2a/B2b')
         return request.app.state.search.search(payload)
 
     @app.get('/api/recommend', response_model=RecommendResponse)
-    def recommend(request: Request, response: Response, user_id: str, top_n: int = Query(10, ge=1, le=100)):
+    def recommend(request: Request, response: Response, user_id: str, top_n: int = Query(10, ge=1, le=100)) -> Any:
         # Capture one resident pointer; an in-flight request completes on its old bundle.
         service = request.app.state.recommend
         if service is None:
@@ -78,7 +80,7 @@ def create_app(cfg: dict | None = None, search_service=None, recommend_service=N
             response.headers['X-Recommendation-Request-ID'] = request_id
         return result
 
-    def record_outcome(payload, request: Request) -> None:
+    def record_outcome(payload: Any, request: Request) -> None:
         if request.app.state.ct is not None:
             spec, journal, _ = request.app.state.ct
             try:

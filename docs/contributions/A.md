@@ -240,3 +240,30 @@ clean-clone 전체 생성, 전역 타입 검사와 P0는 INTEGRATE/관련 담당
 GitHub public/익명 접근과 실제 PR #1–12를 읽기 전용으로 확인했다.
 새 원격 clone의 초기 Redis 연결 실패와 복구 뒤 재검사를 구분해 보존한다.
 B11 push/PR은 이번 로컬 commit 설명 후 새 명시 허가를 받아야 하며 INTEGRATE는 미수행이다.
+
+
+## INTEGRATE — 현재 실행 기록
+
+B11 PR [#13](https://github.com/k-pang-2026/mm-recsys/pull/13)의 승인된 head 64e16e7을
+실제 원격 CI·보호 규칙과 대조한 뒤 main b40712a로 병합했다. feat/integration에서
+Redis MAB 연결, 요청 피처 재사용, A/B 불변 메타데이터 공유, 전역 타입 보완을 수행했다.
+YAML 정렬에 따른 생성 순서 결함을 수정하고 generator 4.1.0의 순서 포함 식별자를 적용했다.
+빈 경로에서 full 데이터를 두 번 독립 생성해 모든 데이터 파일과 split의 checksum이 일치했다.
+실제 전체 회귀 315개와 전역 mypy 120개 파일이 통과했다. P0는 사용자 전달 강사 지시에 따라
+실제 데이터셋을 개발 후 추가 검증용으로 해석해 RESOLVED_OPTIONAL로 기록했다.
+
+이 문단 시점에는 새 full 품질·HTTP 지연·5000명/arm A/B·full CT가 실행 중/미측정이다.
+최종 결과와 범위는 [INTEGRATE 기록](../results/integration/report.md)을 따른다.
+과거 B10/B11의 제한은 해당 실행 당시 기록으로 보존하며 이번 측정을 대신하지 않는다.
+
+## INTEGRATE — full 실측과 최종 제출 검사
+
+독립 빈 data/models에서 full 준비 2,725.892초, 데이터 두 번 hash 일치를 확인했다.
+현재 추론 경로의 valid를 동결한 뒤 test의 원래 11개 수치 기준과 후보 수를 모두 통과했다.
+full A/B 5,000명/arm·30일과 C 재검산을 완료했으며 음의 CTR/CVR lift도 보존했다.
+CT는 실제 추가 HTTP 10,000건·세 모델 재학습·paired valid에서 RETAINED였다.
+별도 full 초기 상수 ranker 기능 시나리오의 실제 승격·재로딩·롤백은 운영 개선과 구분한다.
+최초 지연 실패·YAML 순서 결함·CT 메모리 실패와 재검사를 모두 보존했다.
+최종 회귀 수·타입·pip·라이브 스키마·필수 여섯 판정은
+[제출 검사 원본](../results/integration/submission/checks.json)과 pytest.xml을 따른다.
+이 문서는 실제 팀원의 리뷰나 아직 승인하지 않은 INTEGRATE 원격 반영을 주장하지 않는다.

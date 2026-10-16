@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "split": "valid",
+  "queries": 400,
+  "max_abs_vector_error": 2.115964889526367e-06,
+  "identical_top10": true,
+  "changed_query_ids": [],
+  "optimization": {
+    "enabled": true,
+    "implementation": "torch.jit.optimize_for_inference",
+    "dtype": "float32",
+    "query_shape": [
+      1,
+      3,
+      224,
+      224
+    ],
+    "startup_max_abs_vector_error": 3.129243850708008e-07,
+    "process_environment": {
+      "OMP_NUM_THREADS": "2",
+      "MKL_NUM_THREADS": "2",
+      "OPENBLAS_NUM_THREADS": "2"
+    },
+    "scope": "same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache"
+  },
+  "elapsed_seconds": 97.3203409480002,
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "query_manifest_sha256": "a913a71dc71fad8ba4b373342b4268a4572423c02f6e9f464cd29806d5bb056a",
+  "source_hashes": {
+    "docker/vision.py": "ac51e6c77f62c18a0cce436a8b494f2d4816f48e763ae25545a00c611ebf358b",
+    "docker/serve.py": "f0a8cee23deb67858af5271e77f409572a9c54006179aff6c96c297c4aad954a",
+    "src/search/searcher.py": "b423a8b75e8ba84dd85baf1ea71e9ca79b8d02f85a5a1e6004771342382a7379",
+    "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e"
+  },
+  "scope": "all 200 image and 200 hybrid frozen valid queries; unchanged text/fusion/catalog/cutoff; same FP32 pinned weights; no test or relevance labels read"
+}

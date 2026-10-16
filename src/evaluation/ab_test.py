@@ -5,6 +5,8 @@ Outcome-model persona parameters are simulation hypotheses, not measured lift.
 """
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import copy
 import hashlib
@@ -12,6 +14,7 @@ import json
 import os
 import platform
 import threading
+from types import MappingProxyType
 from pathlib import Path
 from typing import Any, Literal, Mapping, Protocol, Sequence, TypedDict, cast
 
@@ -53,35 +56,41 @@ class UserIsolatedStore:
     """
     def __init__(self, cfg: dict, products: pd.DataFrame, clock):
         self.cfg, self.products, self.clock = cfg, products, clock
+        field = cfg['recommend']['reranking']['category_field']
+        self.categories = MappingProxyType(products.set_index('product_id')[field].astype(str).to_dict())
         self.users: dict[str, Any] = {}
         self.active: str | None = None
 
-    def user_store(self, uid: str):
+    def user_store(self, uid: str) -> Any:
         from src.recommendation.feature_store import RecommendationFeatureStore
         if uid not in self.users:
-            self.users[uid] = RecommendationFeatureStore(self.cfg, self.products, self.clock)
+            store = RecommendationFeatureStore(self.cfg, clock=self.clock)
+            # Catalog metadata is immutable; only each user's adaptive state is private.
+            # Avoid copying the full catalog once per randomized user at full scale.
+            store.categories = self.categories
+            self.users[uid] = store
         return self.users[uid]
 
-    def get_features(self, uid: str):
+    def get_features(self, uid: str) -> Any:
         self.active = uid
         return self.user_store(uid).get_features(uid)
 
-    def record_exposures(self, uid: str, products: list[str]):
+    def record_exposures(self, uid: str, products: list[str]) -> list[str]:
         self.active = uid
         return self.user_store(uid).record_exposures(uid, products)
 
-    def arm_statistics(self) -> dict:
-        return self.user_store(self.active).arm_statistics() if self.active is not None else {}
+    def arm_statistics(self, product_ids: list[str] | None = None) -> dict:
+        return self.user_store(self.active).arm_statistics(product_ids) if self.active is not None else {}
 
     def arm_for(self, product: str) -> str:
         if self.active is None:
             raise ValueError('select a user before querying bandit arms')
         return self.user_store(self.active).arm_for(product)
 
-    def append_event(self, event) -> bool:
+    def append_event(self, event: Any) -> bool:
         return self.user_store(event.user_id).append_event(event)
 
-    def update_reward(self, event) -> bool:
+    def update_reward(self, event: Any) -> bool:
         return self.user_store(event.user_id).update_reward(event)
 
     def experiment_statistics(self) -> dict:
@@ -106,8 +115,12 @@ class ModelPolicy:
         if self.strategy == 'full_pipeline':
             return self.service.recommend(user_id, top_n).recommendations
         if self.strategy == 'popularity':
-            ids = [pid for pid in self.popular if self.service.table.created[
-                self.service.table.id_to_index[pid]] <= at.value][:top_n]
+            ids = []
+            for pid in self.popular:
+                if self.service.table.created[self.service.table.id_to_index[pid]] <= at.value:
+                    ids.append(pid)
+                    if len(ids) == top_n:
+                        break
         else:
             features = self.store.get_features(user_id)
             context = self.service.context(user_id, features.recent_clicks)
@@ -174,7 +187,7 @@ def outcome_probabilities(cfg: dict, user: dict, product: dict, rank: int) -> tu
     return float(np.clip(click, 0, 1)), float(np.clip(purchase_given_click, 0, 1))
 
 
-def summarize(rows: Sequence[Mapping[str, Any]], policy) -> dict:
+def summarize(rows: Sequence[Mapping[str, Any]], policy: Any) -> dict:
     sums = {key: sum(row[key] for row in rows) for key in ('impressions', 'clicks', 'purchases', 'explorations')}
     return dict(users=len(rows), **sums,
                 ctr=sums['clicks'] / sums['impressions'] if sums['impressions'] else None,
@@ -264,7 +277,7 @@ def simulate(cfg: dict, data: dict, policies: dict, clock: list[float]) -> dict:
                 isolation='immutable loaded models shared; separate arm and per-user adaptive stores/config/RNG/locks; common virtual clock; hash-keyed user/day outcome streams',
                 limitations=['synthetic randomized simulation; no guarantee of positive or significant lift',
                     'static catalog and train+valid history; no test outcomes read',
-                    'MAB exposure/feedback uses B5 in-memory adapter; live Redis MAB remains a separate integration task',
+                    'MAB exposure/feedback uses B5 in-memory adapter; live Redis attribution is verified separately',
                     'per-user adaptive bandits preserve independent user clusters; this is not a shared cross-user live-bandit experiment',
                     'dev result is not full acceptance'])
 

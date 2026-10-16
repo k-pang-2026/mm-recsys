@@ -1,0 +1,27 @@
+{
+  "status": "RUNNING",
+  "command": [
+    "docker",
+    "compose",
+    "-p",
+    "mm-recsys-integrate-v41",
+    "-f",
+    "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker-compose.yml",
+    "-f",
+    "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker/compose.ct.yml",
+    "-f",
+    "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.override.yml",
+    "-f",
+    "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.ct-runner.yml",
+    "--profile",
+    "ct",
+    "run",
+    "--rm",
+    "--no-deps",
+    "ct",
+    "python",
+    "scripts/verify_integration_ct.py"
+  ],
+  "reason": "retry after unsupported run --no-build option; exact existing API image selected",
+  "scale": "full"
+}

@@ -1,0 +1,37 @@
+/usr/local/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py:243: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if not interpolate_pos_encoding and (height != self.image_size or width != self.image_size):
+B8 search valid: text
+B8 search valid: image
+B8 search valid: hybrid
+B8 recommendation valid: 500/10000 users
+B8 recommendation valid: 1000/10000 users
+B8 recommendation valid: 1500/10000 users
+B8 recommendation valid: 2000/10000 users
+B8 recommendation valid: 2500/10000 users
+B8 recommendation valid: 3000/10000 users
+B8 recommendation valid: 3500/10000 users
+B8 recommendation valid: 4000/10000 users
+B8 recommendation valid: 4500/10000 users
+B8 recommendation valid: 5000/10000 users
+B8 recommendation valid: 5500/10000 users
+B8 recommendation valid: 6000/10000 users
+B8 recommendation valid: 6500/10000 users
+B8 recommendation valid: 7000/10000 users
+B8 recommendation valid: 7500/10000 users
+B8 recommendation valid: 8000/10000 users
+B8 recommendation valid: 8500/10000 users
+B8 recommendation valid: 9000/10000 users
+B8 recommendation valid: 9500/10000 users
+B8 recommendation valid: 10000/10000 users
+Docker quality valid: PASS; docs/results/integration/quality_full_valid.json
+mrr: 0.9483333333333334 / 0.55 / PASS
+ndcg_at_10: 0.9483333333333334 / 0.5 / PASS
+recall_at_300: 0.7470502424164415 / 0.3 / PASS
+auc: 0.9718829656431185 / 0.7 / PASS
+hit_rate_at_50: 0.6998326682970781 / 0.2 / PASS
+ndcg_at_50: 0.36206082553183966 / 0.08 / PASS
+coverage: 0.41378 / 0.2 / PASS
+search_p95_ms: 123.4956392001095 / 200 / PASS
+recommend_p95_ms: 54.32276309948065 / 200 / PASS
+candidate_p95_ms: 6.821933299625015 / 100 / PASS
+feature_p95_ms: 0.3944216498894093 / 10 / PASS

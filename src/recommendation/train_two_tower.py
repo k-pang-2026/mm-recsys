@@ -1,6 +1,9 @@
 """CPU-first reproducible sampled-softmax training, valid-selected checkpoint and bundle."""
 from __future__ import annotations
 
+from typing import Any
+
+from typing import cast
 import argparse
 import copy
 import json
@@ -93,7 +96,7 @@ def bundle_contract() -> dict:
                 persona=False, item_id_residual=False, normalized=True, metric='inner_product')
 
 
-def save_bundle(path: Path, model: TwoTower, encoder: FeatureEncoder, table, cfg: dict,
+def save_bundle(path: Path, model: TwoTower, encoder: FeatureEncoder, table: Any, cfg: dict,
                 data: dict, best_epoch: int, recall: float) -> dict:
     from src.recommendation.bundle_compat import candidate_scope
     path.mkdir(parents=True, exist_ok=True)
@@ -115,7 +118,7 @@ def save_bundle(path: Path, model: TwoTower, encoder: FeatureEncoder, table, cfg
     return meta
 
 
-def load_bundle(path: Path, data: dict, cfg: dict):
+def load_bundle(path: Path, data: dict, cfg: dict) -> tuple[Any, Any, Any, dict]:
     from src.recommendation.runtime import configure_inference
     configure_inference(cfg['recommend']['candidate'])
     meta = json.loads((path / 'meta.json').read_text())
@@ -181,7 +184,7 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
             grad_total += grad
             user_norm += float(users.detach().norm(dim=-1).sum())
             item_norm += float(items.detach().norm(dim=-1).sum()) / items.shape[1]
-        delta = float(sum((p.detach() - before[name]).square().sum() for name, p in model.named_parameters()).sqrt())
+        delta = float(cast(torch.Tensor, sum((p.detach() - before[name]).square().sum() for name, p in model.named_parameters())).sqrt())
         metrics = evaluation.model(model)
         reference_contexts = evaluation.contexts[:min(128, len(evaluation.contexts))]
         from src.recommendation.candidate import ExactCandidate

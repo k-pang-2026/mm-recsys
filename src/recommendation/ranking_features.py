@@ -1,6 +1,8 @@
 """Train-only vocabulary/scalers and strictly preceding observed user features."""
 from __future__ import annotations
 
+from typing import Any
+
 from dataclasses import dataclass
 import numpy as np
 import pandas as pd
@@ -90,17 +92,19 @@ class RankingEncoder:
                     excluded=['position', 'impression_id', 'request_id', 'event_type', 'persona'])
 
     @classmethod
-    def from_dict(cls, value: dict):
+    def from_dict(cls, value: dict) -> Any:
         if value['version'] != 'deepfm-features-v1' or value['dense_fields'] != list(DENSE_FIELDS):
             raise ValueError('ranking feature contract mismatch')
         return cls(FeatureEncoder.from_dict(value['metadata']), np.array(value['mean'], np.float32),
                    np.array(value['std'], np.float32), bool(value['cross_features']))
 
-    def transform(self, labels: pd.DataFrame, users: pd.DataFrame, table, history: HistoryIndex,
-                  freeze_at: pd.Timestamp | None = None, fit: bool = False) -> tuple[np.ndarray, np.ndarray]:
+    def transform(self, labels: pd.DataFrame, users: pd.DataFrame, table: Any, history: HistoryIndex,
+                  freeze_at: pd.Timestamp | None = None, fit: bool = False,
+                  user_rows: dict | None = None) -> tuple[np.ndarray, np.ndarray]:
         sparse = np.zeros((len(labels), len(SPARSE_FIELDS)), np.int64)
         dense = np.zeros((len(labels), len(DENSE_FIELDS)), np.float32)
-        user_rows = users.set_index('user_id').to_dict('index')
+        if user_rows is None:
+            user_rows = users.set_index('user_id').to_dict('index')
         rows = labels.product_id.map(table.id_to_index).to_numpy(dtype=np.int64)
         at = pd.to_datetime(labels.exposed_at)
         if (table.created[rows] > at.astype('int64').to_numpy()).any():
@@ -127,9 +131,10 @@ class RankingEncoder:
         return sparse, dense.astype(np.float32)
 
     def serving(self, user_id: str, products: list[str], at: pd.Timestamp, users: pd.DataFrame,
-                table, history: HistoryIndex, recent_clicks: list[str], session_count: int) -> tuple[np.ndarray, np.ndarray]:
+                table: Any, history: HistoryIndex, recent_clicks: list[str], session_count: int,
+                user_rows: dict | None = None) -> tuple[np.ndarray, np.ndarray]:
         labels = pd.DataFrame(dict(user_id=[user_id]*len(products), product_id=products, exposed_at=[at]*len(products)))
-        sparse, dense = self.transform(labels, users, table, history)
+        sparse, dense = self.transform(labels, users, table, history, user_rows=user_rows)
         # Online session views augment observed affinities; current request is never an input label.
         known = [table.id_to_index[p] for p in recent_clicks if p in table.id_to_index and table.created[table.id_to_index[p]] <= at.value]
         raw = dense * self.std + self.mean

@@ -1,6 +1,8 @@
 """Serial end-to-end candidate benchmark and B3b-specific measured acceptance."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import json
 import os
@@ -20,7 +22,7 @@ from src.recommendation.index import load_index
 from src.recommendation.train_two_tower import load_bundle
 
 
-def benchmark(cfg, bundle: Path, split: str) -> dict:
+def benchmark(cfg: dict, bundle: Path, split: str) -> dict:
     spec = cfg['recommend']['candidate']
     from src.recommendation.runtime import configure_inference
     threads = configure_inference(spec, with_faiss=True)
@@ -38,7 +40,7 @@ def benchmark(cfg, bundle: Path, split: str) -> dict:
     if not ids:
         raise ValueError('benchmark requires users')
     empty = history.iloc[:0]
-    def request(uid):
+    def request(uid: str) -> Any:
         context = context_for(groups.get(uid, empty), users[uid], encoder, table, cutoff, spec['history_n'])
         return candidate.retrieve(context), context.history_count
     for i in range(10):

@@ -1,6 +1,8 @@
 """Publish text/image/hybrid HNSW or IVFPQ indexes as an atomic versioned bundle."""
 from __future__ import annotations
 
+
+
 import argparse
 import json
 import shutil
@@ -17,7 +19,7 @@ from src.search.encoder import unit_vectors
 from src.search.index import make_index, SearchIndex
 
 
-def fuse(text, image, weights: dict):
+def fuse(text: np.ndarray, image: np.ndarray, weights: dict) -> np.ndarray:
     a = float(weights['text_weight']); b = float(weights['image_weight'])
     if not 0 <= a <= 1 or not 0 <= b <= 1 or a+b <= 0:
         raise ValueError('fusion weights must be finite, nonnegative and not both zero')
@@ -45,7 +47,7 @@ def build_indexes(cfg: dict) -> Path:
                    'hybrid': fuse(bundle['text'], bundle['image'], cfg['search']['fusion'])}
         for mode, values in vectors.items():
             if identity['deduplicate_vectors']:
-                lookup = {}; members = []; first = []
+                lookup: dict[bytes, int] = {}; members: list[list[int]] = []; first: list[int] = []
                 for position, vector in enumerate(values):
                     content = vector.tobytes()
                     if content not in lookup:

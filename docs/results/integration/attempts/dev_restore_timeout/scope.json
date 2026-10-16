@@ -1,0 +1,4 @@
+{
+  "status": "FAIL",
+  "scope": "previous dev API restart warmup failed with Redis socket timeout while full lifecycle retried; full API separate healthy; retry dev start after CPU-heavy jobs complete; no data/volumes reset"
+}

@@ -96,7 +96,7 @@ def _ram_bytes() -> int | None:
                             "total_virtual", "avail_virtual", "avail_extended")]]
         data = Memory()
         data.length = ctypes.sizeof(data)
-        if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(data)):
+        if getattr(ctypes, "windll").kernel32.GlobalMemoryStatusEx(ctypes.byref(data)):
             return int(data.total_phys)
         return None
     try:

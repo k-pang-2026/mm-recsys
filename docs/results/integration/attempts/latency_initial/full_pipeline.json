@@ -1,0 +1,80 @@
+{
+  "status": "FAIL",
+  "project": "mm-recsys-integrate-v41",
+  "phases": [
+    {
+      "name": "copy_verify_integration_mab",
+      "command": [
+        "docker",
+        "cp",
+        "/home/peachpetal/ecommerce/mm-recsys/scripts/verify_integration_mab.py",
+        "mm-recsys-integrate-v41-api-server-1:/app/scripts/verify_integration_mab.py"
+      ],
+      "exit_code": 0,
+      "source": ".team/checks/INTEGRATE/copy_verify_integration_mab.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 0.09931482499996491
+    },
+    {
+      "name": "copy_verify_integration_ct",
+      "command": [
+        "docker",
+        "cp",
+        "/home/peachpetal/ecommerce/mm-recsys/scripts/verify_integration_ct.py",
+        "mm-recsys-integrate-v41-api-server-1:/app/scripts/verify_integration_ct.py"
+      ],
+      "exit_code": 0,
+      "source": ".team/checks/INTEGRATE/copy_verify_integration_ct.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 0.07467824000013934
+    },
+    {
+      "name": "copy_verify_integration_data",
+      "command": [
+        "docker",
+        "cp",
+        "/home/peachpetal/ecommerce/mm-recsys/scripts/verify_integration_data.py",
+        "mm-recsys-integrate-v41-api-server-1:/app/scripts/verify_integration_data.py"
+      ],
+      "exit_code": 0,
+      "source": ".team/checks/INTEGRATE/copy_verify_integration_data.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "seconds": 0.06384946900016075
+    },
+    {
+      "name": "mab_http_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "scripts/verify_integration_mab.py"
+      ],
+      "exit_code": 0,
+      "source": ".team/checks/INTEGRATE/mab_http_full.txt",
+      "sha256": "5874db6ca5f2eeefc8e437f645071a8e40495ccc1907e65d50872f022cfef7f6",
+      "seconds": 0.8105765450000035
+    },
+    {
+      "name": "smoke_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "scripts/smoke_test.py",
+        "--benchmark",
+        "--output",
+        "docs/results/integration/smoke_full.json"
+      ],
+      "exit_code": 1,
+      "source": ".team/checks/INTEGRATE/smoke_full.txt",
+      "sha256": "984a6c337d01cd5c269552f6adfc1a36d38d0f48420121787331ce0df69cc74e",
+      "seconds": 71.12667362000047
+    }
+  ]
+}

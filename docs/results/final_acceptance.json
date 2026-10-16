@@ -1,8 +1,8 @@
 {
   "scale": "full",
-  "status": "UNMEASURED",
-  "stage": "B11",
-  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "stage": "INTEGRATE",
+  "status": "PASS",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
   "data_counts": {
     "products": 50000,
     "users": 10000,
@@ -11,149 +11,142 @@
   },
   "metrics": {
     "mrr": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.9316666666666666,
       "split": "test",
       "status": "PASS"
     },
     "ndcg_at_10": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.9316666666666666,
       "split": "test",
       "status": "PASS"
     },
     "recall_at_300": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.7501409489114407,
       "split": "test",
       "status": "PASS"
     },
     "auc": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.964766793453099,
       "split": "test",
       "status": "PASS"
     },
     "hit_rate_at_50": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.7008847254748894,
       "split": "test",
       "status": "PASS"
     },
     "ndcg_at_50": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.3421754358191502,
       "split": "test",
       "status": "PASS"
     },
     "coverage": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 0.41534,
       "split": "test",
       "status": "PASS"
     },
     "candidate_p95_ms": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
-      "value": 4.966623549898941,
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 6.821933299625015,
       "split": "benchmark",
       "status": "PASS"
     },
     "search_p95_ms": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
-      "value": 178.89394970056853,
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 123.4956392001095,
       "split": "benchmark",
       "status": "PASS"
     },
     "recommend_p95_ms": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
-      "value": 106.31712905046696,
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 54.32276309948065,
       "split": "benchmark",
       "status": "PASS"
     },
     "feature_p95_ms": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
-      "value": 0.24976025042633404,
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.3944216498894093,
       "split": "benchmark",
       "status": "PASS"
     },
     "candidate_count": {
-      "source": "docs/results/docker/quality_full_test.json",
-      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
       "value": 300,
       "split": "test",
       "status": "PASS"
     }
   },
   "checks": {
-    "api_schemas": {
-      "source": "docs/results/docker/smoke_full.json",
-      "sha256": "b7a17e90346f0641223f1ca671707324f3f8c38c4a4d1cae6a15ab1f77a86357",
-      "status": "PASS",
-      "exit_code": 0,
-      "scope": "historical B10 full HTTP execution, not a new B11 full run"
-    },
-    "session_response": {
-      "source": "docs/results/docker/smoke_full.json",
-      "sha256": "b7a17e90346f0641223f1ca671707324f3f8c38c4a4d1cae6a15ab1f77a86357",
-      "status": "PASS",
-      "exit_code": 0,
-      "scope": "historical B10 full HTTP execution, not a new B11 full run"
-    },
     "docker_reproduction": {
-      "source": "docs/results/docker/verified_full.json",
-      "sha256": "154a98174c59beeacd7a9466ec9ce6ea0ef73f0fe13af87e08ba0c31f13a663e",
-      "status": "UNMEASURED",
-      "exit_code": null,
-      "reason": "B10 full Compose passed with existing data/search/HF cache; fresh-clone complete regeneration unmeasured"
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/fresh_checkout.json",
+      "sha256": "d07c5e2a68343160f6cf254ee8160bf20a9daa9b78f41bbcf3f6d95c5c85273b"
+    },
+    "api_schemas": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/smoke_full.json",
+      "sha256": "5d70753ceb7325de4cd6b05ab6293dc058d3be0bb5645bc0c5b1c498379250eb"
     },
     "ab_statistics": {
-      "source": "docs/results/ab_test.json",
-      "sha256": "7272f87fc5247c4a0ca1d7610bc84fceab4ff3187cd9a54ed9363d1aa37499fc",
-      "status": "UNMEASURED",
-      "exit_code": null,
-      "reason": "C dev 200 users/arm, 30-day in-memory simulation; no matching full/live Redis experiment"
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/ab_acceptance_full.json",
+      "sha256": "bd7b9a7e180e272f492f6e90871f68f51bb26e2a31478327d66dda9b68ddee2d"
+    },
+    "session_response": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/mab_full.json",
+      "sha256": "786fae21cdeb31bcc5238480b830974b5ee5845282d3ecc87d95d304aa3c87a2"
     },
     "ct_retrain_and_rollback": {
-      "source": "docs/results/ct_dev_fixture.json",
-      "sha256": "273e4fdc959bfff4fa97911b3daf1d90f080b70f359766dd16f6d26b73752461",
-      "status": "UNMEASURED",
-      "exit_code": null,
-      "reason": "C controlled fixture passed retraining/promotion/rollback; B10 full only reloaded the same v1.0"
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/ct_acceptance_full.json",
+      "sha256": "37b32308d03b5816d33ae2e81a749961a43704ddee4574916b926147fac8eb58"
     },
     "submission": {
-      "source": "docs/results/final_submission/checks.json",
-      "sha256": "b72b941365e7e8330ea419a6584fd0dece565277870ca62d1c679d80fd274317",
-      "status": "BLOCKED",
-      "exit_code": null,
-      "reason": [
-        "P0: real-dataset requirement interpretation UNRESOLVED; instructor decision not recorded",
-        "live Redis MAB exposure/reward attribution UNCONNECTED",
-        "fresh-clone full data/model regeneration UNMEASURED; B10 reused data/search/HF cache",
-        "full matching A/B statistics UNMEASURED; dev simulation is separate",
-        "full CT retraining and rollback UNMEASURED; controlled fixture and same-version reload only",
-        "B11 commit push/PR and final GitHub URL submission await explicit approval",
-        "repository-wide mypy has existing errors; see the complete log, repair in INTEGRATE/owning role",
-        "public signature annotations incomplete; see python_audit.json"
-      ]
+      "source": "docs/results/integration/submission/checks.json",
+      "sha256": "1ca3bb7274139a8b0baee749e8d07ebebd8bc762710abd217637209a76a7b2f2",
+      "status": "PASS",
+      "exit_code": 0
     }
   },
   "limitations": [
-    "not the B11 final acceptance bundle",
-    "A/B and CT production improvement are separate",
-    "recommendation quality uses B5 memory adapter; live Redis MAB exposure/reward attribution remains UNCONNECTED",
-    "P0 real-dataset interpretation awaits instructor decision",
-    "source/hash audit reuses B10 measurements; it is not a new model quality run",
-    "INTEGRATE must recheck every mandatory check before final acceptance PASS"
-  ]
+    "full test has prior B10 observation history; current performance changes selected on valid before frozen revalidation",
+    "synthetic A/B is a user-randomized simulation; seeded full repeat unmeasured",
+    "natural CT full training was RETAINED; rollback is a separately measured full-size controlled INITIAL constant-ranker lifecycle, not production lift",
+    "CVR AUC is undefined due to no positive clicked-exposure purchases in this evaluation",
+    "benchmark is initial v1.0 without concurrent training; other hardware/concurrency and browser pixels unmeasured"
+  ],
+  "dataset_scope": {
+    "status": "RESOLVED_OPTIONAL",
+    "date": "2026-10-16",
+    "decision_source": "사용자가 전달한 강사 지시",
+    "primary_acceptance": "합성 full 데이터로 개발과 필수 검증을 완료한다",
+    "real_datasets_required": false,
+    "real_datasets_use": "H&M, Retailrocket, DeepFashion은 개발 완료 후 추가적인 모델 검증에 사용한다",
+    "acquisition_performed": false
+  }
 }

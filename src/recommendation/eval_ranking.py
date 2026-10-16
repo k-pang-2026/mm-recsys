@@ -50,6 +50,7 @@ def evaluate(cfg: dict,split: str,with_session: bool=False,reuse: Path | None=No
     if anchor:
         classification=anchor['classification']
     else:
+        assert labels is not None
         history_index=HistoryIndex(history,table,popularity_events=data['train'])
         sparse,dense=ranking_encoder.transform(labels[split],data['users'],table,history_index,freeze_at=at)
         values=tensors(labels[split],sparse,dense); classification=measure(values,probabilities(model,values,cfg['recommend']['ranking']['batch_size']))
@@ -61,8 +62,8 @@ def evaluate(cfg: dict,split: str,with_session: bool=False,reuse: Path | None=No
     future=data[split]; target=future[future.event_type.isin(cfg['recommend']['evaluation']['target_events']) & future.product_id.notna()]
     truth={str(uid):set(g.product_id.astype(str)) for uid,g in target.groupby('user_id')}
     user_ids=sorted(data['users'].user_id.astype(str))[:cfg['recommend']['evaluation']['coverage_users']]
-    baseline=[]; ranked=[]; final=[]; evaluated_truth=[]; covered={}; cold=0; violations=0
-    infeasible_pools=0; feasible_violations=0; violation_types=Counter(); violation_examples=[]
+    baseline=[]; ranked=[]; final=[]; evaluated_truth=[]; covered: dict = {}; cold=0; violations=0
+    infeasible_pools=0; feasible_violations=0; violation_types: Counter = Counter(); violation_examples: list[dict] = []
     modes=['two_tower','deepfm']+(['b5'] if with_session else [])
     for name in modes: covered[name]=set()
     for i,uid in enumerate(user_ids):
@@ -107,6 +108,7 @@ def evaluate(cfg: dict,split: str,with_session: bool=False,reuse: Path | None=No
                 scoring=recommender.scoring,config_fingerprint=fingerprint(cfg['recommend']),ranking_model_sha256=ranking_meta['hashes']['deepfm.pt'],
                 candidate_model_sha256=candidate_meta['hashes']['two_tower.pt'],elapsed_seconds=time.perf_counter()-started)
     if anchor:
+        assert reuse is not None
         report['reused_unchanged_measurements']=dict(source=str(reuse),sha256=file_hash(reuse),
             scope='CTR/CVR classification and Two Tower/DeepFM baseline metrics from same frozen model/data; only B5 constraints re-executed')
         if report['truth_users']!=anchor['truth_users'] or report['coverage_users']!=anchor['coverage_users'] or report['cutoff']!=anchor['cutoff']:

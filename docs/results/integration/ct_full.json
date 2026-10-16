@@ -1,0 +1,99 @@
+{
+  "status": "PARTIAL",
+  "scale": "full",
+  "run_id": "ct-integration-6fb1a792864e49bdb091d7a652ed06fd",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "observed_new_events": 10000,
+  "threshold": 10000,
+  "monitor": {
+    "event": "monitor",
+    "status": "ALERT",
+    "ctr": 0.7437174721189591,
+    "hit_rate_at_50": 0.0,
+    "clicks": 10003,
+    "exposures": 13450,
+    "mature_requests": 545,
+    "top50_requests": 200,
+    "hit_requests": 0,
+    "alerts": [
+      "hitrate_below_threshold"
+    ],
+    "window_start": 1792066584.0175319,
+    "observed_through": 1792152984.0175319,
+    "attribution_seconds": 3600,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 20
+    }
+  },
+  "retraining": {
+    "status": "RETAINED",
+    "version": "v1.1",
+    "active": "v1.0",
+    "new_events": 41132,
+    "through_seq": 72379,
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "97eacc58070c2f879556a74286b5a25338a94e4c832b8e7a63dd144f3f9da77b",
+      "baseline": {
+        "ctr_auc": 0.9716015201035728,
+        "ctr_logloss": 0.13596166041968938,
+        "hit_rate_at_50": 0.7025121763650346,
+        "truth_users": 7802,
+        "ctr_samples": 226718,
+        "validation_fingerprint": "97eacc58070c2f879556a74286b5a25338a94e4c832b8e7a63dd144f3f9da77b"
+      },
+      "candidate": {
+        "ctr_auc": 0.9715741086235063,
+        "ctr_logloss": 0.1346185260540005,
+        "hit_rate_at_50": 0.7040502435273007,
+        "truth_users": 7802,
+        "ctr_samples": 226718,
+        "validation_fingerprint": "97eacc58070c2f879556a74286b5a25338a94e4c832b8e7a63dd144f3f9da77b"
+      },
+      "training_reports": {
+        "candidate": "5d4fe0b94466dc3a064b5608bde8d9b018415d3fa048798e09d5ecbbcd2af0eb",
+        "ranking": "e68adc3d371fd4c9bbe5bdf1871350997e55018e7de8077765f1c385af6490c9",
+        "session": "dd642b87312fcc563141b743e41c64005e647e37230565203ca4999f9e61d868"
+      }
+    }
+  },
+  "repeated_trigger": {
+    "status": "WAITING",
+    "new_events": 0,
+    "threshold": 10000
+  },
+  "real_reload_and_rollback": false,
+  "reloads": [],
+  "checks": {
+    "full_three_model_retraining": true,
+    "threshold": true,
+    "event_watermark": true,
+    "paired_valid": true,
+    "real_reload_and_rollback": false
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "399d6f95ecc6bd109bb1d6d15bb92da42c26279a703d9cf5a9217fe060c98e9e",
+    "src/ct/verify_serving.py": "a6b06579c507ddb5558b9163c06b13f74b25316ce3f8b081e143471b8b63dfb7",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "3752aae27268e2fec1b133821ef3343830291c58aaa747787023fe4672c6c40a",
+    "src/ct/retrain_trigger.py": "4ee0a7fb08fe42f2e5487c9554be5d01c3fc232bcc8df0c22ef6be67b2af3fab",
+    "src/ct/training.py": "655af9f3f6c492c1c6ef383e416bb7e3827f12bed2a69bfff24533f86f8dd0b0",
+    "src/ct/verify_ct.py": "5fbed8379aabed2bf9ffaed3fd99e63e32cb6fb4528902ed885ade0c2e846d83",
+    "src/ct/bootstrap.py": "253408a549248b6366fa5ff71fd73e53aa465c666af781252be17e2491e1dc65"
+  },
+  "recovery": {
+    "source": "docs/results/integration/ct_recovery_full.json",
+    "sha256": "244947944b79f335ce7475b487ce118526349707542fe19e242b188386fbdd93"
+  },
+  "scope": "actual full trainers and same paired valid selection; interrupted comparison resumed with verified staged artifacts",
+  "limitations": [
+    "scripted view-only functional scenario, not production lift",
+    "monitor maturity uses explicit advanced query clock",
+    "retention never establishes promotion/rollback",
+    "original test quality was previously observed; CT selection uses valid only"
+  ]
+}

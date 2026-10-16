@@ -18,4 +18,6 @@ models
 tests
 docs/results/experiments
 docs/results/docker
+docs/results/integration
+docs/results/final*
 docs/results/latency*

@@ -1,0 +1,21 @@
+PREPARE data
+PREPARE embeddings
+REUSE: complete pinned CLIP cache (offline)
+text: unique 256/1440
+text: unique 512/1440
+text: unique 768/1440
+text: unique 1024/1440
+text: unique 1280/1440
+text: unique 1440/1440
+image: unique 256/256
+PREPARE indexes
+text: 1440 indexed vectors, IP HNSW
+image: 256 indexed vectors, IP HNSW
+hybrid: 2880 indexed vectors, IP HNSW
+LOADED FAISS text: vectors=1440, dim=512
+LOADED FAISS image: vectors=256, dim=512
+LOADED FAISS hybrid: vectors=2880, dim=512
+PREPARE recommendation
+epoch=1 loss=0.32481 valid_recall@300=0.738236 updates=1123
+epoch=2 loss=0.24065 valid_recall@300=0.738776 updates=1123
+epoch=3 loss=0.22363 valid_recall@300=0.740333 updates=1123

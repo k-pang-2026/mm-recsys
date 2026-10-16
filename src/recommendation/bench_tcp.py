@@ -1,5 +1,7 @@
 """Actual serial localhost HTTP requests, separately judged from ASGI injection."""
 from __future__ import annotations
+
+from typing import Any
 import json
 import os
 import socket
@@ -16,7 +18,7 @@ from src.recommendation.bench_ranking import percentiles
 from src.recommendation.scoring import policy
 
 
-def benchmark_tcp(cfg,b5,output=None,selection=None):
+def benchmark_tcp(cfg: dict,b5: Any,output: Any=None,selection: Any=None) -> dict:
     output=output or Path(cfg['paths']['results_dir'])/f'ranking_tcp_{cfg["scale"]}_{"b5" if b5 else "b4"}_v2.json'
     report=dict(stage='B5' if b5 else 'B4',scale=cfg['scale'],status='UNMEASURED',transport='localhost TCP HTTP',
         warmup=cfg['benchmark']['warmup'],requests=cfg['benchmark']['requests'],concurrency=1,top_n=50,
@@ -30,7 +32,7 @@ def benchmark_tcp(cfg,b5,output=None,selection=None):
     data=read_data(cfg['paths']['data_dir']);users=sorted(data['train'].user_id.unique())
     env=dict(os.environ,B_BENCH_SCORING=json.dumps(report['scoring']),B_BENCH_B5='1' if b5 else '0')
     log=Path('.team/tcp')/f'{report["stage"]}.log';log.parent.mkdir(parents=True,exist_ok=True)
-    records=[];samples=[];started=time.perf_counter()
+    records=[];samples: list[float] = [];started=time.perf_counter()
     with log.open('w') as stream:
         process=subprocess.Popen([sys.executable,'-m','uvicorn','src.recommendation.bench_app:create_bench_app','--factory',
             '--host','127.0.0.1','--port',str(port),'--workers','1'],env=env,stdout=stream,stderr=subprocess.STDOUT)

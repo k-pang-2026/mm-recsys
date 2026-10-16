@@ -1,0 +1,4 @@
+{
+  "status": "INTERRUPTED",
+  "scope": "original verification process ended before comparison/report; no final exit code recovered; all three trainer logs and staged artifacts retained; no PASS inferred"
+}

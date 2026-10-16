@@ -122,6 +122,8 @@ def train(cfg: dict) -> dict:
         else: stale+=1
         write_json(output,dict(status='RUNNING',scale=cfg['scale'],epochs=epochs,best_epoch=best_epoch,labels=diagnostics))
         if stale>=spec['patience']: break
+    if state is None:
+        raise ValueError("training produced no valid-selected checkpoint")
     model.load_state_dict(state); path=bundle_path(cfg); path.mkdir(parents=True,exist_ok=True)
     torch.save(model.state_dict(),path/'deepfm.pt'); write_json(path/'features.json',encoder.to_dict())
     meta=dict(version='deepfm-bundle-v1',scale=cfg['scale'],best_epoch=best_epoch,selection_split='valid',

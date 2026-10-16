@@ -1,13 +1,16 @@
 """Nonblocking process locks released by the OS even when an encoder crashes."""
 from __future__ import annotations
 
+from typing import Iterator
+
 from contextlib import contextmanager
 import os
+import importlib
 from pathlib import Path
 
 
 @contextmanager
-def writer_lock(path: Path):
+def writer_lock(path: Path) -> Iterator[None]:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open('a+b') as stream:
         if stream.tell() == 0:
@@ -15,7 +18,7 @@ def writer_lock(path: Path):
         stream.seek(0)
         try:
             if os.name == 'nt':
-                import msvcrt
+                msvcrt = importlib.import_module("msvcrt")
                 msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
             else:
                 import fcntl
@@ -26,7 +29,7 @@ def writer_lock(path: Path):
             yield
         finally:
             if os.name == 'nt':
-                import msvcrt
+                msvcrt = importlib.import_module("msvcrt")
                 stream.seek(0); msvcrt.locking(stream.fileno(), msvcrt.LK_UNLCK, 1)
             else:
                 import fcntl

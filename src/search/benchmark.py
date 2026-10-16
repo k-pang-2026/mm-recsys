@@ -35,14 +35,14 @@ def benchmark(cfg: dict) -> dict:
                 raise RuntimeError('real HTTP server did not become ready')
             sleep(0.05)
         port = server.servers[0].sockets[0].getsockname()[1]
-        results = {}; smoke = []; all_http = []; all_core = []
+        results = {}; smoke: list[dict] = []; all_http = []; all_core = []
         with httpx.Client(base_url=f'http://127.0.0.1:{port}', timeout=30, trust_env=False) as client:
             health = client.get('/health'); assert health.status_code == 200 and health.json()['search_ready']
             for mode in ('text', 'image', 'hybrid'):
                 active = [q for q in queries if q['mode'] == mode]
                 payloads = []
                 for query in active:
-                    payload = {'top_k': 10}
+                    payload: dict = {'top_k': 10}
                     if query['query_text']:
                         payload['query_text'] = query['query_text']
                     if query['query_image_path']:

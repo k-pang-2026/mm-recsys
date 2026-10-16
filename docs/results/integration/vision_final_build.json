@@ -1,0 +1,27 @@
+{
+  "status": "STARTED",
+  "command": [
+    "docker",
+    "compose",
+    "-p",
+    "mm-recsys-integrate-v41",
+    "-f",
+    "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker-compose.yml",
+    "-f",
+    "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.override.yml",
+    "up",
+    "--build",
+    "-d"
+  ],
+  "exit_code": 0,
+  "log": ".team/checks/INTEGRATE/compose_final_vision.txt",
+  "scope": "reuse the independently cold-prepared data and unchanged trained model weights; change query FP32 inference graph only",
+  "source_hashes": {
+    "docker/vision.py": "ac51e6c77f62c18a0cce436a8b494f2d4816f48e763ae25545a00c611ebf358b",
+    "docker/serve.py": "f0a8cee23deb67858af5271e77f409572a9c54006179aff6c96c297c4aad954a",
+    "docker/quality.py": "81210dce4811981dc9eafd479cb680587ea80a7c4026b1193175af14436808fc",
+    "src/evaluation/search.py": "44089d073a3921fdd20a2c8c2bbc8e5e629cddc055b9861bb8c33e7908dc1579",
+    "src/evaluation/run_all.py": "6880612c6a747b1d9c7282d498abcc769fbe32ebedd8a6f6c3eddf6e28edb35e",
+    "docker-compose.yml": "6f6f85cdfc0f038eb07205d662020351cbcc0c70fcee780cec1f358080cc1590"
+  }
+}

@@ -13,10 +13,12 @@ x-runtime: &runtime
     OPENBLAS_NUM_THREADS: "1"
     SERVING_THREADS: ${SERVING_THREADS:-2}
     SERVING_PARALLEL_HYBRID: ${SERVING_PARALLEL_HYBRID:-1}
+    SERVING_OPTIMIZE_VISION: ${SERVING_OPTIMIZE_VISION:-1}
     SERVING_GC_FREEZE: ${SERVING_GC_FREEZE:-1}
     PREPARE_TIMEOUT_SECONDS: ${PREPARE_TIMEOUT_SECONDS:-21600}
     READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
     DOCKER_RUNTIME: "1"
+    RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}
   volumes:
     - ./data:/app/data
     - ./models:/app/models
@@ -57,7 +59,7 @@ services:
     environment:
       SCALE: ${SCALE:-dev}
       API_URL: http://api-server:8000
-      RESULTS_DIR: docs/results/docker/runtime/${SCALE:-dev}
+      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}/${SCALE:-dev}
     ports: ["127.0.0.1:${DASHBOARD_PORT:-8501}:8501"]
     depends_on:
       api-server: {condition: service_healthy}

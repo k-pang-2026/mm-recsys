@@ -5,6 +5,7 @@ import argparse
 from io import BytesIO
 import json
 from pathlib import Path
+from typing import cast
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageEnhance
@@ -51,7 +52,7 @@ def freeze_queries(cfg: dict) -> Path:
         return folder
     products = pd.read_parquet(catalog).sort_values('product_id', kind='stable')
     catalog_hashes = set(products.image_sha256)
-    inverse = {}
+    inverse: dict[str, str] = {}
     for korean, english in ALIASES.items():
         inverse.setdefault(english, korean)
     files = {}; counts = {}; distinct = {}
@@ -79,7 +80,7 @@ def freeze_queries(cfg: dict) -> Path:
                     image = ImageEnhance.Brightness(image).enhance(float(rng.uniform(0.9, 1.1)))
                     image = ImageEnhance.Contrast(image).enhance(float(rng.uniform(0.9, 1.1)))
                     image = image.rotate(float(rng.uniform(-6, 6)), resample=Image.Resampling.BICUBIC,
-                                         translate=tuple(int(v) for v in rng.integers(-4, 5, size=2)), fillcolor='#f4f1ed')
+                                         translate=cast(tuple[int, int], tuple(int(v) for v in rng.integers(-4, 5, size=2))), fillcolor='#f4f1ed')
                     image_path = f'{split}/{mode}-{i:04d}.png'; path = folder/image_path
                     path.parent.mkdir(exist_ok=True); image.save(path)
                     digest = file_hash(path)

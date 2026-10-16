@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "source": "docs/results/integration/ab_full_archive.json",
+  "sha256": "c5162c7f2b69037ece13548eedf0508d545523103f3b0ea48ad7d35790cfef40",
+  "run_id": "85753dadcb466224cd6fa14cce5e36a91e9d1079907981ef168808897ff106d5",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "checks": "assignment, causal counts, denominators, MAB exposure/feedback accounting, independent-user tests, cluster confidence intervals, config/data/source hashes",
+  "seeded_rerun": "UNMEASURED",
+  "repeat_sha256": null,
+  "original_verification": {
+    "source": "docs/results/integration/ab_verification_full.json",
+    "sha256": "12c5d6105f0749bc0a7ba4d2141bcdb2b3c7765193e71a5efa761219eb440184"
+  },
+  "original_sha256": "ab17e3d2667dc13e33bf4e1f1fb5c563448903cccaaf5fcd41fec37d41f7f73b",
+  "archive_schema": "ab-lossless-archive-v1"
+}

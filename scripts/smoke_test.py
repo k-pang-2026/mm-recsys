@@ -116,7 +116,7 @@ def run(cfg: dict, api: str, dashboard: str, benchmark: bool) -> dict:
         data_fingerprint=json.loads(manifest.read_text())['generation_fingerprint'],
         manifest_sha256=file_hash(manifest), config_fingerprint=fingerprint(cfg),
         models={str(p): file_hash(p) for p in model_paths},
-        source_hashes={str(p): file_hash(p) for p in [Path(__file__), Path('docker/runtime.py'), Path('docker/http.py'), Path('docker/serve.py')]},
+        source_hashes={str(p): file_hash(p) for p in [Path(__file__), Path('docker/runtime.py'), Path('docker/http.py'), Path('docker/serve.py'), Path('docker/vision.py')]},
         health=health, responses=responses, checks=dict(api_schemas='PASS', multipart='PASS',
             invalid_search='PASS', session_response='PASS', dashboard_http='PASS'),
         scope='actual HTTP smoke; Streamlit HTTP health does not establish browser rendering')
@@ -195,10 +195,10 @@ def main() -> int:
     result = run(cfg, args.api_url.rstrip('/'), args.dashboard_url, args.benchmark)
     output = args.output or Path(f"docs/results/docker/smoke_{cfg['scale']}.json")
     preparation = Path(cfg['paths']['results_dir']) / 'preparation.json'
-    write_json(Path(f"docs/results/docker/preparation_{cfg['scale']}.json"), json.loads(preparation.read_text()))
+    write_json(output.parent / f"preparation_{cfg['scale']}.json", json.loads(preparation.read_text()))
     write_json(output, result)
     if args.benchmark:
-        write_json(Path('docs/results/latency.json'), result)
+        write_json(output.parent / 'latency.json' if args.output else Path('docs/results/latency.json'), result)
     print(f"Docker smoke: {result['status']} -> {output}")
     return 0 if result['status'] == 'PASS' else 1
 

@@ -108,7 +108,7 @@ def prepare(cfg: dict) -> dict:
     with writer_lock(folder / 'prepare.lock'):
         runtime = config_path(cfg)
         temporary = runtime.with_suffix('.tmp')
-        temporary.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding='utf-8')
+        temporary.write_text(yaml.safe_dump(cfg, allow_unicode=True, sort_keys=False), encoding='utf-8')
         temporary.replace(runtime)
         env = {**os.environ, 'CONFIG_PATH': str(runtime), 'SCALE': cfg['scale'],
                'PYTHONHASHSEED': str(cfg['seed'])}
