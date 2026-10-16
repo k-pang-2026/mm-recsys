@@ -218,3 +218,91 @@ OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.run_all
 라이브 Redis MAB 노출·보상 attribution은 B5 adapter를 사용한 오프라인/B7 실험과 구분하며
 여전히 UNCONNECTED로 공개한다. B8 로컬 커밋은 새 변경 설명과 명시 허가 후에만 푸시한다.
 다음 C 담당 단계는 B9 Continuous Training이다.
+
+## B9 — Continuous Training (2026-10-16, 박채영 C / 리뷰 담당 B)
+
+B8 PR [#10](https://github.com/k-pang-2026/mm-recsys/pull/10)의 병합과 common CI 2개 성공을
+확인하고, `origin/main`의 `32fdb7c`를 C 브랜치에 반영했다. 다른 역할의 미병합 브랜치는 가져오지 않았다.
+
+`src/ct/`에 영속 SQLite 관측 journal, 주기 모니터, 이벤트 임계값 재학습, 버전 레지스트리와
+롤백을 구현했다. 추천 요청의 `X-Recommendation-Request-ID` 응답 헤더를
+`/api/event` 또는 `/api/feedback`에 그대로 보내면 사용자·상품·시간 창을 검증해 결과를 연결한다.
+헤더 없는 이벤트는 고유 event_id로 재학습 수에는 포함하지만 CTR/HitRate의 양성으로 추정하지 않는다.
+CTR은 성숙한 노출 상품 중 연결된 view 상품의 비율이다. HitRate@50은 성숙한 top_n=50 요청 중
+연결된 cart/purchase가 있는 요청의 비율이며, top_n=10 요청이나 미성숙 관측은 그 분모에 넣지 않는다.
+이 값은 온라인 감시 지표이며 B8의 고정 원점 오프라인 품질과 구분한다. 데이터가 없으면 null/UNMEASURED다.
+
+기본 10,000개 새 이벤트 임계값은 공유 `ct.retrain_log_threshold`를 그대로 사용한다.
+별도 파일 잠금으로 동시 재학습을 차단하고, 시작 시 잡은 watermark까지만 학습·소비한다.
+학습 도중 들어온 이벤트는 다음 실행에 남고 실패 시 watermark를 진행하지 않는다.
+관측 이벤트와 노출로 별도 경로에 새로운 시간순 8/1/1 분할을 만든 뒤 기존 B의 Two Tower,
+FAISS, DeepFM, session 학습·로더를 seed 42로 사용한다. 기존 데이터·모델 및 최종 평가의 test를 덮어쓰지 않는다.
+신규 snapshot의 test는 학습·선택에서 열지 않으며, 이전 관측 이력과 B8의 고정 test 평가는 별도로 유지한다.
+
+`models/registry.json`에 버전·일시·부모·config/hash·검증 지표·상태를 보관한다.
+초기 경로는 B의 `models/v1.0/` 그대로이며 후속 번들은 `models/v1.1/` 등에 저장한다.
+B의 고정 v1.0 로더는 C adapter의 임시 디렉터리 뷰로 재사용해 B 코드를 변경하지 않았다.
+기본 승격 기준은 같은 fresh valid cohort의 CTR AUC가 부모보다 **0.001 초과 개선**, AUC **0.70 이상**이다.
+미측정·비유한 값·test 선택·미개선 후보는 승격하지 않고 기존 버전을 유지한다.
+명시적 롤백은 실제 활성화 이력이 있는 조상 버전으로 제한한다.
+
+`POST /api/admin/reload`는 직접 loopback 연결에서만 허용하며 전달된 HTTP 헤더를 신뢰하지 않는다.
+등록된 활성 번들의 모델·index·특징 encoder·session 및 데이터 호환성을 모두 검사하고 warm-up한 뒤
+단일 API 프로세스의 서비스 참조를 교체한다. 처리 중인 요청은 자신이 잡은 기존 참조로 완료한다.
+카탈로그 변경은 검색과 함께 배포해야 하므로 단독 reload에서 거부한다.
+FeatureStore는 같은 객체를 유지해 세션을 보존한다. 실패 시 현재 서비스를 유지한다.
+대시보드는 현재 API 모델 버전과 저장된 측정 버전을 구분하고 중첩 CT 로그를 표시한다.
+
+실제 검증 근거:
+
+- [controlled fixture 결과](../results/ct_dev_fixture.json): 상품 400개·사용자 24명·원본 이벤트 6,000개,
+  초기 5,000개 이후 실제 view/cart/purchase 727개를 추가 관측했다. 작은 fixture의 발동 임계값은 200이며 운영 기본값 10,000을 낮추지 않았다.
+- 초기 fixture의 ranker만 의도적으로 상수 모델로 만들어 AUC 0.5000을 실제 측정했다.
+  후보는 정상적으로 세 모델을 재학습했고 같은 valid cohort에서 AUC 0.9158, HitRate@50 0.9583을 측정했다.
+  v1.0 → v1.1 승격·실제 HTTP reload, 개선 없는 v1.2 거부, v1.0 롤백을 검증했다.
+  교체 중 추천 HTTP 요청 40개가 모두 200이었다. 이 개선율은 약한 초기 fixture와의 비교이며 실제 서비스 개선 근거가 아니다.
+- 최초 4 epoch/1,024 batch 실험은 AUC 0.4110으로 승격이 거부됐다.
+  [실패 근거](../results/experiments/C/ct_fixture_rejected_initial.json)를 보존하고 valid에서만
+  20 epoch/128 batch로 학습을 조정했다. test나 정답·목표 기준은 바꾸지 않았다.
+- 실제 세 학습 보고서와 lifecycle 로그를 `docs/results/experiments/C/ct_*_fixture.json`,
+  `ct_fixture_log.jsonl`에 보존한다. `--verify-existing`이 보고서·로그·등록 번들의 실제 hash를 대조한다.
+- [기존 dev 번들 호환성](../results/ct_bootstrap_dev.json): 기존 데이터 fingerprint
+  `3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c`와 모델을 그대로 등록·로드·warm-up했다.
+  운영 dev 모델을 재학습하거나 fixture로 대체하지 않았다.
+- [CT 활성화 후 실제 HTTP/Redis 측정](../results/ct_serving_dev.json)은 모드별 10 warm-up/100 serial 요청,
+  CPU 1 thread로 수행했다. dev p95는 검색·추천 모두 기존 200ms 기준을 통과했다. 원시 표본과 환경을 결과에 보존한다.
+- 최종 B9 gate의 9개 명령이 모두 종료 코드 0이다. 전체 회귀 검사 **274개 PASS**, 변경 모듈 **14개 mypy PASS**, pip check/compileall/diff 검사 PASS.
+- 재학습 임계값·중복 차단·실패 복구·진행 중 이벤트 보존·승격/거부·손상 번들·롤백·reload 권한과
+  기존 요청 완료·원본 데이터 보존·대시보드 CT 표기를 테스트했다. 최종 명령별 결과는 B9 gate에 기록한다.
+- 최초 로컬 HTTP/Redis 실행은 sandbox의 소켓 제한으로 실패해 정상 실행 권한을 받아 재검증했다.
+
+로컬 실행 및 A B10 인계 인터페이스:
+
+```bash
+# 일반 클론: source scripts/local_env.sh 와 .venv 활성화. 이 macOS 기기는 아래 기기별 runtime도 준비돼 있다.
+source .team/activate.sh
+.venv/bin/python -m src.ct.bootstrap
+# 단일 API worker. CT profile/Compose 정의와 컨테이너 자원 검증은 A B10에서 구성한다.
+.venv/bin/python -m uvicorn src.serving.main:create_app --factory --host 127.0.0.1 --port 8000 --workers 1
+# 별도 프로세스에서 60초마다 모니터. --train을 붙여야 임계값 기반 학습을 실행한다.
+.venv/bin/python -m src.ct.retrain_trigger --watch --train --reload-url http://127.0.0.1:8000
+# 명시적 이전 활성 버전 롤백 예시(실제 레지스트리에 해당 이력이 있을 때만 성공)
+.venv/bin/python -m src.ct.retrain_trigger --rollback v1.0 --reason '운영 검증 후 롤백' --reload-url http://127.0.0.1:8000
+# 전체 학습 번들을 별도 경로에 생성하는 B10용 CLI. 자동 승격하지 않는다.
+.venv/bin/python scripts/train_all.py --data-dir data --work-dir models/.ct/manual-run-new
+# 구조 재현: 매번 새 work-dir에서 실제 작은 학습·HTTP·승격·롤백 수행
+OMP_NUM_THREADS=1 .venv/bin/python -m src.ct.verify_ct
+.venv/bin/python -m src.ct.verify_ct --verify-existing
+OMP_NUM_THREADS=1 .venv/bin/python -m src.ct.verify_serving
+.venv/bin/python -m pytest -q tests
+```
+
+독립 CT worker와 API는 같은 로컬 models/results 볼륨을 사용한다. reload는 API의 직접 loopback에
+호출해야 하며, 여러 API worker/분산 파일시스템의 원자 교체는 검증 범위 밖이다.
+모델 파일은 불변으로 유지하고 새 버전을 등록한다. 카탈로그/사용자 schema 변경은 별도 migration이 필요하다.
+누적 journal과 재학습 이력 정리 정책은 실제 운영 배포에서 별도 결정해야 한다.
+직접 의존성 추가는 없다. Docker/Compose 파일·README·제출 문서는 담당 영역 밖이므로 변경하지 않았다.
+full 규모 CT/최종 test 품질·전체 Compose 재현은 **UNMEASURED**다.
+라이브 Redis MAB 노출·보상 학습 연결의 기존 **UNCONNECTED** 제한도 유지한다.
+B9 로컬 커밋의 푸시·PR 준비 상태 전환은 변경 설명 후 새 명시 허가를 받아 수행한다.
+C 담당 구현은 B9까지이며, PR 병합 후 다음 담당 단계는 A의 B10이다.

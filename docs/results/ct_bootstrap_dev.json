@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "dev",
+  "seed": 42,
+  "active": "v1.0",
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "data_counts": {
+    "products": 10000,
+    "users": 2000,
+    "events": 200000,
+    "impressions": 449696
+  },
+  "manifest_sha256": "646fab8f24733869b7fc53aa3a9683d6a700326f12362812c2bd42ea266acb22",
+  "config_fingerprint": "5a97e145f6ac60ab366220a522f2d56a8987d62ce642ca2349d1b6830dc0ee05",
+  "model_hashes": {
+    "meta.json": "f9eff99fe3654ef5f853e1a627b3cc57b4faa27dba44cf0055f825ec5bb64a34",
+    "two_tower.pt": "e6b37295b6c91c521db18560d2ed5645478565a5be91df474b8674d3dd3c237c",
+    "feature_vocab_scalers.json": "a656cc182b684f1899dd2445f17dfc4215b6b95f1bd424b01d4ea07e96b0db66",
+    "item_ids.json": "847732afec45de1c62011998df1bded37fee1ccc9d0ab5da43c8bd7210fe40bb",
+    "item_index.faiss": "73a1736744dc0e0f3b3954c0fb925b2fd4f97f0da8eefadaf4d0bd524c6c8ee8",
+    "index_manifest.json": "51c3c7d423c6944416193b50ee642da24ab53196835718df0be59737b801b803",
+    "ranking/meta.json": "30d08c7d65222d398600c6ff56aef17d32d6133b92037b3dbe3678254056336e",
+    "ranking/deepfm.pt": "7961891fecffbb0539c66fed57cc9693f1feccbf4dc6fe9296d8c12645c6164a",
+    "ranking/features.json": "d0888ea743e0b7e165981e31a0ef438cad43364c3c61a8cfc51c6f4361c4485b",
+    "session/meta.json": "1357c75c195f261dfdf2a1faf6ad0096991c0c726a5b59eb2f8cbcccc46bcecc",
+    "session/session.pt": "9fd441c5d01d712040e356f9a05075516d719d03580bc3d261a6ac27050a1b12",
+    "session/item_ids.json": "1e22a996e0d5a69f911af6c5a4429a6d44c3e15afa3e3778c74887dcfeb5ceae"
+  },
+  "scope": "existing bundle fully loaded and warmed; no production retraining/promotion"
+}

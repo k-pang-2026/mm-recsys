@@ -1,0 +1,43 @@
+{
+  "status": "RETAINED",
+  "scope": "controlled_fixture; valid-only training diagnosis, not final test",
+  "scale": "controlled_fixture",
+  "seed": 42,
+  "initial_ranking": {
+    "epochs": 4,
+    "batch_size": 1024
+  },
+  "observed": {
+    "split": "valid",
+    "validation_fingerprint": "2daea74ee4ef471da561844e9d9386a7095ab161e82f17d3dc2ffd15ac022b7c",
+    "baseline": {
+      "ctr_auc": 0.5,
+      "ctr_logloss": 0.6931471805599453,
+      "hit_rate_at_50": 0.041666666666666664,
+      "truth_users": 24,
+      "ctr_samples": 1447,
+      "validation_fingerprint": "2daea74ee4ef471da561844e9d9386a7095ab161e82f17d3dc2ffd15ac022b7c"
+    },
+    "candidate": {
+      "ctr_auc": 0.4110034702139965,
+      "ctr_logloss": 7.077196242854012,
+      "hit_rate_at_50": 0.041666666666666664,
+      "truth_users": 24,
+      "ctr_samples": 1447,
+      "validation_fingerprint": "2daea74ee4ef471da561844e9d9386a7095ab161e82f17d3dc2ffd15ac022b7c"
+    },
+    "training_reports": {
+      "candidate": "e7775064002751f1582304405df49b377231d1dd49db04668b7c61fd209717e6",
+      "ranking": "e342b11538c0737ccd2dcfc277c5294d5279abf5c1a93dcd6d3b1df39c8d00a3",
+      "session": "67fe15531179bf7b4af19e024abd8bdfc2abd350aaf55a38f0e6a5b774c3d928"
+    }
+  },
+  "active": "v1.0",
+  "reason": "candidate valid AUC below baseline and configured floor; initial model retained",
+  "next_valid_experiment": {
+    "epochs": 20,
+    "batch_size": 128
+  },
+  "source": "models/.ct/verification/8128158baa/models/registry.json",
+  "sha256": "b8597dc96063efb14f2cdcfb7444bccf5dadbe9d84e023fca5a2a630f0922c84"
+}

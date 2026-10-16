@@ -22,3 +22,14 @@ serving:
       price_penalty: 2.0
       position_decay: 0.25
       conversion_multiplier: 1.0
+  ct:
+    enabled: true
+    poll_seconds: 60
+    recent_seconds: 86400
+    attribution_seconds: 3600
+    min_mature_requests: 20
+    ctr_threshold: 0.01
+    # Event threshold and HitRate threshold inherit the shared ct defaults.
+    promotion_metric: ctr_auc
+    min_improvement: 0.001
+    promotion_floor: 0.70

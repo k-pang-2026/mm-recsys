@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "epochs": [
+    {
+      "epoch": 1,
+      "loss": 4.508822755388302,
+      "valid": {
+        "loss": 4.326161530058263,
+        "sampled_hit_at_10": 0.3163841807909605,
+        "samples": 177,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 0.0364652920034132
+    },
+    {
+      "epoch": 2,
+      "loss": 4.110490960058441,
+      "valid": {
+        "loss": 3.939527263749117,
+        "sampled_hit_at_10": 0.4689265536723164,
+        "samples": 177,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 0.03980308300378965
+    },
+    {
+      "epoch": 3,
+      "loss": 3.7446697956670527,
+      "valid": {
+        "loss": 3.5940048303981285,
+        "sampled_hit_at_10": 0.5875706214689266,
+        "samples": 177,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 0.04056862499419367
+    }
+  ],
+  "best_epoch": 3,
+  "selected_valid": {
+    "loss": 3.5940048303981285,
+    "sampled_hit_at_10": 0.5875706214689266,
+    "samples": 177,
+    "candidates": 65,
+    "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+  },
+  "checkpoint_reload": "PASS",
+  "bundle": {
+    "version": "gru-session-v1",
+    "best_epoch": 3,
+    "selection_split": "valid",
+    "config_fingerprint": "6861cb9663f709ebfea51ea6f1ae1fb339e650ab38665e39dda19ff18bf4622b",
+    "candidate_sha256": "f94ae229fdf6de02d064588f6ce351f48bf92bdea60f91e1dc666f31274e3a47",
+    "data_fingerprint": "09b0d5cfed26a7bce4fd3454e47f065fe32f35eb02e6fdb129ccaf2be38c4927",
+    "hashes": {
+      "session.pt": "0c1dbdfee21da4d25643e73b0e7d6da46ec525fce171a485e04277c9f854fb34",
+      "item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+    }
+  },
+  "elapsed_seconds": 0.5650859169982141,
+  "train_samples": 1323,
+  "strictly_preceding": true,
+  "semantics": "offline recorded session_id; live store inactivity TTL=30min; generator may span hours",
+  "environment": {
+    "torch": "2.6.0",
+    "threads": 1,
+    "device": "cpu"
+  }
+}

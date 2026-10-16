@@ -1,0 +1,105 @@
+{
+  "step": "B9",
+  "owner": "C",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m src.ct.verify_ct",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && .venv/bin/python -m src.ct.verify_ct --verify-existing",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m src.ct.bootstrap --output docs/results/ct_bootstrap_dev.json",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 TOKENIZERS_PARALLELISM=false .venv/bin/python -m src.ct.verify_serving",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && .venv/bin/python -m mypy --follow-imports=skip --no-incremental --cache-dir=/dev/null src/ct src/serving/model_loader.py src/serving/ct_admin.py src/serving/main.py scripts/train_all.py dashboard/app.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m compileall -q src/ct src/serving dashboard scripts/train_all.py tests/test_ct.py tests/test_dashboard.py",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "src/ct/bootstrap.py",
+    "src/ct/retrain_trigger.py",
+    "src/ct/verify_serving.py",
+    "src/ct/monitor.py",
+    "src/ct/verify_ct.py",
+    "src/ct/__init__.py",
+    "src/ct/storage.py",
+    "src/ct/model_registry.py",
+    "src/ct/training.py",
+    "src/serving/model_loader.py",
+    "src/serving/ct_admin.py",
+    "src/serving/main.py",
+    "scripts/train_all.py",
+    "config/serving.yaml",
+    "dashboard/app.py",
+    "tests/test_ct.py",
+    "tests/test_dashboard.py",
+    "docs/results/ct_dev_fixture.json",
+    "docs/results/ct_bootstrap_dev.json",
+    "docs/results/ct_serving_dev.json",
+    "docs/results/ct_log.jsonl",
+    "docs/results/experiments/C/ct_fixture_rejected_initial.json",
+    "docs/results/experiments/C/ct_fixture_log.jsonl",
+    "docs/results/experiments/C/ct_training_candidate_fixture.json",
+    "docs/results/experiments/C/ct_training_ranking_fixture.json",
+    "docs/results/experiments/C/ct_training_session_fixture.json"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "5a97e145f6ac60ab366220a522f2d56a8987d62ce642ca2349d1b6830dc0ee05",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "src/ct/bootstrap.py": "253408a549248b6366fa5ff71fd73e53aa465c666af781252be17e2491e1dc65",
+    "src/ct/retrain_trigger.py": "7c3612b772934c50a4d6e88ad70c7adda7f035c1acb772e208fe7136abd1494a",
+    "src/ct/verify_serving.py": "a6b06579c507ddb5558b9163c06b13f74b25316ce3f8b081e143471b8b63dfb7",
+    "src/ct/monitor.py": "399d6f95ecc6bd109bb1d6d15bb92da42c26279a703d9cf5a9217fe060c98e9e",
+    "src/ct/verify_ct.py": "b3d990c1f6631c04bc065daaedb01012ea2c32f5f397b76324aacfc389b05799",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/storage.py": "ada88b8ce80c6fee60ef41c1ac8791fdfeb8c9ce00cd21d217f8c3e5cdfcd8b6",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/training.py": "5835ce43257c2464273ae612b25add21152efcac99c478113f7f6df61be0a130",
+    "src/serving/model_loader.py": "4493f80736cae68f1215f521acf7d6f8108448d512b5b364d1df1cb1c6379d7c",
+    "src/serving/ct_admin.py": "1f739d8576d3d5cdef3e8115fa9f344a9f6f368cf6bf313057f091fdf401be7c",
+    "src/serving/main.py": "0ef1683ce02a588a0dc8470ce8df84faa3b1f70f38db151149362b66908957f1",
+    "scripts/train_all.py": "f2a1f71838def547b588781db5bc3cf6e8b271e566fe997e8379450fc49907b4",
+    "config/serving.yaml": "44f43100b6f775064112f2b05ef5b4999b23abec928638ba5643265eac0794a9",
+    "dashboard/app.py": "d7c8db4e911684a7f61d2d02b61c989c0f2c3b8a83607944b037097aff18b333",
+    "tests/test_ct.py": "5a9f63cf0fe82f267047fab373bc9e9b8a6995399ed7c4ea6201ed1deb38b606",
+    "tests/test_dashboard.py": "f92c9d76e1266005d5bccb86082a44d03f8467f88015b26d6408819fa60cd047",
+    "docs/results/ct_dev_fixture.json": "273e4fdc959bfff4fa97911b3daf1d90f080b70f359766dd16f6d26b73752461",
+    "docs/results/ct_bootstrap_dev.json": "ac30edee85763cf422a7db5bec0a9d5ddd0634f88c0ef066801373f6b042d8f8",
+    "docs/results/ct_serving_dev.json": "35273c6281a3ad809435ebcfa558112329d9b3d0c689d0c224f31bb6f53bad4c",
+    "docs/results/ct_log.jsonl": "80b312b33960e2e724d16adf89d52dbcad230683ed6709792f01d3b5f9afcd8e",
+    "docs/results/experiments/C/ct_fixture_rejected_initial.json": "7395e6bb60bed02e6ab2713ca8f65b4230c8e099cc71471a0cb6b1035405dc99",
+    "docs/results/experiments/C/ct_fixture_log.jsonl": "353acf0910814f1d9c397798e33c8b40755c5fcb9f16dbf63d267c7e2bab9020",
+    "docs/results/experiments/C/ct_training_candidate_fixture.json": "346c2598dbf3f257736d4599930aaf04a3d1ddd3165931b31d0b17e7fb3dc772",
+    "docs/results/experiments/C/ct_training_ranking_fixture.json": "c43cd8a78d3a849bcc5c1fa2fbf2348997545026adaf9ad5ea8ce16a5ed6d67e",
+    "docs/results/experiments/C/ct_training_session_fixture.json": "a405ef5c351ac550a35bb576ac3e6b46497f29bd55c3744a95f02811f873a4c8"
+  },
+  "commit_summary_ko": "관측 이벤트 기반 재학습과 모델 승격·무중단 교체·롤백 구현"
+}

@@ -1,0 +1,690 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "stage": "B3b",
+  "scale": "dev",
+  "seed": 42,
+  "contract": {
+    "version": "fixed-origin-v1",
+    "split": "valid",
+    "cutoff": "2025-12-24T21:36:00+00:00",
+    "k": 300,
+    "truth": "unique cart/purchase product IDs in evaluation interval; unavailable retained",
+    "catalog": "all products registered <= cutoff",
+    "history": "events strictly < cutoff; frozen",
+    "aggregation": "macro_user; all nonempty-target users",
+    "empty_target_users": "reported; excluded from mean",
+    "exclude_purchased": false,
+    "model": "metadata-only Two Tower; no item-ID residual",
+    "data_fingerprint": "09b0d5cfed26a7bce4fd3454e47f065fe32f35eb02e6fdb129ccaf2be38c4927",
+    "evaluation_fingerprint": "d113414c79f45fc49489e093faf6baeb8a5b7c3fab56deaa7edf1519b4379093"
+  },
+  "feature_contract": {
+    "version": "candidate-features-v1",
+    "vocabs": {
+      "category_l1": {
+        "accessories": 2,
+        "bottoms": 3,
+        "footwear": 4,
+        "outerwear": 5,
+        "tops": 6
+      },
+      "category_l2": {
+        "bags": 2,
+        "casual": 3,
+        "coats": 4,
+        "formal": 5,
+        "headwear": 6,
+        "jackets": 7,
+        "knitwear": 8,
+        "outdoor": 9,
+        "shirts": 10,
+        "shorts": 11,
+        "skirts": 12,
+        "small": 13,
+        "trousers": 14,
+        "warm": 15
+      },
+      "category_l3": {
+        "athletic shorts": 2,
+        "backpack": 3,
+        "beanie": 4,
+        "belt": 5,
+        "bermuda shorts": 6,
+        "blazer": 7,
+        "blouse": 8,
+        "bomber jacket": 9,
+        "boots": 10,
+        "bucket hat": 11,
+        "canvas shoes": 12,
+        "cap": 13,
+        "cardigan": 14,
+        "cargo pants": 15,
+        "chinos": 16,
+        "crossbody bag": 17,
+        "denim jacket": 18,
+        "denim shorts": 19,
+        "fleece jacket": 20,
+        "gloves": 21,
+        "heels": 22,
+        "hiking shoes": 23,
+        "hoodie": 24,
+        "jeans": 25,
+        "knitted vest": 26,
+        "loafers": 27,
+        "long coat": 28,
+        "long skirt": 29,
+        "mini skirt": 30,
+        "oxford shoes": 31,
+        "padded vest": 32,
+        "pea coat": 33,
+        "pleated skirt": 34,
+        "polo shirt": 35,
+        "puffer jacket": 36,
+        "sandals": 37,
+        "scarf": 38,
+        "shirt": 39,
+        "slip-on shoes": 40,
+        "sneakers": 41,
+        "sweater": 42,
+        "sweatshirt": 43,
+        "t-shirt": 44,
+        "tote bag": 45,
+        "trench coat": 46
+      },
+      "brand": {
+        "Classic": 2,
+        "Daily": 3,
+        "Field": 4,
+        "Muse": 5,
+        "North": 6,
+        "Studio": 7,
+        "Urban": 8,
+        "Value": 9
+      },
+      "color": {
+        "black": 2,
+        "blue": 3,
+        "brown": 4,
+        "green": 5,
+        "pink": 6,
+        "red": 7,
+        "white": 8,
+        "yellow": 9
+      },
+      "style": {
+        "oversized": 2,
+        "regular": 3,
+        "relaxed": 4,
+        "slim": 5
+      },
+      "age_group": {
+        "18-24": 2,
+        "25-34": 3,
+        "35-44": 4,
+        "45+": 5
+      },
+      "gender": {
+        "F": 2,
+        "M": 3,
+        "unspecified": 4
+      }
+    },
+    "price_mean": 11.472871549586031,
+    "price_std": 0.6842604799681511,
+    "fit_cutoff": "2025-12-24T21:36:00+00:00",
+    "pad": 0,
+    "unknown": 1,
+    "item_id_residual": false,
+    "user_fields": [
+      "age_group",
+      "gender"
+    ],
+    "item_fields": [
+      "category_l1",
+      "category_l2",
+      "category_l3",
+      "brand",
+      "color",
+      "style"
+    ]
+  },
+  "bundle_contract": {
+    "version": "candidate-bundle-v1",
+    "directory": "models[/full]/v1.0",
+    "files": {
+      "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+      "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+      "item_ids.json": "canonical ordered public IDs, excludes PAD",
+      "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+      "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+      "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+    },
+    "history_inputs": [
+      "observed product IDs before timestamp",
+      "age_group",
+      "gender",
+      "past purchase category/brand distribution and price"
+    ],
+    "item_inputs": [
+      "category_l1",
+      "category_l2",
+      "category_l3",
+      "brand",
+      "color",
+      "style",
+      "price"
+    ],
+    "persona": false,
+    "item_id_residual": false,
+    "normalized": true,
+    "metric": "inner_product"
+  },
+  "sampling": {
+    "random_negatives_per_positive": 4,
+    "calls": 3317,
+    "rejected_draws": 342,
+    "replacement_small_pool_samples": 0,
+    "impossible_pool_policy": "raise; never silently skip",
+    "small_pool_policy": "uniform with replacement; duplicate counts retained",
+    "resampling": "fixed independent random draws for each sample, reused across epochs",
+    "exclusion": "current + strictly previous view/cart/purchase; no future labels",
+    "in_batch_negatives": false,
+    "hard_negatives": false,
+    "samples": 3317,
+    "strictly_preceding_history": true
+  },
+  "tiny_train_fit": {
+    "status": "PASS",
+    "scope": "train-only debugging; not retrieval quality",
+    "sample_count": 16,
+    "event_ids": [
+      "E000000051",
+      "E000000080",
+      "E000000145",
+      "E000000216",
+      "E000000248",
+      "E000000273",
+      "E000000296",
+      "E000000383",
+      "E000000411",
+      "E000000441",
+      "E000000490",
+      "E000000518",
+      "E000000547",
+      "E000000590",
+      "E000000631",
+      "E000000671"
+    ],
+    "fixture_fingerprint": "b490010996c12aab4f5014c6bebe7cd3034c75c9f8fb0426f248ac942374131f",
+    "initial_loss": 2.494222640991211,
+    "final_loss": 1.4294973880168982e-05,
+    "initial_accuracy": 0.0625,
+    "final_accuracy": 1.0,
+    "final_cosine_margin": 1.4482675552368165,
+    "gradient_steps": 160,
+    "fixed_random_negatives": 4
+  },
+  "baselines": {
+    "train_popularity": {
+      "recall_at_300": 0.9791666666666666,
+      "macro_users": 24,
+      "empty_target_users": 0,
+      "average_truth_size": 1.7083333333333333,
+      "candidate_count_min": 300,
+      "candidate_count_max": 300,
+      "eligible_catalog": 384,
+      "unavailable_truth_items": 0,
+      "rare_truth_items": 6,
+      "new_truth_items": 0,
+      "repeated_purchase_truth_items": 20,
+      "average_recall_upper_bound": 1.0,
+      "cohorts": {
+        "all": {
+          "users": 24,
+          "recall_at_300": 0.9791666666666666
+        },
+        "cold": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "warm": {
+          "users": 24,
+          "recall_at_300": 0.9791666666666666
+        },
+        "no_history": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "rare_target": {
+          "users": 6,
+          "recall_at_300": 0.9166666666666666
+        },
+        "new_target": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "unavailable_target": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "repeat_purchase": {
+          "users": 17,
+          "recall_at_300": 0.9705882352941176
+        }
+      }
+    },
+    "observed_history_profile": {
+      "recall_at_300": 0.9166666666666666,
+      "macro_users": 24,
+      "empty_target_users": 0,
+      "average_truth_size": 1.7083333333333333,
+      "candidate_count_min": 300,
+      "candidate_count_max": 300,
+      "eligible_catalog": 384,
+      "unavailable_truth_items": 0,
+      "rare_truth_items": 6,
+      "new_truth_items": 0,
+      "repeated_purchase_truth_items": 20,
+      "average_recall_upper_bound": 1.0,
+      "cohorts": {
+        "all": {
+          "users": 24,
+          "recall_at_300": 0.9166666666666666
+        },
+        "cold": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "warm": {
+          "users": 24,
+          "recall_at_300": 0.9166666666666666
+        },
+        "no_history": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "rare_target": {
+          "users": 6,
+          "recall_at_300": 0.6666666666666666
+        },
+        "new_target": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "unavailable_target": {
+          "users": 0,
+          "recall_at_300": null
+        },
+        "repeat_purchase": {
+          "users": 17,
+          "recall_at_300": 0.9411764705882353
+        }
+      }
+    }
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "weighted_loss": 1.2379931194333853,
+      "cosine_positive_negative_margin": 0.10084961657427792,
+      "mean_user_norm": 1.0,
+      "mean_item_norm": 1.0,
+      "mean_gradient_norm": 2.795080508504595,
+      "parameter_update_l2": 1.006109356880188,
+      "optimizer_updates": 7,
+      "samples": 3317,
+      "user_dimension_std": 0.07596540451049805,
+      "item_dimension_std": 0.09147419035434723,
+      "user_mean_vector_norm": 0.7744671106338501,
+      "item_mean_vector_norm": 0.6770546436309814,
+      "valid": {
+        "recall_at_300": 0.9166666666666666,
+        "macro_users": 24,
+        "empty_target_users": 0,
+        "average_truth_size": 1.7083333333333333,
+        "candidate_count_min": 300,
+        "candidate_count_max": 300,
+        "eligible_catalog": 384,
+        "unavailable_truth_items": 0,
+        "rare_truth_items": 6,
+        "new_truth_items": 0,
+        "repeated_purchase_truth_items": 20,
+        "average_recall_upper_bound": 1.0,
+        "cohorts": {
+          "all": {
+            "users": 24,
+            "recall_at_300": 0.9166666666666666
+          },
+          "cold": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "warm": {
+            "users": 24,
+            "recall_at_300": 0.9166666666666666
+          },
+          "no_history": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "rare_target": {
+            "users": 6,
+            "recall_at_300": 0.6666666666666666
+          },
+          "new_target": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "unavailable_target": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "repeat_purchase": {
+            "users": 17,
+            "recall_at_300": 0.9411764705882353
+          }
+        }
+      },
+      "seconds": 0.16750254199723713
+    },
+    {
+      "epoch": 2,
+      "weighted_loss": 0.5752160798753448,
+      "cosine_positive_negative_margin": 0.28500854013769034,
+      "mean_user_norm": 1.0,
+      "mean_item_norm": 1.0,
+      "mean_gradient_norm": 1.2584755761282784,
+      "parameter_update_l2": 0.688105583190918,
+      "optimizer_updates": 7,
+      "samples": 3317,
+      "user_dimension_std": 0.08857880532741547,
+      "item_dimension_std": 0.10177157074213028,
+      "user_mean_vector_norm": 0.6745054125785828,
+      "item_mean_vector_norm": 0.5740011930465698,
+      "valid": {
+        "recall_at_300": 0.8958333333333334,
+        "macro_users": 24,
+        "empty_target_users": 0,
+        "average_truth_size": 1.7083333333333333,
+        "candidate_count_min": 300,
+        "candidate_count_max": 300,
+        "eligible_catalog": 384,
+        "unavailable_truth_items": 0,
+        "rare_truth_items": 6,
+        "new_truth_items": 0,
+        "repeated_purchase_truth_items": 20,
+        "average_recall_upper_bound": 1.0,
+        "cohorts": {
+          "all": {
+            "users": 24,
+            "recall_at_300": 0.8958333333333334
+          },
+          "cold": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "warm": {
+            "users": 24,
+            "recall_at_300": 0.8958333333333334
+          },
+          "no_history": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "rare_target": {
+            "users": 6,
+            "recall_at_300": 0.6666666666666666
+          },
+          "new_target": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "unavailable_target": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "repeat_purchase": {
+            "users": 17,
+            "recall_at_300": 0.9117647058823529
+          }
+        }
+      },
+      "seconds": 0.1671648749979795
+    },
+    {
+      "epoch": 3,
+      "weighted_loss": 0.41774593088742024,
+      "cosine_positive_negative_margin": 0.40265238143465476,
+      "mean_user_norm": 1.0,
+      "mean_item_norm": 1.0,
+      "mean_gradient_norm": 1.1901751075472151,
+      "parameter_update_l2": 0.5002118349075317,
+      "optimizer_updates": 7,
+      "samples": 3317,
+      "user_dimension_std": 0.09617363661527634,
+      "item_dimension_std": 0.10934803634881973,
+      "user_mean_vector_norm": 0.598861038684845,
+      "item_mean_vector_norm": 0.47513332962989807,
+      "valid": {
+        "recall_at_300": 0.9791666666666666,
+        "macro_users": 24,
+        "empty_target_users": 0,
+        "average_truth_size": 1.7083333333333333,
+        "candidate_count_min": 300,
+        "candidate_count_max": 300,
+        "eligible_catalog": 384,
+        "unavailable_truth_items": 0,
+        "rare_truth_items": 6,
+        "new_truth_items": 0,
+        "repeated_purchase_truth_items": 20,
+        "average_recall_upper_bound": 1.0,
+        "cohorts": {
+          "all": {
+            "users": 24,
+            "recall_at_300": 0.9791666666666666
+          },
+          "cold": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "warm": {
+            "users": 24,
+            "recall_at_300": 0.9791666666666666
+          },
+          "no_history": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "rare_target": {
+            "users": 6,
+            "recall_at_300": 1.0
+          },
+          "new_target": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "unavailable_target": {
+            "users": 0,
+            "recall_at_300": null
+          },
+          "repeat_purchase": {
+            "users": 17,
+            "recall_at_300": 0.9705882352941176
+          }
+        }
+      },
+      "seconds": 0.16203920900443336
+    }
+  ],
+  "best_epoch": 3,
+  "best_valid_exact": {
+    "recall_at_300": 0.9791666666666666,
+    "macro_users": 24,
+    "empty_target_users": 0,
+    "average_truth_size": 1.7083333333333333,
+    "candidate_count_min": 300,
+    "candidate_count_max": 300,
+    "eligible_catalog": 384,
+    "unavailable_truth_items": 0,
+    "rare_truth_items": 6,
+    "new_truth_items": 0,
+    "repeated_purchase_truth_items": 20,
+    "average_recall_upper_bound": 1.0,
+    "cohorts": {
+      "all": {
+        "users": 24,
+        "recall_at_300": 0.9791666666666666
+      },
+      "cold": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "warm": {
+        "users": 24,
+        "recall_at_300": 0.9791666666666666
+      },
+      "no_history": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "rare_target": {
+        "users": 6,
+        "recall_at_300": 1.0
+      },
+      "new_target": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "unavailable_target": {
+        "users": 0,
+        "recall_at_300": null
+      },
+      "repeat_purchase": {
+        "users": 17,
+        "recall_at_300": 0.9705882352941176
+      }
+    }
+  },
+  "checkpoint_reload": "PASS",
+  "bundle": {
+    "contract": {
+      "version": "candidate-bundle-v1",
+      "directory": "models[/full]/v1.0",
+      "files": {
+        "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+        "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+        "item_ids.json": "canonical ordered public IDs, excludes PAD",
+        "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+        "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+        "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+      },
+      "history_inputs": [
+        "observed product IDs before timestamp",
+        "age_group",
+        "gender",
+        "past purchase category/brand distribution and price"
+      ],
+      "item_inputs": [
+        "category_l1",
+        "category_l2",
+        "category_l3",
+        "brand",
+        "color",
+        "style",
+        "price"
+      ],
+      "persona": false,
+      "item_id_residual": false,
+      "normalized": true,
+      "metric": "inner_product"
+    },
+    "scale": "dev",
+    "dim": 64,
+    "model_version": "v1.0",
+    "retrieval": "HNSW inner_product; cutoff filtering and adaptive refill",
+    "best_epoch": 3,
+    "best_valid_recall_at_300": 0.9791666666666666,
+    "data_fingerprint": "09b0d5cfed26a7bce4fd3454e47f065fe32f35eb02e6fdb129ccaf2be38c4927",
+    "catalog_sha256": "c8d0770130d65a1f28ceafa2a33dde19883bc309de197ee58dc46822468c96ed",
+    "feature_fingerprint": "8ebec1c20ca4a1888cf09d5654ba0fefffe78cdaea5a35268c9009348299cb3a",
+    "config_fingerprint": "38a14a233cdfb468f1838225c260f0e33158e6db749cca686c30870a4cd9359a",
+    "candidate_scope_fingerprint": "94f7c11a02a432696d670b7c933802fd2ed8f8eeb94eda65bd6d8084ccc14071",
+    "training_spec": {
+      "dim": 64,
+      "history_n": 50,
+      "batch_size": 512,
+      "epochs": 3,
+      "patience": 3,
+      "learning_rate": 0.001,
+      "temperature": 0.1,
+      "negatives_per_positive": 4,
+      "loss": "sampled_softmax",
+      "positive_weights": {
+        "view": 0.2,
+        "cart": 0.6,
+        "purchase": 1.0
+      },
+      "faiss": {
+        "type": "HNSW",
+        "metric": "inner_product",
+        "M": 32,
+        "ef_search": 512
+      },
+      "embedding_dim": 16,
+      "hidden_dim": 128,
+      "weight_decay": 0.0001,
+      "threads": 1,
+      "num_workers": 0,
+      "history_pooling": "mean",
+      "item_id_residual": false,
+      "profile_categories": "category_l3",
+      "tiny_fit_steps": 160,
+      "tiny_fit_learning_rate": 0.01
+    },
+    "hashes": {
+      "two_tower.pt": "f94ae229fdf6de02d064588f6ce351f48bf92bdea60f91e1dc666f31274e3a47",
+      "feature_vocab_scalers.json": "4ec7c38d1b673d55c6dccbdda5cddedd66128693050d7f096f234c2ee4bf3fbf",
+      "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+      "item_index.faiss": "c02cebff4f4a5ef7aa001e689e8c4edcfd147968678fd2124e7d052b26d0697a",
+      "index_manifest.json": "b2af4542f8114e1313e7d47e5e5a78c769824eceb9ea7cee7869d4e687b151e4"
+    }
+  },
+  "elapsed_seconds": 1.269177166002919,
+  "environment": {
+    "python": "3.11.17",
+    "torch": "2.6.0",
+    "numpy": "2.1.3",
+    "platform": "macOS-26.6-arm64-arm-64bit",
+    "cpu_count": 10,
+    "threads": 1,
+    "device": "cpu",
+    "pythonhashseed": "42",
+    "determinism": "seeded CPU run; cross-platform floating-point differences possible"
+  },
+  "full_test_quality": "UNMEASURED",
+  "ann": {
+    "version": "candidate-index-v1",
+    "type": "HNSWFlat",
+    "metric": "inner_product",
+    "normalized": true,
+    "dim": 64,
+    "ntotal": 400,
+    "mapping": "FAISS label i -> item_ids.json[i] -> table row i+1",
+    "M": 32,
+    "ef_construction": 200,
+    "ef_search": 512,
+    "build_threads": 1,
+    "faiss_version": "1.9.0",
+    "model_sha256": "f94ae229fdf6de02d064588f6ce351f48bf92bdea60f91e1dc666f31274e3a47",
+    "feature_fingerprint": "8ebec1c20ca4a1888cf09d5654ba0fefffe78cdaea5a35268c9009348299cb3a",
+    "data_fingerprint": "09b0d5cfed26a7bce4fd3454e47f065fe32f35eb02e6fdb129ccaf2be38c4927",
+    "catalog_sha256": "c8d0770130d65a1f28ceafa2a33dde19883bc309de197ee58dc46822468c96ed",
+    "config_fingerprint": "38a14a233cdfb468f1838225c260f0e33158e6db749cca686c30870a4cd9359a",
+    "item_ids_sha256": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+    "vectors_sha256": "30c10aec7c33f15d9f9740b9cdcbb62e70fcb9fe2bb5fd7d67bb8f8afcbffd7e",
+    "index_sha256": "c02cebff4f4a5ef7aa001e689e8c4edcfd147968678fd2124e7d052b26d0697a",
+    "catalog_filter": "created_at <= request cutoff"
+  },
+  "latency": "UNMEASURED"
+}
