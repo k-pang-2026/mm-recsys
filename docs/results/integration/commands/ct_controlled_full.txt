@@ -1,0 +1,4 @@
+Full paired CTR complete; replace process before loading HTTP API to release evaluation memory
+Isolated full CT lifecycle PASS; production remains RETAINED
+
+Actual wait output: 0

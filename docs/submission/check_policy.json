@@ -23,7 +23,15 @@
     "scripts/smoke_test.py",
     "scripts/check_submission.py",
     "scripts/check_submission_evidence.py",
-    "docs/submission/audit_review.md"
+    "docs/submission/audit_review.md",
+    "docs/submission/dataset_scope.json",
+    "docs/submission/integration_config.yaml",
+    "scripts/verify_integration_data.py",
+    "scripts/verify_integration_mab.py",
+    "scripts/verify_integration_ct.py",
+    "scripts/archive_integration_ab.py",
+    "scripts/resume_integration_ct.py",
+    "scripts/verify_integration_ct_lifecycle.py"
   ],
   "modules": [
     "src/common/config.py",

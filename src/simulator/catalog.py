@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 import json
 import hashlib
 from pathlib import Path
@@ -20,7 +22,7 @@ def render_product(row: dict, cfg: dict, variant: int = 0) -> Image.Image:
     color = cfg['simulator']['colors'][row['color']]
     # Category-specific silhouettes, kept away from crop edges; no text/ID/brand watermark.
     x = size / 224
-    def points(values):
+    def points(values: Any) -> Any:
         return [(int(a*x), int(b*x)) for a,b in values]
     kind = row['category_l1']
     if kind in ('tops', 'outerwear'):

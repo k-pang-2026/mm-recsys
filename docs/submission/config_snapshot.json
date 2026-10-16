@@ -1,10 +1,11 @@
 {
-  "scope": "B11 checked-in YAML recipe; B10 measured runtime config fingerprint is separately recorded in quality identity",
+  "scope": "canonical recipe and local artifact aliases; measured Docker config/model/source identity is separate",
   "files": {
     "config.yaml": "3eda693cfbde5cb9b6a54f70e342177032eb9dc3724776c406ee98042c07aa9b",
     "config/search.yaml": "5a81c24829fa34fdfeea77f084aff15c80640c7733dcc5e95985a7bbbae7acb8",
     "config/recommend.yaml": "1cecc33dd0fb1aa965a60516b6473b128fc871e830d0dbbd8a40bf3e9fcb5cb1",
-    "config/serving.yaml": "44f43100b6f775064112f2b05ef5b4999b23abec928638ba5643265eac0794a9"
+    "config/serving.yaml": "44f43100b6f775064112f2b05ef5b4999b23abec928638ba5643265eac0794a9",
+    "docs/submission/integration_config.yaml": "bef8d79924d04894bf5b30f423cf6dc0ea16a795c992148f71b3a46fd4de9bfc"
   },
   "config": {
     "schema_version": 4,
@@ -23,9 +24,649 @@
       }
     },
     "paths": {
+      "data_dir": "data/integration-v41-full",
+      "model_dir": "models/integration-v41-full",
+      "results_dir": "docs/results",
+      "split_dir": "data/integration-v41-full/split",
+      "by_scale": {
+        "full": {
+          "data_dir": "data/integration-v41-full",
+          "split_dir": "data/integration-v41-full/split",
+          "model_dir": "models/integration-v41-full"
+        }
+      }
+    },
+    "simulator": {
+      "n_products": 50000,
+      "n_users": 10000,
+      "n_events": 1000000,
+      "reference_time": "2026-01-01T00:00:00Z",
+      "image_size": 224,
+      "choice_model": {
+        "uniform_noise": 0.05,
+        "zipf_alpha": 1.2,
+        "preferred_leaf_probability": 0.86,
+        "preferred_brand_probability": 0.88
+      },
+      "event_types": [
+        "search",
+        "view",
+        "cart",
+        "purchase"
+      ],
+      "personas": {
+        "trendsetter": {
+          "ratio": 0.15,
+          "price_sensitivity": 0.3,
+          "cvr": 0.05,
+          "category_preferences": [
+            0.3,
+            0.2,
+            0.2,
+            0.2,
+            0.1
+          ]
+        },
+        "pragmatist": {
+          "ratio": 0.2,
+          "price_sensitivity": 0.6,
+          "cvr": 0.04,
+          "category_preferences": [
+            0.25,
+            0.25,
+            0.2,
+            0.2,
+            0.1
+          ]
+        },
+        "bargain": {
+          "ratio": 0.2,
+          "price_sensitivity": 0.9,
+          "cvr": 0.03,
+          "category_preferences": [
+            0.3,
+            0.25,
+            0.1,
+            0.2,
+            0.15
+          ]
+        },
+        "brand_loyal": {
+          "ratio": 0.15,
+          "price_sensitivity": 0.2,
+          "cvr": 0.06,
+          "category_preferences": [
+            0.2,
+            0.2,
+            0.2,
+            0.2,
+            0.2
+          ]
+        },
+        "impulsive": {
+          "ratio": 0.15,
+          "price_sensitivity": 0.5,
+          "cvr": 0.08,
+          "category_preferences": [
+            0.25,
+            0.15,
+            0.2,
+            0.2,
+            0.2
+          ]
+        },
+        "careful": {
+          "ratio": 0.15,
+          "price_sensitivity": 0.7,
+          "cvr": 0.02,
+          "category_preferences": [
+            0.2,
+            0.2,
+            0.3,
+            0.2,
+            0.1
+          ]
+        }
+      },
+      "window_days": 30,
+      "new_item_ratio": 0.04,
+      "cold_user_ratio": 0.03,
+      "cold_max_events": 3,
+      "impressions_per_view": 4,
+      "image_variants": 8,
+      "transitions": {
+        "search": {
+          "view": 1.0
+        },
+        "view": {
+          "view": 0.46,
+          "cart": 0.2,
+          "exit": 0.34
+        },
+        "cart": {
+          "purchase": 0.45,
+          "view": 0.25,
+          "exit": 0.3
+        },
+        "purchase": {
+          "exit": 1.0
+        },
+        "exit": {
+          "search": 1.0
+        }
+      },
+      "taxonomy": {
+        "tops": {
+          "shirts": [
+            "shirt",
+            "blouse",
+            "polo shirt"
+          ],
+          "knitwear": [
+            "sweater",
+            "cardigan",
+            "knitted vest"
+          ],
+          "casual": [
+            "hoodie",
+            "sweatshirt",
+            "t-shirt"
+          ]
+        },
+        "bottoms": {
+          "trousers": [
+            "jeans",
+            "chinos",
+            "cargo pants"
+          ],
+          "shorts": [
+            "denim shorts",
+            "bermuda shorts",
+            "athletic shorts"
+          ],
+          "skirts": [
+            "mini skirt",
+            "pleated skirt",
+            "long skirt"
+          ]
+        },
+        "outerwear": {
+          "coats": [
+            "long coat",
+            "trench coat",
+            "pea coat"
+          ],
+          "jackets": [
+            "bomber jacket",
+            "denim jacket",
+            "blazer"
+          ],
+          "warm": [
+            "puffer jacket",
+            "fleece jacket",
+            "padded vest"
+          ]
+        },
+        "footwear": {
+          "casual": [
+            "sneakers",
+            "slip-on shoes",
+            "canvas shoes"
+          ],
+          "formal": [
+            "loafers",
+            "oxford shoes",
+            "heels"
+          ],
+          "outdoor": [
+            "boots",
+            "sandals",
+            "hiking shoes"
+          ]
+        },
+        "accessories": {
+          "bags": [
+            "backpack",
+            "tote bag",
+            "crossbody bag"
+          ],
+          "headwear": [
+            "cap",
+            "beanie",
+            "bucket hat"
+          ],
+          "small": [
+            "scarf",
+            "belt",
+            "gloves"
+          ]
+        }
+      },
+      "brands": [
+        "North",
+        "Urban",
+        "Classic",
+        "Field",
+        "Studio",
+        "Value",
+        "Muse",
+        "Daily"
+      ],
+      "colors": {
+        "black": "#222222",
+        "white": "#eeeeee",
+        "red": "#c73c3c",
+        "blue": "#315fa8",
+        "green": "#3e835a",
+        "yellow": "#d2ac3a",
+        "brown": "#8b6244",
+        "pink": "#db8ba0"
+      },
+      "styles": [
+        "regular",
+        "relaxed",
+        "slim",
+        "oversized"
+      ],
+      "category_price_ranges": {
+        "tops": [
+          15000,
+          140000
+        ],
+        "bottoms": [
+          20000,
+          160000
+        ],
+        "outerwear": [
+          50000,
+          350000
+        ],
+        "footwear": [
+          30000,
+          220000
+        ],
+        "accessories": [
+          10000,
+          180000
+        ]
+      }
+    },
+    "search": {
+      "clip_model": "openai/clip-vit-base-patch32",
+      "batch_size": 32,
+      "top_k": 10,
+      "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+      "faiss": {
+        "type": "HNSW",
+        "metric": "inner_product",
+        "M": 32,
+        "ef_construction": 200,
+        "ef_search": 32,
+        "threads": 4,
+        "nlist": 256,
+        "m": 16,
+        "nbits": 8,
+        "nprobe": 16
+      },
+      "fusion": {
+        "text_weight": 0.5,
+        "image_weight": 0.5
+      },
+      "query_fusion": {
+        "text_weight": 0.75,
+        "image_weight": 0.25
+      },
+      "evaluation": {
+        "relevance": "observable_attributes",
+        "queries_per_mode": 200,
+        "ann_recall_k": 10,
+        "version": "observable-query-v1",
+        "valid_seed": 42001,
+        "test_seed": 42002,
+        "text_style_probability": 0.5,
+        "korean_probability": 0.5,
+        "ef_search_sweep": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "fusion_sweep": [
+          0.25,
+          0.5,
+          0.75
+        ]
+      },
+      "device": "cpu",
+      "torch_threads": 1,
+      "local_files_only": true,
+      "embedding_chunk_size": 256,
+      "artifact_subdir": "search",
+      "deduplicate_vectors": true,
+      "modes": {
+        "text": "text",
+        "image": "image",
+        "hybrid": "text"
+      }
+    },
+    "recommend": {
+      "candidate_k": 300,
+      "top_n": 10,
+      "exclude_purchased": false,
+      "candidate": {
+        "dim": 64,
+        "history_n": 50,
+        "batch_size": 512,
+        "epochs": 20,
+        "patience": 3,
+        "learning_rate": 0.001,
+        "temperature": 0.1,
+        "negatives_per_positive": 4,
+        "loss": "sampled_softmax",
+        "positive_weights": {
+          "view": 0.2,
+          "cart": 0.6,
+          "purchase": 1.0
+        },
+        "faiss": {
+          "type": "HNSW",
+          "metric": "inner_product",
+          "M": 32,
+          "ef_search": 512
+        },
+        "embedding_dim": 16,
+        "hidden_dim": 128,
+        "weight_decay": 0.0001,
+        "threads": 4,
+        "num_workers": 0,
+        "history_pooling": "mean",
+        "item_id_residual": false,
+        "profile_categories": "category_l3",
+        "tiny_fit_steps": 160,
+        "tiny_fit_learning_rate": 0.01
+      },
+      "evaluation": {
+        "cutoff_policy": "fixed_origin",
+        "target_events": [
+          "cart",
+          "purchase"
+        ],
+        "aggregation": "macro_user",
+        "k": 300,
+        "coverage_top_n": 50,
+        "coverage_users": 10000,
+        "min_history": 0
+      },
+      "mab": {
+        "algo": "epsilon_greedy",
+        "epsilon": 0.1,
+        "arm": "item",
+        "exploration_slots": 2,
+        "ucb_coefficient": 1.41421356237,
+        "exposure_ttl_seconds": 1800,
+        "click_reward": 0.2,
+        "purchase_reward": 1.0
+      },
+      "new_item_days": 7,
+      "max_consecutive_same_category": 2,
+      "cold_start_min_events": 5,
+      "scoring": {
+        "strategy": "ctr"
+      },
+      "candidate_config_snapshot": "docs/results/candidate_config_original.json",
+      "ranking": {
+        "embedding_dim": 16,
+        "hidden_dims": [
+          128,
+          64
+        ],
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 1024,
+        "epochs": 20,
+        "patience": 3,
+        "threads": 1,
+        "attribution_seconds": 1800,
+        "cvr_loss_weight": 1.0,
+        "cross_features": true
+      },
+      "reranking": {
+        "category_field": "category_l3",
+        "pipeline": [
+          "cold_start",
+          "new_item",
+          "exploration",
+          "diversity"
+        ],
+        "cold_sort": "popularity_growth",
+        "trend_days": 3,
+        "growth_weight": 0.5
+      },
+      "session": {
+        "enabled": true,
+        "hidden_dim": 64,
+        "max_length": 20,
+        "learning_rate": 0.001,
+        "weight_decay": 0.0001,
+        "batch_size": 1024,
+        "epochs": 20,
+        "patience": 3,
+        "session_weight": 0.3,
+        "long_term_weight": 0.7,
+        "negatives": 64,
+        "temperature": 0.1
+      },
+      "baselines": {
+        "category_weight": 1.0,
+        "brand_weight": 1.0,
+        "price_weight": 0.25,
+        "popularity_weight": 0.25
+      },
+      "diagnostics": {
+        "rare_max_train_events": 2,
+        "cold_max_history": 4
+      }
+    },
+    "split": {
+      "train": 0.8,
+      "valid": 0.1,
+      "test": 0.1
+    },
+    "ct": {
+      "hitrate_threshold": 0.2,
+      "retrain_log_threshold": 10000
+    },
+    "redis": {
+      "host": "redis",
+      "port": 6379
+    },
+    "benchmark": {
+      "warmup": 10,
+      "requests": 100,
+      "concurrency": 1
+    },
+    "targets": {
+      "mrr": 0.55,
+      "ndcg_at_10": 0.5,
+      "recall_at_300": 0.3,
+      "auc": 0.7,
+      "hit_rate_at_50": 0.2,
+      "ndcg_at_50": 0.08,
+      "coverage": 0.2,
+      "candidate_p95_ms": 100,
+      "search_p95_ms": 200,
+      "recommend_p95_ms": 200,
+      "feature_p95_ms": 10
+    },
+    "serving": {
+      "feature_store": "redis",
+      "history_limit": 50,
+      "session_ttl_seconds": 1800,
+      "feedback_ttl_seconds": 86400,
+      "plugins": {
+        "search": "src.search.service",
+        "recommend": "src.recommendation.service"
+      },
+      "evaluation": {
+        "nprobe_sweep": [
+          1,
+          4,
+          8,
+          16,
+          32
+        ]
+      },
+      "redis": {
+        "timeout_seconds": 0.2,
+        "max_connections": 32,
+        "write_retries": 8,
+        "db": 0
+      },
+      "ab_test": {
+        "control": "popularity",
+        "treatment": "full_pipeline",
+        "users_per_group": 5000,
+        "days": 30,
+        "top_n": 10,
+        "dev_population_fraction": 0.2,
+        "outcome": {
+          "click_base": 0.35,
+          "category_weight": 1.0,
+          "price_penalty": 2.0,
+          "position_decay": 0.25,
+          "conversion_multiplier": 1.0
+        }
+      },
+      "ct": {
+        "enabled": true,
+        "poll_seconds": 60,
+        "recent_seconds": 86400,
+        "attribution_seconds": 3600,
+        "min_mature_requests": 20,
+        "ctr_threshold": 0.01,
+        "promotion_metric": "ctr_auc",
+        "min_improvement": 0.001,
+        "promotion_floor": 0.7
+      }
+    }
+  },
+  "measured_identity": {
+    "config_fingerprint": "9583514dd2caafaf009814bf28bd153c6fdd11972b9e05613208ea664ffedcd1",
+    "data_manifest_sha256": "eca39fe2b88444e3c24aed55e496d132113600913f2c8ec7253a6a0ce64d3d46",
+    "models": {
+      "models/full/v1.0/meta.json": "1774d850d2103e9f8dcd84c680d979bcce095ab9f5d8480be4e0411f6955e763",
+      "models/full/v1.0/ranking/meta.json": "cdc5cbb82075c62648cacc6ce756dbe86e0c6c4682bebef30aa542a432199431",
+      "models/full/v1.0/session/meta.json": "97a4e353ba318d2a3bdf450f73351398f45daa3fdec896cb825b2f81101ef7df",
+      "models/full/search/embeddings_current.json": "2422311463f9b1f23c0c5c0727cc2a42611d695b4359294d4563ec6abd989826",
+      "models/full/search/indexes_current.json": "860f251a84bf11d2891fd57bccb96c819a7ba5e893630de643be141f051a3bf1"
+    },
+    "source_hashes": {
+      "src/evaluation/run_all.py": "6880612c6a747b1d9c7282d498abcc769fbe32ebedd8a6f6c3eddf6e28edb35e",
+      "src/evaluation/reporting.py": "ba551f68ed8b28e82e0c8fd8e3d1b2eeccfd7a65e8760c57bf7bbe84eecce359",
+      "src/evaluation/search.py": "44089d073a3921fdd20a2c8c2bbc8e5e629cddc055b9861bb8c33e7908dc1579",
+      "src/evaluation/recommendation.py": "21e4b5b0d13d0d745f5602d15fe10c09767d7d9de2973104fb6b9fbd6aa72b72",
+      "src/evaluation/api_benchmark.py": "aa61bba6d98fa94e03cf6416dd185ce6a468ab866208600e36c716a82fd8b635",
+      "src/evaluation/metrics.py": "e2021540b159701537217ad896638fa3cc3e083c480e0408976377dec5722284",
+      "src/evaluation/bench_latency.py": "ace1990cbaa2d159774da9ac3c59e369d7e98cb3a444204a44d06ad2f0c2651b",
+      "src/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/common/artifacts.py": "985e9b6dfd79fbc439c95eabaed50300fd92818d3f9600604aeee774fe5726f8",
+      "src/common/config.py": "06db019c4ff0594271273a94b08d24eabd1a0fea334c450e6f854a0c9f90dad8",
+      "src/common/data.py": "df82715bce3f5c74bddc6233ffe9b37f1b930f90af91e54d1f9f51c6b592afa5",
+      "src/common/schemas.py": "6c4eb0b645fc0e8250c2d0bb44cb586c864549736991f6a05feb93e528b530ea",
+      "src/common/seed.py": "36141dd058389bc188be51d0923d41f6e64d89cca05da833700742a8b873e696",
+      "src/recommendation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/recommendation/baselines.py": "ee4212555bb71173c93d0112f6252269ee5d1b81ab55c08689f6cf0269496ac1",
+      "src/recommendation/bench_app.py": "a74e49ba135a0b20919648059303a75fb16dab8c35a8e7dab54433a6f8348dea",
+      "src/recommendation/bench_candidate.py": "09e1f2927dfdd88524c4594787a1ccbfd082419baa4c12de9b81a7ec2cf65c3c",
+      "src/recommendation/bench_ranking.py": "6ac8ac6f54388d36b097f785c15816cf112a2b09ca480d01953c9e68e1bc8ee5",
+      "src/recommendation/bench_tcp.py": "ce7cd4a9be0e42f735738ab84e8aa88d9bc968590bb285977eb67494c6522979",
+      "src/recommendation/bundle_compat.py": "ad66ea17501be1639f229f4f786c22a413d4f45049d786e9a5a00337019de68e",
+      "src/recommendation/candidate.py": "d9aff86c96406b7af9d1b314c783383a1eceee220efd6567a787c47665cc1e0b",
+      "src/recommendation/datasets.py": "d671fe9f74ebb2df412ebe60abb1e4fb75d04677d86e6b908b460f1fd082a85d",
+      "src/recommendation/deepfm.py": "2933f21129e5d8b72b002df718568876a59218ba3522c814a78d0d470a7dd2ea",
+      "src/recommendation/diagnose_candidate.py": "b6aee4fac778459d5d81ad86f73d66d8bf6d085b47a721e37502a0f90e80eae1",
+      "src/recommendation/eval_candidate.py": "4ba20aad6cd23673918d6cce03c9e6309e889addee0e245f3cf57c0ac04b49ab",
+      "src/recommendation/eval_deepfm.py": "063a6a873823538b41cde5420f4dec0a7af05655802eda2dcf82a1e79e63d18b",
+      "src/recommendation/eval_policy.py": "f51be965eef8d018f4a73af594ab2cd39ef08b84a3094cb5f32f415ec3299efa",
+      "src/recommendation/eval_ranking.py": "a3fc2a6a25f4190a70674c987252e32afb4d2887af316915b06698e38584c282",
+      "src/recommendation/feature_store.py": "04a88f19de2d73547b0ffe4eeaa6153edde09f2f3ff2a4658986e0c318425d79",
+      "src/recommendation/features.py": "2be600ee6cf1137123e98c74cf54e8938174069fad4b3a22182e177fb2ee02a2",
+      "src/recommendation/index.py": "75461a38125fdc9b333abd00083dbc71446f67ee72f7cac884e7158fa2076c55",
+      "src/recommendation/mab.py": "a6e1cb1c65e121f8dacb9e0eb68dc3a56de44b63a3a9ed1fdd760af9e2d5d8b3",
+      "src/recommendation/ranking_features.py": "6102223aa751111c85302b25a169e9030bec498e7dcc092000646187f8bf2a5b",
+      "src/recommendation/ranking_labels.py": "106e94afa9acc2cdd62c8b7a2de20d138a9e5c95b3993f3353b2cf0a52c59128",
+      "src/recommendation/recommender.py": "bb17365e2669e2fe46ba08575fc4ab9cc421cd46c4bc9938949210ec33933d0b",
+      "src/recommendation/reranking.py": "522fa6fdfd812372419f86ccd358e27ff4d2392c53b0bebe3ce39352ace9e786",
+      "src/recommendation/runtime.py": "3345e29b917680523ddbfa32fc9c7f656f48b2cdfdb81684a07ba84cd0c4bfa2",
+      "src/recommendation/scoring.py": "935f752f0cb8b3c016c121bbd7ab5ce86622c01b697f6d2d0c321fcc5ab31bb0",
+      "src/recommendation/select_candidate.py": "8bef1a4e59ea299b34a55a4ff8f3c8e1e7dd6a152aea2e02d26db4f44da2de46",
+      "src/recommendation/service.py": "8c6c3034e440b2ab508a943b7e0179666bd9964f602ca31d9ec5c8255348e034",
+      "src/recommendation/session.py": "3a9014eb898084f6bffdb54de10fb103dcaa3b02c3565a01315641a6a86c6cbb",
+      "src/recommendation/testing.py": "4ab38889cbb5be933c2fe9ce246d0ed957139432413f3da8a43545bfcd70f440",
+      "src/recommendation/train_deepfm.py": "a743a7c0f260673a6a68f68628402acbc19d4bf096bdc613a0cac91e66e86c16",
+      "src/recommendation/train_session.py": "bdc46440f56521679c7aa1fc609c85999d94555e790c1271a74356a28f4e6972",
+      "src/recommendation/train_two_tower.py": "64b8d787b9f9e52f2cb56e05e2fb488d5c47b9f677b557db3dc7ed55c10b873e",
+      "src/recommendation/two_tower.py": "738298fd2d563e500ae876ae6223b873678adb5ef97467d46b87b736b85b79fa",
+      "src/recommendation/verify_candidate.py": "8dd47b32018d0483f848a118fe501dc72b6ae2f275cdee7125427f935792aaa0",
+      "src/recommendation/verify_deepfm.py": "48f270e8e395501e440308dd4aeca3d687926ab1447683dd79575c6985512de8",
+      "src/recommendation/verify_policy.py": "809312d51cb569f8231ba51d75dc6a5e7ee6c7e4a24756ccf71b493b3118920d",
+      "src/recommendation/verify_ranking.py": "3ec0062d60e7d67ff7b40f6525b594e171e0a640cf1b0f84a0e57a50d8e3a93d",
+      "src/search/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/search/api.py": "74ee18bf55e96f87e04990b8edea1107131358b97df722f4674f76587781f432",
+      "src/search/benchmark.py": "3613459e21c15ea116f3c78d135cb0f2eb130739ff640aea69f2922945d76e49",
+      "src/search/bm25.py": "6d739624d1b803fa50c1f5aae13ae95276d5fba5017c73e596ed453a3aa3eecd",
+      "src/search/build_embeddings.py": "dd38d8a12356a223cc863253edeb3894ac2e6cbd03dc90a0bf995b9fbc17fbdb",
+      "src/search/build_index.py": "1c48d807231012e4432b3af32677e20a337197542197c070126e1993693e56c1",
+      "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e",
+      "src/search/eval_search.py": "c8c2cdfe8aef5cec92fd9d7c378e958412fe36f484edf5f87a6dfd69fd7e2d77",
+      "src/search/eval_support.py": "cd609ce06fb28ba05c9a25bd6f894ac9cfef1be3ef5b2fe7a562f2b39aa2f390",
+      "src/search/finalize.py": "cba5ad1c4c9f6260f4d6b31b208f0b99d9b940c318ce2eafd656216663085712",
+      "src/search/index.py": "6cafe13858e2134cc1adaadb563a676f8ab6657e67106c5808b96ba82c89bf76",
+      "src/search/locking.py": "5c6b673651b26545c56fc7204ac1c9d2062045aa5354b1e2d747aad2c5c18f10",
+      "src/search/queries.py": "8aa6c03da382ce0902d5fe97cbefd7677ca60d75269842b3129dc602cb34993a",
+      "src/search/searcher.py": "b423a8b75e8ba84dd85baf1ea71e9ca79b8d02f85a5a1e6004771342382a7379",
+      "src/search/service.py": "a586f6896bdc4b8c37910f873e1ff7999aaad1bf298b2018a58be9dfccbfc880",
+      "src/search/testing.py": "b2fff6def6f6c64f44119af02e272ea80f61a728b65583c0996ba5c91cd79c26",
+      "src/search/text.py": "a8f862a14c61aaf990d2ebf38ebe60668a1e5057d9ed3b98a6bdf55da9084280",
+      "src/search/verify.py": "2c80d5445eb40d127ebe29af77fec2162bcf7b733401e4d35976662863540226",
+      "src/serving/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/serving/ct_admin.py": "1f739d8576d3d5cdef3e8115fa9f344a9f6f368cf6bf313057f091fdf401be7c",
+      "src/serving/feature_store.py": "1d9fcb770cb10042d6b530dc255ecf535e55fa65c5380aa1f0f71fda4dfd570d",
+      "src/serving/main.py": "37f6819543dfbcb34afeb061703f27514e3ecdac6d402a887028b87b08e76175",
+      "src/serving/memory_store.py": "f7c0b78a0493a93b796a1b07f4db9003b2a25ad429fd737379e771f7c1764508",
+      "src/serving/model_loader.py": "2f20393e0a81dabfe37ecc0dbce747307fb06bdc69dcb11dbb6eb66a36c1eb1b",
+      "src/serving/pytest_support.py": "1db8c0c5f75d98e16b6202c31f5c513e495a80fc533697cdd524807af580dfd2",
+      "src/serving/stream_features.py": "c402883cef647a34ebbc6e62c3fe08ad3af78b4c7d15086d12d073b708d79d29",
+      "src/serving/warmup_features.py": "026965fca8bd412d689c31a89902cae996dc9a7bfba0970404c5119b53eb7dc8"
+    },
+    "docker_sources": {
+      "docker/quality.py": "81210dce4811981dc9eafd479cb680587ea80a7c4026b1193175af14436808fc",
+      "docker/runtime.py": "8c26feefb9ca14acd4aba7d699bf3d605d925be1b9077104a7b02a73fc72fd7a",
+      "docker/serve.py": "f0a8cee23deb67858af5271e77f409572a9c54006179aff6c96c297c4aad954a",
+      "docker/vision.py": "ac51e6c77f62c18a0cce436a8b494f2d4816f48e763ae25545a00c611ebf358b",
+      "docker-compose.yml": "6f6f85cdfc0f038eb07205d662020351cbcc0c70fcee780cec1f358080cc1590"
+    }
+  },
+  "measured_config": {
+    "schema_version": 4,
+    "seed": 42,
+    "scale": "full",
+    "scales": {
+      "dev": {
+        "n_products": 10000,
+        "n_users": 2000,
+        "n_events": 200000
+      },
+      "full": {
+        "n_products": 50000,
+        "n_users": 10000,
+        "n_events": 1000000
+      }
+    },
+    "paths": {
       "data_dir": "data/full",
       "model_dir": "models/full",
-      "results_dir": "docs/results",
+      "results_dir": "docs/results/integration/runtime/full",
       "split_dir": "data/full/split",
       "by_scale": {
         "full": {
@@ -549,105 +1190,9 @@
       }
     }
   },
-  "measured_identity": {
-    "config_fingerprint": "ae94e46ae29da2e33c3fae422af4b11422609f2e3a2840c7dd01f2f4b2d8c21b",
-    "data_manifest_sha256": "3852ef89c0435e334ed9f417b6c1b6a3ce4d582d5b417db8d796d2e010b3db47",
-    "models": {
-      "models/full/v1.0/meta.json": "e307635d5018300cc136f2429710e67dcddc6da6166b2c83a262ccbdf952a701",
-      "models/full/v1.0/ranking/meta.json": "387bbcc6615002744000592fd80ae1bc7e39b9adc5625ac34b6e149c5af32082",
-      "models/full/v1.0/session/meta.json": "1a4d5bf19dcdf59530b43252fffb39f95f300eb0f0cf8178ef46a64dd6347ebb",
-      "models/full/search/embeddings_current.json": "cb3dd5af398f643eea94d4b848a76cdce1a23b90695134940031048cd93cbab8",
-      "models/full/search/indexes_current.json": "a63872ac9c6ad633904c62e267f48b08015e258d72d0836b50dcdd16b820496e"
-    },
-    "source_hashes": {
-      "src/evaluation/run_all.py": "5ec7d416037d25f33ee4d11df0ead3fa7f3cce7737177fb16d6ac7d9378a2258",
-      "src/evaluation/reporting.py": "ba551f68ed8b28e82e0c8fd8e3d1b2eeccfd7a65e8760c57bf7bbe84eecce359",
-      "src/evaluation/search.py": "9fe280c566f02a924455b8508c0081e515f626c68eeb4163061bcd6d9b9e1e50",
-      "src/evaluation/recommendation.py": "21e4b5b0d13d0d745f5602d15fe10c09767d7d9de2973104fb6b9fbd6aa72b72",
-      "src/evaluation/api_benchmark.py": "aa61bba6d98fa94e03cf6416dd185ce6a468ab866208600e36c716a82fd8b635",
-      "src/evaluation/metrics.py": "e2021540b159701537217ad896638fa3cc3e083c480e0408976377dec5722284",
-      "src/evaluation/bench_latency.py": "b347b08794b4a78773a2d8c545d0035423bf40009e213781161422813a965bb8",
-      "src/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "src/common/artifacts.py": "985e9b6dfd79fbc439c95eabaed50300fd92818d3f9600604aeee774fe5726f8",
-      "src/common/config.py": "7ec72fab0373a89a301ced19c22576fa8d94785d373c61f8b74b8d41ab210e31",
-      "src/common/data.py": "df82715bce3f5c74bddc6233ffe9b37f1b930f90af91e54d1f9f51c6b592afa5",
-      "src/common/schemas.py": "6c4eb0b645fc0e8250c2d0bb44cb586c864549736991f6a05feb93e528b530ea",
-      "src/common/seed.py": "36141dd058389bc188be51d0923d41f6e64d89cca05da833700742a8b873e696",
-      "src/recommendation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "src/recommendation/baselines.py": "ee4212555bb71173c93d0112f6252269ee5d1b81ab55c08689f6cf0269496ac1",
-      "src/recommendation/bench_app.py": "902fe0527ec6f58902000d04e5976f2915720c0959520dcae09bd5291a475b11",
-      "src/recommendation/bench_candidate.py": "42cc5927a1b51358bf7bc232c263ff57532ebdcc6f49166935f5a150797292ae",
-      "src/recommendation/bench_ranking.py": "7dfa4c3ef6fafdd2cea1ed5c2b0839529872c1595ad0f8f16257183b50030a73",
-      "src/recommendation/bench_tcp.py": "c7fcd33d7c2dc68f544c0288794599f96dd6d7c336f2e00c767e8329c68c6c3a",
-      "src/recommendation/bundle_compat.py": "ad66ea17501be1639f229f4f786c22a413d4f45049d786e9a5a00337019de68e",
-      "src/recommendation/candidate.py": "91064d921c9e9b623eca13bdc146ed0a02ae9b39191375305f951584557fa9ed",
-      "src/recommendation/datasets.py": "d671fe9f74ebb2df412ebe60abb1e4fb75d04677d86e6b908b460f1fd082a85d",
-      "src/recommendation/deepfm.py": "2933f21129e5d8b72b002df718568876a59218ba3522c814a78d0d470a7dd2ea",
-      "src/recommendation/diagnose_candidate.py": "b6aee4fac778459d5d81ad86f73d66d8bf6d085b47a721e37502a0f90e80eae1",
-      "src/recommendation/eval_candidate.py": "e87c9c310e2e428426f84bd074b50f27c1a7d839819c34543b26620aa6121b98",
-      "src/recommendation/eval_deepfm.py": "063a6a873823538b41cde5420f4dec0a7af05655802eda2dcf82a1e79e63d18b",
-      "src/recommendation/eval_policy.py": "1495717f4191d0ad34a1222c916e41daae021dc826e9184a6cf1587fc49e474a",
-      "src/recommendation/eval_ranking.py": "4a27cc6731d79608773ae2f03ecc57d0c7d5f8f8dc21e09e641cb1d662461fdc",
-      "src/recommendation/feature_store.py": "e7b772d4076934eb0b712ce1dfe4ada8fb4ca4a79039225d7a004e92135064c2",
-      "src/recommendation/features.py": "2be600ee6cf1137123e98c74cf54e8938174069fad4b3a22182e177fb2ee02a2",
-      "src/recommendation/index.py": "e43ece843e313e6bc874ae5d4e1a109fee4dec099905c2144f713d1bb92948ca",
-      "src/recommendation/mab.py": "f9a6f019900d5542ef5fb6c556363dcd8255ebc546eaa9b50c63228e85a3ec46",
-      "src/recommendation/ranking_features.py": "129d35ca3314b904ca7b5c699d610b2a4f16d1a0d5c64ccff789a157f3334aa1",
-      "src/recommendation/ranking_labels.py": "106e94afa9acc2cdd62c8b7a2de20d138a9e5c95b3993f3353b2cf0a52c59128",
-      "src/recommendation/recommender.py": "a73d8db2149dc25a36f3ce8e8e043cc9ff38486def36ea8fe2bd746d9814d6d5",
-      "src/recommendation/reranking.py": "65ee38c19a7041c2109c7a364d69e17f42d1e37242cb00845bb079b851eff812",
-      "src/recommendation/runtime.py": "3345e29b917680523ddbfa32fc9c7f656f48b2cdfdb81684a07ba84cd0c4bfa2",
-      "src/recommendation/scoring.py": "935f752f0cb8b3c016c121bbd7ab5ce86622c01b697f6d2d0c321fcc5ab31bb0",
-      "src/recommendation/select_candidate.py": "8bef1a4e59ea299b34a55a4ff8f3c8e1e7dd6a152aea2e02d26db4f44da2de46",
-      "src/recommendation/service.py": "2806bb63737fda671b117e5b7c7c05201fb46e983e8c8ff498b9871a43c46ee5",
-      "src/recommendation/session.py": "75da1c433e1edf72b7f6a01d2746e8921727b5448ac9e4490a50319199ea8d70",
-      "src/recommendation/testing.py": "d736ed51bd1843ddbb83f04cb4a54dcfe6e42cd7c0bc111da0c92414c485f7b0",
-      "src/recommendation/train_deepfm.py": "8c5e3c8a2000dad6ad9e0e6cb020d669b63bc6228cb02294a8cfd26c2431e771",
-      "src/recommendation/train_session.py": "531ee66afbd34bec8fef6e958f52807d46fcb69eed4777a5482c4405250974e9",
-      "src/recommendation/train_two_tower.py": "f4320a12f31e7bc21aea127fb0ae4819fe8fd085882be0ee9978a01c4ca0c254",
-      "src/recommendation/two_tower.py": "d1fd64b7dc0398524476c5f0069f37b0fb96662a8443a7dd74bd96a087a1fdee",
-      "src/recommendation/verify_candidate.py": "8dd47b32018d0483f848a118fe501dc72b6ae2f275cdee7125427f935792aaa0",
-      "src/recommendation/verify_deepfm.py": "48f270e8e395501e440308dd4aeca3d687926ab1447683dd79575c6985512de8",
-      "src/recommendation/verify_policy.py": "c844c9cd50dee2f75a6a8ea919398f1b0a93be6c5e26304b8fe2cc37cc14810f",
-      "src/recommendation/verify_ranking.py": "3ec0062d60e7d67ff7b40f6525b594e171e0a640cf1b0f84a0e57a50d8e3a93d",
-      "src/search/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "src/search/api.py": "60ac30b21eb430fe0da40bbc5f08a28f2fc40da427f54b78f864176c388d0992",
-      "src/search/benchmark.py": "4c101534e3a30a297582b8de0b0e1973851c1ea37b4b489ffa2bd7cde8fb3e0f",
-      "src/search/bm25.py": "6d739624d1b803fa50c1f5aae13ae95276d5fba5017c73e596ed453a3aa3eecd",
-      "src/search/build_embeddings.py": "bd25c7ee208f045b3af2d84dbdde4035787616d0c494436dcf2647e08071b974",
-      "src/search/build_index.py": "279a8452b20304e82432ac721d3c33ce6bfaae579ad1842f6c2564edd490d738",
-      "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e",
-      "src/search/eval_search.py": "aed65cb2875fa0e1f168699199e4f50300bc3c4b0e6e5351c6d806c78ee361dc",
-      "src/search/eval_support.py": "ad8365ee8891c5dc18c3ca2ddfaa1aad5ace13890e1b678a4ce18393788ff48f",
-      "src/search/finalize.py": "cba5ad1c4c9f6260f4d6b31b208f0b99d9b940c318ce2eafd656216663085712",
-      "src/search/index.py": "6cafe13858e2134cc1adaadb563a676f8ab6657e67106c5808b96ba82c89bf76",
-      "src/search/locking.py": "0f2a42f4039ace3888633b63a09c1a17435905bb8542a3a979b4dd88667e2338",
-      "src/search/queries.py": "b32aa29f30a5db8204555524e35e1a01f4e4da77203ba72a3568178318321362",
-      "src/search/searcher.py": "ba453ceec4048605e5da79648bbaff39120bc9f2624a90eeb69f116ee03492a2",
-      "src/search/service.py": "9c89676a7bc1fc2f153168d8a67c13544d1af7892d16de0d41e264ea89f08873",
-      "src/search/testing.py": "12efc98dd3651a348e1a35fad03a2c89fc33c1fb8335760e04923f341d4a5fcb",
-      "src/search/text.py": "a8f862a14c61aaf990d2ebf38ebe60668a1e5057d9ed3b98a6bdf55da9084280",
-      "src/search/verify.py": "8dd62633083749b40fd1c2175352eea80ecc20cb0c036523094d3af4fb81ac94",
-      "src/serving/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "src/serving/ct_admin.py": "1f739d8576d3d5cdef3e8115fa9f344a9f6f368cf6bf313057f091fdf401be7c",
-      "src/serving/feature_store.py": "c7dc1b88e529e84cc0c39bc89fc9bf29ed1aaba59241984e2d8e0b793f9e8a59",
-      "src/serving/main.py": "0ef1683ce02a588a0dc8470ce8df84faa3b1f70f38db151149362b66908957f1",
-      "src/serving/memory_store.py": "f7c0b78a0493a93b796a1b07f4db9003b2a25ad429fd737379e771f7c1764508",
-      "src/serving/model_loader.py": "4493f80736cae68f1215f521acf7d6f8108448d512b5b364d1df1cb1c6379d7c",
-      "src/serving/pytest_support.py": "1db8c0c5f75d98e16b6202c31f5c513e495a80fc533697cdd524807af580dfd2",
-      "src/serving/stream_features.py": "c402883cef647a34ebbc6e62c3fe08ad3af78b4c7d15086d12d073b708d79d29",
-      "src/serving/warmup_features.py": "026965fca8bd412d689c31a89902cae996dc9a7bfba0970404c5119b53eb7dc8"
-    },
-    "docker_sources": {
-      "docker/quality.py": "cc23f3e0a99866b9f6bba1d6c27b82760520805f25d64050e0fe079fa4272120",
-      "docker/runtime.py": "386c6847a3324ac4e5f21cea0abd2df2fbb4385a9fdfd36e97db7e2a734be857",
-      "docker/serve.py": "dd196356c21f63ba7eae50a92c44c12b84a56e1b98da2d2459ee7bc1f6fc9744",
-      "docker-compose.yml": "7f61055f1145636ea7c5c08cb5d7eaf769857f2711df03d581a4f10c7b2db611"
-    }
-  },
   "data_manifest": {
-    "generator_version": "4.0.0",
-    "generation_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "generator_version": "4.1.0",
+    "generation_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
     "scale": "full",
     "seed": 42,
     "reference_time": "2026-01-01T00:00:00Z",

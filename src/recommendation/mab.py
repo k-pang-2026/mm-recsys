@@ -1,12 +1,14 @@
 """Configurable bandit strategies; exposure and max reward state belongs to the store."""
 from __future__ import annotations
 
+from typing import Any, Callable
+
 from typing import Protocol
 import numpy as np
 
 
 class BanditStrategy(Protocol):
-    def select(self, items: list[str], stats: dict, arm_for, rng: np.random.Generator, count: int) -> list[str]: ...
+    def select(self, items: list[str], stats: dict, arm_for: Callable[[str], str], rng: np.random.Generator, count: int) -> list[str]: ...
 
 
 class EpsilonGreedy:
@@ -14,7 +16,7 @@ class EpsilonGreedy:
         if not 0 <= epsilon <= 1: raise ValueError('epsilon must be in [0,1]')
         self.epsilon=epsilon
 
-    def select(self, items, stats, arm_for, rng, count):
+    def select(self, items: Any, stats: dict, arm_for: Callable[[str], str], rng: Any, count: int) -> Any:
         pool=list(dict.fromkeys(items)); picked=[]
         for _ in range(min(count,len(pool))):
             if rng.random()<self.epsilon:
@@ -30,9 +32,9 @@ class UCB:
         if coefficient <= 0: raise ValueError('UCB coefficient must be positive')
         self.coefficient=coefficient
 
-    def select(self, items, stats, arm_for, rng, count):
+    def select(self, items: Any, stats: dict, arm_for: Callable[[str], str], rng: Any, count: int) -> Any:
         total=max(2,sum(s['exposures'] for s in stats.values()))
-        def score(product):
+        def score(product: Any) -> float:
             state=stats.get(arm_for(product),{}); n=state.get('exposures',0)
             return float('inf') if not n else state.get('reward',0)/n+self.coefficient*np.sqrt(np.log(total)/n)
         return sorted(dict.fromkeys(items),key=lambda p:-score(p))[:count]

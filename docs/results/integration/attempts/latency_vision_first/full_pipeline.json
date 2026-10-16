@@ -1,0 +1,42 @@
+{
+  "status": "FAIL",
+  "project": "mm-recsys-integrate-v41",
+  "revision": "fp32-query-vision",
+  "phases": [
+    {
+      "name": "mab_http_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "scripts/verify_integration_mab.py"
+      ],
+      "exit_code": 0,
+      "source": ".team/checks/INTEGRATE/mab_http_full.txt",
+      "sha256": "5874db6ca5f2eeefc8e437f645071a8e40495ccc1907e65d50872f022cfef7f6",
+      "seconds": 0.9262603390006916
+    },
+    {
+      "name": "smoke_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "scripts/smoke_test.py",
+        "--benchmark",
+        "--output",
+        "docs/results/integration/smoke_full.json"
+      ],
+      "exit_code": 1,
+      "source": ".team/checks/INTEGRATE/smoke_full.txt",
+      "sha256": "e4b35bcc8766f5e5d7d1eadc0ea7f9eb6f7b19542c6a67297a68b4f1c048a5c9",
+      "seconds": 64.42405402800068
+    }
+  ]
+}

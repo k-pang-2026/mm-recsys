@@ -1,0 +1,18 @@
+{
+  "status": "MEASURED",
+  "old_generator": "4.0.0",
+  "new_generator": "4.1.0",
+  "old_data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "new_data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "same_original_catalog_bytes": true,
+  "scope": "migration audit before the corrected integration quality run; 4.1.0 adds mapping order and prepare preserves original YAML order; old data/models retained; test revalidation is recorded separately",
+  "same_original_event_bytes": true,
+  "test_previously_observed": true,
+  "test_policy": "prior B10 corrected-recipe test was observed; current integration changes no scoring hyperparameters and freezes only on valid before revalidation"
+}

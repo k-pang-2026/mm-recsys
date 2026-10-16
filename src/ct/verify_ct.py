@@ -1,6 +1,8 @@
 """Reproducible small controlled B9 run; never reports full-model acceptance."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import copy
 import json
@@ -12,7 +14,7 @@ import time
 import uuid
 
 import pandas as pd
-import requests  # type: ignore[import-untyped]
+import requests
 import torch
 import uvicorn
 
@@ -84,7 +86,7 @@ def verify(work: Path, output: Path) -> dict:
     assert busy['status'] == 'BUSY'
     # Start a real local API using the registered initial bundle, then train while it serves.
     class SearchFixture:
-        def search(self, payload):
+        def search(self, payload: Any) -> Any:
             raise RuntimeError('search outside controlled CT scope')
     app = create_app(cfg, search_service=SearchFixture(), feature_store=MemoryFeatureStore())
     sock = socket.socket(); sock.bind(('127.0.0.1', 0)); port = sock.getsockname()[1]
@@ -106,7 +108,7 @@ def verify(work: Path, output: Path) -> dict:
         assert promoted['status'] == 'PROMOTED', promoted
         assert registry.read()['active'] == 'v1.1'
         statuses = []
-        def traffic():
+        def traffic() -> None:
             with requests.Session() as session:
                 session.trust_env = False
                 for _ in range(40):

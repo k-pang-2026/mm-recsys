@@ -1,0 +1,37 @@
+{
+  "status": "REPRODUCED",
+  "old_fingerprint_equal": true,
+  "catalog_equal_after_sorted_yaml": false,
+  "catalog_equal_after_preserved_yaml": true,
+  "original_taxonomy": [
+    "tops",
+    "bottoms",
+    "outerwear",
+    "footwear",
+    "accessories"
+  ],
+  "sorted_taxonomy": [
+    "accessories",
+    "bottoms",
+    "footwear",
+    "outerwear",
+    "tops"
+  ],
+  "original_personas": [
+    "trendsetter",
+    "pragmatist",
+    "bargain",
+    "brand_loyal",
+    "impulsive",
+    "careful"
+  ],
+  "sorted_personas": [
+    "bargain",
+    "brand_loyal",
+    "careful",
+    "impulsive",
+    "pragmatist",
+    "trendsetter"
+  ],
+  "scope": "400-item train/valid-side diagnostic before new full test; no targets/labels edited"
+}

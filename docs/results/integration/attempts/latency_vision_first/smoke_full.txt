@@ -1,0 +1,5 @@
+Docker HTTP text: p95=44.895ms
+Docker HTTP image: p95=196.460ms
+Docker HTTP hybrid: p95=203.340ms
+Docker HTTP recommendation: p95=65.517ms
+Docker smoke: FAIL -> docs/results/integration/smoke_full.json

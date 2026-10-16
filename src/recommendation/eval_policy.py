@@ -1,6 +1,8 @@
 """Compare inference policies on valid; freeze one eligible policy before test."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import copy
 import json
@@ -34,7 +36,7 @@ SOURCES = ['src/recommendation/scoring.py','src/recommendation/recommender.py',
            'src/recommendation/eval_policy.py']
 
 
-def isolated_policy(base, spec):
+def isolated_policy(base: Any, spec: dict) -> Any:
     """Share immutable models/features, never mutable exposure/config/RNG state."""
     service = copy.copy(base)
     service.cfg = copy.deepcopy(base.cfg)
@@ -50,12 +52,12 @@ def isolated_policy(base, spec):
     return service
 
 
-def quality_checks(metrics, cfg, violations=0):
+def quality_checks(metrics: dict, cfg: dict, violations: int=0) -> dict[str, bool]:
     return {key:metrics[key] >= cfg['targets'][key] for key in
             ['hit_rate_at_50','ndcg_at_50','coverage']} | {'feasible_pool_constraints':violations == 0}
 
 
-def choose(rows):
+def choose(rows: Any) -> dict | None:
     eligible = [(index,row) for index,row in enumerate(rows)
                 if row['operational'] and all(row['checks'].values())]
     if not eligible: return None
@@ -63,7 +65,7 @@ def choose(rows):
         pair[1]['metrics']['hit_rate_at_50'],pair[1]['metrics']['coverage'],-pair[0]))[1]
 
 
-def evaluate(cfg, split, output: Path, selection_path: Path):
+def evaluate(cfg: dict, split: str, output: Path, selection_path: Path) -> dict:
     started = time.perf_counter()
     if os.getenv('PYTHONHASHSEED') != '42': raise ValueError('launch with PYTHONHASHSEED=42')
     configure_inference(cfg['recommend']['candidate'],with_faiss=True)
@@ -102,7 +104,7 @@ def evaluate(cfg, split, output: Path, selection_path: Path):
     truth = {str(uid):set(g.product_id.astype(str)) for uid,g in target.groupby('user_id')}
     users = sorted(data['users'].user_id.astype(str))[:cfg['recommend']['evaluation']['coverage_users']]
     names = list(services) + ([] if frozen else ['two_tower'])
-    aggregates = {name:dict(hit=0.,ndcg=0.,covered=set(),cold_hit=0.,warm_hit=0.,cold_truth=0,warm_truth=0,
+    aggregates: dict[str, dict[str, Any]] = {name:dict(hit=0.,ndcg=0.,covered=set(),cold_hit=0.,warm_hit=0.,cold_truth=0,warm_truth=0,
         violations=0,infeasible=0,feasible_violations=0,category=Counter(),rank_shift=0.,examples=[]) for name in names}
     truth_users = cold_users = 0
     candidate_digest = __import__('hashlib').sha256()
@@ -115,14 +117,14 @@ def evaluate(cfg, split, output: Path, selection_path: Path):
             predictions = base.predict_products(uid,products,features)
             candidate_digest.update(json.dumps([uid,products],separators=(',',':')).encode())
             candidate_digest.update(predictions.tobytes())
-            rows = {}
+            ranked_rows: dict[str, list[str]] = {}
             candidate_ranks = {pid:rank for rank,pid in enumerate(products)}
             for name,service in services.items():
                 items = service.rank_products(products,predictions)
                 ordered = sorted(items,key=lambda x:(-x.score,x.product_id))
                 aggregates[name]['rank_shift'] += float(np.mean([abs(rank-candidate_ranks[x.product_id]) for rank,x in enumerate(ordered)])) if ordered else 0.
                 final,diag = service.rerank_items(items,50,context)
-                ids = [x.product_id for x in final]; rows[name]=ids
+                ids = [x.product_id for x in final]; ranked_rows[name]=ids
                 service.exposure_clock[0] += cfg['recommend']['mab']['exposure_ttl_seconds']
                 service.store.record_exposures(uid,ids)
                 agg=aggregates[name]; agg['violations'] += int(bool(diag['violations']))
@@ -130,8 +132,8 @@ def evaluate(cfg, split, output: Path, selection_path: Path):
                 agg['feasible_violations'] += int(bool(diag['violations']) and not infeasible)
                 if diag['violations'] and len(agg['examples'])<5: agg['examples'].append(dict(user_id=uid,returned_ids=ids,**diag))
             if not frozen:
-                rows['two_tower'] = base.candidate.retrieve(context,cfg['recommend']['candidate_k'],cfg['recommend']['exclude_purchased'])[:50]
-            for name,ids in rows.items():
+                ranked_rows['two_tower'] = base.candidate.retrieve(context,cfg['recommend']['candidate_k'],cfg['recommend']['exclude_purchased'])[:50]
+            for name,ids in ranked_rows.items():
                 agg=aggregates[name]; agg['covered'].update(ids)
                 agg['category'].update(base.reranker.categories[pid] for pid in ids)
                 if uid in truth:
@@ -140,7 +142,7 @@ def evaluate(cfg, split, output: Path, selection_path: Path):
                     cohort='cold' if cold else 'warm'; agg[cohort+'_hit']+=hit; agg[cohort+'_truth']+=1
             truth_users += int(uid in truth)
             if (i+1)%1000==0: print(f'{split} evaluated_users={i+1}',flush=True)
-    rows=[]
+    rows: list[dict] = []
     for name in names:
         agg=aggregates[name]
         metrics=dict(hit_rate_at_50=agg['hit']/truth_users if truth_users else 0.,ndcg_at_50=agg['ndcg']/truth_users if truth_users else 0.,
@@ -183,7 +185,7 @@ def evaluate(cfg, split, output: Path, selection_path: Path):
     return report
 
 
-def main():
+def main() -> int:
     parser=argparse.ArgumentParser()
     parser.add_argument('--split',required=True,choices=['valid','test'])
     parser.add_argument('--output',type=Path)

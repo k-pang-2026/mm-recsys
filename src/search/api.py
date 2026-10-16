@@ -1,6 +1,8 @@
 """A-owned JSON/multipart adapter over the shared FastAPI app; C files stay intact."""
 from __future__ import annotations
 
+from typing import Any
+
 import base64
 import json
 from starlette.requests import Request
@@ -27,7 +29,7 @@ class SearchTransport:
                 return await JSONResponse({'detail': 'search request body too large'}, 413)(scope, receive, send)
             if not message.get('more_body', False):
                 break
-        async def original_body():
+        async def original_body() -> dict:
             return {'type': 'http.request', 'body': bytes(body), 'more_body': False}
         content_type = dict(scope.get('headers', [])).get(b'content-type', b'').decode()
         try:
@@ -60,12 +62,12 @@ class SearchTransport:
         forwarded = json.dumps(payload).encode(); new_scope = dict(scope)
         new_scope['headers'] = [(k, v) for k, v in scope.get('headers', []) if k not in (b'content-type', b'content-length')]
         new_scope['headers'] += [(b'content-type', b'application/json'), (b'content-length', str(len(forwarded)).encode())]
-        async def translated_body():
+        async def translated_body() -> dict:
             return {'type': 'http.request', 'body': forwarded, 'more_body': False}
         return await self.app(new_scope, translated_body, send)
 
 
-def create_app(cfg=None, search_service=None):
+def create_app(cfg: dict | None=None, search_service: Any=None) -> Any:
     from src.serving.main import create_app as shared_app
     return SearchTransport(shared_app(cfg=cfg, search_service=search_service))
 

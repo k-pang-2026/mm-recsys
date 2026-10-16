@@ -1,6 +1,8 @@
 """Fresh chronological snapshots, real B trainers and paired validation comparison."""
 from __future__ import annotations
 
+from typing import Any
+
 import copy
 import json
 from pathlib import Path
@@ -79,7 +81,7 @@ def train_all(cfg: dict, work: Path) -> tuple[dict, Path]:
     return reports, Path(local['paths']['model_dir']) / 'v1.0'
 
 
-def validation(service, cfg: dict) -> dict:
+def validation(service: Any, cfg: dict) -> dict:
     from src.recommendation.train_deepfm import prepare, tensors, probabilities, measure
     from src.recommendation.ranking_features import HistoryIndex
     from src.recommendation.datasets import cutoff_for

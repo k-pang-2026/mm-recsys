@@ -1,7 +1,10 @@
 """B-owned memory adapter for C-MAB-001/C-SESSION-002; shared server stays unchanged."""
 from __future__ import annotations
 
+from typing import Any
+
 from collections import defaultdict
+from collections.abc import Mapping
 import time
 
 from src.serving.memory_store import MemoryFeatureStore
@@ -14,14 +17,14 @@ class RecommendationFeatureStore(MemoryFeatureStore):
         self.spec=dict(cfg['recommend']['mab'])
         if self.spec['arm'] not in ('item','category'): raise ValueError('unsupported MAB arm')
         field=cfg['recommend']['reranking']['category_field']
-        self.categories={} if products is None else products.set_index('product_id')[field].astype(str).to_dict()
-        self._arms=defaultdict(lambda:dict(exposures=0,reward=0.))
-        self._exposures={}; self._sequence=0; self.unattributed_feedback=0
+        self.categories: Mapping[str, str] = {} if products is None else products.set_index('product_id')[field].astype(str).to_dict()
+        self._arms: dict[str, dict[str, float]] = defaultdict(lambda:dict(exposures=0,reward=0.))
+        self._exposures: dict[tuple[str, str], dict] = {}; self._sequence=0; self.unattributed_feedback=0
 
     def arm_for(self, product_id: str) -> str:
         return product_id if self.spec['arm']=='item' else self.categories.get(product_id,'unknown')
 
-    def append_event(self,event) -> bool:
+    def append_event(self,event: Any) -> bool:
         if event.category is None and event.product_id in self.categories:
             event=event.model_copy(update={'category':self.categories[event.product_id]})
         return super().append_event(event)
@@ -38,10 +41,12 @@ class RecommendationFeatureStore(MemoryFeatureStore):
                 identifiers.append(identifier)
             return identifiers
 
-    def arm_statistics(self) -> dict:
-        with self._lock: return {key:dict(value) for key,value in self._arms.items()}
+    def arm_statistics(self, product_ids: list[str] | None = None) -> dict:
+        with self._lock:
+            arms = None if product_ids is None else {self.arm_for(p) for p in product_ids}
+            return {key:dict(value) for key,value in self._arms.items() if arms is None or key in arms}
 
-    def update_reward(self,feedback) -> bool:
+    def update_reward(self,feedback: Any) -> bool:
         with self._lock:
             now=self.clock(); self._expire(now); key=('feedback',feedback.event_id)
             if key in self._seen: return False

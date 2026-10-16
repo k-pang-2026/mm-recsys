@@ -1,6 +1,8 @@
 """Small durable CT journal and cross-process locks (local filesystem only)."""
 from __future__ import annotations
 
+from typing import Iterator
+
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import json
@@ -14,7 +16,7 @@ def utc_now() -> str:
 
 
 @contextmanager
-def file_lock(path: Path, *, blocking: bool = True):
+def file_lock(path: Path, *, blocking: bool = True) -> Iterator[None]:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open('a+b') as stream:
         if os.name == 'nt':
@@ -60,7 +62,7 @@ class Journal:
                 CREATE INDEX IF NOT EXISTS event_request ON events(request_id);
             ''')
 
-    def connect(self):
+    def connect(self) -> sqlite3.Connection:
         db = sqlite3.connect(self.path, timeout=5)
         db.row_factory = sqlite3.Row
         return db

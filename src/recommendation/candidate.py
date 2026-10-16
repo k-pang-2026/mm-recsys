@@ -1,6 +1,8 @@
 """Exact reference and HNSW retrieval with cutoff/exclusion filtering and refill."""
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 import torch
 
@@ -55,9 +57,13 @@ class FaissCandidate:
             raise ValueError('invalid eligible item mapping')
         self.allowed = set(map(int, eligible))
 
-    user_vectors = ExactCandidate.user_vectors
+    def user_vectors(self, contexts: list[UserContext]) -> np.ndarray:
+        with torch.inference_mode():
+            return self.model.encode_users(torch.from_numpy(np.stack([c.history for c in contexts])),
+                                           torch.from_numpy(np.stack([c.demographics for c in contexts])),
+                                           torch.from_numpy(np.stack([c.profile for c in contexts]))).cpu().numpy()
 
-    def search(self, vectors: np.ndarray, k: int = 300, excluded=frozenset()) -> list[list[str]]:
+    def search(self, vectors: np.ndarray, k: int = 300, excluded: frozenset[int]=frozenset()) -> list[list[str]]:
         if k <= 0 or not np.isfinite(vectors).all():
             raise ValueError('invalid candidate vectors/k')
         allowed = self.allowed - set(excluded)
@@ -88,7 +94,7 @@ class FaissCandidate:
                            context.purchased if exclude_purchased else frozenset())[0]
 
 
-def flat_reference(model, table, eligible, batch_size):
+def flat_reference(model: Any, table: Any, eligible: Any, batch_size: int) -> tuple[Any, Any]:
     """IndexFlatIP uses the identical eligible vectors; labels map through a separate table."""
     import faiss
     reference = ExactCandidate(model, table, eligible, batch_size)

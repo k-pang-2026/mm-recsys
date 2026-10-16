@@ -1,0 +1,8 @@
+{
+  "status": "LINKED",
+  "config": "docs/submission/integration_config.yaml",
+  "scale": "full",
+  "data_source": "/tmp/mm-recsys-integration-fresh-qht3vjzz/data/full",
+  "model_source": "/tmp/mm-recsys-integration-fresh-qht3vjzz/models/full",
+  "scope": "ignored local symlinks preserve original v4.0 data/models; validation config changes only artifact paths, not targets/seed/training recipes"
+}

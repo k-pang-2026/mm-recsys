@@ -1,6 +1,8 @@
 """GRU next-view encoder over frozen Two Tower item embeddings."""
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 import torch
 from torch import nn
@@ -32,7 +34,7 @@ class SessionEncoder(nn.Module):
         return (combined/np.maximum(norms,1e-12)).astype(np.float32)
 
 
-def sequence_for(products: list[str],table,max_length: int) -> torch.Tensor:
+def sequence_for(products: list[str],table: Any,max_length: int) -> torch.Tensor:
     known=[table.id_to_index[p] for p in products if p in table.id_to_index][-max_length:]
     sequence=np.zeros((1,max_length),np.int64); sequence[0,:len(known)]=known
     return torch.from_numpy(sequence)

@@ -17,7 +17,7 @@ sys.path.insert(0, str(ROOT))
 from src.common.artifacts import file_hash, write_json
 from src.common.config import load_config
 from scripts.check_submission_evidence import (assemble_acceptance, audit_python, check_hashes,
-                                                collect_quality, read_json)
+                                                assemble_integration, collect_integration_checks, collect_quality, read_json)
 
 OUTPUT = 'docs/results/final_submission'
 
@@ -74,7 +74,7 @@ def files_check(root: Path, policy: dict) -> dict:
     if re.search(r'(?im)^[A-Z_]*(TOKEN|PASSWORD|SECRET|API_KEY)[A-Z_]*\s*=\s*\S+', (root / '.env').read_text()):
         raise ValueError('suspected secret in tracked .env (value withheld)')
     p0 = (root / 'docs/data_sources.md').read_text()
-    if 'UNRESOLVED' not in p0 or '강사' not in p0:
+    if not any(status in p0 for status in ('UNRESOLVED', 'RESOLVED_OPTIONAL')) or '강사' not in p0:
         raise ValueError('P0 unresolved dataset interpretation must be explicit')
     matrix = read_json(root, 'docs/submission/requirements.json')
     for entry in matrix['entries']:
@@ -144,7 +144,7 @@ def check_repository_evidence(root: Path) -> dict:
             subprocess.run(['git', 'merge-base', '--is-ancestor', retained, 'origin/main'], cwd=root, check=True)
     return dict(status='PASS', access=report['access'], checked_at=report['checked_at'],
                 source=f'{OUTPUT}/repository.json', sha256=file_hash(root / OUTPUT / 'repository.json'),
-                scope='read-only remote snapshot; stage B11 push/PR still awaits explicit approval')
+                scope='read-only remote snapshot of merged contribution PRs; current unpublished stage still requires approval')
 
 
 def verify_saved(root: Path) -> dict:
@@ -155,19 +155,28 @@ def verify_saved(root: Path) -> dict:
     if report['delivery_status'] != 'PASS':
         raise ValueError('saved B11 delivery did not pass')
     cfg = full_config()
-    collect_quality(root, cfg)
-    expected = assemble_acceptance(root, cfg, f'{OUTPUT}/checks.json')
+    evidence_dir = report.get('evidence_dir', 'docs/results/docker')
+    collect_quality(root, cfg, evidence_dir)
+    expected = (assemble_integration(root, cfg, f'{OUTPUT}/checks.json', evidence_dir, report['integration_checks'])
+                if report.get('integration_checks') else assemble_acceptance(root, cfg, f'{OUTPUT}/checks.json'))
     if read_json(root, 'docs/results/final_acceptance.json') != expected:
         raise ValueError('final acceptance differs from measured inputs/submission readiness')
     return report
 
 
 def main() -> int:
+    global OUTPUT
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--api-url', default='http://127.0.0.1:8000')
     parser.add_argument('--verify-existing', action='store_true')
     parser.add_argument('--require-ready', action='store_true', help='exit 2 unless all final submission conditions pass')
+    parser.add_argument('--output-dir', default=OUTPUT, help='separate B11 and INTEGRATE execution evidence')
+    parser.add_argument('--evidence-dir', default='docs/results/docker')
+    parser.add_argument('--integration-checks', help='actual executed non-submission integration checks JSON')
     args = parser.parse_args()
+    OUTPUT = args.output_dir
+    if not (ROOT / OUTPUT).resolve().is_relative_to(ROOT.resolve()):
+        raise ValueError('submission output must stay within checkout')
     if args.verify_existing:
         report = verify_saved(ROOT)
     else:
@@ -176,25 +185,41 @@ def main() -> int:
         files = files_check(ROOT, policy)
         paths = sorted(str(p.relative_to(ROOT)) for base in ('src', 'dashboard', 'docker')
                        for p in (ROOT / base).rglob('*.py'))
-        paths += ['scripts/check_submission.py', 'scripts/check_submission_evidence.py']
+        submission_sources = ['scripts/check_submission.py', 'scripts/check_submission_evidence.py',
+                              'scripts/verify_integration_data.py', 'scripts/verify_integration_mab.py',
+                              'scripts/verify_integration_ct.py', 'scripts/archive_integration_ab.py',
+                              'scripts/resume_integration_ct.py', 'scripts/verify_integration_ct_lifecycle.py']
+        paths += submission_sources
         audit = audit_python(ROOT, paths, policy['setting_names'])
         write_json(ROOT / OUTPUT / 'python_audit.json', audit)
         commands = {}
         commands['mypy_submission'] = run_check(ROOT, 'mypy_submission', [sys.executable, '-m', 'mypy',
-            '--explicit-package-bases', '--follow-imports=silent', 'scripts/check_submission.py', 'scripts/check_submission_evidence.py'])
+            '--explicit-package-bases', '--follow-imports=silent', *submission_sources])
         commands['mypy_repository'] = run_check(ROOT, 'mypy_repository', [sys.executable, '-m', 'mypy',
             '--ignore-missing-imports', 'src', 'dashboard', 'docker'])
         commands['pip_check'] = run_check(ROOT, 'pip_check', [sys.executable, '-m', 'pip', 'check'])
         env = {**os.environ, 'PYTHONHASHSEED': str(load_config()['seed']),
-               'REDIS_HOST': '127.0.0.1', 'RUN_REDIS_TESTS': '1'}
+               'REDIS_HOST': '127.0.0.1', 'RUN_REDIS_TESTS': '1',
+               'SCALE': 'dev', 'CONFIG_PATH': str(ROOT / 'config.yaml')}
         commands['pytest'] = run_check(ROOT, 'pytest', [sys.executable, '-m', 'pytest',
             '-p', 'src.serving.pytest_support', '-q', 'tests',
             '--junitxml=' + OUTPUT + '/pytest.xml'], env)
         live = live_check(args.api_url)
         repository = check_repository_evidence(ROOT)
         cfg = full_config()
-        _, quality = collect_quality(ROOT, cfg)
-        blockers = list(policy['pending_integration'])
+        _, quality = collect_quality(ROOT, cfg, args.evidence_dir)
+        if args.integration_checks:
+            executed = read_json(ROOT, args.integration_checks)
+            blockers = []
+            checked = collect_integration_checks(ROOT, executed, quality['data_fingerprint'])
+            for name, entry in checked.items():
+                if entry['status'] != 'PASS' or entry['exit_code'] != 0:
+                    blockers.append(name + ': ' + entry['status'])
+            scope = read_json(ROOT, 'docs/submission/dataset_scope.json')
+            if scope['status'] != 'RESOLVED_OPTIONAL':
+                blockers.append('P0 interpretation UNRESOLVED')
+        else:
+            blockers = list(policy['pending_integration'])
         if commands['mypy_repository']['status'] != 'PASS':
             blockers.append('repository-wide mypy has existing errors; see the complete log, repair in INTEGRATE/owning role')
         if audit['missing_annotations']:
@@ -205,24 +230,30 @@ def main() -> int:
             blockers.append('evaluator access: BLOCKED')
         delivery = all(commands[k]['status'] == 'PASS' for k in ('mypy_submission', 'pip_check', 'pytest'))
         delivery = delivery and live['status'] != 'FAIL'
+        quality_path = args.evidence_dir + '/quality_full_test.json'
         input_names = set(files['hashes']) | set(paths) | {'docs/submission/check_policy.json',
             'docs/submission/contributions.json', 'docs/submission/requirements.json',
             'docs/submission/config_snapshot.json', 'config.yaml', 'config/search.yaml', 'config/recommend.yaml',
             'config/serving.yaml', 'docs/results/gates/B9.json', 'docs/results/gates/B10.json',
-            QUALITY_PATH, 'docs/results/docker/quality_full_valid.json', 'docs/results/docker/quality_selection_full.json',
-            'docs/results/docker/smoke_full.json', 'docs/results/docker/verified_full.json',
+            quality_path, args.evidence_dir + '/quality_full_valid.json', args.evidence_dir + '/quality_selection_full.json',
+            args.evidence_dir + '/smoke_full.json', args.evidence_dir + '/verified_full.json',
             'docs/results/ab_test.json', 'docs/results/ct_dev_fixture.json', f'{OUTPUT}/repository.json',
             f'{OUTPUT}/python_audit.json', f'{OUTPUT}/pytest.xml'}
-        report = dict(stage='B11', delivery_status='PASS' if delivery else 'FAIL',
+        if args.integration_checks:
+            input_names |= {args.integration_checks, 'docs/submission/dataset_scope.json',
+                            args.evidence_dir + '/configuration_full.json'}
+        report = dict(stage='INTEGRATE' if args.integration_checks else 'B11', delivery_status='PASS' if delivery else 'FAIL',
             readiness_status='BLOCKED' if blockers or not delivery else 'PASS', blockers=blockers,
             branch=git(ROOT, 'branch', '--show-current'), base_commit=git(ROOT, 'rev-parse', 'HEAD'),
             remote_main_commit=git(ROOT, 'rev-parse', 'origin/main'), push_status='AWAITING_EXPLICIT_APPROVAL',
             files=files, commands=commands, live_api=live, repository=repository,
-            quality_scope=quality['scope'], input_hashes={name: file_hash(ROOT / name) for name in sorted(input_names)})
+            quality_scope=quality['scope'], evidence_dir=args.evidence_dir, integration_checks=args.integration_checks,
+            input_hashes={name: file_hash(ROOT / name) for name in sorted(input_names)})
         write_json(ROOT / OUTPUT / 'checks.json', report)
         write_json(ROOT / 'docs/results/final_acceptance.json',
-                   assemble_acceptance(ROOT, cfg, f'{OUTPUT}/checks.json'))
-    print(f"B11 delivery={report['delivery_status']}; final readiness={report['readiness_status']}")
+                   assemble_integration(ROOT, cfg, f'{OUTPUT}/checks.json', args.evidence_dir, args.integration_checks)
+                   if args.integration_checks else assemble_acceptance(ROOT, cfg, f'{OUTPUT}/checks.json'))
+    print(f"{report.get('stage', 'B11')} delivery={report['delivery_status']}; final readiness={report['readiness_status']}")
     for blocker in report['blockers']:
         print('PENDING: ' + blocker)
     if report['delivery_status'] != 'PASS':

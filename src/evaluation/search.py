@@ -1,6 +1,8 @@
 """B8 search measurement without rewriting A's frozen reports or settings."""
 from __future__ import annotations
 
+from typing import Any, Callable
+
 import json
 from pathlib import Path
 from time import perf_counter
@@ -18,10 +20,12 @@ from src.search.queries import freeze_queries
 from src.search.searcher import Searcher
 
 
-def evaluate(cfg: dict, split: str) -> dict:
+def evaluate(cfg: dict, split: str, query_encoder_setup: Callable[[Any], None] | None = None) -> dict:
     folder = freeze_queries(cfg)
     query_manifest = json.loads((folder / 'manifest.json').read_text())
     searcher = Searcher(cfg)
+    if query_encoder_setup is not None:
+        query_encoder_setup(searcher.encoder)
     queries, vectors = encoded_queries(searcher, folder, split)
     # Pinned macOS ARM torch/FAISS wheels load different OpenMP runtimes.
     # Reuse B's established inference policy after A's index loader sets threads.
@@ -101,4 +105,5 @@ def evaluate(cfg: dict, split: str) -> dict:
         models=dict(embeddings=searcher.bundle['manifest'], index=json.loads((index_folder / 'manifest.json').read_text())),
         evaluation='observable attributes; independent augmented queries; no exact duplicate quality queries; labels never passed to the searcher',
         test_used_for_selection=False, settings_changed=False, runtime_threads=threads,
+        query_encoder_runtime=getattr(searcher.encoder, '_docker_vision_optimization', {}),
         runtime_policy='B inference thread guard reused; search/model/index configuration remains unchanged')

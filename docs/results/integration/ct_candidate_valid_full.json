@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "seconds": 451.31496881400017,
+  "metrics": {
+    "ctr_auc": 0.9715741086235063,
+    "ctr_logloss": 0.1346185260540005,
+    "hit_rate_at_50": 0.7040502435273007,
+    "truth_users": 7802,
+    "ctr_samples": 226718,
+    "validation_fingerprint": "97eacc58070c2f879556a74286b5a25338a94e4c832b8e7a63dd144f3f9da77b"
+  },
+  "bundle_hashes": {
+    "meta.json": "452c65836c3816041c98628f028b73acaa1b6dbe08921a80257a2e7ff05debdd",
+    "two_tower.pt": "e34e95fecf73022384cf90fdc8118283ed72db11f0194242a885f48bd7689888",
+    "feature_vocab_scalers.json": "6cd83c3b2a6092fb5c2105606f53c1711ea5b555575e6c937e2250204c318fb2",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "ecd2628efbfcc17ed3f1de31f1570cd7304733bcc4f28e45900f2f68fcb58ef7",
+    "index_manifest.json": "0c9f6cb0ea7ac2d98f0ea489216d7725562bf9e5151da53f3a3b894c9bd00649",
+    "ranking/meta.json": "776faa677d75f87a0639aa7997155734ccf47cd2ebae57ba536d93ec4409deb3",
+    "ranking/deepfm.pt": "6380366be613f0aaf33277926717aaaa6fe6822b4309ae4bc942a116103d2e9b",
+    "ranking/features.json": "9c951b41fc839b6d00a1fbdb02b394789c576f87747ff5fe8c7f41a7dea96ede",
+    "session/meta.json": "20f45f52e25acca7f69ba1393f339dc355041d4ec44c52da8733266ec24aad44",
+    "session/session.pt": "2ac9679d7565414c04af2ba503dd6874706671cb9177afe5d2c7ddaccf220e4f",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  }
+}

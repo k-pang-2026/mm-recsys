@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "container": "mm-recsys-integrate-v41-ct-run-3fa978806944",
+  "image": "sha256:1885596d95c7dd4085bb25a4108d20049ea49ef102fe876e44df53ddddcea60a",
+  "source_hashes": {
+    "scripts/verify_integration_ct.py": "68723c42bb3ef4f802bb256a36b0d30013cd991d8036b8aeb7c18c769b8a5db7",
+    "src/ct/retrain_trigger.py": "4ee0a7fb08fe42f2e5487c9554be5d01c3fc232bcc8df0c22ef6be67b2af3fab",
+    "src/ct/training.py": "655af9f3f6c492c1c6ef383e416bb7e3827f12bed2a69bfff24533f86f8dd0b0",
+    "src/recommendation/train_two_tower.py": "64b8d787b9f9e52f2cb56e05e2fb488d5c47b9f677b557db3dc7ed55c10b873e",
+    "src/recommendation/train_deepfm.py": "a743a7c0f260673a6a68f68628402acbc19d4bf096bdc613a0cac91e66e86c16",
+    "src/recommendation/train_session.py": "bdc46440f56521679c7aa1fc609c85999d94555e790c1271a74356a28f4e6972"
+  },
+  "scope": "actual running CT verification runner and all three training implementation bytes equal the current integration source"
+}

@@ -1,0 +1,9 @@
+{
+  "status": "RESOLVED_OPTIONAL",
+  "date": "2026-10-16",
+  "decision_source": "사용자가 전달한 강사 지시",
+  "primary_acceptance": "합성 full 데이터로 개발과 필수 검증을 완료한다",
+  "real_datasets_required": false,
+  "real_datasets_use": "H&M, Retailrocket, DeepFashion은 개발 완료 후 추가적인 모델 검증에 사용한다",
+  "acquisition_performed": false
+}

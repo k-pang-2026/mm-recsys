@@ -1,6 +1,9 @@
 """Full shared-API injection benchmark and observable session/reward evidence."""
 from __future__ import annotations
 
+from typing import cast
+from fastapi import FastAPI
+
 import argparse
 import json
 import platform
@@ -33,12 +36,12 @@ def benchmark(cfg: dict,b5: bool=True,output: Path | None=None) -> dict:
     data=read_data(cfg['paths']['data_dir']); store=RecommendationFeatureStore(cfg,data['products'])
     users=sorted(data['train'].user_id.unique()); warmup=cfg['benchmark']['warmup']; count=cfg['benchmark']['requests']
     request_records=[]
-    native=[]; http=[]; stages={k:[] for k in ['candidate_ms','ranking_ms','reranking_ms']}; responses=[]
+    native=[]; http=[]; stages: dict[str, list[float]] = {k:[] for k in ['candidate_ms','ranking_ms','reranking_ms']}; responses: list[dict] = []
     startup_started=time.perf_counter()
     with TestClient(create_app(cfg,feature_store=store)) as client:
         startup_ms=(time.perf_counter()-startup_started)*1000
-        if client.app.state.recommend is None: raise ValueError('model unavailable during API benchmark')
-        service=client.app.state.recommend
+        if cast(FastAPI, client.app).state.recommend is None: raise ValueError('model unavailable during API benchmark')
+        service=cast(FastAPI, client.app).state.recommend
         for i in range(warmup+count):
             uid=str(users[i%len(users)]); start=time.perf_counter()
             result=client.get('/api/recommend',params={'user_id':uid,'top_n':50})
@@ -97,7 +100,7 @@ def benchmark(cfg: dict,b5: bool=True,output: Path | None=None) -> dict:
     return report
 
 
-def apply_selection(cfg,selection_path):
+def apply_selection(cfg: dict,selection_path: Path) -> dict:
     selected=json.loads(selection_path.read_text())
     if selected['status']!='SELECTED': raise ValueError('eligible frozen valid policy required')
     for name,digest in selected['source_hashes'].items():

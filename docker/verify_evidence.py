@@ -67,7 +67,7 @@ def main() -> int:
     parser.add_argument('--smoke', type=Path)
     args = parser.parse_args(); cfg = runtime_config(load_config())
     smoke_path = args.smoke or Path(f"docs/results/docker/smoke_{cfg['scale']}.json")
-    prep_path = Path(f"docs/results/docker/preparation_{cfg['scale']}.json")
+    prep_path = smoke_path.parent / f"preparation_{cfg['scale']}.json"
     manifest_path = Path(cfg['paths']['data_dir']) / 'split_manifest.json'
     smoke, prep, manifest = [json.loads(path.read_text()) for path in (smoke_path, prep_path, manifest_path)]
     verify(cfg, smoke, prep, manifest)
@@ -94,7 +94,7 @@ def main() -> int:
         data_fingerprint=manifest['generation_fingerprint'],
         sources={str(p): file_hash(p) for p in paths},
         scope='Docker preparation, API/store/candidate latency and smoke only; full-test quality separate')
-    output = Path(f"docs/results/docker/verified_{cfg['scale']}.json")
+    output = smoke_path.parent / f"verified_{cfg['scale']}.json"
     write_json(output, result)
     print(f'B10 measurement evidence PASS: {output}')
     return 0

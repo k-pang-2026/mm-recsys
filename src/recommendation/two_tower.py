@@ -9,6 +9,8 @@ from src.recommendation.features import FeatureEncoder, ItemTable, ITEM_FIELDS, 
 
 
 class TwoTower(nn.Module):
+    item_categories: torch.Tensor
+    item_prices: torch.Tensor
     def __init__(self, encoder: FeatureEncoder, table: ItemTable, spec: dict):
         super().__init__()
         if spec.get('item_id_residual', False) or spec.get('history_pooling', 'mean') != 'mean':

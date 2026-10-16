@@ -1,4 +1,7 @@
 """B-owned TCP benchmark factory; shared server/routes/schema remain unchanged."""
+from __future__ import annotations
+
+from typing import Any
 import json
 import os
 from src.common.config import load_config
@@ -7,7 +10,7 @@ from src.recommendation.datasets import read_data
 from src.serving.main import create_app
 
 
-def create_bench_app():
+def create_bench_app() -> Any:
     cfg=load_config()
     cfg['recommend']['scoring']=json.loads(os.environ['B_BENCH_SCORING'])
     b5=os.environ.get('B_BENCH_B5','1')=='1'

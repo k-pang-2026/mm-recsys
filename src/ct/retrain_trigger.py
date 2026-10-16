@@ -1,6 +1,8 @@
 """Serialized event-threshold training; failures never consume events or replace active models."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import copy
 import json
@@ -23,13 +25,13 @@ def settings(cfg: dict) -> dict:
     return spec
 
 
-def components(cfg: dict):
+def components(cfg: dict) -> tuple[dict, Journal, ModelRegistry]:
     spec = settings(cfg)
     return (spec, Journal(Path(cfg['paths']['model_dir']) / '.ct' / 'journal.sqlite3'),
             ModelRegistry(Path(cfg['paths']['model_dir']), Path(cfg['paths']['results_dir']) / 'ct_log.jsonl'))
 
 
-def trigger(cfg: dict, build) -> dict:
+def trigger(cfg: dict, build: Any) -> dict:
     spec, journal, registry = components(cfg)
     try:
         with file_lock(registry.root / '.ct' / 'training.lock', blocking=False):
@@ -118,7 +120,7 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
 def reload_api(url: str, version: str) -> dict:
     from urllib.parse import urlparse
     import ipaddress
-    import requests  # type: ignore[import-untyped]
+    import requests
     parsed = urlparse(url)
     try:
         loopback = parsed.hostname == 'localhost' or ipaddress.ip_address(parsed.hostname or '').is_loopback

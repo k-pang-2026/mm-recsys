@@ -1,0 +1,277 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "epochs": [
+    {
+      "epoch": 1,
+      "loss": 0.5307352367369755,
+      "valid": {
+        "loss": 0.13544334707521144,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.155020969999896
+    },
+    {
+      "epoch": 2,
+      "loss": 0.12597761474584462,
+      "valid": {
+        "loss": 0.11784052071684804,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.819231991999914
+    },
+    {
+      "epoch": 3,
+      "loss": 0.11573835062583718,
+      "valid": {
+        "loss": 0.11170584757740208,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 22.682573998001317
+    },
+    {
+      "epoch": 4,
+      "loss": 0.11067468213873678,
+      "valid": {
+        "loss": 0.10746245540954145,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.533665730001303
+    },
+    {
+      "epoch": 5,
+      "loss": 0.10684595496023934,
+      "valid": {
+        "loss": 0.10428266272127112,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.158438226000726
+    },
+    {
+      "epoch": 6,
+      "loss": 0.10405548033068228,
+      "valid": {
+        "loss": 0.10200067078652432,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 22.61422182699971
+    },
+    {
+      "epoch": 7,
+      "loss": 0.10206347042706185,
+      "valid": {
+        "loss": 0.10043345243988855,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 24.156866284998614
+    },
+    {
+      "epoch": 8,
+      "loss": 0.10060297090738092,
+      "valid": {
+        "loss": 0.09908482763137996,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.548615969999446
+    },
+    {
+      "epoch": 9,
+      "loss": 0.09949696334591412,
+      "valid": {
+        "loss": 0.098201288840512,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 22.156274863998988
+    },
+    {
+      "epoch": 10,
+      "loss": 0.09865330676126945,
+      "valid": {
+        "loss": 0.0973989773675412,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 22.269014114999663
+    },
+    {
+      "epoch": 11,
+      "loss": 0.09796164709684586,
+      "valid": {
+        "loss": 0.09677736074851347,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 22.181705692999458
+    },
+    {
+      "epoch": 12,
+      "loss": 0.09741333025045246,
+      "valid": {
+        "loss": 0.0963274211146418,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.145656272999986
+    },
+    {
+      "epoch": 13,
+      "loss": 0.0969882149232615,
+      "valid": {
+        "loss": 0.09591368687167619,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.096480817001066
+    },
+    {
+      "epoch": 14,
+      "loss": 0.09660600468818084,
+      "valid": {
+        "loss": 0.09557281198240576,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 22.4160691699999
+    },
+    {
+      "epoch": 15,
+      "loss": 0.096261737476637,
+      "valid": {
+        "loss": 0.09532256068037,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.731785854999544
+    },
+    {
+      "epoch": 16,
+      "loss": 0.09600217094547889,
+      "valid": {
+        "loss": 0.09499457449421826,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.900058016999537
+    },
+    {
+      "epoch": 17,
+      "loss": 0.09570333930454708,
+      "valid": {
+        "loss": 0.09479427101556019,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 23.363517309999224
+    },
+    {
+      "epoch": 18,
+      "loss": 0.09549497469754624,
+      "valid": {
+        "loss": 0.09453516645225596,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.408882067000377
+    },
+    {
+      "epoch": 19,
+      "loss": 0.09525611028489901,
+      "valid": {
+        "loss": 0.0942691974275264,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.60630368800048
+    },
+    {
+      "epoch": 20,
+      "loss": 0.09506926194467477,
+      "valid": {
+        "loss": 0.09434304718072141,
+        "sampled_hit_at_10": 1.0,
+        "samples": 29084,
+        "candidates": 65,
+        "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+      },
+      "seconds": 21.502318187000128
+    }
+  ],
+  "best_epoch": 19,
+  "selected_valid": {
+    "loss": 0.0942691974275264,
+    "sampled_hit_at_10": 1.0,
+    "samples": 29084,
+    "candidates": 65,
+    "denominator": "target plus fixed eligible random negatives; not full-catalog HitRate"
+  },
+  "checkpoint_reload": "PASS",
+  "bundle": {
+    "version": "gru-session-v1",
+    "best_epoch": 19,
+    "selection_split": "valid",
+    "config_fingerprint": "12d7a11dba82d761489faa26a9e86e7aae20ccbbde9b4ec9cdb8a7e7db759c14",
+    "candidate_sha256": "e34e95fecf73022384cf90fdc8118283ed72db11f0194242a885f48bd7689888",
+    "data_fingerprint": "5210abed013b63894eb1827c2e975b7a8667bdaf7bdf6b85a309587e0f34c8ef",
+    "hashes": {
+      "session.pt": "2ac9679d7565414c04af2ba503dd6874706671cb9177afe5d2c7ddaccf220e4f",
+      "item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+    }
+  },
+  "elapsed_seconds": 653.2880290779995,
+  "train_samples": 230875,
+  "strictly_preceding": true,
+  "semantics": "offline recorded session_id; live store inactivity TTL=30min; generator may span hours",
+  "environment": {
+    "torch": "2.6.0+cpu",
+    "threads": 4,
+    "device": "cpu"
+  }
+}

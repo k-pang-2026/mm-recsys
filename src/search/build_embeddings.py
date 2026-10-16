@@ -1,6 +1,8 @@
 """Content-deduplicated, checked chunk resume and atomic embedding publication."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import json
 import os
@@ -79,7 +81,7 @@ def _chunks(folder: Path, mode: str, keys: list[str], values: list, encoder, chu
     return np.concatenate(output)
 
 
-def build_embeddings(cfg: dict, encoder=None) -> Path:
+def build_embeddings(cfg: dict, encoder: Any=None) -> Path:
     data = Path(cfg['paths']['data_dir']); catalog = data/'products.parquet'
     split = json.loads((data/'split_manifest.json').read_text())
     catalog_hash = file_hash(catalog)

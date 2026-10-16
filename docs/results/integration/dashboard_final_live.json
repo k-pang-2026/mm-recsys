@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "tabs": [
+    "검색",
+    "추천",
+    "A/B 실험",
+    "시스템"
+  ],
+  "plotly_charts": 4,
+  "exceptions": [],
+  "metrics": {
+    "측정 기준 판정": "PASS",
+    "측정 지표": "11/11",
+    "최종 종합 품질": "UNMEASURED",
+    "API 연결": "정상",
+    "모델 준비": "준비됨",
+    "현재 모델 버전": "v1.0"
+  },
+  "source_hashes": {
+    "dashboard/app.py": "d7c8db4e911684a7f61d2d02b61c989c0f2c3b8a83607944b037097aff18b333",
+    "dashboard/data.py": "2e3712a8b29201b22e5cf3793d8ad37180c234fad2eb580aa7f2e2039f45fc2f"
+  },
+  "scope": "actual dashboard-container AppTest with full test/A-B and live API health, real text-search/recommend button calls; no browser pixel assertion",
+  "scale": "full",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "display_source": "docs/results/integration/dashboard_evaluation_final_full_test.json",
+  "display_sha256": "a426fc13d368572fe19a0fe1e212b19c88696c9c2e845af3a8b72fa27a4ef181",
+  "command_exit_code": 0
+}

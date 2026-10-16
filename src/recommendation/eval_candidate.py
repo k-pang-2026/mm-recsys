@@ -1,6 +1,8 @@
 """Fixed-origin, unique future item truth, macro-user Recall over exactly top300."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import platform
 from collections import defaultdict
@@ -80,10 +82,10 @@ class Evaluation:
                     rare_truth_items=rare, new_truth_items=new, repeated_purchase_truth_items=repeated,
                     average_recall_upper_bound=float(np.mean(bounds)) if bounds else None, cohorts=summary)
 
-    def model(self, model) -> dict:
+    def model(self, model: Any) -> dict:
         batch_size = self.cfg['recommend']['candidate']['batch_size']
         reference = ExactCandidate(model, self.table, self.eligible, batch_size)
-        ranked = []
+        ranked: list = []
         for start in range(0, len(self.contexts), batch_size):
             vectors = reference.user_vectors(self.contexts[start:start + batch_size])
             scores = dot_scores(vectors, reference.vectors)
@@ -95,7 +97,7 @@ class Evaluation:
         history = [self.table.public_ids(top_indices(self.baselines.history_scores(c, self.eligible), self.eligible)) for c in self.contexts]
         return {'train_popularity': self.measure([popularity] * len(self.contexts)), 'observed_history_profile': self.measure(history)}
 
-    def ann_metrics(self, model, index) -> dict:
+    def ann_metrics(self, model: Any, index: Any) -> dict:
         from src.recommendation.runtime import configure_inference
         configure_inference(self.cfg['recommend']['candidate'], with_faiss=True)
         import faiss

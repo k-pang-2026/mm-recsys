@@ -1,0 +1,266 @@
+{
+  "status": "RECOVERED_WITH_PRESERVED_FAILURE",
+  "scope": "actual command receipts; initial unsupported CLI and interrupted process retained; natural CT retention is separate from any full controlled lifecycle drill",
+  "executions": [
+    {
+      "name": "mab_http_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "scripts/verify_integration_mab.py"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/mab_http_full.txt",
+      "sha256": "5874db6ca5f2eeefc8e437f645071a8e40495ccc1907e65d50872f022cfef7f6",
+      "seconds": 0.7149867739999536
+    },
+    {
+      "name": "smoke_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "scripts/smoke_test.py",
+        "--benchmark",
+        "--output",
+        "docs/results/integration/smoke_full.json"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/smoke_full.txt",
+      "sha256": "4be08a3d4a89ad717231f08ae879eb4a65da78631ad0658dcbfee26ad1a08b0c",
+      "seconds": 42.914536094999676
+    },
+    {
+      "name": "verify_smoke_full",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "-m",
+        "docker.verify_evidence",
+        "--smoke",
+        "docs/results/integration/smoke_full.json"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/verify_smoke_full.txt",
+      "sha256": "ec38eb9a075f94ce1336c370f9f42d027d69dcd015fc5372faa89d58cf7a10af",
+      "seconds": 0.5736137020003298
+    },
+    {
+      "name": "quality_full_valid",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "-e",
+        "QUALITY_RESULTS_DIR=docs/results/integration",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "-m",
+        "docker.quality",
+        "--split",
+        "valid"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/quality_full_valid.txt",
+      "sha256": "849401c0be04df055896fedf19a5fe7234033dc36d2b1cacc6519daaed8dcef4",
+      "seconds": 827.8032965960001
+    },
+    {
+      "name": "quality_full_test",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "-e",
+        "QUALITY_RESULTS_DIR=docs/results/integration",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "-m",
+        "docker.quality",
+        "--split",
+        "test"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/quality_full_test.txt",
+      "sha256": "7fe1f49ee43dad444c1c97c5bdced1830856aa08086cd2424ce59a2e5cc864ce",
+      "seconds": 833.4159235120005
+    },
+    {
+      "name": "verify_quality_full_test",
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "-e",
+        "QUALITY_RESULTS_DIR=docs/results/integration",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "-m",
+        "docker.quality",
+        "--split",
+        "test",
+        "--verify-existing"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/verify_quality_full_test.txt",
+      "sha256": "d6fc956c1a3246f0373db4395a4905d995c60dad9a63ba25ec843c488d9ac7f0",
+      "seconds": 2.2964400599994406
+    },
+    {
+      "status": "PASS",
+      "command": [
+        "docker",
+        "stop",
+        "mm-recsys-integrate-v41-simulator-1"
+      ],
+      "exit_code": 0,
+      "source": "docs/results/integration/commands/pause_full_simulator_for_ct.txt",
+      "sha256": "aa798c5006db3a5becd2b1bc3c582e9efa2d50bd2d517daaad94c2312833e05c",
+      "seconds": 0.5227578739995806
+    },
+    {
+      "status": "FAIL",
+      "command": [
+        "docker",
+        "compose",
+        "-p",
+        "mm-recsys-integrate-v41",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker-compose.yml",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/docker/compose.ct.yml",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.override.yml",
+        "-f",
+        "/tmp/mm-recsys-integration-fresh-qht3vjzz/integration.ct-runner.yml",
+        "--profile",
+        "ct",
+        "run",
+        "--rm",
+        "--no-deps",
+        "--no-build",
+        "ct",
+        "python",
+        "scripts/verify_integration_ct.py"
+      ],
+      "exit_code": 1,
+      "source": "docs/results/integration/commands/ct_full.txt",
+      "sha256": "69161916570b371ec8c25ff942c74625e7c53070833e20d5aee1bc52d595d4e7",
+      "seconds": 0.08856882200052496
+    },
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "docker",
+        "wait",
+        "mm-recsys-integrate-v41-ab"
+      ],
+      "source": "docs/results/integration/commands/ab_full_recovered_wait.txt",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "seconds": 1106.615275106,
+      "scope": "actual exit captured from surviving original full AB container; original CLI interrupted, progress logs preserved"
+    },
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "docker",
+        "exec",
+        "-e",
+        "CONFIG_PATH=models/full/.docker/config.yaml",
+        "-e",
+        "SCALE=full",
+        "mm-recsys-integrate-v41-api-server-1",
+        "python",
+        "-m",
+        "src.evaluation.verify_ab",
+        "--report",
+        "docs/results/integration/ab_full.json"
+      ],
+      "source": "docs/results/integration/commands/verify_ab_full.txt",
+      "sha256": "12c5d6105f0749bc0a7ba4d2141bcdb2b3c7765193e71a5efa761219eb440184",
+      "seconds": 1.33523775499998
+    },
+    {
+      "status": "PARTIAL",
+      "command": [
+        "docker",
+        "wait",
+        "mm-recsys-integrate-v41-ct-resume"
+      ],
+      "exit_code": 2,
+      "source": "docs/results/integration/commands/ct_full_resume.txt",
+      "sha256": "f1ebdb1e1c1dda37ca45285f9d32bc6d69cc01e0b07d85d8ebc832d0cff3914a",
+      "seconds": 701.2070696030005,
+      "scale": "full",
+      "reason": "resume original actual trained bundles after interrupted paired evaluation; original attempt retained"
+    },
+    {
+      "status": "FAIL",
+      "exit_code": 137,
+      "command": [
+        "docker",
+        "wait",
+        "mm-recsys-integrate-v41-ct-lifecycle"
+      ],
+      "source": "docs/results/integration/commands/command.txt",
+      "sha256": "836ed7e3f8132a61699e1f484abd3b67c709f0461cad828bd0d1fa8d7e3a5054",
+      "seconds": 233.42935026899977,
+      "container_state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": true,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 137,
+        "Error": "",
+        "StartedAt": "2026-10-16T12:34:35.290742693Z",
+        "FinishedAt": "2026-10-16T12:38:54.70086057Z"
+      },
+      "scope": "separate full functional initial-constant-ranker promotion/reload/rollback; natural production training remains RETAINED"
+    },
+    {
+      "status": "PASS",
+      "exit_code": 0,
+      "command": [
+        "docker",
+        "wait",
+        "mm-recsys-integrate-v41-ct-lifecycle-retry"
+      ],
+      "source": "docs/results/integration/commands/ct_controlled_full.txt",
+      "sha256": "ba1776678ac2b589a8c317248287b5499b97ac9a71739955047d9bd6ed333076",
+      "seconds": 0.10526705299889727,
+      "container_state": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-16T12:40:19.798118867Z",
+        "FinishedAt": "2026-10-16T12:44:44.308265684Z"
+      },
+      "scope": "separate full functional initial-constant-ranker promotion/reload/rollback; natural production training remains RETAINED"
+    }
+  ]
+}

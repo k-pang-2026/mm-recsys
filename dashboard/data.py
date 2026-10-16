@@ -9,7 +9,7 @@ import base64
 from collections import deque
 from pathlib import Path
 
-import requests  # type: ignore[import-untyped]
+import requests
 import yaml
 from dotenv import dotenv_values
 

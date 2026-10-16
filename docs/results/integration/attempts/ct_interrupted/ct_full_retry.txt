@@ -1,0 +1,48 @@
+ Container mm-recsys-integrate-v41-ct-run-3fa978806944 Creating 
+ Container mm-recsys-integrate-v41-ct-run-3fa978806944 Created 
+CT: emitting 10000 unique HTTP observations over 200 top50 requests
+CT quality alert: hitrate_below_threshold
+CT: starting actual full candidate/ranking/session retraining and paired valid evaluation
+/app/src/ct/retrain_trigger.py:86: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
+epoch=1 loss=0.32393 valid_recall@300=0.740334 updates=1135
+epoch=2 loss=0.24091 valid_recall@300=0.745995 updates=1135
+epoch=3 loss=0.22379 valid_recall@300=0.745375 updates=1135
+epoch=4 loss=0.21207 valid_recall@300=0.745161 updates=1135
+epoch=5 loss=0.20259 valid_recall@300=0.745204 updates=1135
+best_epoch=2; valid_recall@300=0.745995; result=/app/models/full/.ct/runs/v1.1-84fd8a9f/results/candidate_training_full.json
+epoch=1 loss=1.25988 valid_ctr_auc=0.958455 cvr_auc=None
+epoch=2 loss=0.16454 valid_ctr_auc=0.965277 cvr_auc=None
+epoch=3 loss=0.13420 valid_ctr_auc=0.966950 cvr_auc=None
+epoch=4 loss=0.12683 valid_ctr_auc=0.967677 cvr_auc=None
+epoch=5 loss=0.11998 valid_ctr_auc=0.968109 cvr_auc=None
+epoch=6 loss=0.11212 valid_ctr_auc=0.969195 cvr_auc=None
+epoch=7 loss=0.10638 valid_ctr_auc=0.970623 cvr_auc=None
+epoch=8 loss=0.10176 valid_ctr_auc=0.970998 cvr_auc=None
+epoch=9 loss=0.09903 valid_ctr_auc=0.971400 cvr_auc=None
+epoch=10 loss=0.09739 valid_ctr_auc=0.971213 cvr_auc=None
+epoch=11 loss=0.09605 valid_ctr_auc=0.971234 cvr_auc=None
+epoch=12 loss=0.09417 valid_ctr_auc=0.971574 cvr_auc=None
+epoch=13 loss=0.09244 valid_ctr_auc=0.971303 cvr_auc=None
+epoch=14 loss=0.09145 valid_ctr_auc=0.971260 cvr_auc=None
+epoch=15 loss=0.09060 valid_ctr_auc=0.971542 cvr_auc=None
+session epoch=1 valid_loss=0.13544 sampled_hit@10=1.00000
+session epoch=2 valid_loss=0.11784 sampled_hit@10=1.00000
+session epoch=3 valid_loss=0.11171 sampled_hit@10=1.00000
+session epoch=4 valid_loss=0.10746 sampled_hit@10=1.00000
+session epoch=5 valid_loss=0.10428 sampled_hit@10=1.00000
+session epoch=6 valid_loss=0.10200 sampled_hit@10=1.00000
+session epoch=7 valid_loss=0.10043 sampled_hit@10=1.00000
+session epoch=8 valid_loss=0.09908 sampled_hit@10=1.00000
+session epoch=9 valid_loss=0.09820 sampled_hit@10=1.00000
+session epoch=10 valid_loss=0.09740 sampled_hit@10=1.00000
+session epoch=11 valid_loss=0.09678 sampled_hit@10=1.00000
+session epoch=12 valid_loss=0.09633 sampled_hit@10=1.00000
+session epoch=13 valid_loss=0.09591 sampled_hit@10=1.00000
+session epoch=14 valid_loss=0.09557 sampled_hit@10=1.00000
+session epoch=15 valid_loss=0.09532 sampled_hit@10=1.00000
+session epoch=16 valid_loss=0.09499 sampled_hit@10=1.00000
+session epoch=17 valid_loss=0.09479 sampled_hit@10=1.00000
+session epoch=18 valid_loss=0.09454 sampled_hit@10=1.00000
+session epoch=19 valid_loss=0.09427 sampled_hit@10=1.00000
+session epoch=20 valid_loss=0.09434 sampled_hit@10=1.00000

@@ -3,7 +3,7 @@
     "A": {
       "name": "이제원",
       "github": "미등록",
-      "scope": "공통 기반·시뮬레이터·CLIP/FAISS 검색·워크플로·Docker; B11 로컬 작업, INTEGRATE 미완료",
+      "scope": "공통 기반·시뮬레이터·CLIP/FAISS 검색·워크플로·Docker·B11 제출 문서; INTEGRATE 수정 및 full 품질·A/B·CT 기능 실측, 원격 반영은 별도 승인",
       "prs": [
         {
           "number": 1,
@@ -34,6 +34,11 @@
           "number": 12,
           "url": "https://github.com/k-pang-2026/mm-recsys/pull/12",
           "head_sha": "8fb1c4ba8b340a726ddecc13159928ff1e248dc6"
+        },
+        {
+          "number": 13,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/13",
+          "head_sha": "64e16e764779331e91f675d1554144abaa2d4be2"
         }
       ]
     },
@@ -86,5 +91,5 @@
     }
   },
   "attribution": "담당 역할과 실제 PR 기준; Git 작성자 계정을 개인별 계정으로 추측하거나 변경하지 않음",
-  "b11_publication": "로컬 검증 후 별도 승인 대기; 새 PR 번호는 푸시 후 갱신"
+  "b11_publication": "사용자 명시 승인 후 PR #13을 검증·병합함; merge b40712a5b0c712ba8651efd3e6c8e3572fafc406. INTEGRATE push는 새 commit 설명 후 별도 승인 필요."
 }

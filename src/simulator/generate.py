@@ -13,12 +13,26 @@ from src.simulator.users import make_users
 from src.simulator.events import make_events
 from src.simulator.split import chronological_split
 
-GENERATOR_VERSION='4.0.0'
+GENERATOR_VERSION='4.1.0'
+
+
+def ordered_recipe(value: object) -> object:
+    """Mapping order affects category-indexed probability arrays and RNG traversal."""
+    if isinstance(value, dict):
+        return [[key, ordered_recipe(child)] for key, child in value.items()]
+    if isinstance(value, (tuple, list)):
+        return [ordered_recipe(child) for child in value]
+    return value
+
+
+def generation_identity(cfg: dict) -> dict:
+    return {'seed': cfg['seed'], 'simulator': cfg['simulator'], 'split': cfg['split'],
+            'ordered_simulator': ordered_recipe(cfg['simulator']), 'generator': GENERATOR_VERSION}
 
 
 def generate(cfg: dict, data_dir: Path | None = None) -> dict:
     data_dir=data_dir or Path(cfg['paths']['data_dir'])
-    expected=fingerprint({'seed':cfg['seed'],'simulator':cfg['simulator'],'split':cfg['split'],'generator':GENERATOR_VERSION})
+    expected=fingerprint(generation_identity(cfg))
     manifest_path=data_dir/'split_manifest.json'
     if manifest_path.exists():
         manifest=json.loads(manifest_path.read_text())

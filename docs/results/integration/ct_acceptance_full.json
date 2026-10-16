@@ -1,0 +1,37 @@
+{
+  "schema": "ct-full-separated-lifecycle-v1",
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "scope": "actual full natural retraining RETAINED plus separate full-size controlled INITIAL fault lifecycle; no production improvement claim",
+  "limitations": [
+    "natural strong baseline did not improve; production stayed on v1.0",
+    "isolated INITIAL ranker deliberately constant before registration; trained candidate unmodified",
+    "full controlled CTR-only valid comparison; no test used",
+    "not a second training run"
+  ],
+  "natural": {
+    "source": "docs/results/integration/ct_full.json",
+    "sha256": "eb8a8894b58ef328ead700bb118f7059dd110a34adb06c9f495433baf2ec53fc"
+  },
+  "controlled_lifecycle": {
+    "source": "docs/results/integration/ct_controlled_lifecycle_full.json",
+    "sha256": "e6a95bf4464c02a14426942d541139cbc6a15ffaf06b73776cf62ba4fa926b48"
+  },
+  "training": {
+    "source": "docs/results/integration/ct_training_sources_full.json",
+    "sha256": "bd13e25f322a7815985ab5777efa0d6f876ef7922a41681ae00d54e96dd56ee7"
+  },
+  "candidate_validation": {
+    "source": "docs/results/integration/ct_candidate_valid_full.json",
+    "sha256": "80cc25b8887d21ee1c8ec79e690ce49a53abf81127a3af2b7cda295295c68e84"
+  },
+  "configuration": {
+    "source": "docs/results/integration/configuration_full.json",
+    "sha256": "052cac9d343cac93428af00133b1534a4f16d4aacecffbf6b6f0d198df26c9e4"
+  },
+  "controlled_reload": {
+    "source": "docs/results/integration/ct_controlled_reload_full.jsonl",
+    "sha256": "9327e1519f5e7357fee8e51466060dd0f43c6a99e99fb75b6a2bf7a3e8f15eac"
+  }
+}

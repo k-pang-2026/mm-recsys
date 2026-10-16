@@ -1,6 +1,8 @@
 """Valid-only selection and separately invoked frozen test evaluation."""
 from __future__ import annotations
 
+
+
 import argparse
 from dataclasses import asdict
 import json
@@ -21,7 +23,7 @@ from src.search.queries import freeze_queries
 from src.search.searcher import Searcher
 
 
-def encoded_queries(searcher: Searcher, folder: Path, split: str):
+def encoded_queries(searcher: Searcher, folder: Path, split: str) -> tuple[list[dict], dict[str, np.ndarray]]:
     queries = json.loads((folder/f'{split}.json').read_text())
     identity = {'query_manifest': file_hash(folder/'manifest.json'), 'split': split,
                 'encoder': searcher.encoder.metadata, 'runtime_threads': searcher.cfg['search']['torch_threads']}
@@ -33,14 +35,14 @@ def encoded_queries(searcher: Searcher, folder: Path, split: str):
             values = [q['query_text'] if mode == 'text' else folder/q['query_image_path'] for q in (queries[i] for i in active)]
             encode = searcher.encoder.encode_texts if mode == 'text' else searcher.encoder.encode_images
             actual = encode(values); check_vectors(actual, searcher.encoder.dim, len(active))
-            vectors = np.zeros((len(queries), searcher.encoder.dim), np.float32)
-            vectors[active] = actual; atomic_array(path/f'{mode}.npy', vectors)
+            batch_vectors = np.zeros((len(queries), searcher.encoder.dim), np.float32)
+            batch_vectors[active] = actual; atomic_array(path/f'{mode}.npy', batch_vectors)
         write_json(path/'manifest.json', {'identity': identity,
                     'files': {f'{mode}.npy': file_hash(path/f'{mode}.npy') for mode in ('text', 'image')}})
     manifest = json.loads((path/'manifest.json').read_text())
     if manifest['identity'] != identity:
         raise ValueError('query-vector provenance mismatch')
-    vectors = {}
+    vectors: dict[str, np.ndarray] = {}
     for mode in ('text', 'image'):
         name = f'{mode}.npy'
         if file_hash(path/name) != manifest['files'][name]:
@@ -59,7 +61,7 @@ def score_rankings(rankings: list[list[str]], truth: list[set[str]]) -> dict:
             'mean_relevant_items': float(np.mean([len(labels) for labels in truth]))}
 
 
-def evaluate(cfg: dict, split: str, sweep=False) -> dict:
+def evaluate(cfg: dict, split: str, sweep: bool=False) -> dict:
     if sweep and split != 'valid':
         raise ValueError('model/index/fusion selection may only use valid queries')
     folder = freeze_queries(cfg); query_manifest = json.loads((folder/'manifest.json').read_text())
@@ -71,7 +73,7 @@ def evaluate(cfg: dict, split: str, sweep=False) -> dict:
     evaluation_identity = {'query_fingerprint': query_manifest['fingerprint'], 'split': split,
                            'cutoff': str(cutoff), 'rule_version': query_manifest['identity']['version'],
                            'aggregation': 'macro_query, balanced modes, binary multi-relevant NDCG@10'}
-    all_ranked = [None]*len(queries); mode_results = {}; experiments = []; selected = {}
+    all_ranked: list[list[str] | None] = [None]*len(queries); mode_results = {}; experiments = []; selected = {}
     for mode in ('text', 'image', 'hybrid'):
         active = [i for i, q in enumerate(queries) if q['mode'] == mode]
         mode_truth = [truths[i] for i in active]
@@ -97,6 +99,8 @@ def evaluate(cfg: dict, split: str, sweep=False) -> dict:
                     choice = (measured['ndcg_at_10'], measured['mrr'], -int(ef))
                     if best is None or choice > best[0]:
                         best = (choice, candidate, ranked, hits, query_vectors)
+        if best is None:
+            raise ValueError("search mode has no evaluated index/fusion setting")
         _, chosen, ranked, hits, query_vectors = best
         mode_results[mode] = chosen; selected[mode] = {'gallery': chosen['gallery'], 'text_weight': chosen['text_weight'], 'ef_search': chosen['ef_search']}
         for i, row in zip(active, ranked):
@@ -115,10 +119,13 @@ def evaluate(cfg: dict, split: str, sweep=False) -> dict:
         ranked = [[h.product_id for h in bm25.search(queries[i]['query_text'], 10, eligible)] for i in active]
         baseline[mode] = score_rankings(ranked, [truths[i] for i in active])
     baseline['image'] = {'status': 'NOT_APPLICABLE', 'reason': 'image-only has no text query'}
-    primary = score_rankings(all_ranked, truths)
+    if any(row is None for row in all_ranked):
+        raise ValueError("some frozen queries were not evaluated")
+    complete_ranked = [row for row in all_ranked if row is not None]
+    primary = score_rankings(complete_ranked, truths)
     per_query = [{'query_id': q['query_id'], 'mode': q['mode'], 'ranked_ids': ranked,
                   'relevant_count': len(truth), 'reciprocal_rank': mrr([ranked], [truth]),
-                  'ndcg_at_10': ndcg_at_k(ranked, truth, 10)} for q, ranked, truth in zip(queries, all_ranked, truths)]
+                  'ndcg_at_10': ndcg_at_k(ranked, truth, 10)} for q, ranked, truth in zip(queries, complete_ranked, truths)]
     result = {'scale': cfg['scale'], 'split': split, 'status': 'MEASURED', 'data_fingerprint': query_manifest['identity']['data_fingerprint'],
               'config_fingerprint': fingerprint(cfg), 'evaluation_fingerprint': fingerprint(evaluation_identity),
               'evaluation': evaluation_identity, 'query_manifest_sha256': file_hash(folder/'manifest.json'),

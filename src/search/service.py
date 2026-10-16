@@ -1,6 +1,8 @@
 """Shared SearchService factory loads one checked bundle during app lifespan."""
 from __future__ import annotations
 
+from typing import Any
+
 import base64
 import copy
 import json
@@ -35,7 +37,7 @@ class SearchService:
                               total_count=len(self.searcher.eligible_ids()))
 
 
-def create_service(cfg: dict, store=None) -> SearchService | None:
+def create_service(cfg: dict, store: Any=None) -> SearchService | None:
     cfg = copy.deepcopy(cfg)
     # Deployment override also permits explicit missing-model readiness tests.
     if os.getenv('SEARCH_MODEL_DIR'):

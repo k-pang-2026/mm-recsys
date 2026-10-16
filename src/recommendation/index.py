@@ -1,6 +1,8 @@
 """Persist a normalized all-catalog HNSW/IP index with explicit public-ID mapping."""
 from __future__ import annotations
 
+from typing import Any
+
 import argparse
 import hashlib
 import json
@@ -15,7 +17,7 @@ from src.recommendation.candidate import ExactCandidate
 from src.recommendation.datasets import read_data
 
 
-def stored_vectors(index) -> np.ndarray:
+def stored_vectors(index: Any) -> np.ndarray:
     """Read HNSWFlat's exact Flat storage, avoiding generic parallel reconstruction."""
     import faiss
     storage = faiss.downcast_index(index.storage)
@@ -24,7 +26,7 @@ def stored_vectors(index) -> np.ndarray:
     return storage.reconstruct_n(0, storage.ntotal)
 
 
-def build_index(bundle: Path, model, table, cfg: dict, meta: dict) -> dict:
+def build_index(bundle: Path, model: Any, table: Any, cfg: dict, meta: dict) -> dict:
     from src.recommendation.runtime import configure_inference
     configure_inference(cfg['recommend']['candidate'], with_faiss=True)
     import faiss
@@ -65,7 +67,7 @@ def build_index(bundle: Path, model, table, cfg: dict, meta: dict) -> dict:
     return manifest
 
 
-def load_index(bundle: Path, table, meta: dict):
+def load_index(bundle: Path, table: Any, meta: dict) -> tuple[Any, dict]:
     from src.recommendation.runtime import configure_inference
     configure_inference(meta['training_spec'], with_faiss=True)
     import faiss

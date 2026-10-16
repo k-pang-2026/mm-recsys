@@ -2,6 +2,32 @@
 
 저장소: https://github.com/k-pang-2026/mm-recsys
 
+## INTEGRATE 실행 환경과 버전 이관
+
+현재 통합 실행과 최초 실패·재검사 기록은 [INTEGRATE 보고서](../results/integration/report.md)를 따른다.
+generator 4.1.0은 생성에 영향을 주는 YAML mapping 순서를 fingerprint에 포함한다.
+준비 설정도 키 순서를 보존한다. 이전 4.0.0 데이터/모델은 자동 덮어쓰기하지 않으며,
+기존 경로에서 fingerprint가 다르면 중단한다. 새 클론의 빈 data/models 또는 새 버전 경로를 사용한다.
+
+이번 full 검증은 원격 main b40712a clone에 현재 통합 변경을 적용한 독립 경로에서 수행한다.
+포트는 API 19000·Streamlit 19501·Redis 17379이며 기존 개발 경로를 보존한다.
+CLIP 사전 학습 다운로드 캐시와 Docker 의존성 레이어만 재사용하고,
+데이터·임베딩·FAISS·추천 모델은 새로 생성한다. 전체 완료 전에는 기동을 재현 PASS로 집계하지 않는다.
+
+`integration_config.yaml`은 이 머신의 검증용 artifact 별칭을 가리키는 full 설정 snapshot이다.
+새 클론의 기본 기동은 아래 `config.yaml` 경로를 사용하며 이 별칭이나 `/tmp` 경로에 의존하지 않는다.
+현재 머신에서 최종 제출 검사를 재검증할 때는 다음 환경과 별도 결과 경로를 사용한다.
+
+```bash
+SCALE=full CONFIG_PATH=docs/submission/integration_config.yaml PYTHONHASHSEED=42 \
+  .venv/bin/python scripts/check_submission.py --verify-existing --require-ready \
+  --output-dir docs/results/integration/submission
+```
+
+이 명령은 최종 checker 결과가 실제 생성된 뒤 사용할 수 있다. 실행 중 상태는 progress.json에 공개한다.
+사용자가 전달한 강사 결정에 따라 H&M·Retailrocket·DeepFashion은 개발 후 추가 검증용이다.
+필수 acceptance는 합성 full 데이터로 확인하며 [결정 원본](dataset_scope.json)을 보존한다.
+
 ## 새 클론
 
 Python 3.10–3.12, Git, Docker Engine/Desktop와 Compose v2가 필요하다.
@@ -18,8 +44,9 @@ docker compose up --build
 `docker-compose`는 별도 설치된 CLI의 이름이며 위 명령은 Compose v2를 기준으로 한다.
 API 단일 writer가 데이터·CLIP 임베딩·인덱스·추천 모델·Redis 프로필을 준비한다.
 검색/추천 모델이 준비될 때까지 `/health`는 200, `/ready`와 모델 API는 503이다.
-기본 준비 제한은 21,600초다. 최초 다운로드/전체 생성 시간은 미측정이며
-B10의 기존 데이터·검색 캐시 재사용 시간과 혼동하지 않는다.
+기본 준비 제한은 21,600초다. INTEGRATE full의 빈 데이터·모델 경로 준비는
+2,725.892초였으며 HF 다운로드 캐시와 의존성 레이어는 재사용했다.
+최초 다운로드와 이미지 빌드 시간까지 포함한 수치는 아니다.
 
 ```bash
 docker compose logs -f api-server
@@ -88,7 +115,10 @@ Git에는 코드·비밀값 없는 `.env`·설정·검사 결과만 포함한다
 
 B10은 Linux ARM64 CPU에서 네 서비스·full 품질·원시 HTTP/Redis/후보 지연을 측정했다.
 full 최초 추천 학습 준비 2,698.698초에는 기존 데이터·검색·HF 캐시 재사용이 포함된다.
-full 재사용 준비는 77.544초였다. 새 클론에서 전체 데이터/모델을 처음부터 생성하는
-시간과 Docker 재현은 미측정이다. 별도 clean clone의 코드/기본 설정 검사는
-[clone 증거](../results/final_submission/clone.json)로 구분한다.
+full 재사용 준비는 77.544초였다. 이 값들은 과거 B10 측정이다.
+INTEGRATE의 별도 원격 clone+통합 patch에서는 빈 data/models에서 전체 생성·학습을
+2,725.892초에 완료했다. [실제 준비](../results/integration/preparation_first_full.json)와
+[실행 소스·재현 근거](../results/integration/fresh_checkout.json)를 확인한다.
+별도 B11 clean clone의 코드/기본 설정 검사는
+[과거 clone 증거](../results/final_submission/clone.json)로 구분한다.
 다른 CPU 아키텍처·GPU·다중 동시 부하의 지연은 보장하지 않는다.

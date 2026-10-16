@@ -1,6 +1,8 @@
 """User-randomized inference; repeated impressions are never independent trials."""
 from __future__ import annotations
 
+from typing import Any
+
 import math
 from typing import Any, Mapping, Sequence
 
@@ -42,7 +44,7 @@ def binary_comparison(control_success: int, control_n: int,
 def clustered_rate(control: Sequence[Mapping[str, Any]], treatment: Sequence[Mapping[str, Any]],
                    numerator: str, denominator: str) -> dict:
     """Ratio-of-totals delta CI using independent user clusters, not impressions."""
-    def estimate(rows):
+    def estimate(rows: Any) -> tuple[float | None, float | None]:
         n = np.array([r[numerator] for r in rows], dtype=float)
         d = np.array([r[denominator] for r in rows], dtype=float)
         if (n < 0).any() or (d < n).any():
@@ -59,6 +61,7 @@ def clustered_rate(control: Sequence[Mapping[str, Any]], treatment: Sequence[Map
                     relative_lift=None, difference_ci95=None, z_p_value=None,
                     reason='at least two users/arm and nonzero denominators required')
     difference = pt - pc
+    assert vc is not None and vt is not None
     se = math.sqrt(vc + vt)
     z = difference / se if se else None
     return dict(status='PASS' if se else 'DEGENERATE', control=pc, treatment=pt,

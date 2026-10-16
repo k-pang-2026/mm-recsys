@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "measured_rows": 12,
+  "checks": "measured/native model recipe equality allowing only artifact paths/endpoints; order-sensitive generator identity; current source freeze; raw percentiles; all original targets; fixed cohort/full catalog denominator; candidate count",
+  "scope": "host verification of actual Docker measurements, no new model or latency run"
+}

@@ -1,6 +1,8 @@
 """C adapter for B's immutable v1.0 loaders; releases retain models/v{major}.{minor}."""
 from __future__ import annotations
 
+from typing import Any
+
 import copy
 import tempfile
 from pathlib import Path
@@ -8,7 +10,7 @@ from pathlib import Path
 from src.ct.model_registry import ModelRegistry
 
 
-def load_record(registry: ModelRegistry, version: str, store):
+def load_record(registry: ModelRegistry, version: str, store: Any) -> Any:
     from src.recommendation.service import create_service
     record = registry.verify(version)
     cfg = copy.deepcopy(record['config'])

@@ -19,3 +19,5 @@ models/*
 .team/
 docs/results/environment.json
 docs/results/installed_packages.txt
+docs/results/integration/raw/
+docs/results/integration/runtime/
