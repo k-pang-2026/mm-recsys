@@ -1,0 +1,536 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "dev",
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "manifest_sha256": "646fab8f24733869b7fc53aa3a9683d6a700326f12362812c2bd42ea266acb22",
+  "config_fingerprint": "0248eea4f4ad850a6dcacf9ee14b88eb655afecc0f67ef9d2b71327f6b3f610c",
+  "models": {
+    "models/v1.0/meta.json": "e16322e42d00b96dbe7053b3dd18efcbd255eea3595f37906643847b8eaad019",
+    "models/v1.0/index_manifest.json": "2d710b05085d2d2799201592dd9a67a3b8f3c285435a78766b967020aee4245d",
+    "models/v1.0/ranking/meta.json": "fca22100d3ca816a6b92ac29487660bab05ce40a0a26f36c09bfbda075fe3094",
+    "models/v1.0/session/meta.json": "fa51e317dc2bbcc47760d04f75f4cd0b1f60d2079e4ac7ee4c81e3d7c16df3eb",
+    "models/search/embeddings_current.json": "009eda735c5908a75f643d459c27c7b84cc4f97b4dee221d8f2769b3bd4be39d",
+    "models/search/embeddings/269036d55b67d7034f53cd6dfe96740925103693126af9dce84753470016e447/manifest.json": "ef21606c697d79bb4644373cfc140179bd23a73214d65525f5f1060f00d6624f",
+    "models/search/indexes_current.json": "51d45522a908f1b4be192f9199a4a0730af5f5ebb2a44bb7e287133ba64f294c",
+    "models/search/indexes/46e436fc326338886b974838711fba5eb085576412a2933aa4b9ec6965503520/manifest.json": "1f190dfe6b002295a8315502c980f3aa2235e7361eaccae77f215e450f1a2ecc"
+  },
+  "source_hashes": {
+    "/app/scripts/smoke_test.py": "0a3a19add600ae212f215645558b49a8232052c589850a723b7eb361b958ba4b",
+    "docker/runtime.py": "386c6847a3324ac4e5f21cea0abd2df2fbb4385a9fdfd36e97db7e2a734be857",
+    "docker/http.py": "e2e78703e0724044cfd10219166a1c75975f72ba9aa6f96fd3c478b5d899e52e",
+    "docker/serve.py": "43e6b61919360def7659bdcbbfb4f0de594158292d4d7b4769a3c6db0d75a064"
+  },
+  "health": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "dev",
+    "model_version": "v1.0"
+  },
+  "responses": {
+    "text": {
+      "search_type": "text",
+      "results": [
+        {
+          "product_id": "P000191",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 42000.0
+        },
+        {
+          "product_id": "P001021",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 121000.0
+        },
+        {
+          "product_id": "P001354",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 60000.0
+        },
+        {
+          "product_id": "P001984",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 88000.0
+        },
+        {
+          "product_id": "P004698",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 112000.0
+        },
+        {
+          "product_id": "P006520",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 63000.0
+        },
+        {
+          "product_id": "P007161",
+          "name": "yellow oversized beanie",
+          "score": 0.9467593431472778,
+          "price": 73000.0
+        },
+        {
+          "product_id": "P000950",
+          "name": "yellow relaxed beanie",
+          "score": 0.8999322652816772,
+          "price": 78000.0
+        },
+        {
+          "product_id": "P001945",
+          "name": "yellow relaxed beanie",
+          "score": 0.8999322652816772,
+          "price": 88000.0
+        },
+        {
+          "product_id": "P004914",
+          "name": "yellow relaxed beanie",
+          "score": 0.8999322652816772,
+          "price": 123000.0
+        }
+      ],
+      "latency_ms": 63.14973200005625,
+      "total_count": 10000
+    },
+    "image": {
+      "search_type": "image",
+      "results": [
+        {
+          "product_id": "P000197",
+          "name": "brown oversized tote bag",
+          "score": 0.9469088315963745,
+          "price": 86000.0
+        },
+        {
+          "product_id": "P000330",
+          "name": "brown oversized tote bag",
+          "score": 0.9469088315963745,
+          "price": 55000.0
+        },
+        {
+          "product_id": "P001402",
+          "name": "brown oversized tote bag",
+          "score": 0.9469088315963745,
+          "price": 176000.0
+        },
+        {
+          "product_id": "P002357",
+          "name": "brown oversized backpack",
+          "score": 0.9469088315963745,
+          "price": 114000.0
+        },
+        {
+          "product_id": "P002405",
+          "name": "brown oversized backpack",
+          "score": 0.9469088315963745,
+          "price": 64000.0
+        },
+        {
+          "product_id": "P003013",
+          "name": "brown oversized crossbody bag",
+          "score": 0.9469088315963745,
+          "price": 56000.0
+        },
+        {
+          "product_id": "P007032",
+          "name": "brown oversized tote bag",
+          "score": 0.9469088315963745,
+          "price": 170000.0
+        },
+        {
+          "product_id": "P007613",
+          "name": "brown oversized backpack",
+          "score": 0.9469088315963745,
+          "price": 66000.0
+        },
+        {
+          "product_id": "P007749",
+          "name": "brown oversized crossbody bag",
+          "score": 0.9469088315963745,
+          "price": 161000.0
+        },
+        {
+          "product_id": "P009674",
+          "name": "brown oversized backpack",
+          "score": 0.9469088315963745,
+          "price": 64000.0
+        }
+      ],
+      "latency_ms": 661.307706000116,
+      "total_count": 10000
+    },
+    "hybrid": {
+      "search_type": "hybrid",
+      "results": [
+        {
+          "product_id": "P000013",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 45000.0
+        },
+        {
+          "product_id": "P003243",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 40000.0
+        },
+        {
+          "product_id": "P005951",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 214000.0
+        },
+        {
+          "product_id": "P006241",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 69000.0
+        },
+        {
+          "product_id": "P008853",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 145000.0
+        },
+        {
+          "product_id": "P009675",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 206000.0
+        },
+        {
+          "product_id": "P009984",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 205000.0
+        },
+        {
+          "product_id": "P001145",
+          "name": "brown relaxed sandals",
+          "score": 0.8813945651054382,
+          "price": 59000.0
+        },
+        {
+          "product_id": "P003626",
+          "name": "brown relaxed sandals",
+          "score": 0.8813945651054382,
+          "price": 60000.0
+        },
+        {
+          "product_id": "P005345",
+          "name": "brown relaxed sandals",
+          "score": 0.8813945651054382,
+          "price": 41000.0
+        }
+      ],
+      "latency_ms": 205.6607710001117,
+      "total_count": 10000
+    },
+    "multipart": {
+      "search_type": "hybrid",
+      "results": [
+        {
+          "product_id": "P000013",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 45000.0
+        },
+        {
+          "product_id": "P003243",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 40000.0
+        },
+        {
+          "product_id": "P005951",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 214000.0
+        },
+        {
+          "product_id": "P006241",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 69000.0
+        },
+        {
+          "product_id": "P008853",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 145000.0
+        },
+        {
+          "product_id": "P009675",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 206000.0
+        },
+        {
+          "product_id": "P009984",
+          "name": "brown oversized sandals",
+          "score": 0.8908634185791016,
+          "price": 205000.0
+        },
+        {
+          "product_id": "P001145",
+          "name": "brown relaxed sandals",
+          "score": 0.8813945651054382,
+          "price": 59000.0
+        },
+        {
+          "product_id": "P003626",
+          "name": "brown relaxed sandals",
+          "score": 0.8813945651054382,
+          "price": 60000.0
+        },
+        {
+          "product_id": "P005345",
+          "name": "brown relaxed sandals",
+          "score": 0.8813945651054382,
+          "price": 41000.0
+        }
+      ],
+      "latency_ms": 175.73511400041752,
+      "total_count": 10000
+    },
+    "known_user": {
+      "user_id": "U000001",
+      "recommendations": [
+        {
+          "product_id": "P000607",
+          "score": 0.9994187355041504,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P008631",
+          "score": 0.9428070783615112,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P001913",
+          "score": 0.8240863084793091,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000659",
+          "score": 0.9990907907485962,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001042",
+          "score": 0.9972217082977295,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000726",
+          "score": 0.8113779425621033,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001823",
+          "score": 0.9961386322975159,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000990",
+          "score": 0.9959825277328491,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002970",
+          "score": 0.7655611038208008,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001692",
+          "score": 0.9949547648429871,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 7.604069000080926,
+        "ranking_ms": 16.5746599996055,
+        "reranking_ms": 3.6401270008354913,
+        "total_ms": 27.81885600052192
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "new_user": {
+      "user_id": "__docker_new_25c07cc11cea4f518e04a84f9467d9ed",
+      "recommendations": [
+        {
+          "product_id": "P000474",
+          "score": 1.0,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000056",
+          "score": 0.970873786407767,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P001348",
+          "score": 0.901294498381877,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000972",
+          "score": 0.8414239482200647,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000032",
+          "score": 0.7831715210355986,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001170",
+          "score": 0.7637540453074434,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000007",
+          "score": 0.7637540453074434,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000053",
+          "score": 0.7621359223300971,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000638",
+          "score": 0.7588996763754046,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000980",
+          "score": 0.7540453074433657,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 3.5281910004414385,
+        "ranking_ms": 12.601522999830195,
+        "reranking_ms": 3.7709520001953933,
+        "total_ms": 19.900666000467027
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "session": {
+      "user_id": "__docker_session_4bf183b5564d43ee9a1bef27b9082226",
+      "recommendations": [
+        {
+          "product_id": "P000474",
+          "score": 1.0,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000056",
+          "score": 0.970873786407767,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P001348",
+          "score": 0.901294498381877,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000972",
+          "score": 0.8414239482200647,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000032",
+          "score": 0.7831715210355986,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001170",
+          "score": 0.7637540453074434,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000007",
+          "score": 0.7637540453074434,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000053",
+          "score": 0.7621359223300971,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000638",
+          "score": 0.7588996763754046,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000980",
+          "score": 0.7540453074433657,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 2.9471210000338033,
+        "ranking_ms": 12.650995000512921,
+        "reranking_ms": 3.970538999965356,
+        "total_ms": 19.56865500051208
+      },
+      "session_context": {
+        "recent_clicks": [
+          "P000191"
+        ],
+        "session_interest": "beanie"
+      }
+    }
+  },
+  "checks": {
+    "api_schemas": "PASS",
+    "multipart": "PASS",
+    "invalid_search": "PASS",
+    "session_response": "PASS",
+    "dashboard_http": "PASS"
+  },
+  "scope": "actual HTTP smoke; Streamlit HTTP health does not establish browser rendering"
+}

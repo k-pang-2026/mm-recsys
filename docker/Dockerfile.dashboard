@@ -1,7 +1,9 @@
 FROM python:3.11-slim
 WORKDIR /app
+ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 COPY requirements-dashboard.txt .
-RUN pip install --no-cache-dir -r requirements-dashboard.txt
+COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
+RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
 COPY dashboard ./dashboard
 COPY config.yaml .env ./
 CMD ["streamlit", "run", "dashboard/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

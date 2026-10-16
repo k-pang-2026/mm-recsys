@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "tabs": [
+    "검색",
+    "추천",
+    "A/B 실험",
+    "시스템"
+  ],
+  "plotly_charts": 4,
+  "exceptions": [],
+  "scope": "Streamlit AppTest rendered actual Docker dev/valid report and live API health; no browser pixel assertion"
+}

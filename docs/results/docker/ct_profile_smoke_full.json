@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "before": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "full",
+    "model_version": "v1.0"
+  },
+  "reload": {
+    "status": "reloaded",
+    "version": "v1.0"
+  },
+  "after": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "full",
+    "model_version": "v1.0"
+  },
+  "reload_seconds": 42.3082272319989,
+  "client_timeout_seconds": 120,
+  "search_after_reload": true,
+  "recommend_after_reload": true,
+  "scope": "shared-loopback same-version reload and real requests with inference-worker budget and heap freeze; no production promotion or retraining claim"
+}

@@ -1,0 +1,9 @@
+{
+  "exit_code": 0,
+  "elapsed_seconds": 73.7593412399292,
+  "full_training_paused_during_measurement": true,
+  "full_training_paused_after": false,
+  "smoke_source": "docs/results/docker/smoke_dev.json",
+  "smoke_sha256": "d548e195ad25ad5f9631ba1430734a88c48e19cac6bb69e955019a5cf5c1eff7",
+  "scope": "final-source dev image including active-release compatibility and version-stability guards; full training restored"
+}

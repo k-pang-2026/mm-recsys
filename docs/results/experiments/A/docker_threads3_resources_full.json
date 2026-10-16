@@ -1,0 +1,9 @@
+{
+  "cpu.stat": "usage_usec 192381814\nuser_usec 176353346\nsystem_usec 16028467\nnr_periods 1815\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+  "cpu.pressure": "some avg10=0.01 avg60=0.12 avg300=0.05 total=689581\nfull avg10=0.01 avg60=0.04 avg300=0.01 total=406772",
+  "cpu.max": "400000 100000",
+  "memory.current": "1571172352",
+  "memory.peak": "2246823936",
+  "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+  "memory.swap.current": "0"
+}

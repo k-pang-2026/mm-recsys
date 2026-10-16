@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "before": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "dev",
+    "model_version": "v1.0"
+  },
+  "reload": {
+    "status": "reloaded",
+    "version": "v1.0"
+  },
+  "after": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "dev",
+    "model_version": "v1.0"
+  },
+  "scope": "optional CT shared-loopback profile; compatible current-version reload only; no production retraining/promotion claim"
+}

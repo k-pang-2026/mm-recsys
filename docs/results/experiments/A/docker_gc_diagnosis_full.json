@@ -1,0 +1,182 @@
+{
+  "events": [
+    {
+      "elapsed_ms": 200.06971700058784,
+      "at_ns": 1792130380042301389,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 174.64079099954688,
+      "at_ns": 1792130381048479438,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 156.79150000050868,
+      "at_ns": 1792130381950379024,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 160.58110399990255,
+      "at_ns": 1792130382924639705,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 158.1253039994408,
+      "at_ns": 1792130383908448430,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 163.78632899977674,
+      "at_ns": 1792130384780304156,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 164.26776200023596,
+      "at_ns": 1792130385740453526,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 163.42400099983934,
+      "at_ns": 1792130386758088272,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 162.2612979999758,
+      "at_ns": 1792130387704734685,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 160.0023989994952,
+      "at_ns": 1792130388659936678,
+      "frozen_objects": 0
+    },
+    {
+      "elapsed_ms": 159.76376100024936,
+      "at_ns": 1792130389687470622,
+      "frozen_objects": 0
+    }
+  ],
+  "slow_requests": [
+    {
+      "index": 14,
+      "http_ms": 249.964322,
+      "ranking_ms": 217.47596099976363,
+      "gc": [
+        {
+          "elapsed_ms": 174.64079099954688,
+          "at_ns": 1792130381048479438,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "http_ms": 235.117563,
+      "ranking_ms": 200.1420139995389,
+      "gc": [
+        {
+          "elapsed_ms": 156.79150000050868,
+          "at_ns": 1792130381950379024,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 34,
+      "http_ms": 241.068409,
+      "ranking_ms": 206.77499900011753,
+      "gc": [
+        {
+          "elapsed_ms": 160.58110399990255,
+          "at_ns": 1792130382924639705,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 45,
+      "http_ms": 235.628389,
+      "ranking_ms": 202.48913500017807,
+      "gc": [
+        {
+          "elapsed_ms": 158.1253039994408,
+          "at_ns": 1792130383908448430,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 54,
+      "http_ms": 241.650601,
+      "ranking_ms": 206.15074899978936,
+      "gc": [
+        {
+          "elapsed_ms": 163.78632899977674,
+          "at_ns": 1792130384780304156,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 64,
+      "http_ms": 243.435816,
+      "ranking_ms": 206.53922300061822,
+      "gc": [
+        {
+          "elapsed_ms": 164.26776200023596,
+          "at_ns": 1792130385740453526,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 75,
+      "http_ms": 237.348822,
+      "ranking_ms": 205.11403199998313,
+      "gc": [
+        {
+          "elapsed_ms": 163.42400099983934,
+          "at_ns": 1792130386758088272,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 85,
+      "http_ms": 238.698347,
+      "ranking_ms": 203.81049200022971,
+      "gc": [
+        {
+          "elapsed_ms": 162.2612979999758,
+          "at_ns": 1792130387704734685,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 95,
+      "http_ms": 242.997656,
+      "ranking_ms": 203.89264699952037,
+      "gc": [
+        {
+          "elapsed_ms": 160.0023989994952,
+          "at_ns": 1792130388659936678,
+          "frozen_objects": 0
+        }
+      ]
+    },
+    {
+      "index": 106,
+      "http_ms": 239.583266,
+      "ranking_ms": 203.86671400046907,
+      "gc": [
+        {
+          "elapsed_ms": 159.76376100024936,
+          "at_ns": 1792130389687470622,
+          "frozen_objects": 0
+        }
+      ]
+    }
+  ],
+  "scope": "GC callback completion timestamps correlated with actual HTTP request intervals; heap freeze disabled"
+}

@@ -1,0 +1,237 @@
+{
+  "status": "PASS",
+  "project": "mm-recsys-b10",
+  "engine": {
+    "server_version": "29.8.2",
+    "architecture": "aarch64",
+    "cpus": 8,
+    "memory_bytes": 8103919616
+  },
+  "services": {
+    "simulator": {
+      "id": "719e44a87351a0b6ffa2f2e5cb592a13b2da09378910fd08292c3b7a4858d280",
+      "image": "sha256:def71d4781e4413e1f3a8eed699f5e02313fcd80723c05103d90fe872f234b8a",
+      "service": "simulator",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "0001-01-01T00:00:00Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 40422,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T05:23:47.894669986Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 536870912,
+      "nano_cpus": 0,
+      "ports": {}
+    },
+    "api-server": {
+      "id": "8ca9bf490aaa4a8c37f40526db37a6c77674536b6af63adf845854e52924ca8b",
+      "image": "sha256:60875079c11602141ce1064f762c29915e3a9d71dc63ed5f56a8f3d9c7d48a76",
+      "service": "api-server",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "0001-01-01T00:00:00Z",
+        "Health": {
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "End": "2026-10-16T05:40:37.557237304Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:37.462799851Z"
+            },
+            {
+              "End": "2026-10-16T05:40:42.645478716Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:42.558473941Z"
+            },
+            {
+              "End": "2026-10-16T05:40:47.725803401Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:47.647308057Z"
+            },
+            {
+              "End": "2026-10-16T05:40:52.799604585Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:52.723204364Z"
+            },
+            {
+              "End": "2026-10-16T05:40:57.880644584Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:57.80088949Z"
+            }
+          ],
+          "Status": "healthy"
+        },
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 40184,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T05:23:42.170275973Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 4294967296,
+      "nano_cpus": 4000000000,
+      "ports": {
+        "8000/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8000"
+          }
+        ]
+      }
+    },
+    "dashboard": {
+      "id": "9c7ed8627e9ae176e6ac44bad5f0bc9ec316dda365dea875f64aada4f5a3dbba",
+      "image": "sha256:18e718edb0765ceea0accb41728f79de8f6ace2fc36507667830e0117f9ae311",
+      "service": "dashboard",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "0001-01-01T00:00:00Z",
+        "Health": {
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "End": "2026-10-16T05:40:34.784329611Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:34.701516965Z"
+            },
+            {
+              "End": "2026-10-16T05:40:39.88266773Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:39.78543489Z"
+            },
+            {
+              "End": "2026-10-16T05:40:44.980586141Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:44.884189612Z"
+            },
+            {
+              "End": "2026-10-16T05:40:50.051224197Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:49.98191388Z"
+            },
+            {
+              "End": "2026-10-16T05:40:55.122681784Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T05:40:55.049156115Z"
+            }
+          ],
+          "Status": "healthy"
+        },
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 2182,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T04:54:43.272054872Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 536870912,
+      "nano_cpus": 0,
+      "ports": {
+        "8501/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8501"
+          }
+        ]
+      }
+    },
+    "redis": {
+      "id": "213abd3f90f2b08f8d57a4838ec9c56b80448fa5b8062b2afb2d5288fc556e8b",
+      "image": "sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f",
+      "service": "redis",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "0001-01-01T00:00:00Z",
+        "Health": {
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "End": "2026-10-16T05:40:34.528082457Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T05:40:34.497660748Z"
+            },
+            {
+              "End": "2026-10-16T05:40:39.576394134Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T05:40:39.529307516Z"
+            },
+            {
+              "End": "2026-10-16T05:40:44.622634021Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T05:40:44.577106889Z"
+            },
+            {
+              "End": "2026-10-16T05:40:49.657855764Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T05:40:49.6237039Z"
+            },
+            {
+              "End": "2026-10-16T05:40:54.686775092Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T05:40:54.6561542Z"
+            }
+          ],
+          "Status": "healthy"
+        },
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 1200,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T04:52:03.729882162Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 0,
+      "nano_cpus": 0,
+      "ports": {
+        "6379/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "6379"
+          }
+        ]
+      }
+    }
+  },
+  "api_cgroup": {
+    "memory.max": "4294967296",
+    "memory.peak": "1157517312",
+    "memory.swap.current": "0",
+    "cpu.max": "400000 100000",
+    "cpu.stat": "usage_usec 153625243\nuser_usec 120849518\nsystem_usec 32775724\nnr_periods 4582\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+  },
+  "ready": {
+    "status": "ready"
+  },
+  "errors": [],
+  "scope": "actual four-service state and allocation; quality/latency measured separately"
+}

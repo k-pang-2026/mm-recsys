@@ -1,0 +1,8 @@
+{
+  "command": "docker compose -p mm-recsys-b10 exec -T api-server python scripts/smoke_test.py --benchmark",
+  "exit_code": 0,
+  "elapsed_seconds": 45.28367495536804,
+  "unrelated_full_training_paused_during_measurement": true,
+  "full_training_paused_after": false,
+  "scope": "same resident dev models and 2-thread serving; only unrelated concurrent full preparation paused, then restored"
+}

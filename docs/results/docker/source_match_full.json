@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "source": "docs/results/docker/quality_full_valid.json",
+  "checks": {
+    "docker/quality.py": true,
+    "docker/runtime.py": true,
+    "docker/serve.py": true,
+    "docker-compose.yml": true
+  },
+  "scope": "Docker quality identity versus current checkout critical deployment sources"
+}

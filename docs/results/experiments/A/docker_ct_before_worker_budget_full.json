@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "before": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "full",
+    "model_version": "v1.0"
+  },
+  "reload": {
+    "status": "reloaded",
+    "version": "v1.0"
+  },
+  "after": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "full",
+    "model_version": "v1.0"
+  },
+  "reload_seconds": 34.33955235600024,
+  "client_timeout_seconds": 120,
+  "scope": "shared-loopback current v1.0 reload with serving thread/GC restoration; production promotion not measured"
+}
