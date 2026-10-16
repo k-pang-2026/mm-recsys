@@ -1,0 +1,81 @@
+{
+  "step": "B8",
+  "owner": "C",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.run_all",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m src.evaluation.verify_evaluation --dashboard-url http://127.0.0.1:8501",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && OMP_NUM_THREADS=1 .venv/bin/python -m pytest -q tests",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && .venv/bin/python -m mypy --follow-imports=skip --no-incremental --cache-dir=/dev/null src/evaluation/reporting.py src/evaluation/search.py src/evaluation/recommendation.py src/evaluation/api_benchmark.py src/evaluation/run_all.py src/evaluation/verify_evaluation.py dashboard/data.py dashboard/app.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m compileall -q src/evaluation dashboard tests/test_dashboard.py tests/test_evaluation_dashboard.py",
+      "exit_code": 0
+    },
+    {
+      "command": "source .team/activate.sh && git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "dashboard/__init__.py",
+    "dashboard/data.py",
+    "docs/results/evaluation_dev_valid.json",
+    "docs/results/evaluation_selection_dev.json",
+    "docs/results/experiments/C/evaluation_freezes/5c7acad5400fa97e05be0dcb548636b0dbe867502aad7124b1fe38b1f7fb1690.json",
+    "docs/results/experiments/C/evaluation_runtime_recovery.json",
+    "docs/results/experiments/C/evaluation_verification_dev_valid.json",
+    "src/evaluation/api_benchmark.py",
+    "src/evaluation/recommendation.py",
+    "src/evaluation/reporting.py",
+    "src/evaluation/run_all.py",
+    "src/evaluation/search.py",
+    "src/evaluation/verify_evaluation.py",
+    "tests/test_dashboard.py",
+    "tests/test_evaluation_dashboard.py",
+    "config/serving.yaml",
+    "dashboard/app.py",
+    "docs/contributions/C.md"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "971d45b8f953152abc4e3e30e5727c8feea4a88ce17c9d438dcd193f4cca0a46",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "dashboard/__init__.py": "c491190ae986f28679f50cf7168bca7c6477b28eed442005fafa0ad553d26792",
+    "dashboard/data.py": "44875b3c11b14c2bc117780e05cf6bf58e3585a7ff23398dfcb218dc7a0889d7",
+    "docs/results/evaluation_dev_valid.json": "7251f9b5fc5dc3d5bb35e98b58f010630696d19fac668e3dec18d620411ce711",
+    "docs/results/evaluation_selection_dev.json": "983541a6f7f0fead65af6c2e298ed0726325b397812eba30fc6cca0dc12a4194",
+    "docs/results/experiments/C/evaluation_freezes/5c7acad5400fa97e05be0dcb548636b0dbe867502aad7124b1fe38b1f7fb1690.json": "5c7acad5400fa97e05be0dcb548636b0dbe867502aad7124b1fe38b1f7fb1690",
+    "docs/results/experiments/C/evaluation_runtime_recovery.json": "0f3f79d591c0764cee496cec402e937513193fd23a88b80de6f2a9a1f42c4f17",
+    "docs/results/experiments/C/evaluation_verification_dev_valid.json": "02319e61caa96915c0a50f3d4f14f86338ad4b72a328ab9226091a6db4808f5d",
+    "src/evaluation/api_benchmark.py": "aa61bba6d98fa94e03cf6416dd185ce6a468ab866208600e36c716a82fd8b635",
+    "src/evaluation/recommendation.py": "21e4b5b0d13d0d745f5602d15fe10c09767d7d9de2973104fb6b9fbd6aa72b72",
+    "src/evaluation/reporting.py": "ba551f68ed8b28e82e0c8fd8e3d1b2eeccfd7a65e8760c57bf7bbe84eecce359",
+    "src/evaluation/run_all.py": "5ec7d416037d25f33ee4d11df0ead3fa7f3cce7737177fb16d6ac7d9378a2258",
+    "src/evaluation/search.py": "9fe280c566f02a924455b8508c0081e515f626c68eeb4163061bcd6d9b9e1e50",
+    "src/evaluation/verify_evaluation.py": "ddbd9c606e37ba5adab7efd4a9fa53da9984d1e0b4476a5f0ee37291c446ceef",
+    "tests/test_dashboard.py": "58376aa54b7425918de5397fe98ac5380b5855ea9fb9a8a5541e8a420f583e6e",
+    "tests/test_evaluation_dashboard.py": "cce91bd0b0515a81acae6696e0d71c63b6ac99d62f56706ba9f5637782cea076",
+    "config/serving.yaml": "91a44ae641b18a6898de6ae1f218c936f2ab342a01d1d4169b4eac1d1b083c99",
+    "dashboard/app.py": "2df7437385a7763ba3fe7e272ad362b3a9c2a1c2159146824e22459816d18152",
+    "docs/contributions/C.md": "24a5f22e5200d8268c6c8be92e45768f5baaea31761045cf9ecf03deec107137"
+  },
+  "commit_summary_ko": "고정 평가 계약의 통합 측정과 4개 탭 대시보드 구현"
+}

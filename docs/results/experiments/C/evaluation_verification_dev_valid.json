@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "split": "valid",
+  "acceptance": "UNMEASURED",
+  "source": "docs/results/evaluation_dev_valid.json",
+  "sha256": "7251f9b5fc5dc3d5bb35e98b58f010630696d19fac668e3dec18d620411ce711",
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "measured_metrics": 11,
+  "quality_status": "PASS",
+  "checks": "configuration/data/model recipe/source hashes, immutable valid evidence, coverage cohort/denominator, query/candidate counts, raw serial HTTP/Redis percentiles, A/B source",
+  "dashboard": {
+    "status": "PASS",
+    "streamlit_url": "http://127.0.0.1:8501",
+    "health_http_status": 200,
+    "homepage_http_status": 200,
+    "tabs": [
+      "검색",
+      "추천",
+      "A/B 실험",
+      "시스템"
+    ],
+    "chart_count": 5,
+    "matched_metrics": 11,
+    "demos": {
+      "text_form": "PASS: 10 results",
+      "recommendation_form": "PASS: 10 results",
+      "image_api": "PASS: 10 results",
+      "hybrid_api": "PASS: 10 results",
+      "sample_image_sha256": "b2d8076b968408b6bad8472e450caa512dcd60b3f1e12afa26312abb04c5abe6"
+    },
+    "method": "real Streamlit HTTP health/home + Streamlit AppTest component-tree rendering and JSON/table equality"
+  }
+}
