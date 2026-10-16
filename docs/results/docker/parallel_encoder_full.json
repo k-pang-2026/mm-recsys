@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "split": "valid",
+  "queries": 12,
+  "max_abs_vector_error": 0.0,
+  "identical_top10": true,
+  "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "source_hashes": {
+    "docker/serve.py": "dd196356c21f63ba7eae50a92c44c12b84a56e1b98da2d2459ee7bc1f6fc9744",
+    "src/search/searcher.py": "ba453ceec4048605e5da79648bbaff39120bc9f2624a90eeb69f116ee03492a2",
+    "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e"
+  },
+  "scope": "actual CPU CLIP serial/parallel agreement on 12 frozen valid hybrid inputs; weights, fusion and retrieval unchanged"
+}

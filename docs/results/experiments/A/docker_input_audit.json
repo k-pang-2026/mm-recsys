@@ -1,0 +1,46 @@
+{
+  "B2b": {
+    "status": "PASS",
+    "scale": "full",
+    "acceptance": "UNMEASURED",
+    "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "hash_mismatches": [
+      "docs/search_report.md",
+      "docs/contributions/A.md"
+    ]
+  },
+  "B5": {
+    "status": "PASS",
+    "scale": "full",
+    "acceptance": "UNMEASURED",
+    "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "hash_mismatches": []
+  },
+  "B9": {
+    "status": "PASS",
+    "scale": "dev",
+    "acceptance": "UNMEASURED",
+    "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "hash_mismatches": []
+  },
+  "dev": {
+    "generation_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+    "counts": {
+      "products": 10000,
+      "users": 2000,
+      "events": 200000,
+      "impressions": 449696
+    },
+    "manifest_sha256": "646fab8f24733869b7fc53aa3a9683d6a700326f12362812c2bd42ea266acb22"
+  },
+  "full": {
+    "generation_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+    "counts": {
+      "products": 50000,
+      "users": 10000,
+      "events": 1000000,
+      "impressions": 2255024
+    },
+    "manifest_sha256": "3852ef89c0435e334ed9f417b6c1b6a3ce4d582d5b417db8d796d2e010b3db47"
+  }
+}

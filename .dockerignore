@@ -10,3 +10,12 @@ __pycache__
 .vscode
 data
 models
+.team
+.agents
+.codex
+.aws
+*.pdf
+tests
+docs/results/experiments
+docs/results/docker
+docs/results/latency*

@@ -1,0 +1,1545 @@
+{
+  "scope": "full valid-user latency diagnosis; default GC enabled, heap freeze off; same fixed v1.0 models",
+  "records": [
+    {
+      "index": 0,
+      "warmup": true,
+      "user_id": "U000001",
+      "start_ns": 1792130379464844361,
+      "end_ns": 1792130379575479723,
+      "http_ms": 110.635362,
+      "pipeline": {
+        "candidate_ms": 11.182717999872693,
+        "ranking_ms": 62.33082699964143,
+        "reranking_ms": 5.165616999875056,
+        "total_ms": 78.67916199938918
+      }
+    },
+    {
+      "index": 1,
+      "warmup": true,
+      "user_id": "U000002",
+      "start_ns": 1792130379575490106,
+      "end_ns": 1792130379660090329,
+      "http_ms": 84.600223,
+      "pipeline": {
+        "candidate_ms": 6.342760999359598,
+        "ranking_ms": 43.570002000706154,
+        "reranking_ms": 4.885282000032021,
+        "total_ms": 54.79804500009777
+      }
+    },
+    {
+      "index": 2,
+      "warmup": true,
+      "user_id": "U000003",
+      "start_ns": 1792130379660095820,
+      "end_ns": 1792130379735631007,
+      "http_ms": 75.535187,
+      "pipeline": {
+        "candidate_ms": 5.1007239999307785,
+        "ranking_ms": 42.633857000510034,
+        "reranking_ms": 3.298019999419921,
+        "total_ms": 51.03260099986073
+      }
+    },
+    {
+      "index": 3,
+      "warmup": true,
+      "user_id": "U000004",
+      "start_ns": 1792130379735635699,
+      "end_ns": 1792130379814213829,
+      "http_ms": 78.57813,
+      "pipeline": {
+        "candidate_ms": 5.143053999745462,
+        "ranking_ms": 44.08933800004888,
+        "reranking_ms": 4.524981000031403,
+        "total_ms": 53.75737299982575
+      }
+    },
+    {
+      "index": 4,
+      "warmup": true,
+      "user_id": "U000005",
+      "start_ns": 1792130379814218721,
+      "end_ns": 1792130380094519372,
+      "http_ms": 280.300651,
+      "pipeline": {
+        "candidate_ms": 5.623156999718049,
+        "ranking_ms": 242.77908600015508,
+        "reranking_ms": 5.401888000051258,
+        "total_ms": 253.80413099992438
+      }
+    },
+    {
+      "index": 5,
+      "warmup": true,
+      "user_id": "U000006",
+      "start_ns": 1792130380094524564,
+      "end_ns": 1792130380204154764,
+      "http_ms": 109.6302,
+      "pipeline": {
+        "candidate_ms": 6.060789000002842,
+        "ranking_ms": 44.19896199942741,
+        "reranking_ms": 3.3880470000440255,
+        "total_ms": 53.64779799947428
+      }
+    },
+    {
+      "index": 6,
+      "warmup": true,
+      "user_id": "U000007",
+      "start_ns": 1792130380204159856,
+      "end_ns": 1792130380280055195,
+      "http_ms": 75.895339,
+      "pipeline": {
+        "candidate_ms": 5.330807000063942,
+        "ranking_ms": 41.42706999937218,
+        "reranking_ms": 3.585231999750249,
+        "total_ms": 50.34310899918637
+      }
+    },
+    {
+      "index": 7,
+      "warmup": true,
+      "user_id": "U000008",
+      "start_ns": 1792130380280060597,
+      "end_ns": 1792130380366670481,
+      "http_ms": 86.609884,
+      "pipeline": {
+        "candidate_ms": 7.155956999667978,
+        "ranking_ms": 46.25012999986211,
+        "reranking_ms": 4.534444000455551,
+        "total_ms": 57.94053099998564
+      }
+    },
+    {
+      "index": 8,
+      "warmup": true,
+      "user_id": "U000009",
+      "start_ns": 1792130380366675183,
+      "end_ns": 1792130380452808810,
+      "http_ms": 86.133627,
+      "pipeline": {
+        "candidate_ms": 4.816595999727724,
+        "ranking_ms": 51.35708200032241,
+        "reranking_ms": 5.285649000143167,
+        "total_ms": 61.4593270001933
+      }
+    },
+    {
+      "index": 9,
+      "warmup": true,
+      "user_id": "U000010",
+      "start_ns": 1792130380452813912,
+      "end_ns": 1792130380534383579,
+      "http_ms": 81.569667,
+      "pipeline": {
+        "candidate_ms": 11.00222999957623,
+        "ranking_ms": 40.63210100048309,
+        "reranking_ms": 3.8023499992050347,
+        "total_ms": 55.436680999264354
+      }
+    },
+    {
+      "index": 10,
+      "warmup": false,
+      "user_id": "U000011",
+      "start_ns": 1792130380534388682,
+      "end_ns": 1792130380613227276,
+      "http_ms": 78.838594,
+      "pipeline": {
+        "candidate_ms": 5.356387000574614,
+        "ranking_ms": 43.070615000033285,
+        "reranking_ms": 5.970317999526742,
+        "total_ms": 54.39732000013464
+      }
+    },
+    {
+      "index": 11,
+      "warmup": false,
+      "user_id": "U000012",
+      "start_ns": 1792130380613232379,
+      "end_ns": 1792130380687328517,
+      "http_ms": 74.096138,
+      "pipeline": {
+        "candidate_ms": 4.745156999888422,
+        "ranking_ms": 41.96291900007054,
+        "reranking_ms": 3.1491970003116876,
+        "total_ms": 49.85727300027065
+      }
+    },
+    {
+      "index": 12,
+      "warmup": false,
+      "user_id": "U000013",
+      "start_ns": 1792130380687333420,
+      "end_ns": 1792130380771716603,
+      "http_ms": 84.383183,
+      "pipeline": {
+        "candidate_ms": 4.650907000723237,
+        "ranking_ms": 41.11886299961043,
+        "reranking_ms": 3.167308000229241,
+        "total_ms": 48.937078000562906
+      }
+    },
+    {
+      "index": 13,
+      "warmup": false,
+      "user_id": "U000014",
+      "start_ns": 1792130380771722106,
+      "end_ns": 1792130380844717751,
+      "http_ms": 72.995645,
+      "pipeline": {
+        "candidate_ms": 4.673919000197202,
+        "ranking_ms": 40.31893199953629,
+        "reranking_ms": 3.158403000270482,
+        "total_ms": 48.15125400000397
+      }
+    },
+    {
+      "index": 14,
+      "warmup": false,
+      "user_id": "U000015",
+      "start_ns": 1792130380844722553,
+      "end_ns": 1792130381094686875,
+      "http_ms": 249.964322,
+      "pipeline": {
+        "candidate_ms": 4.8709259999668575,
+        "ranking_ms": 217.47596099976363,
+        "reranking_ms": 3.3484860005046357,
+        "total_ms": 225.69537300023512
+      }
+    },
+    {
+      "index": 15,
+      "warmup": false,
+      "user_id": "U000016",
+      "start_ns": 1792130381094691478,
+      "end_ns": 1792130381166325773,
+      "http_ms": 71.634295,
+      "pipeline": {
+        "candidate_ms": 4.965547999745468,
+        "ranking_ms": 39.773305999915465,
+        "reranking_ms": 3.214814000784827,
+        "total_ms": 47.95366800044576
+      }
+    },
+    {
+      "index": 16,
+      "warmup": false,
+      "user_id": "U000017",
+      "start_ns": 1792130381166330175,
+      "end_ns": 1792130381241083133,
+      "http_ms": 74.752958,
+      "pipeline": {
+        "candidate_ms": 5.486424999617157,
+        "ranking_ms": 42.35128199979954,
+        "reranking_ms": 3.2458300001962925,
+        "total_ms": 51.08353699961299
+      }
+    },
+    {
+      "index": 17,
+      "warmup": false,
+      "user_id": "U000018",
+      "start_ns": 1792130381241087735,
+      "end_ns": 1792130381314400825,
+      "http_ms": 73.31309,
+      "pipeline": {
+        "candidate_ms": 4.50360200011346,
+        "ranking_ms": 41.46450799999002,
+        "reranking_ms": 3.3351789998050663,
+        "total_ms": 49.303288999908546
+      }
+    },
+    {
+      "index": 18,
+      "warmup": false,
+      "user_id": "U000019",
+      "start_ns": 1792130381314405628,
+      "end_ns": 1792130381391432498,
+      "http_ms": 77.02687,
+      "pipeline": {
+        "candidate_ms": 4.47028400049021,
+        "ranking_ms": 41.728049000084866,
+        "reranking_ms": 5.116727999848081,
+        "total_ms": 51.31506100042316
+      }
+    },
+    {
+      "index": 19,
+      "warmup": false,
+      "user_id": "U000020",
+      "start_ns": 1792130381391440902,
+      "end_ns": 1792130381465864384,
+      "http_ms": 74.423482,
+      "pipeline": {
+        "candidate_ms": 4.4515729996419395,
+        "ranking_ms": 42.13246500057721,
+        "reranking_ms": 3.7543019998338423,
+        "total_ms": 50.338340000052995
+      }
+    },
+    {
+      "index": 20,
+      "warmup": false,
+      "user_id": "U000021",
+      "start_ns": 1792130381465869387,
+      "end_ns": 1792130381542088026,
+      "http_ms": 76.218639,
+      "pipeline": {
+        "candidate_ms": 4.476486999919871,
+        "ranking_ms": 41.736353000487725,
+        "reranking_ms": 5.329841999810014,
+        "total_ms": 51.54268200021761
+      }
+    },
+    {
+      "index": 21,
+      "warmup": false,
+      "user_id": "U000022",
+      "start_ns": 1792130381542092429,
+      "end_ns": 1792130381615214717,
+      "http_ms": 73.122288,
+      "pipeline": {
+        "candidate_ms": 4.966647999935958,
+        "ranking_ms": 40.07296600047994,
+        "reranking_ms": 3.1395739997606142,
+        "total_ms": 48.17918800017651
+      }
+    },
+    {
+      "index": 22,
+      "warmup": false,
+      "user_id": "U000023",
+      "start_ns": 1792130381615220420,
+      "end_ns": 1792130381688499892,
+      "http_ms": 73.279472,
+      "pipeline": {
+        "candidate_ms": 4.407450000144308,
+        "ranking_ms": 41.61568899962731,
+        "reranking_ms": 3.077340999880107,
+        "total_ms": 49.100479999651725
+      }
+    },
+    {
+      "index": 23,
+      "warmup": false,
+      "user_id": "U000024",
+      "start_ns": 1792130381688504194,
+      "end_ns": 1792130381765304944,
+      "http_ms": 76.80075,
+      "pipeline": {
+        "candidate_ms": 4.486392000217165,
+        "ranking_ms": 41.13353200045822,
+        "reranking_ms": 6.156182999802695,
+        "total_ms": 51.77610700047808
+      }
+    },
+    {
+      "index": 24,
+      "warmup": false,
+      "user_id": "U000025",
+      "start_ns": 1792130381765310247,
+      "end_ns": 1792130382000427810,
+      "http_ms": 235.117563,
+      "pipeline": {
+        "candidate_ms": 4.9775540001064655,
+        "ranking_ms": 200.1420139995389,
+        "reranking_ms": 3.3570900004633586,
+        "total_ms": 208.47665800010873
+      }
+    },
+    {
+      "index": 25,
+      "warmup": false,
+      "user_id": "U000026",
+      "start_ns": 1792130382000435614,
+      "end_ns": 1792130382078410105,
+      "http_ms": 77.974491,
+      "pipeline": {
+        "candidate_ms": 5.851990999872214,
+        "ranking_ms": 41.11081100018055,
+        "reranking_ms": 6.195171000399569,
+        "total_ms": 53.15797300045233
+      }
+    },
+    {
+      "index": 26,
+      "warmup": false,
+      "user_id": "U000027",
+      "start_ns": 1792130382078415308,
+      "end_ns": 1792130382183869699,
+      "http_ms": 105.454391,
+      "pipeline": {
+        "candidate_ms": 4.968324000401481,
+        "ranking_ms": 70.43529699967621,
+        "reranking_ms": 3.2110960000863997,
+        "total_ms": 78.61471700016409
+      }
+    },
+    {
+      "index": 27,
+      "warmup": false,
+      "user_id": "U000028",
+      "start_ns": 1792130382183874702,
+      "end_ns": 1792130382257971933,
+      "http_ms": 74.097231,
+      "pipeline": {
+        "candidate_ms": 5.038661000071443,
+        "ranking_ms": 39.74789099993359,
+        "reranking_ms": 3.699654000229202,
+        "total_ms": 48.48620600023423
+      }
+    },
+    {
+      "index": 28,
+      "warmup": false,
+      "user_id": "U000029",
+      "start_ns": 1792130382257980538,
+      "end_ns": 1792130382337488526,
+      "http_ms": 79.507988,
+      "pipeline": {
+        "candidate_ms": 5.642680000164546,
+        "ranking_ms": 46.56088899992028,
+        "reranking_ms": 3.563481999663054,
+        "total_ms": 55.76705099974788
+      }
+    },
+    {
+      "index": 29,
+      "warmup": false,
+      "user_id": "U000030",
+      "start_ns": 1792130382337496130,
+      "end_ns": 1792130382412194079,
+      "http_ms": 74.697949,
+      "pipeline": {
+        "candidate_ms": 4.9644210002952605,
+        "ranking_ms": 41.143329000078666,
+        "reranking_ms": 4.043434999402962,
+        "total_ms": 50.15118499977689
+      }
+    },
+    {
+      "index": 30,
+      "warmup": false,
+      "user_id": "U000031",
+      "start_ns": 1792130382412201083,
+      "end_ns": 1792130382496879202,
+      "http_ms": 84.678119,
+      "pipeline": {
+        "candidate_ms": 4.900288000499131,
+        "ranking_ms": 41.65779899994959,
+        "reranking_ms": 3.225002999897697,
+        "total_ms": 49.78309000034642
+      }
+    },
+    {
+      "index": 31,
+      "warmup": false,
+      "user_id": "U000032",
+      "start_ns": 1792130382496883804,
+      "end_ns": 1792130382574394638,
+      "http_ms": 77.510834,
+      "pipeline": {
+        "candidate_ms": 5.205749999731779,
+        "ranking_ms": 41.00265300075989,
+        "reranking_ms": 5.133410999405896,
+        "total_ms": 51.34181399989757
+      }
+    },
+    {
+      "index": 32,
+      "warmup": false,
+      "user_id": "U000033",
+      "start_ns": 1792130382574399040,
+      "end_ns": 1792130382650260904,
+      "http_ms": 75.861864,
+      "pipeline": {
+        "candidate_ms": 4.5236890000524,
+        "ranking_ms": 43.61413300011918,
+        "reranking_ms": 3.4767360002661007,
+        "total_ms": 51.61455800043768
+      }
+    },
+    {
+      "index": 33,
+      "warmup": false,
+      "user_id": "U000034",
+      "start_ns": 1792130382650266506,
+      "end_ns": 1792130382725867932,
+      "http_ms": 75.601426,
+      "pipeline": {
+        "candidate_ms": 4.922398999951838,
+        "ranking_ms": 41.93324599964399,
+        "reranking_ms": 3.5236599997006124,
+        "total_ms": 50.37930499929644
+      }
+    },
+    {
+      "index": 34,
+      "warmup": false,
+      "user_id": "U000035",
+      "start_ns": 1792130382725872635,
+      "end_ns": 1792130382966941044,
+      "http_ms": 241.068409,
+      "pipeline": {
+        "candidate_ms": 4.793932000211498,
+        "ranking_ms": 206.77499900011753,
+        "reranking_ms": 5.300298999827646,
+        "total_ms": 216.86923000015668
+      }
+    },
+    {
+      "index": 35,
+      "warmup": false,
+      "user_id": "U000036",
+      "start_ns": 1792130382966949049,
+      "end_ns": 1792130383043708004,
+      "http_ms": 76.758955,
+      "pipeline": {
+        "candidate_ms": 5.645181000545563,
+        "ranking_ms": 43.08251200018276,
+        "reranking_ms": 3.473918999588932,
+        "total_ms": 52.201612000317255
+      }
+    },
+    {
+      "index": 36,
+      "warmup": false,
+      "user_id": "U000037",
+      "start_ns": 1792130383043713307,
+      "end_ns": 1792130383126793012,
+      "http_ms": 83.079705,
+      "pipeline": {
+        "candidate_ms": 5.412934000560199,
+        "ranking_ms": 44.27478500019788,
+        "reranking_ms": 3.905444999872998,
+        "total_ms": 53.59316400063108
+      }
+    },
+    {
+      "index": 37,
+      "warmup": false,
+      "user_id": "U000038",
+      "start_ns": 1792130383126797714,
+      "end_ns": 1792130383203776625,
+      "http_ms": 76.978911,
+      "pipeline": {
+        "candidate_ms": 4.636327999833156,
+        "ranking_ms": 44.444574000408466,
+        "reranking_ms": 3.304730000309064,
+        "total_ms": 52.385632000550686
+      }
+    },
+    {
+      "index": 38,
+      "warmup": false,
+      "user_id": "U000039",
+      "start_ns": 1792130383203781327,
+      "end_ns": 1792130383278713466,
+      "http_ms": 74.932139,
+      "pipeline": {
+        "candidate_ms": 5.250348999652488,
+        "ranking_ms": 41.2317919999623,
+        "reranking_ms": 3.091317999860621,
+        "total_ms": 49.573458999475406
+      }
+    },
+    {
+      "index": 39,
+      "warmup": false,
+      "user_id": "U000040",
+      "start_ns": 1792130383278718569,
+      "end_ns": 1792130383352656186,
+      "http_ms": 73.937617,
+      "pipeline": {
+        "candidate_ms": 4.567992000374943,
+        "ranking_ms": 41.45490799965046,
+        "reranking_ms": 3.1671590004407335,
+        "total_ms": 49.190059000466135
+      }
+    },
+    {
+      "index": 40,
+      "warmup": false,
+      "user_id": "U000041",
+      "start_ns": 1792130383352660589,
+      "end_ns": 1792130383428099993,
+      "http_ms": 75.439404,
+      "pipeline": {
+        "candidate_ms": 4.97800700031803,
+        "ranking_ms": 41.00537300018914,
+        "reranking_ms": 3.5379519995331066,
+        "total_ms": 49.521332000040275
+      }
+    },
+    {
+      "index": 41,
+      "warmup": false,
+      "user_id": "U000042",
+      "start_ns": 1792130383428106997,
+      "end_ns": 1792130383503456754,
+      "http_ms": 75.349757,
+      "pipeline": {
+        "candidate_ms": 5.152297999302391,
+        "ranking_ms": 41.84711300058552,
+        "reranking_ms": 3.305330999864964,
+        "total_ms": 50.30474199975288
+      }
+    },
+    {
+      "index": 42,
+      "warmup": false,
+      "user_id": "U000043",
+      "start_ns": 1792130383503461356,
+      "end_ns": 1792130383577000466,
+      "http_ms": 73.53911,
+      "pipeline": {
+        "candidate_ms": 4.5973070000400185,
+        "ranking_ms": 41.205777999493876,
+        "reranking_ms": 3.1167320003078203,
+        "total_ms": 48.919816999841714
+      }
+    },
+    {
+      "index": 43,
+      "warmup": false,
+      "user_id": "U000044",
+      "start_ns": 1792130383577004968,
+      "end_ns": 1792130383650713866,
+      "http_ms": 73.708898,
+      "pipeline": {
+        "candidate_ms": 4.3847960005223285,
+        "ranking_ms": 41.853517000163265,
+        "reranking_ms": 3.229791999729059,
+        "total_ms": 49.46810500041465
+      }
+    },
+    {
+      "index": 44,
+      "warmup": false,
+      "user_id": "U000045",
+      "start_ns": 1792130383650718468,
+      "end_ns": 1792130383725153147,
+      "http_ms": 74.434679,
+      "pipeline": {
+        "candidate_ms": 4.850039999837463,
+        "ranking_ms": 41.35645700080204,
+        "reranking_ms": 3.12493599994923,
+        "total_ms": 49.33143300058873
+      }
+    },
+    {
+      "index": 45,
+      "warmup": false,
+      "user_id": "U000046",
+      "start_ns": 1792130383725158449,
+      "end_ns": 1792130383960786838,
+      "http_ms": 235.628389,
+      "pipeline": {
+        "candidate_ms": 4.63192600000184,
+        "ranking_ms": 202.48913500017807,
+        "reranking_ms": 3.3243399993807543,
+        "total_ms": 210.44540099956066
+      }
+    },
+    {
+      "index": 46,
+      "warmup": false,
+      "user_id": "U000047",
+      "start_ns": 1792130383960791640,
+      "end_ns": 1792130384034192855,
+      "http_ms": 73.401215,
+      "pipeline": {
+        "candidate_ms": 5.126284000652959,
+        "ranking_ms": 41.38848299953679,
+        "reranking_ms": 3.3379349997630925,
+        "total_ms": 49.85270199995284
+      }
+    },
+    {
+      "index": 47,
+      "warmup": false,
+      "user_id": "U000048",
+      "start_ns": 1792130384034197758,
+      "end_ns": 1792130384112112855,
+      "http_ms": 77.915097,
+      "pipeline": {
+        "candidate_ms": 4.656619999877876,
+        "ranking_ms": 43.539029999919876,
+        "reranking_ms": 3.105014000539086,
+        "total_ms": 51.30066400033684
+      }
+    },
+    {
+      "index": 48,
+      "warmup": false,
+      "user_id": "U000049",
+      "start_ns": 1792130384112117558,
+      "end_ns": 1792130384201731936,
+      "http_ms": 89.614378,
+      "pipeline": {
+        "candidate_ms": 5.05983000039123,
+        "ranking_ms": 45.330760999604536,
+        "reranking_ms": 3.253490999668429,
+        "total_ms": 53.644081999664195
+      }
+    },
+    {
+      "index": 49,
+      "warmup": false,
+      "user_id": "U000050",
+      "start_ns": 1792130384201736938,
+      "end_ns": 1792130384277774260,
+      "http_ms": 76.037322,
+      "pipeline": {
+        "candidate_ms": 5.1131569998688065,
+        "ranking_ms": 42.045453999890015,
+        "reranking_ms": 3.250489000492962,
+        "total_ms": 50.40910000025178
+      }
+    },
+    {
+      "index": 50,
+      "warmup": false,
+      "user_id": "U000051",
+      "start_ns": 1792130384277779362,
+      "end_ns": 1792130384351601632,
+      "http_ms": 73.82227,
+      "pipeline": {
+        "candidate_ms": 4.49093399947742,
+        "ranking_ms": 41.78041600061988,
+        "reranking_ms": 3.2151709992831456,
+        "total_ms": 49.486520999380446
+      }
+    },
+    {
+      "index": 51,
+      "warmup": false,
+      "user_id": "U000052",
+      "start_ns": 1792130384351606535,
+      "end_ns": 1792130384424601775,
+      "http_ms": 72.99524,
+      "pipeline": {
+        "candidate_ms": 4.615698999259621,
+        "ranking_ms": 40.582192999863764,
+        "reranking_ms": 3.0794010008321493,
+        "total_ms": 48.277292999955534
+      }
+    },
+    {
+      "index": 52,
+      "warmup": false,
+      "user_id": "U000053",
+      "start_ns": 1792130384424606477,
+      "end_ns": 1792130384497747093,
+      "http_ms": 73.140616,
+      "pipeline": {
+        "candidate_ms": 4.882738000560494,
+        "ranking_ms": 40.42541199942207,
+        "reranking_ms": 3.1479360004595947,
+        "total_ms": 48.456086000442156
+      }
+    },
+    {
+      "index": 53,
+      "warmup": false,
+      "user_id": "U000054",
+      "start_ns": 1792130384497754697,
+      "end_ns": 1792130384570021359,
+      "http_ms": 72.266662,
+      "pipeline": {
+        "candidate_ms": 4.524352000771614,
+        "ranking_ms": 40.23231099927216,
+        "reranking_ms": 3.1947610004863236,
+        "total_ms": 47.951424000530096
+      }
+    },
+    {
+      "index": 54,
+      "warmup": false,
+      "user_id": "U000055",
+      "start_ns": 1792130384570027762,
+      "end_ns": 1792130384811678363,
+      "http_ms": 241.650601,
+      "pipeline": {
+        "candidate_ms": 4.6034930001042085,
+        "ranking_ms": 206.15074899978936,
+        "reranking_ms": 3.1010120001155883,
+        "total_ms": 213.85525400000915
+      }
+    },
+    {
+      "index": 55,
+      "warmup": false,
+      "user_id": "U000056",
+      "start_ns": 1792130384811683565,
+      "end_ns": 1792130384887652451,
+      "http_ms": 75.968886,
+      "pipeline": {
+        "candidate_ms": 4.740863999359135,
+        "ranking_ms": 42.06816500027344,
+        "reranking_ms": 3.8926240004002466,
+        "total_ms": 50.70165300003282
+      }
+    },
+    {
+      "index": 56,
+      "warmup": false,
+      "user_id": "U000057",
+      "start_ns": 1792130384887658554,
+      "end_ns": 1792130384965595063,
+      "http_ms": 77.936509,
+      "pipeline": {
+        "candidate_ms": 5.072737000773486,
+        "ranking_ms": 41.39961799955927,
+        "reranking_ms": 5.305558000145538,
+        "total_ms": 51.77791300047829
+      }
+    },
+    {
+      "index": 57,
+      "warmup": false,
+      "user_id": "U000058",
+      "start_ns": 1792130384965599665,
+      "end_ns": 1792130385044536451,
+      "http_ms": 78.936786,
+      "pipeline": {
+        "candidate_ms": 4.976987000191002,
+        "ranking_ms": 45.87873699983902,
+        "reranking_ms": 3.1391210004585446,
+        "total_ms": 53.99484500048857
+      }
+    },
+    {
+      "index": 58,
+      "warmup": false,
+      "user_id": "U000059",
+      "start_ns": 1792130385044541654,
+      "end_ns": 1792130385119690458,
+      "http_ms": 75.148804,
+      "pipeline": {
+        "candidate_ms": 4.635394000615634,
+        "ranking_ms": 42.615405000105966,
+        "reranking_ms": 3.174338999997417,
+        "total_ms": 50.425138000719016
+      }
+    },
+    {
+      "index": 59,
+      "warmup": false,
+      "user_id": "U000060",
+      "start_ns": 1792130385119695960,
+      "end_ns": 1792130385197461815,
+      "http_ms": 77.765855,
+      "pipeline": {
+        "candidate_ms": 5.508344000190846,
+        "ranking_ms": 43.80822100029036,
+        "reranking_ms": 3.1950489992595976,
+        "total_ms": 52.5116139997408
+      }
+    },
+    {
+      "index": 60,
+      "warmup": false,
+      "user_id": "U000061",
+      "start_ns": 1792130385197466417,
+      "end_ns": 1792130385278983709,
+      "http_ms": 81.517292,
+      "pipeline": {
+        "candidate_ms": 4.774764999638137,
+        "ranking_ms": 48.58008500013966,
+        "reranking_ms": 3.1761400005052565,
+        "total_ms": 56.530990000283055
+      }
+    },
+    {
+      "index": 61,
+      "warmup": false,
+      "user_id": "U000062",
+      "start_ns": 1792130385278988212,
+      "end_ns": 1792130385382657242,
+      "http_ms": 103.66903,
+      "pipeline": {
+        "candidate_ms": 4.63929499983351,
+        "ranking_ms": 52.47079400032817,
+        "reranking_ms": 15.022857000076328,
+        "total_ms": 72.13294600023801
+      }
+    },
+    {
+      "index": 62,
+      "warmup": false,
+      "user_id": "U000063",
+      "start_ns": 1792130385382665846,
+      "end_ns": 1792130385460855720,
+      "http_ms": 78.189874,
+      "pipeline": {
+        "candidate_ms": 5.763976000707771,
+        "ranking_ms": 44.1000709997752,
+        "reranking_ms": 3.2126589994732058,
+        "total_ms": 53.076705999956175
+      }
+    },
+    {
+      "index": 63,
+      "warmup": false,
+      "user_id": "U000064",
+      "start_ns": 1792130385460862123,
+      "end_ns": 1792130385534121651,
+      "http_ms": 73.259528,
+      "pipeline": {
+        "candidate_ms": 4.738046999591461,
+        "ranking_ms": 41.23359100049129,
+        "reranking_ms": 3.318913999464712,
+        "total_ms": 49.29055199954746
+      }
+    },
+    {
+      "index": 64,
+      "warmup": false,
+      "user_id": "U000065",
+      "start_ns": 1792130385534126253,
+      "end_ns": 1792130385777562069,
+      "http_ms": 243.435816,
+      "pipeline": {
+        "candidate_ms": 4.575062000185426,
+        "ranking_ms": 206.53922300061822,
+        "reranking_ms": 3.2598249999864493,
+        "total_ms": 214.3741100007901
+      }
+    },
+    {
+      "index": 65,
+      "warmup": false,
+      "user_id": "U000066",
+      "start_ns": 1792130385777567762,
+      "end_ns": 1792130385855281583,
+      "http_ms": 77.713821,
+      "pipeline": {
+        "candidate_ms": 4.948963999595435,
+        "ranking_ms": 44.65034500026377,
+        "reranking_ms": 3.3439219996580505,
+        "total_ms": 52.943230999517255
+      }
+    },
+    {
+      "index": 66,
+      "warmup": false,
+      "user_id": "U000067",
+      "start_ns": 1792130385855286377,
+      "end_ns": 1792130385941482454,
+      "http_ms": 86.196077,
+      "pipeline": {
+        "candidate_ms": 5.186275000596652,
+        "ranking_ms": 42.03633299948706,
+        "reranking_ms": 3.4195289999843226,
+        "total_ms": 50.64213700006803
+      }
+    },
+    {
+      "index": 67,
+      "warmup": false,
+      "user_id": "U000068",
+      "start_ns": 1792130385941487548,
+      "end_ns": 1792130386017918988,
+      "http_ms": 76.43144,
+      "pipeline": {
+        "candidate_ms": 4.616170000190323,
+        "ranking_ms": 41.168380999806686,
+        "reranking_ms": 5.583973999819136,
+        "total_ms": 51.368524999816145
+      }
+    },
+    {
+      "index": 68,
+      "warmup": false,
+      "user_id": "U000069",
+      "start_ns": 1792130386017924481,
+      "end_ns": 1792130386100923209,
+      "http_ms": 82.998728,
+      "pipeline": {
+        "candidate_ms": 5.925755000134814,
+        "ranking_ms": 44.326407999506046,
+        "reranking_ms": 6.29999700049666,
+        "total_ms": 56.55216000013752
+      }
+    },
+    {
+      "index": 69,
+      "warmup": false,
+      "user_id": "U000070",
+      "start_ns": 1792130386100928602,
+      "end_ns": 1792130386177077604,
+      "http_ms": 76.149002,
+      "pipeline": {
+        "candidate_ms": 4.890719999821158,
+        "ranking_ms": 41.43664100047317,
+        "reranking_ms": 5.138417999660305,
+        "total_ms": 51.46577899995464
+      }
+    },
+    {
+      "index": 70,
+      "warmup": false,
+      "user_id": "U000071",
+      "start_ns": 1792130386177082398,
+      "end_ns": 1792130386253809293,
+      "http_ms": 76.726895,
+      "pipeline": {
+        "candidate_ms": 4.534956000497914,
+        "ranking_ms": 43.57592499945895,
+        "reranking_ms": 3.22655499985558,
+        "total_ms": 51.33743599981244
+      }
+    },
+    {
+      "index": 71,
+      "warmup": false,
+      "user_id": "U000072",
+      "start_ns": 1792130386253814487,
+      "end_ns": 1792130386330623082,
+      "http_ms": 76.808595,
+      "pipeline": {
+        "candidate_ms": 4.641925000214542,
+        "ranking_ms": 43.771285999355314,
+        "reranking_ms": 4.04145900029107,
+        "total_ms": 52.454669999860926
+      }
+    },
+    {
+      "index": 72,
+      "warmup": false,
+      "user_id": "U000073",
+      "start_ns": 1792130386330627876,
+      "end_ns": 1792130386411629146,
+      "http_ms": 81.00127,
+      "pipeline": {
+        "candidate_ms": 4.4993999999860534,
+        "ranking_ms": 45.27324900027452,
+        "reranking_ms": 5.684750000000349,
+        "total_ms": 55.45739900026092
+      }
+    },
+    {
+      "index": 73,
+      "warmup": false,
+      "user_id": "U000074",
+      "start_ns": 1792130386411634140,
+      "end_ns": 1792130386485986938,
+      "http_ms": 74.352798,
+      "pipeline": {
+        "candidate_ms": 4.801130000487319,
+        "ranking_ms": 41.34305499974289,
+        "reranking_ms": 3.4917310003947932,
+        "total_ms": 49.635916000625
+      }
+    },
+    {
+      "index": 74,
+      "warmup": false,
+      "user_id": "U000075",
+      "start_ns": 1792130386485991932,
+      "end_ns": 1792130386564221989,
+      "http_ms": 78.230057,
+      "pipeline": {
+        "candidate_ms": 4.617254999175202,
+        "ranking_ms": 43.843498000569525,
+        "reranking_ms": 3.942280000046594,
+        "total_ms": 52.40303299979132
+      }
+    },
+    {
+      "index": 75,
+      "warmup": false,
+      "user_id": "U000076",
+      "start_ns": 1792130386564226983,
+      "end_ns": 1792130386801575805,
+      "http_ms": 237.348822,
+      "pipeline": {
+        "candidate_ms": 4.583894999996119,
+        "ranking_ms": 205.11403199998313,
+        "reranking_ms": 3.229351999834762,
+        "total_ms": 212.927278999814
+      }
+    },
+    {
+      "index": 76,
+      "warmup": false,
+      "user_id": "U000077",
+      "start_ns": 1792130386801580400,
+      "end_ns": 1792130386876136149,
+      "http_ms": 74.555749,
+      "pipeline": {
+        "candidate_ms": 6.143888000224251,
+        "ranking_ms": 40.50447999998141,
+        "reranking_ms": 3.35739599995577,
+        "total_ms": 50.005764000161435
+      }
+    },
+    {
+      "index": 77,
+      "warmup": false,
+      "user_id": "U000078",
+      "start_ns": 1792130386876141543,
+      "end_ns": 1792130386952931461,
+      "http_ms": 76.789918,
+      "pipeline": {
+        "candidate_ms": 4.463543000383652,
+        "ranking_ms": 43.058457000370254,
+        "reranking_ms": 3.8023520000933786,
+        "total_ms": 51.324352000847284
+      }
+    },
+    {
+      "index": 78,
+      "warmup": false,
+      "user_id": "U000079",
+      "start_ns": 1792130386952935956,
+      "end_ns": 1792130387028059046,
+      "http_ms": 75.12309,
+      "pipeline": {
+        "candidate_ms": 4.885228000603092,
+        "ranking_ms": 42.178391999186715,
+        "reranking_ms": 3.2693940001990995,
+        "total_ms": 50.33301399998891
+      }
+    },
+    {
+      "index": 79,
+      "warmup": false,
+      "user_id": "U000080",
+      "start_ns": 1792130387028064239,
+      "end_ns": 1792130387101328676,
+      "http_ms": 73.264437,
+      "pipeline": {
+        "candidate_ms": 4.760268000609358,
+        "ranking_ms": 41.92752999915683,
+        "reranking_ms": 3.195285000401782,
+        "total_ms": 49.88308300016797
+      }
+    },
+    {
+      "index": 80,
+      "warmup": false,
+      "user_id": "U000081",
+      "start_ns": 1792130387101334469,
+      "end_ns": 1792130387185983257,
+      "http_ms": 84.648788,
+      "pipeline": {
+        "candidate_ms": 8.690952000506513,
+        "ranking_ms": 46.5837259998807,
+        "reranking_ms": 3.983918999438174,
+        "total_ms": 59.258596999825386
+      }
+    },
+    {
+      "index": 81,
+      "warmup": false,
+      "user_id": "U000082",
+      "start_ns": 1792130387185988551,
+      "end_ns": 1792130387264397485,
+      "http_ms": 78.408934,
+      "pipeline": {
+        "candidate_ms": 5.253164000350807,
+        "ranking_ms": 44.310110999504104,
+        "reranking_ms": 3.309544999865466,
+        "total_ms": 52.87281999972038
+      }
+    },
+    {
+      "index": 82,
+      "warmup": false,
+      "user_id": "U000083",
+      "start_ns": 1792130387264402978,
+      "end_ns": 1792130387343502765,
+      "http_ms": 79.099787,
+      "pipeline": {
+        "candidate_ms": 4.564707000099588,
+        "ranking_ms": 43.645624999953725,
+        "reranking_ms": 6.282203000409936,
+        "total_ms": 54.49253500046325
+      }
+    },
+    {
+      "index": 83,
+      "warmup": false,
+      "user_id": "U000084",
+      "start_ns": 1792130387343508258,
+      "end_ns": 1792130387424834418,
+      "http_ms": 81.32616,
+      "pipeline": {
+        "candidate_ms": 5.118428999594471,
+        "ranking_ms": 45.24286800005939,
+        "reranking_ms": 3.4125190004488104,
+        "total_ms": 53.77381600010267
+      }
+    },
+    {
+      "index": 84,
+      "warmup": false,
+      "user_id": "U000085",
+      "start_ns": 1792130387424839312,
+      "end_ns": 1792130387513860144,
+      "http_ms": 89.020832,
+      "pipeline": {
+        "candidate_ms": 5.341255999155692,
+        "ranking_ms": 45.27113400035887,
+        "reranking_ms": 3.4252040004503215,
+        "total_ms": 54.03759399996488
+      }
+    },
+    {
+      "index": 85,
+      "warmup": false,
+      "user_id": "U000086",
+      "start_ns": 1792130387513865138,
+      "end_ns": 1792130387752563485,
+      "http_ms": 238.698347,
+      "pipeline": {
+        "candidate_ms": 4.628529000001436,
+        "ranking_ms": 203.81049200022971,
+        "reranking_ms": 3.278682999734883,
+        "total_ms": 211.71770399996603
+      }
+    },
+    {
+      "index": 86,
+      "warmup": false,
+      "user_id": "U000087",
+      "start_ns": 1792130387752567980,
+      "end_ns": 1792130387826768569,
+      "http_ms": 74.200589,
+      "pipeline": {
+        "candidate_ms": 5.316486000083387,
+        "ranking_ms": 40.23440499986464,
+        "reranking_ms": 3.6261570003262023,
+        "total_ms": 49.177048000274226
+      }
+    },
+    {
+      "index": 87,
+      "warmup": false,
+      "user_id": "U000088",
+      "start_ns": 1792130387826773563,
+      "end_ns": 1792130387899046814,
+      "http_ms": 72.273251,
+      "pipeline": {
+        "candidate_ms": 4.3250009994153515,
+        "ranking_ms": 40.94113900009688,
+        "reranking_ms": 3.0720370004928554,
+        "total_ms": 48.33817700000509
+      }
+    },
+    {
+      "index": 88,
+      "warmup": false,
+      "user_id": "U000089",
+      "start_ns": 1792130387899051608,
+      "end_ns": 1792130387975009745,
+      "http_ms": 75.958137,
+      "pipeline": {
+        "candidate_ms": 5.080775000351423,
+        "ranking_ms": 43.11158000018622,
+        "reranking_ms": 3.214061999642581,
+        "total_ms": 51.40641700018023
+      }
+    },
+    {
+      "index": 89,
+      "warmup": false,
+      "user_id": "U000090",
+      "start_ns": 1792130387975015038,
+      "end_ns": 1792130388052394729,
+      "http_ms": 77.379691,
+      "pipeline": {
+        "candidate_ms": 4.710129000159213,
+        "ranking_ms": 43.27809700043872,
+        "reranking_ms": 5.364015999475669,
+        "total_ms": 53.3522420000736
+      }
+    },
+    {
+      "index": 90,
+      "warmup": false,
+      "user_id": "U000091",
+      "start_ns": 1792130388052399223,
+      "end_ns": 1792130388125486609,
+      "http_ms": 73.087386,
+      "pipeline": {
+        "candidate_ms": 4.995268000129727,
+        "ranking_ms": 40.6346219997431,
+        "reranking_ms": 3.6228529997970327,
+        "total_ms": 49.25274299966986
+      }
+    },
+    {
+      "index": 91,
+      "warmup": false,
+      "user_id": "U000092",
+      "start_ns": 1792130388125491703,
+      "end_ns": 1792130388199963090,
+      "http_ms": 74.471387,
+      "pipeline": {
+        "candidate_ms": 4.615134999767179,
+        "ranking_ms": 42.042392999974254,
+        "reranking_ms": 3.198673999577295,
+        "total_ms": 49.85620199931873
+      }
+    },
+    {
+      "index": 92,
+      "warmup": false,
+      "user_id": "U000093",
+      "start_ns": 1792130388199968584,
+      "end_ns": 1792130388274035667,
+      "http_ms": 74.067083,
+      "pipeline": {
+        "candidate_ms": 4.952021999997669,
+        "ranking_ms": 41.397084999516665,
+        "reranking_ms": 3.4711400003288873,
+        "total_ms": 49.82024699984322
+      }
+    },
+    {
+      "index": 93,
+      "warmup": false,
+      "user_id": "U000094",
+      "start_ns": 1792130388274041560,
+      "end_ns": 1792130388354765472,
+      "http_ms": 80.723912,
+      "pipeline": {
+        "candidate_ms": 4.861931999585067,
+        "ranking_ms": 45.271730000422394,
+        "reranking_ms": 3.5016020001421566,
+        "total_ms": 53.63526400014962
+      }
+    },
+    {
+      "index": 94,
+      "warmup": false,
+      "user_id": "U000095",
+      "start_ns": 1792130388354776659,
+      "end_ns": 1792130388454376002,
+      "http_ms": 99.599343,
+      "pipeline": {
+        "candidate_ms": 8.12982000024931,
+        "ranking_ms": 51.37693600045168,
+        "reranking_ms": 9.601613999620895,
+        "total_ms": 69.10837000032188
+      }
+    },
+    {
+      "index": 95,
+      "warmup": false,
+      "user_id": "U000096",
+      "start_ns": 1792130388454381994,
+      "end_ns": 1792130388697379650,
+      "http_ms": 242.997656,
+      "pipeline": {
+        "candidate_ms": 5.376101000365452,
+        "ranking_ms": 203.89264699952037,
+        "reranking_ms": 3.373833999830822,
+        "total_ms": 212.64258199971664
+      }
+    },
+    {
+      "index": 96,
+      "warmup": false,
+      "user_id": "U000097",
+      "start_ns": 1792130388697384652,
+      "end_ns": 1792130388770691542,
+      "http_ms": 73.30689,
+      "pipeline": {
+        "candidate_ms": 5.140632999427908,
+        "ranking_ms": 40.8917710001333,
+        "reranking_ms": 3.600523999921279,
+        "total_ms": 49.63292799948249
+      }
+    },
+    {
+      "index": 97,
+      "warmup": false,
+      "user_id": "U000098",
+      "start_ns": 1792130388770696444,
+      "end_ns": 1792130388844171300,
+      "http_ms": 73.474856,
+      "pipeline": {
+        "candidate_ms": 4.520987999967474,
+        "ranking_ms": 41.921177999938664,
+        "reranking_ms": 3.2790960003694636,
+        "total_ms": 49.7212620002756
+      }
+    },
+    {
+      "index": 98,
+      "warmup": false,
+      "user_id": "U000099",
+      "start_ns": 1792130388844176002,
+      "end_ns": 1792130388917431371,
+      "http_ms": 73.255369,
+      "pipeline": {
+        "candidate_ms": 4.632932000276924,
+        "ranking_ms": 40.70749800030171,
+        "reranking_ms": 3.043503000299097,
+        "total_ms": 48.38393300087773
+      }
+    },
+    {
+      "index": 99,
+      "warmup": false,
+      "user_id": "U000100",
+      "start_ns": 1792130388917436673,
+      "end_ns": 1792130388999312952,
+      "http_ms": 81.876279,
+      "pipeline": {
+        "candidate_ms": 4.85391999973217,
+        "ranking_ms": 49.58200799956103,
+        "reranking_ms": 3.272194000601303,
+        "total_ms": 57.7081219998945
+      }
+    },
+    {
+      "index": 100,
+      "warmup": false,
+      "user_id": "U000001",
+      "start_ns": 1792130388999318154,
+      "end_ns": 1792130389074069573,
+      "http_ms": 74.751419,
+      "pipeline": {
+        "candidate_ms": 5.121414999848639,
+        "ranking_ms": 40.785146999951394,
+        "reranking_ms": 3.3410149999326677,
+        "total_ms": 49.2475769997327
+      }
+    },
+    {
+      "index": 101,
+      "warmup": false,
+      "user_id": "U000002",
+      "start_ns": 1792130389074074275,
+      "end_ns": 1792130389150187022,
+      "http_ms": 76.112747,
+      "pipeline": {
+        "candidate_ms": 4.558093999548873,
+        "ranking_ms": 41.94020100021589,
+        "reranking_ms": 4.815395000150602,
+        "total_ms": 51.31368999991537
+      }
+    },
+    {
+      "index": 102,
+      "warmup": false,
+      "user_id": "U000003",
+      "start_ns": 1792130389150191724,
+      "end_ns": 1792130389241157315,
+      "http_ms": 90.965591,
+      "pipeline": {
+        "candidate_ms": 4.822597000384121,
+        "ranking_ms": 42.11217000010947,
+        "reranking_ms": 3.231770999263972,
+        "total_ms": 50.166537999757566
+      }
+    },
+    {
+      "index": 103,
+      "warmup": false,
+      "user_id": "U000004",
+      "start_ns": 1792130389241162717,
+      "end_ns": 1792130389320454215,
+      "http_ms": 79.291498,
+      "pipeline": {
+        "candidate_ms": 4.579701999318786,
+        "ranking_ms": 44.58224100017105,
+        "reranking_ms": 4.911232999802451,
+        "total_ms": 54.07317599929229
+      }
+    },
+    {
+      "index": 104,
+      "warmup": false,
+      "user_id": "U000005",
+      "start_ns": 1792130389320459518,
+      "end_ns": 1792130389423748358,
+      "http_ms": 103.28884,
+      "pipeline": {
+        "candidate_ms": 4.476361000342877,
+        "ranking_ms": 68.27486299971497,
+        "reranking_ms": 5.396924000706349,
+        "total_ms": 78.1481480007642
+      }
+    },
+    {
+      "index": 105,
+      "warmup": false,
+      "user_id": "U000006",
+      "start_ns": 1792130389423753560,
+      "end_ns": 1792130389502102887,
+      "http_ms": 78.349327,
+      "pipeline": {
+        "candidate_ms": 4.907731000457716,
+        "ranking_ms": 45.86014399956184,
+        "reranking_ms": 3.392235000319488,
+        "total_ms": 54.160110000339046
+      }
+    },
+    {
+      "index": 106,
+      "warmup": false,
+      "user_id": "U000007",
+      "start_ns": 1792130389502107389,
+      "end_ns": 1792130389741690655,
+      "http_ms": 239.583266,
+      "pipeline": {
+        "candidate_ms": 4.767276000166021,
+        "ranking_ms": 203.86671400046907,
+        "reranking_ms": 3.275688000030641,
+        "total_ms": 211.90967800066574
+      }
+    },
+    {
+      "index": 107,
+      "warmup": false,
+      "user_id": "U000008",
+      "start_ns": 1792130389741695757,
+      "end_ns": 1792130389820078098,
+      "http_ms": 78.382341,
+      "pipeline": {
+        "candidate_ms": 5.144224000105169,
+        "ranking_ms": 43.72190300000511,
+        "reranking_ms": 4.570697999952245,
+        "total_ms": 53.43682500006253
+      }
+    },
+    {
+      "index": 108,
+      "warmup": false,
+      "user_id": "U000009",
+      "start_ns": 1792130389820083600,
+      "end_ns": 1792130389898078388,
+      "http_ms": 77.994788,
+      "pipeline": {
+        "candidate_ms": 4.924337999909767,
+        "ranking_ms": 43.21410300053685,
+        "reranking_ms": 4.895926000244799,
+        "total_ms": 53.03436700069142
+      }
+    },
+    {
+      "index": 109,
+      "warmup": false,
+      "user_id": "U000010",
+      "start_ns": 1792130389898084790,
+      "end_ns": 1792130389987447751,
+      "http_ms": 89.362961,
+      "pipeline": {
+        "candidate_ms": 16.04531299926748,
+        "ranking_ms": 44.02152100010426,
+        "reranking_ms": 4.162938000263239,
+        "total_ms": 64.22977199963498
+      }
+    }
+  ]
+}

@@ -96,3 +96,123 @@ B10/B11 구현이나 최종 full 품질 측정을 수행했다는 의미는 아�
 
 README 다이어그램에도 A B10 → A B11 → A INTEGRATE의 담당과 순서를 반영했다.
 다이어그램 보완 전 역할 이관 검증은 [v6 gate 보존본](../results/experiments/A/workflow_submission_transfer_v6.json)에 남겼다.
+
+## B10 — Docker 준비·통합 실행과 CPU 성능 (2026-10-16)
+
+원격 main `3ea2ee7`의 B2b·B5·B9 선행 gate를 확인한 뒤 `feat/A/docker`를 준비했다.
+원본 산출물의 fingerprint와 해시 점검은
+[입력 audit](../results/experiments/A/docker_input_audit.json)에 남겼다.
+B2b 문서의 후속 변경은 이전 gate를 덮어쓰지 않고 이력으로 보존했다.
+B/C의 모델·평가·서빙·CT 구현과 담당 overlay는 수정하지 않았다.
+
+- 네 기본 서비스의 Compose·이미지·리소스·healthcheck·볼륨을 구성했다.
+  API만 데이터 → CLIP 캐시/임베딩 → FAISS → Two Tower/DeepFM/세션 → Redis warmup을 준비한다.
+  호환 산출물은 실제 checksum·모델 로딩으로 검증하고, stale/partial 데이터와 모델은 보존하며 중단한다.
+- 준비 중 `/health=200`, `/ready=503`을 실제 HTTP로 확인했다.
+  준비 완료 후 A의 JSON/multipart 앱과 C의 서빙·CT router를 그대로 사용한다.
+  시뮬레이터는 readiness 이후 생성 없이 기존 이벤트를 API로 재생한다.
+- Python 3.11 Linux ARM64 CPU 이미지의 실제 해석 결과로 transitive constraints를 고정했다.
+  Torch 2.6.0+cpu·torchvision 0.21.0·FAISS 1.9.0 import와 pip check를 확인했다.
+  dashboard에는 torch/FAISS/transformers가 없음을 실제 이미지에서 확인했다.
+  이 제약을 다른 플랫폼이나 GPU용 lock으로 주장하지 않는다.
+- 새 평가·CT 로그는 `docs/results/docker/runtime/<scale>`에 분리하고 mutable 결과는 Git에서 제외했다.
+  smoke·준비·지연의 확정 snapshot만 기록한다. C의 평가 함수를 재사용하는 Docker 품질 CLI와
+  원시 지연·데이터·모델·소스 해시를 재검사하는 verifier를 추가했다.
+- 선택 CT profile은 `docker/compose.ct.yml`에 분리해 기본 네 서비스 계약을 유지했다.
+  API loopback 공유로 내부 reload 제한을 유지하고, reload가 추론 스레드를 덮지 않도록
+  Docker adapter에서 복원한다. 모델 가중치·학습 스레드·추천 정책은 변경하지 않는다.
+
+실패와 수정도 보존했다. 처음 소켓 검사는 sandbox의 `PermissionError`로 실패해 정상 권한으로
+재검증했다. 기존 모델·Docker용 Redis hostname이 암묵적 API 테스트에 섞인 실패는 프로젝트의
+`src.serving.pytest_support`와 `scripts/local_env.sh`로 격리했다. 기본 네 서비스 검사 실패는
+CT를 별도 profile 파일로 옮겨 해결했으며, 이후 전체 회귀 280개가 통과했다.
+추가한 Docker 검사에는 준비 실패 전파·중복 writer 거부·부분 모델 보존·오프라인 CLIP 캐시·
+실제 준비 HTTP·이벤트 재시도·원시 측정 변조 거부·reload 후 스레드 복원을 포함한다.
+최종 검사 명령과 결과는 B10 gate를 따른다.
+
+첫 dev 준비는 기존 데이터·검색 산출물을 재사용하고 빈 HF 캐시 다운로드와 추천 학습을 포함해
+439.820초였다. 데이터 검증 3.12초, 캐시/임베딩 50.79초, 인덱스 1.27초,
+추천 학습 377.55초, warmup 7.04초였다. 이는 완전한 clean-clone 생성 시간은 아니다.
+[실제 첫 준비 기록](../results/experiments/A/docker_first_preparation_dev.json)을 보존했다.
+
+처음 두 factory를 함께 로드하면 추천의 4-thread 설정이 검색 설정을 덮었다.
+dev/valid HTTP p95는 image 211.013ms·hybrid 244.305ms로 실패했다.
+공유 1 thread에서도 hybrid 211.082ms로 실패했고, 2 threads에서 text 30.073ms·image
+177.947ms·hybrid 198.340ms·recommendation 33.492ms로 통과했다.
+각각 10회 warmup·100회 순차 호출이며 이전 결과는 experiments/A의
+`docker_latency_before_threads_dev.json`, `docker_latency_threads1_dev.json`에 보존했다.
+수치 기준·test 정답·데이터는 바꾸지 않고 공유 추론 자원만 valid에서 선택했다.
+
+후속 실제 reload 및 full 병행 학습 중에는 dev hybrid p95가 다시 229.728ms로 미달했다.
+같은 resident 모델·2-thread 설정에서 별도 full 학습만 일시정지하면 181.428ms로 통과했고
+학습을 즉시 재개했다. 최종 버전 고정 검사까지 포함한 반복 측정은 hybrid 196.802ms였다.
+부하 조건·실패 샘플·중단/재개 상태는 experiments/A에 모두 남겼다. 이는 동시 CT 학습 중에도
+항상 200ms를 보장한다는 뜻이 아니다. 고정 벤치마크는 CT worker가 없는 초기 v1.0 조건이다.
+
+실제 dev 결과로 Streamlit AppTest의 네 탭·Plotly 그래프 4개를 예외 없이 렌더링했다.
+dev의 초기 valid/test 품질 결과는 reload-budget 보완 전 소스의 역사적 측정이며,
+기존 latency source의 원본 hash는 `docker_historical_dev_sources.json`에 연결해 보존했다.
+최종 현재 소스의 full 품질 검증은 별도로 수행한다.
+
+full 첫 준비는 기존 데이터·검색·HF 캐시를 재사용하고 추천 모델을 새로 학습해
+2,698.698초가 걸렸다. 별도 dev 진단과 제어된 일시정지 시간이 포함된 실제 경과 시간이며,
+추천 학습 단계는 2,649.71초였다. 완전한 새 클론 전체 생성 시간으로 해석하지 않는다.
+[첫 full 준비](../results/experiments/A/docker_first_preparation_full.json)를 보존했다.
+
+full 초기 추천 p95는 223.914ms로 미달했다. 실제 GC 시각과 요청 구간을 맞춘
+[진단](../results/experiments/A/docker_gc_diagnosis_full.json)에서 느린 10개 요청 모두
+세대 2 GC와 겹쳤다. Docker adapter에서 초기 모델 객체에 `gc.freeze()`를 적용하되
+자동 GC는 유지하고 성공한 reload 뒤 수집·재등록하도록 했다. 이후 AnyIO 추론 worker에도
+실제 Torch/FAISS 예산을 적용해 factory/reload의 OpenMP 설정 영향을 제거했다.
+모델·정답·추천 정책·수치 기준은 변경하지 않았다.
+
+병렬화 전 한 차례의 full HTTP 측정은 각 모드 warmup 10회·100회 순차 요청으로 통과했다.
+text 33.986ms, image 164.382ms, hybrid 191.518ms, recommendation 99.102ms p95였다.
+후보 p95 4.137ms·최소 300개, 실제 Redis p95 0.322ms도 통과했다.
+[당시 측정 보존본](../results/experiments/A/docker_latency_before_type_guards_full.json)에
+환경과 원시 요청을 남겼다.
+고정 초기 v1.0·CT 학습 없는 조건이며 동시 학습 부하의 지연 보장은 아니다.
+
+시뮬레이터 진행 위치를 Redis에 함께 저장하도록 보완해 새 Redis가 이전 backend의 이벤트를
+건너뛰지 않게 했다. host cursor는 진단용 snapshot이며 fingerprint·offset·실패 재시도를 검사했다.
+최종 전체 호스트 회귀 검사는 실제 Redis 포함 286개 통과, 실패·생략 0개였다.
+[원본 pytest 출력](../results/docker/regression_host.txt)을 보존했다.
+
+의존 모듈까지 포함한 정적 검사에서 Redis 전용 경로의 타입 확인 누락 세 곳을 보완했다.
+중간 valid 평가는 6,000/10,000 사용자에서 중단하고 완료로 기록하지 않았다.
+[중단 로그](../results/docker/quality_interrupted_full.txt)를 보존하고 최종 소스로 재평가 절차를 구성했다.
+이후 순차 hybrid 반복 측정은 2 threads 211.622ms, 1 thread 262.744ms,
+3 threads 245.829ms로 미달했다. 3-thread 비교 당시 CPU throttling·OOM·swap은 0이었고,
+스레드 수만 변경하는 방식으로 안정적인 통과를 주장하지 않았다.
+
+Docker adapter에서 독립 CLIP text/image tower를 두 worker로 병렬 실행했다.
+기존 searcher 잠금·가중치·전처리·합성·FAISS·추천 정책은 보존하고
+오류 시에도 두 작업을 종료한 뒤 요청 이미지를 닫도록 했다.
+[실제 frozen valid 입력 12개 비교](../results/docker/parallel_encoder_full.json)의 최대 벡터
+오차는 0이며 top10도 모두 일치했다. 병렬 실행·합성 일치와 오류 시 작업 종료를 회귀 검사에 추가했다.
+
+최종 병렬 경로의 full HTTP p95는 text 27.447ms, image 178.894ms,
+hybrid 173.203ms, recommendation 106.317ms로 모두 통과했다.
+후보 검색 p95 4.967ms·최소 300개, 실제 Redis p95 0.250ms도 통과했다.
+[현재 full smoke](../results/docker/smoke_full.json)와
+[원시 표본·해시 검증](../results/docker/verified_full.json)에 실제 설정·원시 표본을 보존했다.
+
+최종 공식 gate에서 실제 Redis 포함 전체 회귀 288개와 mypy 12개 파일·pip check·compile 검사가
+통과했다. [최종 회귀 출력](../results/docker/regression_host_final.txt)을 보존했다.
+최종 full valid의 11개 기준을 통과한 뒤 데이터·모델·설정·소스를 동결하고 full test를 실행했다.
+test도 11개 기준이 모두 통과했다. Recall@300 0.750141, CTR AUC 0.964767,
+HitRate@50 0.700885, NDCG@50 0.342175, Coverage 0.415340이었다.
+최소 후보 300개와 가능한 후보 풀의 다양성 제약도 통과했으며 test는 설정 선택에 사용하지 않았다.
+
+실제 full 결과로 Streamlit 네 탭·그래프 4개를 예외 없이 렌더링했다.
+선택 CT profile의 현재 v1.0 loopback reload는 42.308초로 완료했고 이후 검색·추천도 정상 응답했다.
+이는 같은 버전의 교체 동작 검증이며 실제 재학습·승격·운영 개선의 측정이 아니다.
+기본 `docker compose up --build -d`도 최종 소스로 기동하고 실제 API·세션·대시보드를 검증했다.
+요약과 원본 링크는 [B10 결과](../results/docker/report.md), 실제 명령·해시는
+[B10 gate](../results/gates/B10.json)를 따른다. 최종 종합 acceptance는 `UNMEASURED`다.
+
+미완성 인계도 숨기지 않는다. B 추천기는 `arm_statistics`·`record_exposures`가 없는 store에서
+빈 bandit 통계를 사용하고 C Redis store는 이 두 인터페이스를 제공하지 않는다.
+C B8의 `UNCONNECTED` 제한이 여전히 적용되므로 오프라인 B5 adapter 품질과 라이브 Redis MAB
+학습을 구분한다. B10은 담당 소유권을 지켜 해당 B/C 코드를 수정하지 않았으며 INTEGRATE가
+노출·보상 인터페이스를 보완해야 한다. 이 제한과 full A/B·최종 acceptance는 별개로 공개한다.

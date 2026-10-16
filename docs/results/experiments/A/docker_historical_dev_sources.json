@@ -1,0 +1,22 @@
+[
+  {
+    "report": "docs/results/docker/quality_dev_valid.json",
+    "latency_source": {
+      "source": "docs/results/docker/smoke_dev.json",
+      "sha256": "b45272bfe3e9bbacdb7460f744548c96e8d0882ed697ee33884a4f4f729f12b8"
+    },
+    "preserved_latency": "docs/results/experiments/A/docker_latency_threads2_dev.json",
+    "preserved_sha256": "b45272bfe3e9bbacdb7460f744548c96e8d0882ed697ee33884a4f4f729f12b8",
+    "scope": "historical dev evaluation before reload-budget adapter; final current-source quality is measured separately"
+  },
+  {
+    "report": "docs/results/docker/quality_dev_test.json",
+    "latency_source": {
+      "source": "docs/results/docker/smoke_dev.json",
+      "sha256": "b45272bfe3e9bbacdb7460f744548c96e8d0882ed697ee33884a4f4f729f12b8"
+    },
+    "preserved_latency": "docs/results/experiments/A/docker_latency_threads2_dev.json",
+    "preserved_sha256": "b45272bfe3e9bbacdb7460f744548c96e8d0882ed697ee33884a4f4f729f12b8",
+    "scope": "historical dev evaluation before reload-budget adapter; final current-source quality is measured separately"
+  }
+]

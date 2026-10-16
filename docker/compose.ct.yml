@@ -1,0 +1,30 @@
+# Optional fifth worker; the default Compose contract keeps exactly four services.
+services:
+  ct:
+    profiles: [ct]
+    build: {context: ., dockerfile: docker/Dockerfile.api}
+    command: ["python", "-m", "docker.ct_worker"]
+    network_mode: service:api-server
+    env_file: .env
+    environment:
+      SCALE: ${SCALE:-dev}
+      API_URL: http://127.0.0.1:8000
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      HF_HOME: /app/.cache/huggingface
+      PYTHONHASHSEED: "42"
+      TOKENIZERS_PARALLELISM: "false"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./docs/results:/app/docs/results
+      - hf_cache:/app/.cache/huggingface
+    depends_on:
+      api-server: {condition: service_healthy}
+    mem_limit: 4g
+    cpus: 4
+    init: true

@@ -1,0 +1,18 @@
+{
+  "/health": {
+    "status_code": 200,
+    "body": {
+      "status": "preparing",
+      "search_ready": false,
+      "recommend_ready": false
+    }
+  },
+  "/ready": {
+    "status_code": 503,
+    "body": {
+      "status": "preparing",
+      "search_ready": false,
+      "recommend_ready": false
+    }
+  }
+}

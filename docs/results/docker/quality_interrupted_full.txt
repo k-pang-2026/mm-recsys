@@ -1,0 +1,16 @@
+B8 search valid: text
+B8 search valid: image
+B8 search valid: hybrid
+B8 recommendation valid: 500/10000 users
+B8 recommendation valid: 1000/10000 users
+B8 recommendation valid: 1500/10000 users
+B8 recommendation valid: 2000/10000 users
+B8 recommendation valid: 2500/10000 users
+B8 recommendation valid: 3000/10000 users
+B8 recommendation valid: 3500/10000 users
+B8 recommendation valid: 4000/10000 users
+B8 recommendation valid: 4500/10000 users
+B8 recommendation valid: 5000/10000 users
+B8 recommendation valid: 5500/10000 users
+B8 recommendation valid: 6000/10000 users
+B8 recommendation valid: 6500/10000 users
