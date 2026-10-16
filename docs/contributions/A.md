@@ -216,3 +216,27 @@ HitRate@50 0.700885, NDCG@50 0.342175, Coverage 0.415340이었다.
 C B8의 `UNCONNECTED` 제한이 여전히 적용되므로 오프라인 B5 adapter 품질과 라이브 Redis MAB
 학습을 구분한다. B10은 담당 소유권을 지켜 해당 B/C 코드를 수정하지 않았으며 INTEGRATE가
 노출·보상 인터페이스를 보완해야 한다. 이 제한과 full A/B·최종 acceptance는 별개로 공개한다.
+
+## B11 제출 문서·검사
+
+B9/B10이 병합된 main e3af858에서 feat/A/submission을 준비했다. 검토 담당은 B/C다.
+README에 실제 병합 PR을 연결한 3인 기여 표, 실행/문서 안내와 미완료 상태를 추가했다.
+docs/submission에 요구사항→파일→검사→실측 대응표, 수식·baseline·환경·음의 lift,
+설정/manifest snapshot, 새 클론/Compose/제출 절차와 체크리스트를 작성했다.
+docs/ab_test_report.md는 C의 dev 원본 통계를 사용하고 반복 노출의 사용자 군집과
+독립 구매 사용자 Z-test를 구별한다. P0 실제 데이터 해석은 UNRESOLVED다.
+
+scripts/check_submission.py와 evidence helper는 필수 파일·모듈·ignore·타입/seed AST,
+실제 mypy/pip/pytest, 라이브 API, 기여 PR과 원본 해시를 검사한다.
+새 checker의 타입 검사와 13개 증거 변조/범위/경로/실패 상태 테스트를 확인했다.
+전체 실행 결과는 docs/results/final_submission/checks.json 및 원시 로그에 보존한다.
+B11 delivery와 final readiness를 구별하며 --require-ready는 미완료 시 종료 2다.
+B10 full 측정 11개 수치와 후보 수를 동결/원시 표본과 대조해 final_acceptance.json에
+source/sha256/split을 붙인다. 새 test 품질 실행이나 최종 acceptance PASS로 주장하지 않는다.
+
+B/C 모델·서빙·평가 및 기존 원본 결과는 수정하지 않는다. live Redis MAB 연결, full A/B·CT,
+clean-clone 전체 생성, 전역 타입 검사와 P0는 INTEGRATE/관련 담당에 인계한다.
+기존 B9의 26개, B10의 78개 gate artifact hash를 구현 전에 대조했고 모두 일치했다.
+GitHub public/익명 접근과 실제 PR #1–12를 읽기 전용으로 확인했다.
+새 원격 clone의 초기 Redis 연결 실패와 복구 뒤 재검사를 구분해 보존한다.
+B11 push/PR은 이번 로컬 commit 설명 후 새 명시 허가를 받아야 하며 INTEGRATE는 미수행이다.

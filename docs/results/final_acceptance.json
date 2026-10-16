@@ -1,0 +1,159 @@
+{
+  "scale": "full",
+  "status": "UNMEASURED",
+  "stage": "B11",
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "metrics": {
+    "mrr": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.9316666666666666,
+      "split": "test",
+      "status": "PASS"
+    },
+    "ndcg_at_10": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.9316666666666666,
+      "split": "test",
+      "status": "PASS"
+    },
+    "recall_at_300": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.7501409489114407,
+      "split": "test",
+      "status": "PASS"
+    },
+    "auc": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.964766793453099,
+      "split": "test",
+      "status": "PASS"
+    },
+    "hit_rate_at_50": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.7008847254748894,
+      "split": "test",
+      "status": "PASS"
+    },
+    "ndcg_at_50": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.3421754358191502,
+      "split": "test",
+      "status": "PASS"
+    },
+    "coverage": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.41534,
+      "split": "test",
+      "status": "PASS"
+    },
+    "candidate_p95_ms": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 4.966623549898941,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "search_p95_ms": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 178.89394970056853,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "recommend_p95_ms": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 106.31712905046696,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "feature_p95_ms": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 0.24976025042633404,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "candidate_count": {
+      "source": "docs/results/docker/quality_full_test.json",
+      "sha256": "a3c451711c37918eff3e75c9afead20fa4ccfb1031db38db68f304da1cd50a36",
+      "value": 300,
+      "split": "test",
+      "status": "PASS"
+    }
+  },
+  "checks": {
+    "api_schemas": {
+      "source": "docs/results/docker/smoke_full.json",
+      "sha256": "b7a17e90346f0641223f1ca671707324f3f8c38c4a4d1cae6a15ab1f77a86357",
+      "status": "PASS",
+      "exit_code": 0,
+      "scope": "historical B10 full HTTP execution, not a new B11 full run"
+    },
+    "session_response": {
+      "source": "docs/results/docker/smoke_full.json",
+      "sha256": "b7a17e90346f0641223f1ca671707324f3f8c38c4a4d1cae6a15ab1f77a86357",
+      "status": "PASS",
+      "exit_code": 0,
+      "scope": "historical B10 full HTTP execution, not a new B11 full run"
+    },
+    "docker_reproduction": {
+      "source": "docs/results/docker/verified_full.json",
+      "sha256": "154a98174c59beeacd7a9466ec9ce6ea0ef73f0fe13af87e08ba0c31f13a663e",
+      "status": "UNMEASURED",
+      "exit_code": null,
+      "reason": "B10 full Compose passed with existing data/search/HF cache; fresh-clone complete regeneration unmeasured"
+    },
+    "ab_statistics": {
+      "source": "docs/results/ab_test.json",
+      "sha256": "7272f87fc5247c4a0ca1d7610bc84fceab4ff3187cd9a54ed9363d1aa37499fc",
+      "status": "UNMEASURED",
+      "exit_code": null,
+      "reason": "C dev 200 users/arm, 30-day in-memory simulation; no matching full/live Redis experiment"
+    },
+    "ct_retrain_and_rollback": {
+      "source": "docs/results/ct_dev_fixture.json",
+      "sha256": "273e4fdc959bfff4fa97911b3daf1d90f080b70f359766dd16f6d26b73752461",
+      "status": "UNMEASURED",
+      "exit_code": null,
+      "reason": "C controlled fixture passed retraining/promotion/rollback; B10 full only reloaded the same v1.0"
+    },
+    "submission": {
+      "source": "docs/results/final_submission/checks.json",
+      "sha256": "b72b941365e7e8330ea419a6584fd0dece565277870ca62d1c679d80fd274317",
+      "status": "BLOCKED",
+      "exit_code": null,
+      "reason": [
+        "P0: real-dataset requirement interpretation UNRESOLVED; instructor decision not recorded",
+        "live Redis MAB exposure/reward attribution UNCONNECTED",
+        "fresh-clone full data/model regeneration UNMEASURED; B10 reused data/search/HF cache",
+        "full matching A/B statistics UNMEASURED; dev simulation is separate",
+        "full CT retraining and rollback UNMEASURED; controlled fixture and same-version reload only",
+        "B11 commit push/PR and final GitHub URL submission await explicit approval",
+        "repository-wide mypy has existing errors; see the complete log, repair in INTEGRATE/owning role",
+        "public signature annotations incomplete; see python_audit.json"
+      ]
+    }
+  },
+  "limitations": [
+    "not the B11 final acceptance bundle",
+    "A/B and CT production improvement are separate",
+    "recommendation quality uses B5 memory adapter; live Redis MAB exposure/reward attribution remains UNCONNECTED",
+    "P0 real-dataset interpretation awaits instructor decision",
+    "source/hash audit reuses B10 measurements; it is not a new model quality run",
+    "INTEGRATE must recheck every mandatory check before final acceptance PASS"
+  ]
+}

@@ -57,9 +57,10 @@ Docker Desktop/Engine 실행·GitHub 인증·Codex 로그인은 각 컴퓨터의
 생략 옵션을 쓴 항목은 미측정이다. 실제 결과는 `.team/environment.json`과 docs/results에 저장한다.
 데이터/.venv/캐시/모델은 커밋하지 않고 clone 후 동일하게 재생성한다.
 
-공통 코드에는 설정/데이터/metric/API/메모리 FeatureStore가 구현되어 있다.
-검색/추천 모델은 담당 단계에서 추가하며 모델 미준비 API는 503을 반환한다.
-최종 품질·latency·Docker 재현 통과는 full 데이터의 B10/B11/INTEGRATE로 판정한다.
+검색·추천·Redis/API·평가·대시보드·CT 및 B10 Docker 구현이 main에 병합되어 있다.
+모델 미준비 API는 503을 반환한다. B10 full 품질/지연 수치는 통과했지만,
+라이브 MAB 연결과 최종 통합 acceptance는 미완료다. B11은 제출 문서와 검증 근거를 집계하고
+INTEGRATE가 전체 필수 검사를 재검증한다.
 
 ```bash
 source scripts/local_env.sh
@@ -72,6 +73,10 @@ Docker Engine/Desktop와 Compose v2 이상을 실행한 뒤 저장소 루트에�
 `docker-compose`는 별도 설치된 구형 CLI 이름이며 아래 절차는 `docker compose`를 사용한다.
 
 ```bash
+git clone https://github.com/k-pang-2026/mm-recsys.git
+cd mm-recsys
+docker compose up --build
+# 백그라운드 실행을 원하면 위 up 대신 다음을 사용한다.
 docker compose up --build -d
 docker compose logs -f api-server
 ```
@@ -233,3 +238,42 @@ full 첫 준비에는 별도 dev 진단과 학습 일시정지 시간이 포함�
 PDF 기준과 분석: [공유 데이터·평가 계약](docs/contracts.md), [원본 문제 분석](docs/setup_analysis.md).
 최종 제출 저장소: https://github.com/k-pang-2026/mm-recsys
 GitHub 계정은 사용자 미제공이므로 자동으로 실명과 연결하거나 다른 사람의 커밋을 꾸미지 않는다.
+
+## 제출 문서와 현재 상태
+
+Python·PyTorch·transformers CLIP·FAISS CPU·FastAPI·Redis·Streamlit·Docker Compose를 사용한다.
+주요 코드는 `src/common`(계약/설정), `src/simulator`(합성 데이터), `src/search`,
+`src/recommendation`, `src/serving`, `src/evaluation`, `src/ct`에 있고,
+`dashboard/`, `docker/`, `scripts/`, `tests/`, `docs/`가 실행·검증·보고서를 담는다.
+직접 의존성은 requirements 파일, 공통 seed/규모/목표는 config YAML로 관리한다.
+
+| 역할·이름 | 완료된 주요 기여 | 실제 병합 PR | GitHub handle |
+|---|---|---|---|
+| A 이제원 | 공통 기반·시뮬레이터·검색·워크플로·Docker/full 검증 | [#1](https://github.com/k-pang-2026/mm-recsys/pull/1), [#2](https://github.com/k-pang-2026/mm-recsys/pull/2), [#3](https://github.com/k-pang-2026/mm-recsys/pull/3), [#5](https://github.com/k-pang-2026/mm-recsys/pull/5), [#7](https://github.com/k-pang-2026/mm-recsys/pull/7), [#12](https://github.com/k-pang-2026/mm-recsys/pull/12) | 미등록 |
+| B 박정욱 | Two Tower·ANN·DeepFM·재랭킹·MAB·세션 | [#4](https://github.com/k-pang-2026/mm-recsys/pull/4), [#8](https://github.com/k-pang-2026/mm-recsys/pull/8) | 미등록 |
+| C 박채영 | Redis/API·A/B·평가·Streamlit·CT | [#6](https://github.com/k-pang-2026/mm-recsys/pull/6), [#9](https://github.com/k-pang-2026/mm-recsys/pull/9), [#10](https://github.com/k-pang-2026/mm-recsys/pull/10), [#11](https://github.com/k-pang-2026/mm-recsys/pull/11) | 미등록 |
+
+담당 역할과 PR의 실제 head SHA는 [기여 근거](docs/submission/contributions.json)에 있다.
+작성자 계정으로 개인 신원을 추측하지 않는다. B11은 로컬 검증 후 푸시 승인 대상이며
+INTEGRATE는 후속 단계다. 미래 작업을 완료된 기여로 계산하지 않는다.
+
+- [요구사항→파일→검사→실제 결과](docs/submission/requirements.md)
+- [수식·baseline·full 품질·환경·제한](docs/submission/report.md)
+- [A/B 통계와 음의 lift](docs/ab_test_report.md)
+- [새 클론·Compose·curl·제출 검사 절차](docs/submission/reproduction.md)
+- [제출 체크리스트와 INTEGRATE 인계](docs/submission/checklist.md)
+- [설정/데이터/측정 identity snapshot](docs/submission/config_snapshot.json)
+- [최종 acceptance 집계](docs/results/final_acceptance.json)
+
+```bash
+source scripts/local_env.sh
+PYTHONHASHSEED=42 .venv/bin/python scripts/check_submission.py
+.venv/bin/python scripts/check_submission.py --verify-existing --require-ready
+```
+
+첫 명령은 B11 산출물 검사다. 두 번째 명령은 미완료 조건이 있으면 종료 2로
+최종 제출 준비가 안 되었음을 알린다. 전체 acceptance는 **UNMEASURED**다.
+full A/B·CT, 라이브 Redis MAB, 새 클론의 전체 생성 재현과 P0 강사 해석이 남아 있다.
+외부 데이터 요구의 모호함은 [데이터 출처](docs/data_sources.md)에 UNRESOLVED로 공개했다.
+원격 접근은 [확인 시각의 read-only snapshot](docs/results/final_submission/repository.json)이며,
+과제 시스템에 URL을 제출하거나 공개 범위를 변경하는 작업은 수행하지 않았다.

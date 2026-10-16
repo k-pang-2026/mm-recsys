@@ -1,0 +1,19 @@
+{
+  "status": "EXPECTED_BLOCKED",
+  "command": [
+    "/home/peachpetal/ecommerce/mm-recsys/.venv/bin/python",
+    "scripts/check_submission.py",
+    "--verify-existing",
+    "--require-ready"
+  ],
+  "exit_code": 2,
+  "acceptance": "UNMEASURED",
+  "output": "B11 delivery=PASS; final readiness=BLOCKED\nPENDING: P0: real-dataset requirement interpretation UNRESOLVED; instructor decision not recorded\nPENDING: live Redis MAB exposure/reward attribution UNCONNECTED\nPENDING: fresh-clone full data/model regeneration UNMEASURED; B10 reused data/search/HF cache\nPENDING: full matching A/B statistics UNMEASURED; dev simulation is separate\nPENDING: full CT retraining and rollback UNMEASURED; controlled fixture and same-version reload only\nPENDING: B11 commit push/PR and final GitHub URL submission await explicit approval\nPENDING: repository-wide mypy has existing errors; see the complete log, repair in INTEGRATE/owning role\nPENDING: public signature annotations incomplete; see python_audit.json\n",
+  "scope": "negative check: incomplete final readiness must return 2; this is not final acceptance PASS",
+  "regression": {
+    "tests": 301,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  }
+}

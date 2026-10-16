@@ -1,0 +1,237 @@
+{
+  "status": "PASS",
+  "project": "mm-recsys",
+  "engine": {
+    "server_version": "29.8.2",
+    "architecture": "aarch64",
+    "cpus": 8,
+    "memory_bytes": 8103919616
+  },
+  "services": {
+    "simulator": {
+      "id": "2518dfb8bc7156e2cea598b5f57c60ebe47d169ccb9c0a29ab3750a5f20d5f3b",
+      "image": "sha256:700a28aaab6a677575687db7b1520e51120625b4f16ed99d533cfd67dcc71da0",
+      "service": "simulator",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:32:28.240635996Z",
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 838,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T08:34:55.970135125Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 536870912,
+      "nano_cpus": 0,
+      "ports": {}
+    },
+    "api-server": {
+      "id": "7bea1f8beb2c25b2823a332ed266d1bdc259e81b6b298b7838f92f0d2cc9e415",
+      "image": "sha256:515eeb6792eb31c3f1bc5b05edb6142cfbfa7d48549038da3d1bc75739fdfb54",
+      "service": "api-server",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:32:28.240201812Z",
+        "Health": {
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "End": "2026-10-16T08:35:16.717388435Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:16.646411135Z"
+            },
+            {
+              "End": "2026-10-16T08:35:21.798892801Z",
+              "ExitCode": 1,
+              "Output": "Traceback (most recent call last):\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 1361, in do_open\n    h.request(req.get_method(), req.selector, req.data, headers,\n  File \"/usr/local/lib/python3.11/http/client.py\", line 1351, in request\n    self._send_request(method, url, body, headers, encode_chunked)\n  File \"/usr/local/lib/python3.11/http/client.py\", line 1397, in _send_request\n    self.endheaders(body, encode_chunked=encode_chunked)\n  File \"/usr/local/lib/python3.11/http/client.py\", line 1346, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n  File \"/usr/local/lib/python3.11/http/client.py\", line 1106, in _send_output\n    self.send(msg)\n  File \"/usr/local/lib/python3.11/http/client.py\", line 1044, in send\n    self.connect()\n  File \"/usr/local/lib/python3.11/http/client.py\", line 1010, in connect\n    self.sock = self._create_connection(\n                ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/socket.py\", line 863, in create_connection\n    raise exceptions[0]\n  File \"/usr/local/lib/python3.11/socket.py\", line 848, in create_connection\n    sock.connect(sa)\nConnectionRefusedError: [Errno 111] Connection refused\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 216, in urlopen\n    return opener.open(url, data, timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 519, in open\n    response = self._open(req, data)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 536, in _open\n    result = self._call_chain(self.handle_open, protocol, protocol +\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 496, in _call_chain\n    result = func(*args)\n             ^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 1390, in http_open\n    return self.do_open(http.client.HTTPConnection, req)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.11/urllib/request.py\", line 1364, in do_open\n    raise URLError(err)\nurllib.error.URLError: <urlopen error [Errno 111] Connection refused>\n",
+              "Start": "2026-10-16T08:35:21.718723369Z"
+            },
+            {
+              "End": "2026-10-16T08:35:26.904591857Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:26.799558691Z"
+            },
+            {
+              "End": "2026-10-16T08:35:32.029656458Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:31.905364865Z"
+            },
+            {
+              "End": "2026-10-16T08:35:38.444693987Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:38.378040527Z"
+            }
+          ],
+          "Status": "healthy"
+        },
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 663,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T08:34:50.005425975Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 4294967296,
+      "nano_cpus": 4000000000,
+      "ports": {
+        "8000/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8000"
+          }
+        ]
+      }
+    },
+    "dashboard": {
+      "id": "9568c2c0f9d494f4ef43b36faaec01ebb38d5cb06c8bc9f58387e85f884b1892",
+      "image": "sha256:935163e7b76b34b202118d7d2a43ea3c05496d8e0f9739f249e80ca459ba3454",
+      "service": "dashboard",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:32:28.241958795Z",
+        "Health": {
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "End": "2026-10-16T08:35:17.417490336Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:17.355386236Z"
+            },
+            {
+              "End": "2026-10-16T08:35:22.486309668Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:22.418624972Z"
+            },
+            {
+              "End": "2026-10-16T08:35:27.592368578Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:27.487618747Z"
+            },
+            {
+              "End": "2026-10-16T08:35:32.73690129Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:32.593046852Z"
+            },
+            {
+              "End": "2026-10-16T08:35:39.157361001Z",
+              "ExitCode": 0,
+              "Output": "",
+              "Start": "2026-10-16T08:35:39.085252607Z"
+            }
+          ],
+          "Status": "healthy"
+        },
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 771,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T08:34:55.748054922Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 536870912,
+      "nano_cpus": 0,
+      "ports": {
+        "8501/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8501"
+          }
+        ]
+      }
+    },
+    "redis": {
+      "id": "4fec6404d3ae550585d37ceb84649f5830b92f8ca0cce65c32b868a9f8ad33a0",
+      "image": "sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f",
+      "service": "redis",
+      "state": {
+        "Dead": false,
+        "Error": "",
+        "ExitCode": 0,
+        "FinishedAt": "2026-10-16T08:32:28.240569047Z",
+        "Health": {
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "End": "2026-10-16T08:35:15.855222401Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T08:35:15.826574655Z"
+            },
+            {
+              "End": "2026-10-16T08:35:20.888632112Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T08:35:20.856795065Z"
+            },
+            {
+              "End": "2026-10-16T08:35:25.925111357Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T08:35:25.88925081Z"
+            },
+            {
+              "End": "2026-10-16T08:35:31.006506696Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T08:35:30.925782315Z"
+            },
+            {
+              "End": "2026-10-16T08:35:37.383324257Z",
+              "ExitCode": 0,
+              "Output": "PONG\n",
+              "Start": "2026-10-16T08:35:37.354538207Z"
+            }
+          ],
+          "Status": "healthy"
+        },
+        "OOMKilled": false,
+        "Paused": false,
+        "Pid": 566,
+        "Restarting": false,
+        "Running": true,
+        "StartedAt": "2026-10-16T08:34:44.186755009Z",
+        "Status": "running"
+      },
+      "memory_limit_bytes": 0,
+      "nano_cpus": 0,
+      "ports": {
+        "6379/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "6379"
+          }
+        ]
+      }
+    }
+  },
+  "api_cgroup": {
+    "memory.max": "4294967296",
+    "memory.peak": "1375477760",
+    "memory.swap.current": "0",
+    "cpu.max": "400000 100000",
+    "cpu.stat": "usage_usec 33526117\nuser_usec 27871513\nsystem_usec 5654604\nnr_periods 423\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+  },
+  "ready": {
+    "status": "ready"
+  },
+  "errors": [],
+  "scope": "actual four-service state and allocation; quality/latency measured separately"
+}

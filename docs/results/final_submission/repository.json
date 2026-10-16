@@ -1,0 +1,123 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-10-16T08:28:33.154768+00:00",
+  "url": "https://github.com/k-pang-2026/mm-recsys",
+  "default_branch": "main",
+  "private": false,
+  "access": {
+    "status": "PASS",
+    "method": "anonymous repository page GET",
+    "http_status": 200
+  },
+  "pull_requests": {
+    "12": {
+      "number": 12,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/12",
+      "title": "chore(docker): Docker 실행과 컨테이너 성능 검증 구현",
+      "merged": true,
+      "head_sha": "8fb1c4ba8b340a726ddecc13159928ff1e248dc6",
+      "base": "main",
+      "branch": "feat/A/docker"
+    },
+    "11": {
+      "number": 11,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/11",
+      "title": "feat(ct): 관측 이벤트 기반 재학습과 모델 승격·무중단 교체·롤백 구현",
+      "merged": true,
+      "head_sha": "fb6b12da1483dfa4342650a57ddb9f12c30de26e",
+      "base": "main",
+      "branch": "feat/C/platform"
+    },
+    "10": {
+      "number": 10,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/10",
+      "title": "feat(platform): 고정 평가 계약의 통합 측정과 4개 탭 대시보드 구현",
+      "merged": true,
+      "head_sha": "c3a014da8978e445633c6ddaad03f24b5ceb8990",
+      "base": "main",
+      "branch": "feat/C/platform"
+    },
+    "9": {
+      "number": 9,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/9",
+      "title": "feat(platform): 사용자 단위 A/B 시뮬레이션과 macOS 개발환경 검증 구현",
+      "merged": true,
+      "head_sha": "906aff744f8e301c395723ee5b976e9b14fc8da1",
+      "base": "main",
+      "branch": "feat/C/platform"
+    },
+    "8": {
+      "number": 8,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/8",
+      "title": "feat(recommendation): 추천 점수 정책·API·재랭킹·MAB·세션 검증",
+      "merged": true,
+      "head_sha": "43930df4d49faabae198de243c71e8d990e64a32",
+      "base": "main",
+      "branch": "feat/B/recommendation"
+    },
+    "7": {
+      "number": 7,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/7",
+      "title": "chore(shared): 제출 문서·검증을 A로 이관하고 README 다이어그램과 통합 순서 정비",
+      "merged": true,
+      "head_sha": "87c3d2e3df0ffac2353d6b098d3e1eed59888d91",
+      "base": "main",
+      "branch": "chore/team-workflow"
+    },
+    "6": {
+      "number": 6,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/6",
+      "title": "feat(platform): 서빙·평가·운영 환경 구현",
+      "merged": true,
+      "head_sha": "7f6d922852c5e2b8e4978f45db5fca691f064d1a",
+      "base": "main",
+      "branch": "feat/C/platform"
+    },
+    "5": {
+      "number": 5,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/5",
+      "title": "chore(shared): Docker 담당을 A로 이관하고 팀 개발 순서 정비",
+      "merged": true,
+      "head_sha": "986c9139d52b67c2a00ea74ed9e4149d75882913",
+      "base": "main",
+      "branch": "chore/team-workflow"
+    },
+    "4": {
+      "number": 4,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/4",
+      "title": "feat(recommendation): 다단계 추천 구현",
+      "merged": true,
+      "head_sha": "aa619fb1bcf3f13f179fc3cca56fc3cd3b6bf049",
+      "base": "main",
+      "branch": "feat/B/recommendation"
+    },
+    "3": {
+      "number": 3,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/3",
+      "title": "feat(search): 멀티모달 검색 구현",
+      "merged": true,
+      "head_sha": "3bb68932e130d71a1e5c7ec77257e0738e7350f7",
+      "base": "main",
+      "branch": "feat/A/search"
+    },
+    "2": {
+      "number": 2,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/2",
+      "title": "chore(shared): 안전 조건을 통과한 PR 자동 병합 적용",
+      "merged": true,
+      "head_sha": "4a340501fe46ac5fe0132d38e181e9718fea9c42",
+      "base": "main",
+      "branch": "chore/shared-foundation"
+    },
+    "1": {
+      "number": 1,
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/1",
+      "title": "chore(shared): 공통 개발환경과 3인 병렬 개발 기반 구성",
+      "merged": true,
+      "head_sha": "4291876e44ad6803109c03fc1da69ddc102f55a2",
+      "base": "main",
+      "branch": "chore/shared-foundation"
+    }
+  },
+  "scope": "read-only metadata/access verification; no visibility change, invitation, push or URL submission performed"
+}

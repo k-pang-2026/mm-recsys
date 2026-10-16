@@ -1,0 +1,90 @@
+{
+  "roles": {
+    "A": {
+      "name": "이제원",
+      "github": "미등록",
+      "scope": "공통 기반·시뮬레이터·CLIP/FAISS 검색·워크플로·Docker; B11 로컬 작업, INTEGRATE 미완료",
+      "prs": [
+        {
+          "number": 1,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/1",
+          "head_sha": "4291876e44ad6803109c03fc1da69ddc102f55a2"
+        },
+        {
+          "number": 2,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/2",
+          "head_sha": "4a340501fe46ac5fe0132d38e181e9718fea9c42"
+        },
+        {
+          "number": 3,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/3",
+          "head_sha": "3bb68932e130d71a1e5c7ec77257e0738e7350f7"
+        },
+        {
+          "number": 5,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/5",
+          "head_sha": "986c9139d52b67c2a00ea74ed9e4149d75882913"
+        },
+        {
+          "number": 7,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/7",
+          "head_sha": "87c3d2e3df0ffac2353d6b098d3e1eed59888d91"
+        },
+        {
+          "number": 12,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/12",
+          "head_sha": "8fb1c4ba8b340a726ddecc13159928ff1e248dc6"
+        }
+      ]
+    },
+    "B": {
+      "name": "박정욱",
+      "github": "미등록",
+      "scope": "Two Tower·full-catalog ANN·DeepFM·재랭킹·MAB·세션",
+      "prs": [
+        {
+          "number": 4,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/4",
+          "head_sha": "aa619fb1bcf3f13f179fc3cca56fc3cd3b6bf049",
+          "merged_commit_sha": "69f66b256f08350e7d0c1df4356f20efd9c231b5",
+          "merged_head_sha": "161eee5fff5e92b995995335a571eb0b1e4e3d7d",
+          "verification_note": "PR API reports aa619fb, absent from local objects and unavailable at refs/pull/4/head (fetch exit 128); actual main merge #4 second parent 161eee5 is the retained contribution evidence. Do not equate the two SHAs."
+        },
+        {
+          "number": 8,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/8",
+          "head_sha": "43930df4d49faabae198de243c71e8d990e64a32"
+        }
+      ]
+    },
+    "C": {
+      "name": "박채영",
+      "github": "미등록",
+      "scope": "Redis/API·A/B·통합 평가·Streamlit·CT 재학습/승격/롤백",
+      "prs": [
+        {
+          "number": 6,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/6",
+          "head_sha": "7f6d922852c5e2b8e4978f45db5fca691f064d1a"
+        },
+        {
+          "number": 9,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/9",
+          "head_sha": "906aff744f8e301c395723ee5b976e9b14fc8da1"
+        },
+        {
+          "number": 10,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/10",
+          "head_sha": "c3a014da8978e445633c6ddaad03f24b5ceb8990"
+        },
+        {
+          "number": 11,
+          "url": "https://github.com/k-pang-2026/mm-recsys/pull/11",
+          "head_sha": "fb6b12da1483dfa4342650a57ddb9f12c30de26e"
+        }
+      ]
+    }
+  },
+  "attribution": "담당 역할과 실제 PR 기준; Git 작성자 계정을 개인별 계정으로 추측하거나 변경하지 않음",
+  "b11_publication": "로컬 검증 후 별도 승인 대기; 새 PR 번호는 푸시 후 갱신"
+}

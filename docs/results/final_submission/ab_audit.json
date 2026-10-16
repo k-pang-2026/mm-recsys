@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "scale": "dev",
+  "source": "docs/results/ab_test.json",
+  "sha256": "7272f87fc5247c4a0ca1d7610bc84fceab4ff3187cd9a54ed9363d1aa37499fc",
+  "checks": "unchanged source hashes, outcome sums, CTR/CVR denominators, independent-user Z/Pearson inference and cluster delta CI recomputed",
+  "scope": "audit of historical C dev result; no new simulation and no full/live A/B claim"
+}

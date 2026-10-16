@@ -1,0 +1,1027 @@
+{
+  "files": 117,
+  "public_functions": 398,
+  "missing_annotations": [
+    {
+      "file": "docker/api_entrypoint.py",
+      "line": 28,
+      "function": "log_message",
+      "missing": [
+        "args"
+      ]
+    },
+    {
+      "file": "docker/inspect_runtime.py",
+      "line": 13,
+      "function": "json_command",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 75,
+      "function": "wrap_backends",
+      "missing": [
+        "shared"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 107,
+      "function": "install_runtime_limits",
+      "missing": [
+        "shared"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 37,
+      "function": "search",
+      "missing": [
+        "payload",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 41,
+      "function": "recommend",
+      "missing": [
+        "user_id",
+        "top_n",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 58,
+      "function": "encode",
+      "missing": [
+        "query_text",
+        "query_image",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 70,
+      "function": "search",
+      "missing": [
+        "query_text",
+        "query_image",
+        "k",
+        "cutoff",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 116,
+      "function": "lifespan",
+      "missing": [
+        "application",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 92,
+      "function": "restored",
+      "missing": [
+        "message",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/serve.py",
+      "line": 125,
+      "function": "gc_timing",
+      "missing": [
+        "phase",
+        "info",
+        "return"
+      ]
+    },
+    {
+      "file": "docker/simulator.py",
+      "line": 17,
+      "function": "read_checkpoint",
+      "missing": [
+        "client"
+      ]
+    },
+    {
+      "file": "docker/simulator.py",
+      "line": 25,
+      "function": "send_rows",
+      "missing": [
+        "rows"
+      ]
+    },
+    {
+      "file": "src/ct/retrain_trigger.py",
+      "line": 26,
+      "function": "components",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/ct/retrain_trigger.py",
+      "line": 32,
+      "function": "trigger",
+      "missing": [
+        "build"
+      ]
+    },
+    {
+      "file": "src/ct/storage.py",
+      "line": 17,
+      "function": "file_lock",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/ct/storage.py",
+      "line": 63,
+      "function": "connect",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/ct/training.py",
+      "line": 82,
+      "function": "validation",
+      "missing": [
+        "service"
+      ]
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 87,
+      "function": "search",
+      "missing": [
+        "payload",
+        "return"
+      ]
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 109,
+      "function": "traffic",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_statistics.py",
+      "line": 45,
+      "function": "estimate",
+      "missing": [
+        "rows",
+        "return"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 177,
+      "function": "summarize",
+      "missing": [
+        "policy"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 59,
+      "function": "user_store",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 65,
+      "function": "get_features",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 69,
+      "function": "record_exposures",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 81,
+      "function": "append_event",
+      "missing": [
+        "event"
+      ]
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 84,
+      "function": "update_reward",
+      "missing": [
+        "event"
+      ]
+    },
+    {
+      "file": "src/recommendation/bench_app.py",
+      "line": 10,
+      "function": "create_bench_app",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/bench_candidate.py",
+      "line": 23,
+      "function": "benchmark",
+      "missing": [
+        "cfg"
+      ]
+    },
+    {
+      "file": "src/recommendation/bench_candidate.py",
+      "line": 41,
+      "function": "request",
+      "missing": [
+        "uid",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/bench_ranking.py",
+      "line": 100,
+      "function": "apply_selection",
+      "missing": [
+        "cfg",
+        "selection_path",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/bench_tcp.py",
+      "line": 19,
+      "function": "benchmark_tcp",
+      "missing": [
+        "cfg",
+        "b5",
+        "output",
+        "selection",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/candidate.py",
+      "line": 91,
+      "function": "flat_reference",
+      "missing": [
+        "model",
+        "table",
+        "eligible",
+        "batch_size",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/candidate.py",
+      "line": 60,
+      "function": "search",
+      "missing": [
+        "excluded"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_candidate.py",
+      "line": 83,
+      "function": "model",
+      "missing": [
+        "model"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_candidate.py",
+      "line": 98,
+      "function": "ann_metrics",
+      "missing": [
+        "model",
+        "index"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_policy.py",
+      "line": 37,
+      "function": "isolated_policy",
+      "missing": [
+        "base",
+        "spec",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_policy.py",
+      "line": 53,
+      "function": "quality_checks",
+      "missing": [
+        "metrics",
+        "cfg",
+        "violations",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_policy.py",
+      "line": 58,
+      "function": "choose",
+      "missing": [
+        "rows",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_policy.py",
+      "line": 66,
+      "function": "evaluate",
+      "missing": [
+        "cfg",
+        "split",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/eval_policy.py",
+      "line": 186,
+      "function": "main",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/feature_store.py",
+      "line": 24,
+      "function": "append_event",
+      "missing": [
+        "event"
+      ]
+    },
+    {
+      "file": "src/recommendation/feature_store.py",
+      "line": 44,
+      "function": "update_reward",
+      "missing": [
+        "feedback"
+      ]
+    },
+    {
+      "file": "src/recommendation/index.py",
+      "line": 18,
+      "function": "stored_vectors",
+      "missing": [
+        "index"
+      ]
+    },
+    {
+      "file": "src/recommendation/index.py",
+      "line": 27,
+      "function": "build_index",
+      "missing": [
+        "model",
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/index.py",
+      "line": 68,
+      "function": "load_index",
+      "missing": [
+        "table",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/mab.py",
+      "line": 9,
+      "function": "select",
+      "missing": [
+        "arm_for"
+      ]
+    },
+    {
+      "file": "src/recommendation/mab.py",
+      "line": 17,
+      "function": "select",
+      "missing": [
+        "items",
+        "stats",
+        "arm_for",
+        "rng",
+        "count",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/mab.py",
+      "line": 33,
+      "function": "select",
+      "missing": [
+        "items",
+        "stats",
+        "arm_for",
+        "rng",
+        "count",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/mab.py",
+      "line": 35,
+      "function": "score",
+      "missing": [
+        "product",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/ranking_features.py",
+      "line": 93,
+      "function": "from_dict",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/ranking_features.py",
+      "line": 99,
+      "function": "transform",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/ranking_features.py",
+      "line": 129,
+      "function": "serving",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/recommender.py",
+      "line": 44,
+      "function": "context",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/recommender.py",
+      "line": 53,
+      "function": "candidate_products",
+      "missing": [
+        "user_context",
+        "features"
+      ]
+    },
+    {
+      "file": "src/recommendation/recommender.py",
+      "line": 65,
+      "function": "predict_products",
+      "missing": [
+        "user_id",
+        "products",
+        "features"
+      ]
+    },
+    {
+      "file": "src/recommendation/recommender.py",
+      "line": 71,
+      "function": "rank_products",
+      "missing": [
+        "products",
+        "probabilities"
+      ]
+    },
+    {
+      "file": "src/recommendation/recommender.py",
+      "line": 74,
+      "function": "rerank_items",
+      "missing": [
+        "items",
+        "top_n",
+        "user_context",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/reranking.py",
+      "line": 23,
+      "function": "apply",
+      "missing": [
+        "context"
+      ]
+    },
+    {
+      "file": "src/recommendation/reranking.py",
+      "line": 27,
+      "function": "apply",
+      "missing": [
+        "items",
+        "context",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/reranking.py",
+      "line": 64,
+      "function": "run",
+      "missing": [
+        "arm_for"
+      ]
+    },
+    {
+      "file": "src/recommendation/reranking.py",
+      "line": 110,
+      "function": "priority",
+      "missing": [
+        "p",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/service.py",
+      "line": 18,
+      "function": "create_service",
+      "missing": [
+        "store"
+      ]
+    },
+    {
+      "file": "src/recommendation/session.py",
+      "line": 35,
+      "function": "sequence_for",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 23,
+      "function": "examples",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 40,
+      "function": "negative_items",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 53,
+      "function": "load_session",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 96,
+      "function": "save_bundle",
+      "missing": [
+        "table"
+      ]
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 118,
+      "function": "load_bundle",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/verify_policy.py",
+      "line": 15,
+      "function": "classification_source",
+      "missing": [
+        "report",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/verify_policy.py",
+      "line": 24,
+      "function": "verify",
+      "missing": [
+        "cfg",
+        "return"
+      ]
+    },
+    {
+      "file": "src/recommendation/verify_policy.py",
+      "line": 110,
+      "function": "main",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/api.py",
+      "line": 68,
+      "function": "create_app",
+      "missing": [
+        "cfg",
+        "search_service",
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/api.py",
+      "line": 30,
+      "function": "original_body",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/api.py",
+      "line": 63,
+      "function": "translated_body",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/build_embeddings.py",
+      "line": 82,
+      "function": "build_embeddings",
+      "missing": [
+        "encoder"
+      ]
+    },
+    {
+      "file": "src/search/build_index.py",
+      "line": 20,
+      "function": "fuse",
+      "missing": [
+        "text",
+        "image",
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/eval_search.py",
+      "line": 24,
+      "function": "encoded_queries",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/eval_search.py",
+      "line": 62,
+      "function": "evaluate",
+      "missing": [
+        "sweep"
+      ]
+    },
+    {
+      "file": "src/search/eval_support.py",
+      "line": 10,
+      "function": "exact_search",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/eval_support.py",
+      "line": 18,
+      "function": "ann_agreement",
+      "missing": [
+        "ann_scores",
+        "ann_labels"
+      ]
+    },
+    {
+      "file": "src/search/locking.py",
+      "line": 10,
+      "function": "writer_lock",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/searcher.py",
+      "line": 25,
+      "function": "eligible_ids",
+      "missing": [
+        "cutoff"
+      ]
+    },
+    {
+      "file": "src/search/searcher.py",
+      "line": 31,
+      "function": "encode",
+      "missing": [
+        "query_text",
+        "query_image",
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/searcher.py",
+      "line": 42,
+      "function": "retrieve",
+      "missing": [
+        "cutoff",
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/searcher.py",
+      "line": 46,
+      "function": "search",
+      "missing": [
+        "query_text",
+        "query_image",
+        "k",
+        "cutoff",
+        "return"
+      ]
+    },
+    {
+      "file": "src/search/service.py",
+      "line": 38,
+      "function": "create_service",
+      "missing": [
+        "store"
+      ]
+    },
+    {
+      "file": "src/search/testing.py",
+      "line": 6,
+      "function": "isolated_search_artifacts",
+      "missing": [
+        "monkeypatch",
+        "tmp_path",
+        "return"
+      ]
+    },
+    {
+      "file": "src/serving/main.py",
+      "line": 18,
+      "function": "create_app",
+      "missing": [
+        "search_service",
+        "recommend_service",
+        "feature_store"
+      ]
+    },
+    {
+      "file": "src/serving/main.py",
+      "line": 23,
+      "function": "lifespan",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/serving/main.py",
+      "line": 61,
+      "function": "search",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/serving/main.py",
+      "line": 67,
+      "function": "recommend",
+      "missing": [
+        "return"
+      ]
+    },
+    {
+      "file": "src/serving/main.py",
+      "line": 81,
+      "function": "record_outcome",
+      "missing": [
+        "payload"
+      ]
+    },
+    {
+      "file": "src/serving/model_loader.py",
+      "line": 11,
+      "function": "load_record",
+      "missing": [
+        "store",
+        "return"
+      ]
+    },
+    {
+      "file": "src/simulator/catalog.py",
+      "line": 23,
+      "function": "points",
+      "missing": [
+        "values",
+        "return"
+      ]
+    }
+  ],
+  "seed_calls": [
+    {
+      "file": "docker/quality.py",
+      "line": 28,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/common/seed.py",
+      "line": 11,
+      "call": "random.seed(seed)"
+    },
+    {
+      "file": "src/common/seed.py",
+      "line": 12,
+      "call": "np.random.seed(seed)"
+    },
+    {
+      "file": "src/common/seed.py",
+      "line": 13,
+      "call": "torch.manual_seed(seed)"
+    },
+    {
+      "file": "src/ct/training.py",
+      "line": 71,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 278,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/evaluation/run_all.py",
+      "line": 90,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/testing.py",
+      "line": 38,
+      "call": "torch.manual_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_deepfm.py",
+      "line": 89,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_deepfm.py",
+      "line": 102,
+      "call": "torch.Generator().manual_seed(cfg['seed'] + 4)"
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 79,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 92,
+      "call": "torch.Generator().manual_seed(cfg['seed'] + 12)"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 29,
+      "call": "np.random.seed(seed)"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 29,
+      "call": "random.seed(seed)"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 144,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 156,
+      "call": "torch.Generator().manual_seed(cfg['seed'] + 2)"
+    },
+    {
+      "file": "src/search/build_embeddings.py",
+      "line": 176,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/search/build_index.py",
+      "line": 98,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/search/eval_search.py",
+      "line": 144,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/search/verify.py",
+      "line": 99,
+      "call": "set_seed(cfg['seed'])"
+    }
+  ],
+  "suspected_settings": [
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 34,
+      "name": "n_products",
+      "value": 400
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 34,
+      "name": "n_users",
+      "value": 24
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 34,
+      "name": "n_events",
+      "value": 6000
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 35,
+      "name": "epochs",
+      "value": 3
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 36,
+      "name": "epochs",
+      "value": 20
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 36,
+      "name": "batch_size",
+      "value": 128
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 163,
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "file": "src/evaluation/api_benchmark.py",
+      "line": 101,
+      "name": "top_n",
+      "value": 10
+    },
+    {
+      "file": "src/recommendation/bench_ranking.py",
+      "line": 81,
+      "name": "top_n",
+      "value": 50
+    },
+    {
+      "file": "src/recommendation/bench_tcp.py",
+      "line": 21,
+      "name": "top_n",
+      "value": 50
+    },
+    {
+      "file": "src/recommendation/bench_tcp.py",
+      "line": 50,
+      "name": "top_n",
+      "value": 50
+    },
+    {
+      "file": "scripts/check_submission.py",
+      "line": 97,
+      "name": "top_k",
+      "value": 10
+    },
+    {
+      "file": "scripts/check_submission.py",
+      "line": 104,
+      "name": "top_n",
+      "value": 10
+    }
+  ],
+  "scope": "AST inventory; absence of findings does not prove complete typing or determinism"
+}

@@ -1,0 +1,117 @@
+{
+  "step": "B11",
+  "owner": "A",
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": ".venv/bin/python scripts/check_submission.py --verify-existing",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m mypy --explicit-package-bases --follow-imports=silent scripts/check_submission.py scripts/check_submission_evidence.py",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -c 'from pathlib import Path\nfrom scripts.check_submission_evidence import read_json,check_hashes\nroot=Path.cwd();q=read_json(root,'\"'\"'docs/results/docker/quality_full_test.json'\"'\"')\ncheck_hashes(root,q['\"'\"'identity'\"'\"']['\"'\"'models'\"'\"'])\ncheck_hashes(root,{'\"'\"'data/full/split_manifest.json'\"'\"':q['\"'\"'identity'\"'\"']['\"'\"'data_manifest_sha256'\"'\"']})\nprint('\"'\"'PASS: original full model metadata and manifest hashes match'\"'\"')'",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -c 'import json,subprocess,sys,xml.etree.ElementTree as ET\nfrom pathlib import Path\nfrom src.common.artifacts import file_hash\np=Path('\"'\"'docs/results/final_submission/checks.json'\"'\"');d=json.loads(p.read_text())\nassert d['\"'\"'delivery_status'\"'\"']=='\"'\"'PASS'\"'\"' and d['\"'\"'readiness_status'\"'\"']=='\"'\"'BLOCKED'\"'\"'\nfor k in ['\"'\"'mypy_submission'\"'\"','\"'\"'pip_check'\"'\"','\"'\"'pytest'\"'\"']: assert d['\"'\"'commands'\"'\"'][k]['\"'\"'exit_code'\"'\"']==0\nassert d['\"'\"'commands'\"'\"']['\"'\"'mypy_repository'\"'\"']['\"'\"'exit_code'\"'\"']==1\nassert d['\"'\"'live_api'\"'\"']['\"'\"'status'\"'\"']=='\"'\"'PASS'\"'\"'\ns=ET.parse('\"'\"'docs/results/final_submission/pytest.xml'\"'\"').getroot()[0]\nassert int(s.attrib['\"'\"'tests'\"'\"'])==301 and all(int(s.attrib[k])==0 for k in ['\"'\"'errors'\"'\"','\"'\"'failures'\"'\"','\"'\"'skipped'\"'\"'])\nc=json.loads(Path('\"'\"'docs/results/final_submission/clone.json'\"'\"').read_text())\nassert c['\"'\"'status'\"'\"']=='\"'\"'PASS'\"'\"' and c['\"'\"'working_tree'\"'\"']=='\"'\"''\"'\"' and c['\"'\"'b11_changes_included'\"'\"'] is False\nassert file_hash(Path(c['\"'\"'log'\"'\"']['\"'\"'source'\"'\"']))==c['\"'\"'log'\"'\"']['\"'\"'sha256'\"'\"']\nr=subprocess.run([sys.executable,'\"'\"'scripts/check_submission.py'\"'\"','\"'\"'--verify-existing'\"'\"','\"'\"'--require-ready'\"'\"'],capture_output=True,text=True)\nassert r.returncode==2\nprint('\"'\"'PASS: 301 current tests, clean baseline clone, explicit strict readiness exit 2; final acceptance remains UNMEASURED'\"'\"')'",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -c 'from pathlib import Path\nfrom scripts.check_submission_evidence import read_json,check_hashes\nfrom src.evaluation.ab_statistics import binary_comparison,clustered_rate\nroot=Path.cwd();d=read_json(root,'\"'\"'docs/results/ab_test.json'\"'\"');check_hashes(root,d['\"'\"'identity'\"'\"']['\"'\"'source_hashes'\"'\"'])\nfor arm in ['\"'\"'control'\"'\"','\"'\"'treatment'\"'\"']:\n rows=d['\"'\"'user_outcomes'\"'\"'][arm];s=d['\"'\"'arms'\"'\"'][arm]\n for k in ['\"'\"'impressions'\"'\"','\"'\"'clicks'\"'\"','\"'\"'purchases'\"'\"','\"'\"'explorations'\"'\"']: assert sum(r[k] for r in rows)==s[k]\n assert s['\"'\"'ctr'\"'\"']==s['\"'\"'clicks'\"'\"']/s['\"'\"'impressions'\"'\"'] and s['\"'\"'cvr'\"'\"']==s['\"'\"'purchases'\"'\"']/s['\"'\"'impressions'\"'\"']\na,b=d['\"'\"'arms'\"'\"']['\"'\"'control'\"'\"'],d['\"'\"'arms'\"'\"']['\"'\"'treatment'\"'\"']\nfor n,k in [('\"'\"'any_click'\"'\"','\"'\"'users_clicked'\"'\"'),('\"'\"'any_purchase'\"'\"','\"'\"'users_purchased'\"'\"')]: assert d['\"'\"'inference'\"'\"']['\"'\"'independent_user_risks'\"'\"'][n]==binary_comparison(a[k],a['\"'\"'users'\"'\"'],b[k],b['\"'\"'users'\"'\"'])\nfor n,k in [('\"'\"'ctr'\"'\"','\"'\"'clicks'\"'\"'),('\"'\"'cvr'\"'\"','\"'\"'purchases'\"'\"')]: assert d['\"'\"'inference'\"'\"'][n]==clustered_rate(d['\"'\"'user_outcomes'\"'\"']['\"'\"'control'\"'\"'],d['\"'\"'user_outcomes'\"'\"']['\"'\"'treatment'\"'\"'],k,'\"'\"'impressions'\"'\"')\nprint('\"'\"'PASS: historical dev A/B counts, denominators and user/cluster statistics; no full A/B claim'\"'\"')'",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -c 'import json,re\nfrom pathlib import Path\nfrom src.common.artifacts import file_hash\nfor step in ['\"'\"'B9'\"'\"','\"'\"'B10'\"'\"']:\n d=json.loads(Path(f'\"'\"'docs/results/gates/{step}.json'\"'\"').read_text())\n for name,digest in d['\"'\"'source_hashes'\"'\"'].items(): assert file_hash(Path(name))==digest,name\nfor p in [Path('\"'\"'README.md'\"'\"'),Path('\"'\"'docs/ab_test_report.md'\"'\"'),*Path('\"'\"'docs/submission'\"'\"').glob('\"'\"'*.md'\"'\"')]:\n for dest in re.findall(r'\"'\"'\\]\\(([^)]+)\\)'\"'\"',p.read_text()):\n  if '\"'\"'://'\"'\"' not in dest and not dest.startswith('\"'\"'#'\"'\"'): assert (p.parent/dest.split('\"'\"'#'\"'\"')[0]).exists(),(p,dest)\nprint('\"'\"'PASS: B9/B10 artifact hashes unchanged; all submission links resolve'\"'\"')'",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "README.md",
+    "docs/contributions/A.md",
+    "docs/data_sources.md",
+    "docs/ab_test_report.md",
+    "scripts/check_submission.py",
+    "scripts/check_submission_evidence.py",
+    "tests/test_submission.py",
+    "docs/results/final_acceptance.json",
+    "docs/submission/audit_review.md",
+    "docs/submission/check_policy.json",
+    "docs/submission/checklist.md",
+    "docs/submission/config_snapshot.json",
+    "docs/submission/contributions.json",
+    "docs/submission/report.md",
+    "docs/submission/reproduction.md",
+    "docs/submission/requirements.json",
+    "docs/submission/requirements.md",
+    "docs/results/final_submission/ab_audit.json",
+    "docs/results/final_submission/checks.json",
+    "docs/results/final_submission/clone.json",
+    "docs/results/final_submission/clone.txt",
+    "docs/results/final_submission/mypy_repository.txt",
+    "docs/results/final_submission/mypy_submission.txt",
+    "docs/results/final_submission/pip_check.txt",
+    "docs/results/final_submission/pr4_discrepancy.json",
+    "docs/results/final_submission/prior_gate_audit.json",
+    "docs/results/final_submission/pytest.txt",
+    "docs/results/final_submission/pytest.xml",
+    "docs/results/final_submission/python_audit.json",
+    "docs/results/final_submission/readiness_probe.json",
+    "docs/results/final_submission/repository.json",
+    "docs/results/final_submission/runtime.json",
+    "docs/results/experiments/A/submission_clone_initial.json",
+    "docs/results/experiments/A/submission_clone_initial.txt",
+    "docs/results/experiments/A/submission_pytest_initial.txt",
+    "docs/results/experiments/A/submission_pytest_initial.xml"
+  ],
+  "data_fingerprint": "0973c4f2a7e7313f689bcdab0012d609cdf3e1eecb2d9f81e8fe90da541450c6",
+  "config_fingerprint": "53497e8e78945f0afb0c4a813a4326b8b2e9773cadc9943800ac40698be6866e",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "README.md": "0da3916c5838de60a201ea99091878c62b172374de6d4afc42f0e6bf5b6edab3",
+    "docs/contributions/A.md": "7fab2628cb93505c6fa7ab538dc57a5583acdf1271cb24e2e112b8a7be3726fa",
+    "docs/data_sources.md": "570ded2df7e3dd9c20356d73793393c231bc11df42d74463ddc8b2cdc6959a3a",
+    "docs/ab_test_report.md": "86579ea73d59e8aa1b3a3b9b62ac69bf3a54e8c94143aa4bcd905753f7eb92b9",
+    "scripts/check_submission.py": "63665c6a450b868d0792f7ed08cbf95cf8664927be0d8b97190b16e3227ebc43",
+    "scripts/check_submission_evidence.py": "5ec28c8f5c8a9b087492186b2b28cf2f6d0371be0b0a5a42b6a9407cc68485f3",
+    "tests/test_submission.py": "4d998df9d7f8da02443408b176a2096fc97b28a6fd5d297317021443fc3f7c79",
+    "docs/results/final_acceptance.json": "3e76e0e780db73ee30d4fe05b122418c3d472d3c0910739813a2720de2dd694c",
+    "docs/submission/audit_review.md": "4b3f474b793cc17598293e537b12cc3cfbc0042458bc75e46fc0f9a71b29647a",
+    "docs/submission/check_policy.json": "83b6157a19f081b05a7bb0556cb4efdb6512ea0d4a15df77bea7a2cbb496f56c",
+    "docs/submission/checklist.md": "c739433a99d0828ce1eafcbd931d25bd91aa2a192e7b9b2e219690fdf74f3d11",
+    "docs/submission/config_snapshot.json": "57caa85b453f60734130d9fb1e06783ac8c06d8f1f02b27d64826ba2a78bb2b3",
+    "docs/submission/contributions.json": "663cdee3fd1ccfc896f1dc6bd00b9b010a82d459eb17f07dae1631270b716229",
+    "docs/submission/report.md": "f5f1f861de6b0bb9c8fe08924839107b1cf7da9c677803d15263f123ec15d3ad",
+    "docs/submission/reproduction.md": "81b748917720abb72d1711caec14a2dcfff24ff042f1bd2e55b2d8a8fe113194",
+    "docs/submission/requirements.json": "92f33d899d17474e71110c1b6042df165b3037738660e3e758b974a4bf779785",
+    "docs/submission/requirements.md": "1d99c79767ed45d5b5813590b352adaee1d49431223b46169b001065322aad12",
+    "docs/results/final_submission/ab_audit.json": "70d422910c51b9135cb956efd920dee239578734d409ae098adc182c8aca4dfd",
+    "docs/results/final_submission/checks.json": "b72b941365e7e8330ea419a6584fd0dece565277870ca62d1c679d80fd274317",
+    "docs/results/final_submission/clone.json": "89e898978bcbbf468b73c8abeb39a53d650c44f2e408e2c6fe8619072a501f31",
+    "docs/results/final_submission/clone.txt": "2745b2d9b400c6af99e7f71844084407561397accf157a1739e5a7cc3c16885c",
+    "docs/results/final_submission/mypy_repository.txt": "81e39df68ca3ca1ff68d81a9476a7b55d7dfcdd8f2add40de05de883d14c9d21",
+    "docs/results/final_submission/mypy_submission.txt": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
+    "docs/results/final_submission/pip_check.txt": "9261363b733079a641c2e4cc9bc46ffa1d8336945a87f807b6cf68847dbc9b09",
+    "docs/results/final_submission/pr4_discrepancy.json": "7c10be9ee5165604579aaf1d98d0908304b2195e861736cdd80a91e58cff2988",
+    "docs/results/final_submission/prior_gate_audit.json": "95c566acf44ef844478fc4d3b272829456575ccec5f70c4a104bfc399420f764",
+    "docs/results/final_submission/pytest.txt": "7089f879137b90ca5826d35e589c6c0f3d01d8cec2be5971330ff86121dca7c6",
+    "docs/results/final_submission/pytest.xml": "2752c5850eb143e9d339544d191be3afeef26edc84d7511ddd3825403b2dec0b",
+    "docs/results/final_submission/python_audit.json": "68215a339ee6735bd166dc0508e309c288a4d3f034fa161a5e9660b7d90d0431",
+    "docs/results/final_submission/readiness_probe.json": "d0fa3db5c038057e7390118facacc921410f2bdc452ba8aeff7cf385baa0bb9c",
+    "docs/results/final_submission/repository.json": "cd6157c89c2fd454505b3fb3ed37c1a5d2d28cca583e155789583de3ea8c907c",
+    "docs/results/final_submission/runtime.json": "e8d98aab433e2a2a6665b4c4adb894d86e752482d3ebe00f44e537101a438b11",
+    "docs/results/experiments/A/submission_clone_initial.json": "aa1b7a2f50049f5c41a13c26d5a410060ade90164ac32230c011c88cff29e174",
+    "docs/results/experiments/A/submission_clone_initial.txt": "e38dd58ebc163790c1cd37d095f03e5363fcbef68443f1c94d1b93eeeaab3750",
+    "docs/results/experiments/A/submission_pytest_initial.txt": "a1998d2f7a576ae5a25b262674f3cef34fc1e4591a30b316be698ee5e35c9a54",
+    "docs/results/experiments/A/submission_pytest_initial.xml": "6bae1106e5dbf14660c875efc7598c473360b2520a4cca4cfc0a0e9a01bafd56"
+  },
+  "commit_summary_ko": "제출 보고서·요구사항 대응표와 실측 근거 검사 구현"
+}
