@@ -158,7 +158,9 @@ def system_tab(report: dict, config: dict) -> None:
     a, b, c = st.columns(3)
     a.metric('API 연결', '정상' if health['ok'] else '연결 안 됨')
     b.metric('모델 준비', '준비됨' if ready['ok'] else '준비 안 됨')
-    c.metric('측정 모델 버전', report.get('model_version', '미측정'))
+    live_version = health['data'].get('model_version') if health['ok'] else None
+    c.metric('현재 모델 버전', live_version or '미측정')
+    st.caption(f"저장된 성능 측정의 모델 버전: {report.get('model_version', '미측정')}")
     if not health['ok']:
         st.info(health['error'])
     st.dataframe(metric_table(report, ('search_p95_ms', 'recommend_p95_ms', 'candidate_p95_ms', 'feature_p95_ms')), hide_index=True, use_container_width=True)
@@ -170,11 +172,13 @@ def system_tab(report: dict, config: dict) -> None:
     st.subheader('CT 기록')
     logs = ct_log(config['results_dir'])
     if logs['rows']:
-        st.dataframe(pd.DataFrame(logs['rows']), hide_index=True, use_container_width=True)
+        if any(row.get('scope') == 'controlled_fixture' for row in logs['rows']):
+            st.caption('controlled_fixture 기록은 소규모 기능 검증이며 실제 서비스 품질을 뜻하지 않습니다.')
+        st.dataframe(pd.json_normalize(logs['rows'], sep='.'), hide_index=True, use_container_width=True)
         if logs['invalid_lines']:
             st.warning(f'읽을 수 없는 로그 {logs["invalid_lines"]}개를 제외했습니다.')
     else:
-        st.info(logs.get('reason', 'CT 실행 기록이 없습니다. CT 검증은 B9에서 수행합니다.'))
+        st.info(logs.get('reason', 'CT 실행 기록이 없습니다. CT 모니터 실행과 결과 경로를 확인하세요.'))
     with st.expander('측정 근거와 제한'):
         st.json(dict(environment=report.get('environment', {}), identity=report.get('identity', {}), limitations=report.get('limitations', [])))
 

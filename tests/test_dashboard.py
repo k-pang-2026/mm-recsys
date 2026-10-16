@@ -147,3 +147,21 @@ def test_api_unavailable_is_explicit(monkeypatch):
     assert not response['ok'] and response['status_code'] is None and response['data'] is None
     with pytest.raises(ValueError):
         data.api_call('http://localhost:1', 'POST', '/api/admin/reload')
+
+
+def test_live_model_version_and_nested_ct_logs_are_distinct_from_saved_measurement(tmp_path, monkeypatch, report):
+    (tmp_path / 'evaluation_dev_valid.json').write_text(json.dumps(report))
+    (tmp_path / 'ct_log.jsonl').write_text(json.dumps(dict(event='promoted', scope='controlled_fixture',
+        version='v1.1', comparison=dict(candidate=dict(ctr_auc=.9)), hashes=dict(candidate='abc'))) + '\n' +
+        json.dumps(dict(event='rollback', version='v1.0')) + '\n')
+    monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
+    def api(url, method, route, **kwargs):
+        return dict(ok=True, data=dict(status='ok' if route == '/health' else 'ready', model_version='v1.1'))
+    monkeypatch.setattr(data, 'api_call', api)
+    app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
+    assert not app.exception
+    assert {m.label: m.value for m in app.metric}['현재 모델 버전'] == 'v1.1'
+    assert any('fixture-v1' in caption.value for caption in app.caption)
+    assert any('controlled_fixture' in caption.value for caption in app.caption)
+    frame = next(df.value for df in app.dataframe if 'event' in df.value)
+    assert frame['comparison.candidate.ctr_auc'].iloc[0] == .9

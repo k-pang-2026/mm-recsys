@@ -1,0 +1,205 @@
+{
+  "environment": {
+    "platform": "macOS-26.6-arm64-arm-64bit",
+    "python": "3.11.17",
+    "cpu": "arm",
+    "logical_cpus": 10,
+    "ram_bytes": 25769803776,
+    "docker_allocation": {
+      "status": "MEASURED",
+      "memory_bytes": 8319504384,
+      "cpus": 10,
+      "version": "29.8.2"
+    },
+    "benchmark_scope": "native controlled CT training and HTTP reload; memory FeatureStore; Docker info is descriptive only",
+    "torch": "2.6.0",
+    "numpy": "2.1.3",
+    "faiss": "1.9.0",
+    "torch_threads": 1,
+    "faiss_threads": 1,
+    "device": "cpu",
+    "gpu_used": false,
+    "pythonhashseed": "42",
+    "nondeterminism": "seeded CPU inference; cross-platform floating point may differ"
+  },
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "controlled_fixture",
+  "seed": 42,
+  "scope": "400 items/24 users/6000 source events; 5000 initial; additional observed view/cart/purchase only; initial ranker deliberately constant; real candidate training and measured paired valid improvement; not production dev/full quality or Docker reproduction",
+  "source_fingerprint": "e17c2821f2cd7e8a8ad8856e1901d54ca99771ddec1933d7127604ad55365889",
+  "source_counts": {
+    "products": 400,
+    "users": 24,
+    "events": 6000,
+    "impressions": 13588
+  },
+  "new_events": 727,
+  "threshold": 200,
+  "default_threshold": 10000,
+  "monitor": {
+    "event": "monitor",
+    "status": "ALERT",
+    "ctr": 0.0,
+    "hit_rate_at_50": 0.0,
+    "clicks": 0,
+    "exposures": 50,
+    "mature_requests": 1,
+    "top50_requests": 1,
+    "hit_requests": 0,
+    "alerts": [
+      "ctr_below_threshold",
+      "hitrate_below_threshold"
+    ],
+    "window_start": -70.0,
+    "observed_through": 30.0,
+    "attribution_seconds": 10,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 1
+    }
+  },
+  "concurrent_trigger": {
+    "status": "BUSY"
+  },
+  "training": {
+    "status": "PROMOTED",
+    "version": "v1.1",
+    "active": "v1.1",
+    "new_events": 727,
+    "through_seq": 727,
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "2daea74ee4ef471da561844e9d9386a7095ab161e82f17d3dc2ffd15ac022b7c",
+      "baseline": {
+        "ctr_auc": 0.5,
+        "ctr_logloss": 0.6931471805599453,
+        "hit_rate_at_50": 0.041666666666666664,
+        "truth_users": 24,
+        "ctr_samples": 1447,
+        "validation_fingerprint": "2daea74ee4ef471da561844e9d9386a7095ab161e82f17d3dc2ffd15ac022b7c"
+      },
+      "candidate": {
+        "ctr_auc": 0.9158041865798099,
+        "ctr_logloss": 0.9714835966527595,
+        "hit_rate_at_50": 0.9583333333333334,
+        "truth_users": 24,
+        "ctr_samples": 1447,
+        "validation_fingerprint": "2daea74ee4ef471da561844e9d9386a7095ab161e82f17d3dc2ffd15ac022b7c"
+      },
+      "training_reports": {
+        "candidate": "346c2598dbf3f257736d4599930aaf04a3d1ddd3165931b31d0b17e7fb3dc772",
+        "ranking": "c43cd8a78d3a849bcc5c1fa2fbf2348997545026adaf9ad5ea8ce16a5ed6d67e",
+        "session": "a405ef5c351ac550a35bb576ac3e6b46497f29bd55c3744a95f02811f873a4c8"
+      }
+    }
+  },
+  "checks": {
+    "alert": true,
+    "threshold": true,
+    "duplicate_trigger_blocked": true,
+    "real_three_model_retraining": true,
+    "fresh_chronological_split": true,
+    "increment": true,
+    "paired_valid_improvement": true,
+    "no_improvement_retained": true,
+    "atomic_http_reload": true,
+    "rollback": true,
+    "corrupt_bundle_rejected": true,
+    "new_events_consumed_once": true
+  },
+  "api": {
+    "before": 200,
+    "after": 200,
+    "reloaded": {
+      "status": "reloaded",
+      "version": "v1.1"
+    },
+    "rollback": {
+      "status": "reloaded",
+      "version": "v1.0"
+    },
+    "concurrent_requests": 40,
+    "all_concurrent_http_200": true
+  },
+  "versions": {
+    "v1.0": {
+      "status": "ACTIVE",
+      "parent": null,
+      "hashes": {
+        "meta.json": "c57b0af6606bd11b5b7288eab7a967abd00d61588356ae06732bec811d2db211",
+        "two_tower.pt": "9828e9aedbd0bbc62cbb5d542bded47ff5c1f78b1bf902f6d5d7b3c6f8ce2f19",
+        "feature_vocab_scalers.json": "e94d8ced1e44f5da196fb95be1da49ebf273890b110c20989d01ff629d9ffe91",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "9b3d411290967248068af7ad4e398740e423918a415a8d3550e89f7c2e943e4f",
+        "index_manifest.json": "0eb468e6cab8054f4a2029c1e246ffec38b41466f1f0a14c633b4da27cb5d203",
+        "ranking/meta.json": "cf42303ac3303b4d98aae98abe437e6e8f5bcd29821e07bb28ab1eafc8002e10",
+        "ranking/deepfm.pt": "8ae969875617222a0c41a67e391a48052c30d42a8edca4ca2d5436945ed3d1af",
+        "ranking/features.json": "418d20a906f6c5d1261da2d52ae76bf6336ff340f87d8fa38c0b6e5023bb4c94",
+        "session/meta.json": "2d435789423b8d7fd9c97f758f7b1fa632817c9be91b3db44797211fcafb101b",
+        "session/session.pt": "925830bbceafbf33ba22abbc72d0ccbfeb67fa760b007cfab0280d90484813f6",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    },
+    "v1.1": {
+      "status": "ROLLED_BACK",
+      "parent": "v1.0",
+      "hashes": {
+        "meta.json": "423aaa0afbe3c98bfa2dc732dbcd085a9dc0f702a5460da620faf9e5513e663c",
+        "two_tower.pt": "f94ae229fdf6de02d064588f6ce351f48bf92bdea60f91e1dc666f31274e3a47",
+        "feature_vocab_scalers.json": "4ec7c38d1b673d55c6dccbdda5cddedd66128693050d7f096f234c2ee4bf3fbf",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "c02cebff4f4a5ef7aa001e689e8c4edcfd147968678fd2124e7d052b26d0697a",
+        "index_manifest.json": "b2af4542f8114e1313e7d47e5e5a78c769824eceb9ea7cee7869d4e687b151e4",
+        "ranking/meta.json": "f0b7a0d796323fd469fdb8d7f6be6cd9b294def82943738ebfaf3f795b1d888b",
+        "ranking/deepfm.pt": "582376d28d1f320b53c6f0c4a2f5f11f4ca7235818013d5e71b9b5101603b5d9",
+        "ranking/features.json": "8fe4c168d6d75150223e7dab19d641f345e2ba61926a8e3908fb53aa30c7d169",
+        "session/meta.json": "b949873a3e30d42a3dddfc9c487d086699d9cde2402b32469e48bc7e8a8a389f",
+        "session/session.pt": "0c1dbdfee21da4d25643e73b0e7d6da46ec525fce171a485e04277c9f854fb34",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    },
+    "v1.2": {
+      "status": "REJECTED",
+      "parent": "v1.1",
+      "hashes": {
+        "meta.json": "423aaa0afbe3c98bfa2dc732dbcd085a9dc0f702a5460da620faf9e5513e663c",
+        "two_tower.pt": "f94ae229fdf6de02d064588f6ce351f48bf92bdea60f91e1dc666f31274e3a47",
+        "feature_vocab_scalers.json": "4ec7c38d1b673d55c6dccbdda5cddedd66128693050d7f096f234c2ee4bf3fbf",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "c02cebff4f4a5ef7aa001e689e8c4edcfd147968678fd2124e7d052b26d0697a",
+        "index_manifest.json": "b2af4542f8114e1313e7d47e5e5a78c769824eceb9ea7cee7869d4e687b151e4",
+        "ranking/meta.json": "f0b7a0d796323fd469fdb8d7f6be6cd9b294def82943738ebfaf3f795b1d888b",
+        "ranking/deepfm.pt": "582376d28d1f320b53c6f0c4a2f5f11f4ca7235818013d5e71b9b5101603b5d9",
+        "ranking/features.json": "8fe4c168d6d75150223e7dab19d641f345e2ba61926a8e3908fb53aa30c7d169",
+        "session/meta.json": "b949873a3e30d42a3dddfc9c487d086699d9cde2402b32469e48bc7e8a8a389f",
+        "session/session.pt": "0c1dbdfee21da4d25643e73b0e7d6da46ec525fce171a485e04277c9f854fb34",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    }
+  },
+  "artifacts": {
+    "registry": "/Users/chaezero/Documents/codex/mm-recsys/models/.ct/verification/9cf9ce8152/models/registry.json",
+    "registry_sha256": "11e98a19db5a2cd00de176a858d3521ce61a3d254c993736a0c5b76ece644472",
+    "log": "docs/results/experiments/C/ct_fixture_log.jsonl",
+    "log_sha256": "353acf0910814f1d9c397798e33c8b40755c5fcb9f16dbf63d267c7e2bab9020",
+    "training": {
+      "candidate": {
+        "source": "docs/results/experiments/C/ct_training_candidate_fixture.json",
+        "sha256": "346c2598dbf3f257736d4599930aaf04a3d1ddd3165931b31d0b17e7fb3dc772"
+      },
+      "ranking": {
+        "source": "docs/results/experiments/C/ct_training_ranking_fixture.json",
+        "sha256": "c43cd8a78d3a849bcc5c1fa2fbf2348997545026adaf9ad5ea8ce16a5ed6d67e"
+      },
+      "session": {
+        "source": "docs/results/experiments/C/ct_training_session_fixture.json",
+        "sha256": "a405ef5c351ac550a35bb576ac3e6b46497f29bd55c3744a95f02811f873a4c8"
+      }
+    }
+  },
+  "full_test_quality": "UNMEASURED",
+  "docker_reproduction": "UNMEASURED"
+}
