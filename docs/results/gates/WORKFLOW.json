@@ -6,82 +6,48 @@
   "acceptance": "UNMEASURED",
   "commands": [
     {
-      "command": ".venv/bin/python -m pip check",
+      "command": "bash -n setup_env.sh",
       "exit_code": 0
     },
     {
-      "command": "bash -n setup_env.sh && bash -n scripts/codex_run.sh",
+      "command": ".venv/bin/python -m pytest -q tests/test_setup_env.py tests/test_team_workflow.py tests/test_pull_request.py",
       "exit_code": 0
     },
     {
-      "command": "cmp ai_step_prompts_optimized.md docs/ai_step_prompts.md",
-      "exit_code": 0
-    },
-    {
-      "command": "env -u SCALE PYTHONHASHSEED=42 .venv/bin/python -m pytest -q tests/test_team_workflow.py tests/test_pull_request.py tests/test_setup_env.py",
-      "exit_code": 0
-    },
-    {
-      "command": "git show f6fba1ff2e14097bf3aeb3c4c62383e3ccc8c898:docs/results/gates/WORKFLOW.json | cmp - docs/results/experiments/A/workflow_docker_transfer_v5.json",
-      "exit_code": 0
-    },
-    {
-      "command": "git show 5c3a3510d7b5d4adaa6abb102c6af0ecd350bbce:docs/results/gates/WORKFLOW.json | cmp - docs/results/experiments/A/workflow_submission_transfer_v6.json",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/python scripts/team.py status",
-      "exit_code": 0
-    },
-    {
-      "command": "git diff --check",
+      "command": ".venv/bin/python -c 'import hashlib,json; from pathlib import Path; p=json.loads(Path(\"skills/ponytail-source.json\").read_text()); a=json.loads(Path(\"docs/results/experiments/A/workflow_ponytail_audit_20261017.json\").read_text()); assert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in p[\"files\"].items()); assert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in a[\"source_hashes\"].items()); r=a[\"new_verification\"][\"reproductions\"]; assert hashlib.sha256(Path(r[\"source\"]).read_bytes()).hexdigest()==r[\"sha256\"]; assert len(a[\"findings\"])==8; assert a[\"service_fixes_applied\"] is False; print(\"Ponytail provenance, audit source hashes and eight findings: PASS\")'",
       "exit_code": 0
     }
   ],
   "artifacts": [
     "AGENTS.md",
-    "README.md",
-    "ai_step_prompts_optimized.md",
     "config/team_workflow.yaml",
-    "docs/ai_step_prompts.md",
-    "docs/codex_quickstart.md",
-    "docs/commit_convention.md",
-    "docs/contracts.md",
+    "setup_env.sh",
+    "tests/test_setup_env.py",
+    "skills/ponytail/SKILL.md",
+    "skills/ponytail-audit/SKILL.md",
+    "skills/ponytail-source.json",
+    "skills/PONYTAIL_LICENSE",
     "docs/contributions/A.md",
-    "docs/pr_workflow.md",
-    "docs/setup_analysis.md",
-    "docs/team_workflow.md",
-    "scripts/pull_request.py",
-    "scripts/step_git.py",
-    "scripts/team.py",
-    "tests/test_pull_request.py",
-    "tests/test_team_workflow.py",
-    "docs/results/experiments/A/workflow_docker_transfer_v5.json",
-    "docs/results/experiments/A/workflow_submission_transfer_v6.json"
+    "docs/results/experiments/A/workflow_before_ponytail_20261017.json",
+    "docs/results/experiments/A/workflow_ponytail_probes.py",
+    "docs/results/experiments/A/workflow_ponytail_audit_20261017.json"
   ],
   "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
-  "config_fingerprint": "ee37947102e6d9c3885c9b54ad8f4b27e333915990a98a9a13080bf7cb4f7d3a",
+  "config_fingerprint": "4efd42e7b4d18b5f2f993e1d350bd8f4c0537a434728f066dc437737f54c0799",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
-    "AGENTS.md": "93bb826bf3ea20cd0f3fb9276e0e708961144cee074078f53b537708f2607935",
-    "README.md": "f1caedd93e970731085c02fd12708816f57b8ebd6f31c21ee741a5bd30f95796",
-    "ai_step_prompts_optimized.md": "6e7e0256f6d6a77a851791a6d779cfc8dd4847f75bdf3cc607eae8da7f7068e2",
-    "config/team_workflow.yaml": "4d379c215f16a1e5dde890b2b799e9c82b91d1ef59e30bcf2f18e7647e2dbcf0",
-    "docs/ai_step_prompts.md": "6e7e0256f6d6a77a851791a6d779cfc8dd4847f75bdf3cc607eae8da7f7068e2",
-    "docs/codex_quickstart.md": "cf8724d14c0a6a4f40d1a1ccffdfacf8d8804412a3fcd8395afd779f155fa300",
-    "docs/commit_convention.md": "775a049b1d580a86d6845b63e34a69bf12bbfd29ed6634655160d9435e565c54",
-    "docs/contracts.md": "d19634dd6abdff86250c779b75766f88a7818f1dc2255361dc8080b3b58bc66c",
-    "docs/contributions/A.md": "740252ba05426dbfad535c603ec29673b6085548c1d14e33335ae8ba276a18d4",
-    "docs/pr_workflow.md": "be0ccfa7fb8a1af26b58edfb3c62b96c73ea37cafc4026290a25107d6ac8032d",
-    "docs/setup_analysis.md": "eadadd7c1892aaa36eaef0b41c4b721cbab76b76a6cfa2b7d5b37eaffc973fa0",
-    "docs/team_workflow.md": "a700b0e2a5199c78e140970bfbcb0b73878933c3f05115ce1d96bdc0cba3f72c",
-    "scripts/pull_request.py": "9815f93cb60dda4f14c9b464fa58d0c9d401dbeee70ba14cca02d06de3892294",
-    "scripts/step_git.py": "81c96943d581190d83be67a6bacb3706e57e8d60cbadab9f1d24855d00f27942",
-    "scripts/team.py": "ad7f7a678c71d27182ffcc8a5e67d0ab765bc2f8106c4860162eaaa59a76fb94",
-    "tests/test_pull_request.py": "29e669aba59f37cdd1c65afc35e3e116f123765c96e42c3edde7f5db168ac2e0",
-    "tests/test_team_workflow.py": "74ffc17bf83ad38e6e624f3607c3eb6d31f61126873edc11ec2db3284119609f",
-    "docs/results/experiments/A/workflow_docker_transfer_v5.json": "fd0fd7a60a806cf7c9da9a660c5c9f0f0c1d7b25c1d2eb24d49602445539346b",
-    "docs/results/experiments/A/workflow_submission_transfer_v6.json": "07953f14fd0d5f336d443e3acb99a98d6e757754546dc1f008abef9f5b88f1ba"
+    "AGENTS.md": "e1fe828e4cc1fef32c3abb2f4cf4793c8cd60129db1accbaf17a9fd7ff07f2ae",
+    "config/team_workflow.yaml": "f799efc1fd6e65c75931e11904bbfae36e716bc66f4e80af9abd9da9d5afa550",
+    "setup_env.sh": "5611474e38fd7bd65944b44c71c9083f0e7948e37bc1dbb89743ea24881be1d2",
+    "tests/test_setup_env.py": "3021b96b4e78a4ddd9bafe7b8f6e49f540c0104de77fec3c87fa50f32bc61ba9",
+    "skills/ponytail/SKILL.md": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509",
+    "skills/ponytail-audit/SKILL.md": "2b3223a02c386d1263e1b08343cb8eb3a53e444cdafb1d79e26c8ec2a8fcad28",
+    "skills/ponytail-source.json": "18158e59460e1192fbbb5f13a4e85001fe3eb6e70a2a6e59a3e3b7aef30fd0aa",
+    "skills/PONYTAIL_LICENSE": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab",
+    "docs/contributions/A.md": "547740ff30271c615c07558d9e76c19df69049a61c61ce34a7319de53c235a46",
+    "docs/results/experiments/A/workflow_before_ponytail_20261017.json": "9eb26b6c4a2280121f4a99626006dff78034e5f4b43de1c85e2b04b8f542d981",
+    "docs/results/experiments/A/workflow_ponytail_probes.py": "f5c8d0f4620062c4655812f5b632d24a961db9e302a799a086128261f662a44b",
+    "docs/results/experiments/A/workflow_ponytail_audit_20261017.json": "a6707c46ecc61feadba313c8b7649fdac58be1567de642629bfbb78813062981"
   },
-  "commit_summary_ko": "제출 문서·검증을 A로 이관하고 README 다이어그램과 통합 순서 정비"
+  "commit_summary_ko": "Ponytail 스킬 연결과 전체 프로젝트 감사 근거 추가"
 }

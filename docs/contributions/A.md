@@ -267,3 +267,25 @@ CT는 실제 추가 HTTP 10,000건·세 모델 재학습·paired valid에서 RET
 최종 회귀 수·타입·pip·라이브 스키마·필수 여섯 판정은
 [제출 검사 원본](../results/integration/submission/checks.json)과 pytest.xml을 따른다.
 이 문서는 실제 팀원의 리뷰나 아직 승인하지 않은 INTEGRATE 원격 반영을 주장하지 않는다.
+
+## WORKFLOW — Ponytail 연결과 전체 프로젝트 감사 (2026-10-17)
+
+사용자의 명시 요청으로 공식 `DietrichGebert/ponytail` 커밋
+`16352ac229eb08a9598dcae48fe9f2b342567d86`의 기본·감사 스킬을 `skills/`에 보관하고
+출처·SHA-256·MIT 고지를 남겼다. 실제 지침 파일인 `AGENTS.md`에 읽기·적용 규칙을 연결했다.
+독립 프로젝트 생성 시 링크가 깨지지 않도록 `setup_env.sh`의 복사 대상과 기존 복사 검증을 확장했다.
+WORKFLOW의 소유 경로에 해당 파일을 추가했으며 역할별 서비스 소유권과 푸시 승인은 유지한다.
+
+전체 프로젝트의 주요 실행·저장·학습·평가·배포·Git 흐름을 추적했다.
+[감사 원본](../results/experiments/A/workflow_ponytail_audit_20261017.json)에 필수 6건·권장 2건,
+최소 수정안과 영향, 검토 한계 및 [격리 재현 스크립트](../results/experiments/A/workflow_ponytail_probes.py)를 기록했다.
+CVR 양성 0·다양성 불가능 후보 풀 2,738개·콜드 사용자 정답 0은 같은 날 앞선 main/Docker 실측과
+원본 데이터로 확인했다. 해당 실측의 서비스 소스 해시는 현재 소스와 일치한다.
+반복 클릭 학습 오류·저장 실패 응답·승격 뒤 reload 장애·과대 픽셀 이미지·헤더 예외를 격리 재현했다.
+감사는 보고 전용으로 수행하여 발견한 서비스 결함의 수정이나 새 final acceptance를 주장하지 않는다.
+
+전체 회귀는 실제 Redis를 사용해 336건 통과했다. 기본 서비스·대시보드·Docker 타입 검사도
+116개 소스에서 통과했다. Git 자동화까지 넓힌 별도 타입 검사는 기존 두 파일에서 5개 오류를
+찾았으며 원본 로그와 위치를 감사 보고서에 남겼다. 설치·복사와 관련된 집중 검증은 WORKFLOW gate를 따른다.
+이전 WORKFLOW gate는 `workflow_before_ponytail_20261017.json`으로 보존했다.
+변경은 `chore/team-workflow`의 로컬 커밋으로 준비하며, 원격 푸시·PR은 사용자 승인 전 수행하지 않는다.
