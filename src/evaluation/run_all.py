@@ -9,7 +9,7 @@ from pathlib import Path
 from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.config import load_config
 from src.common.seed import set_seed
-from src.evaluation.reporting import VERSION, environment, identity, metric, sources
+from src.evaluation.reporting import VERSION, environment, identity, metric, sources, quality_status
 
 MEASUREMENT_SOURCES = ['src/evaluation/run_all.py', 'src/evaluation/reporting.py',
     'src/evaluation/search.py', 'src/evaluation/recommendation.py', 'src/evaluation/api_benchmark.py',
@@ -117,7 +117,7 @@ def run(cfg: dict, split: str, output: Path | None = None) -> dict:
     api = benchmark_api(cfg)
     ab = ab_evidence(cfg, manifest, rec['models'])
     metrics = metric_rows(cfg, split, search, rec, api, candidate_latency, feature)
-    quality = 'FAIL' if any(row['status'] == 'FAIL' for row in metrics) else 'UNMEASURED' if any(row['status'] == 'UNMEASURED' for row in metrics) else 'PASS'
+    quality = quality_status(metrics, rec, cfg['recommend']['candidate_k'])
     report = dict(version=VERSION, status='PASS', quality_status=quality, acceptance='UNMEASURED',
         scale=cfg['scale'], split=split, identity=identity(cfg, manifest, dict(search=search['models'], recommendation=rec['models'])),
         data_counts=manifest['counts'], source_hashes=inputs['source_hashes'], metrics=metrics,

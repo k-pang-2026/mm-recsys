@@ -98,6 +98,7 @@ simulator:
       - 0.2
       - 0.1
   window_days: 30
+  event_interval_seconds: 60
   new_item_ratio: 0.04
   cold_user_ratio: 0.03
   cold_max_events: 3

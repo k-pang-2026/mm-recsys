@@ -8,8 +8,6 @@ import json
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.exceptions import HTTPException
-from pydantic import ValidationError
-from src.common.schemas import SearchRequest
 
 
 class SearchTransport:
@@ -31,8 +29,8 @@ class SearchTransport:
                 break
         async def original_body() -> dict:
             return {'type': 'http.request', 'body': bytes(body), 'more_body': False}
-        content_type = dict(scope.get('headers', [])).get(b'content-type', b'').decode()
         try:
+            content_type = dict(scope.get('headers', [])).get(b'content-type', b'').decode('ascii')
             if content_type.startswith('multipart/form-data'):
                 request = Request(scope, original_body)
                 async with request.form() as form:
@@ -56,8 +54,7 @@ class SearchTransport:
                 raise ValueError('search input must be an object')
             if 'top_k' in payload and (isinstance(payload['top_k'], bool) or not isinstance(payload['top_k'], int)):
                 raise ValueError('top_k must be an integer')
-            SearchRequest.model_validate(payload)
-        except (ValueError, TypeError, ValidationError, HTTPException) as error:
+        except (ValueError, TypeError, HTTPException) as error:
             return await JSONResponse({'detail': str(error)}, 422)(scope, receive, send)
         forwarded = json.dumps(payload).encode(); new_scope = dict(scope)
         new_scope['headers'] = [(k, v) for k, v in scope.get('headers', []) if k not in (b'content-type', b'content-length')]

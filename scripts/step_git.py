@@ -168,6 +168,7 @@ def main() -> int:
         pending.write_text(json.dumps(publication))
         pr_required=bool(plan and plan.get('pull_requests',{}).get('required'))
         if pr_required:
+            assert plan is not None
             from scripts.pull_request import GitHubAPI,render,ensure
             description=render(root,args.step,args.role,plan,value)
             client=GitHubAPI(root,plan)
@@ -181,6 +182,7 @@ def main() -> int:
         pending.unlink(missing_ok=True)
         print('PUSH VERIFIED:',commit)
         if pr_required and not result['draft']:
+            assert plan is not None
             from scripts.pull_request import automatic_merge_enabled,auto_merge
             if automatic_merge_enabled(plan):
                 auto_merge(root,client,plan,args.step,args.role,result['number'],commit,wait=True)

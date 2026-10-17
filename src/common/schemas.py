@@ -1,12 +1,15 @@
 """API models are frozen before search, recommendation and platform develop in parallel."""
 from __future__ import annotations
 
-from typing import Literal, Protocol
+from typing import ClassVar, Literal, Protocol
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class SearchRequest(BaseModel):
     model_config = ConfigDict(extra='forbid')
+    max_image_pixels: ClassVar[int] = 16_000_000
+    max_image_dimension: ClassVar[int] = 4096
+    max_image_aspect: ClassVar[int] = 32
     query_text: str | None = None
     query_image: str | None = None
     top_k: int = Field(default=10, ge=1, le=100)
@@ -23,9 +26,13 @@ class SearchRequest(BaseModel):
                 raw = self.query_image.split(",",1)[1] if self.query_image.startswith("data:") else self.query_image
                 decoded = base64.b64decode(raw,validate=True)
                 with Image.open(BytesIO(decoded)) as image:
+                    if (image.width * image.height > self.max_image_pixels
+                            or max(image.size) > self.max_image_dimension
+                            or max(image.size) > min(image.size) * self.max_image_aspect):
+                        raise ValueError('query_image exceeds decoded image limits')
                     image.verify()
             except Exception as error:
-                raise ValueError("query_image must be a valid base64-encoded image") from error
+                raise ValueError("query_image must be a valid base64-encoded image within pixel, dimension and aspect limits") from error
         return self
 
 

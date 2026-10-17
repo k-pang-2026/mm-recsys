@@ -6,7 +6,6 @@ from typing import Any, Callable
 from dataclasses import dataclass, replace
 from collections import Counter
 import math
-from typing import Protocol
 import numpy as np
 import pandas as pd
 
@@ -19,10 +18,6 @@ class RankedItem:
     score: float
     reason: str = 'DeepFM 클릭·구매 가능성'
     is_exploration: bool = False
-
-
-class RerankStrategy(Protocol):
-    def apply(self, items: list[RankedItem], **context: Any) -> list[RankedItem]: ...
 
 
 class ColdStart:

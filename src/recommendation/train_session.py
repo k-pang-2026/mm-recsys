@@ -83,8 +83,7 @@ def train(cfg: dict) -> dict:
     data=read_data(cfg['paths']['data_dir'],'valid'); candidate,_,table,candidate_meta=load_bundle(Path(cfg['paths']['model_dir'])/'v1.0',data,cfg)
     with torch.inference_mode():
         vectors=candidate.encode_items(torch.arange(len(table.ids))).numpy()
-    # Respect the simulator's recorded session_id. Its offline timestamps span hours;
-    # serving's 30-minute inactivity TTL is a separate, explicitly reported limitation.
+    # Preserve recorded sessions; legacy datasets may differ from the live inactivity TTL.
     boundary=data['manifest']['boundaries']; training=examples(data['train'],table,spec['max_length'],pd.Timestamp(boundary['train']['start']),pd.Timestamp(boundary['train']['end']))
     valid=examples(pd.concat([data['train'],data['valid']],ignore_index=True),table,spec['max_length'],pd.Timestamp(boundary['valid']['start']),pd.Timestamp(boundary['valid']['end']))
     train_seq=torch.from_numpy(training[0]); valid_seq=torch.from_numpy(valid[0])
@@ -123,7 +122,7 @@ def train(cfg: dict) -> dict:
     report=dict(status='PASS',scale=cfg['scale'],acceptance='UNMEASURED',epochs=epochs,best_epoch=best_epoch,selected_valid=selected,
                 checkpoint_reload='PASS',bundle=meta,elapsed_seconds=time.perf_counter()-started,train_samples=len(train_seq),
                 strictly_preceding=bool((training[3]<training[2]).all() and (valid[3]<valid[2]).all()),
-                semantics='offline recorded session_id; live store inactivity TTL=30min; generator may span hours',
+                semantics='offline recorded session_id; live store inactivity TTL=30min; generator 4.2 uses minute-scale session steps',
                 environment=dict(torch=torch.__version__,threads=torch.get_num_threads(),device='cpu'))
     write_json(output,report); return report
 

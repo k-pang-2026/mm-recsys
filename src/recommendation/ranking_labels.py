@@ -23,9 +23,8 @@ def build_labels(impressions: pd.DataFrame, events: pd.DataFrame, start: pd.Time
         raise ValueError('duplicate impression/event ID')
     observed = events[events.timestamp <= end]
     views = observed[(observed.event_type == 'view') & observed.impression_id.notna()].copy()
-    if views.impression_id.duplicated().any():
-        raise ValueError('multiple views for an impression; explicit dedup policy required')
-    linked = views.merge(impressions, on='impression_id', suffixes=('_event', '_exposure'), validate='one_to_one')
+    # One exposure may receive repeated clicks; CTR is binary, attribution uses the last raw view.
+    linked = views.merge(impressions, on='impression_id', suffixes=('_event', '_exposure'), validate='many_to_one')
     if len(linked) != len(views):
         raise ValueError('unlinked view impression')
     if ((linked.user_id_event != linked.user_id_exposure) |
@@ -55,7 +54,7 @@ def build_labels(impressions: pd.DataFrame, events: pd.DataFrame, start: pd.Time
     labels['censored'] = ~mature
     if ((labels.cvr == 1) & (labels.ctr != 1)).any():
         raise ValueError('purchase attributed outside a linked clicked exposure')
-    diagnostics = dict(version='linked-view-last-view-v1', rows=len(labels), clicks=int(labels.ctr.sum()),
+    diagnostics = dict(version='linked-view-last-view-v2', rows=len(labels), clicks=int(labels.ctr.sum()),
                        conversions=int(labels.cvr.sum()), ctr_observed=int(labels.ctr_mask.sum()),
                        cvr_observed=int(labels.cvr_mask.sum()), censored=int(labels.censored.sum()),
                        censored_cvr_negatives=int(((labels.ctr == 1) & ~labels.cvr_mask).sum()),

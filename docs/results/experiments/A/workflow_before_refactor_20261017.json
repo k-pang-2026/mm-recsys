@@ -1,0 +1,53 @@
+{
+  "step": "WORKFLOW",
+  "owner": "A",
+  "status": "PASS",
+  "scale": "dev",
+  "acceptance": "UNMEASURED",
+  "commands": [
+    {
+      "command": "bash -n setup_env.sh",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_setup_env.py tests/test_team_workflow.py tests/test_pull_request.py",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -c 'import hashlib,json; from pathlib import Path; p=json.loads(Path(\"skills/ponytail-source.json\").read_text()); a=json.loads(Path(\"docs/results/experiments/A/workflow_ponytail_audit_20261017.json\").read_text()); assert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in p[\"files\"].items()); assert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in a[\"source_hashes\"].items()); r=a[\"new_verification\"][\"reproductions\"]; assert hashlib.sha256(Path(r[\"source\"]).read_bytes()).hexdigest()==r[\"sha256\"]; assert len(a[\"findings\"])==8; assert a[\"service_fixes_applied\"] is False; print(\"Ponytail provenance, audit source hashes and eight findings: PASS\")'",
+      "exit_code": 0
+    }
+  ],
+  "artifacts": [
+    "AGENTS.md",
+    "config/team_workflow.yaml",
+    "setup_env.sh",
+    "tests/test_setup_env.py",
+    "skills/ponytail/SKILL.md",
+    "skills/ponytail-audit/SKILL.md",
+    "skills/ponytail-source.json",
+    "skills/PONYTAIL_LICENSE",
+    "docs/contributions/A.md",
+    "docs/results/experiments/A/workflow_before_ponytail_20261017.json",
+    "docs/results/experiments/A/workflow_ponytail_probes.py",
+    "docs/results/experiments/A/workflow_ponytail_audit_20261017.json"
+  ],
+  "data_fingerprint": "3e1de868d26dc7c095f49d3841d98a944befd493937aa0ea3d0044e3062f889c",
+  "config_fingerprint": "4efd42e7b4d18b5f2f993e1d350bd8f4c0537a434728f066dc437737f54c0799",
+  "evaluation_version": "fixed-origin-v1",
+  "source_hashes": {
+    "AGENTS.md": "e1fe828e4cc1fef32c3abb2f4cf4793c8cd60129db1accbaf17a9fd7ff07f2ae",
+    "config/team_workflow.yaml": "f799efc1fd6e65c75931e11904bbfae36e716bc66f4e80af9abd9da9d5afa550",
+    "setup_env.sh": "5611474e38fd7bd65944b44c71c9083f0e7948e37bc1dbb89743ea24881be1d2",
+    "tests/test_setup_env.py": "3021b96b4e78a4ddd9bafe7b8f6e49f540c0104de77fec3c87fa50f32bc61ba9",
+    "skills/ponytail/SKILL.md": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509",
+    "skills/ponytail-audit/SKILL.md": "2b3223a02c386d1263e1b08343cb8eb3a53e444cdafb1d79e26c8ec2a8fcad28",
+    "skills/ponytail-source.json": "18158e59460e1192fbbb5f13a4e85001fe3eb6e70a2a6e59a3e3b7aef30fd0aa",
+    "skills/PONYTAIL_LICENSE": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab",
+    "docs/contributions/A.md": "547740ff30271c615c07558d9e76c19df69049a61c61ce34a7319de53c235a46",
+    "docs/results/experiments/A/workflow_before_ponytail_20261017.json": "9eb26b6c4a2280121f4a99626006dff78034e5f4b43de1c85e2b04b8f542d981",
+    "docs/results/experiments/A/workflow_ponytail_probes.py": "f5c8d0f4620062c4655812f5b632d24a961db9e302a799a086128261f662a44b",
+    "docs/results/experiments/A/workflow_ponytail_audit_20261017.json": "a6707c46ecc61feadba313c8b7649fdac58be1567de642629bfbb78813062981"
+  },
+  "commit_summary_ko": "Ponytail 스킬 연결과 전체 프로젝트 감사 근거 추가"
+}

@@ -7,9 +7,11 @@ import json
 import os
 from pathlib import Path
 import time
+from urllib.error import HTTPError
 from typing import cast
 
 import pandas as pd
+from redis.exceptions import RedisError
 
 from src.common.artifacts import write_json
 from docker.http import request, wait_ready
@@ -62,14 +64,23 @@ def main() -> None:
         raise ValueError('positive simulator batch and interval required')
     offset = int(saved['offset'])
     while True:
-        rows = events.iloc[offset:offset+batch]
-        send_rows(api, rows, categories)
-        offset += len(rows)
-        state = dict(data_fingerprint=manifest['generation_fingerprint'], offset=offset,
-                     scope='synthetic replay in chronological order; API arrival clock; no exposure attribution')
-        store.client.set(key, json.dumps(state))
-        write_json(cursor, state)
-        print(f'synthetic API replay: {offset}/{len(events)}', flush=True)
+        try:
+            rows = events.iloc[offset:offset+batch]
+            send_rows(api, rows, categories)
+            next_offset = offset+len(rows)
+            state = dict(data_fingerprint=manifest['generation_fingerprint'], offset=next_offset,
+                         scope='synthetic replay in chronological order; API arrival clock; no exposure attribution')
+            store.client.set(key, json.dumps(state))
+            write_json(cursor, state)
+        except HTTPError as error:
+            if error.code < 500:
+                raise
+            print(f'API replay retry at {offset}: HTTP {error.code}', flush=True)
+        except (OSError, RedisError) as error:
+            print(f'API replay retry at {offset}: {type(error).__name__}', flush=True)
+        else:
+            offset = next_offset
+            print(f'synthetic API replay: {offset}/{len(events)}', flush=True)
         time.sleep(interval)
 
 

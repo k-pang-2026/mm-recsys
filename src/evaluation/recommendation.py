@@ -69,7 +69,7 @@ def evaluate(cfg: dict, split: str) -> dict:
     cold: Counter[str] = Counter()
     truth = evaluation.truth
     eligible_ids = set(table.public_ids(evaluation.eligible))
-    violations = infeasible = 0
+    violations = infeasible = all_violations = 0
     with torch.inference_mode():
         for i, uid in enumerate(users):
             context = service.context(uid, [])
@@ -85,6 +85,7 @@ def evaluate(cfg: dict, split: str) -> dict:
             clock[0] += cfg['recommend']['mab']['exposure_ttl_seconds']
             store.record_exposures(uid, [item.product_id for item in final])
             feasible = diagnostics.get('diversity_feasible_for_returned', False)
+            all_violations += int(bool(diagnostics.get('violations')))
             violations += int(bool(diagnostics.get('violations')) and feasible)
             infeasible += int(not feasible)
             values = dict(train_popularity=popular, two_tower=tower[:50],
@@ -107,6 +108,7 @@ def evaluate(cfg: dict, split: str) -> dict:
                     empty_truth_users=sum(uid not in truth for uid in users), eligible_catalog=len(evaluation.eligible),
                     unavailable_truth_items=ann['ann_two_tower']['unavailable_truth_items']),
                 feasible_constraint_violations=violations, infeasible_candidate_pools=infeasible,
+                constraint_violations=all_violations,
                 models=dict(candidate=candidate_meta, index=index_meta, ranking=ranking_meta, session=session_meta),
                 data_fingerprint=data['manifest']['generation_fingerprint'],
                 contract='fixed origin; unique future cart/purchase truth; unavailable truth retained; fixed all-user coverage cohort; full-catalog denominator; top50',

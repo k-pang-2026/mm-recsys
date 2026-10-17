@@ -45,6 +45,8 @@ def load_config(path: str | None = None) -> dict[str, Any]:
     if any(x <= 0 for x in fractions) or abs(sum(fractions) - 1.0) > 1e-9:
         raise ValueError("split fractions must sum to 1")
     sim = cfg["simulator"]
+    if sim['event_interval_seconds'] <= 0:
+        raise ValueError('event_interval_seconds must be positive')
     ratios = [float(value["ratio"]) for value in sim["personas"].values()]
     if len(ratios) < 6 or any(x <= 0 for x in ratios) or abs(sum(ratios)-1) > 1e-9:
         raise ValueError("configure six positive persona ratios summing to 1")

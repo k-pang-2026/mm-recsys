@@ -7,9 +7,9 @@ from src.simulator.catalog import leaves
 
 def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
                 rng: np.random.Generator) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Vectorized rounds: each user occurs once per round, preserving per-user Markov causality."""
+    """Round-based Markov chains with minute-scale sessions and distributed user arrivals."""
     sim=cfg['simulator'];n=sim['n_users'];total=sim['n_events'];taxonomy=leaves(cfg)
-    brands=sim['brands'];persona_names=list(sim['personas']);persona_ids=np.array([persona_names.index(x) for x in users.persona]);user_ids=users.user_id.to_numpy();product_ids=products.product_id.to_numpy()
+    brands=sim['brands'];persona_names=list(sim['personas']);personas=users.persona.to_numpy();persona_ids=np.array([persona_names.index(x) for x in personas]);user_ids=users.user_id.to_numpy();product_ids=products.product_id.to_numpy()
     brand_to_id={x:i for i,x in enumerate(brands)}
     leaf_to_id={x[2]:i for i,x in enumerate(taxonomy)}
     product_leaves=np.array([leaf_to_id[x] for x in products.category_l3])
@@ -20,7 +20,7 @@ def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
     # Hidden generator preferences stay local; they never become recommendation profile columns.
     preferred_leaf=np.empty(n,dtype=int)
     for persona,spec in sim['personas'].items():
-        group=np.flatnonzero(users.persona.to_numpy()==persona)
+        group=np.flatnonzero(personas==persona)
         l1=rng.choice(len(l1_names),len(group),p=spec['category_preferences'])
         for l1_id in range(len(l1_names)):
             slots=group[l1==l1_id]
@@ -34,17 +34,28 @@ def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
     ref=pd.Timestamp(sim['reference_time']).value
     start=ref-pd.Timedelta(days=sim['window_days']).value
     cold_limit=sim['cold_max_events'];choice=sim['choice_model'];alpha=choice['zipf_alpha']
+    arrivals=np.zeros(n,dtype=np.int64)
+    arrivals[cold]=rng.integers(0,max(1,total-n*cold_limit),size=int(cold.sum()))
+    interval=int(pd.Timedelta(seconds=sim['event_interval_seconds']).value)
+    last_time=np.full(n,start-interval,dtype=np.int64)
+    warm_users=max(1,int((~cold).sum()))
+    max_rounds=(total+warm_users-1)//warm_users+1
+    session_budget=max_rounds*interval
+    if session_budget>=ref-start:
+        raise ValueError('session intervals do not fit inside the simulator window')
     rows=[];impression_rows=[];offset=0
     prices_all=products.price.to_numpy()
-    step_ns=(ref-start)//total
+    step_ns=(ref-start-session_budget)//total
     while offset<total:
-        active=np.flatnonzero((~cold)|(seen_count<cold_limit))
+        active=np.flatnonzero((~cold)|((seen_count<cold_limit)&(arrivals<=offset)))
         if len(active)==0:
             raise ValueError('no eligible users for requested event count')
         ids=rng.permutation(active)[:total-offset];m=len(ids)
         # Divide first: multiplying a nanosecond window by event indices overflows int64.
         now=start+np.arange(offset,offset+m,dtype=np.int64)*step_ns
         fresh=(states[ids]=='search')|(states[ids]=='exit')
+        now=np.where(fresh,np.maximum(now,last_time[ids]+interval),last_time[ids]+interval)
+        last_time[ids]=now
         fresh_ids=ids[fresh]
         if len(fresh_ids):
             leaf=preferred_leaf[fresh_ids].copy();brand=preferred_brand[fresh_ids].copy()
@@ -101,7 +112,7 @@ def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
         # Persona-dependent transitions: conversion parameters affect actual purchase outcomes.
         for state in ['search','view','cart','purchase']:
             for persona,spec in sim['personas'].items():
-                group=ids[(event_types==state)&(users.persona.to_numpy()[ids]==persona)]
+                group=ids[(event_types==state)&(personas[ids]==persona)]
                 if not len(group):continue
                 transitions=dict(sim['transitions'][state])
                 if state=='cart':
@@ -115,4 +126,5 @@ def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
     events['timestamp']=pd.to_datetime(events.timestamp,utc=True)
     impressions=pd.DataFrame(impression_rows,columns=['impression_id','request_id','user_id','product_id','exposed_at','position'])
     impressions['exposed_at']=pd.to_datetime(impressions.exposed_at,utc=True)
-    return events,impressions
+    return (events.sort_values(['timestamp','event_id'],kind='stable').reset_index(drop=True),
+            impressions.sort_values(['exposed_at','impression_id'],kind='stable').reset_index(drop=True))

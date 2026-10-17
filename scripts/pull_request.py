@@ -91,6 +91,7 @@ class GitHubAPI:
         self._opener=build_opener(NoRedirect())
 
     def request(self,method: str,path: str,payload: dict | None = None):
+        assert self._token is not None  # __init__ rejects missing credentials.
         request=Request('https://api.github.com'+path,method=method,
             data=json.dumps(payload).encode() if payload is not None else None,
             headers={'Accept':'application/vnd.github+json','Content-Type':'application/json',

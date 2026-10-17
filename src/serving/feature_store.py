@@ -112,7 +112,7 @@ class RedisFeatureStore:
             raise RedisError("event write contention exceeded configured retry limit")
         except RedisError as error:
             self._failure("append_event", error)
-            return False
+            raise ConnectionError('Redis event write failed; retry the same event ID') from error
 
     def update_reward(self, feedback: FeedbackRequest) -> bool:
         seen_key = self.key("feedback", feedback.event_id)
@@ -154,7 +154,7 @@ class RedisFeatureStore:
             raise RedisError("reward write contention exceeded configured retry limit")
         except RedisError as error:
             self._failure("update_reward", error)
-            return False
+            raise ConnectionError('Redis reward write failed; retry the same event ID') from error
 
     def configure_categories(self, categories: Mapping[str, str]) -> None:
         self.categories = dict(categories)

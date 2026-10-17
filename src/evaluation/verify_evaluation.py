@@ -10,6 +10,7 @@ import numpy as np
 from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.config import load_config
 from src.evaluation.run_all import ab_evidence, check_frozen, input_identity, metric_rows
+from src.evaluation.reporting import quality_status
 
 
 def verify(path: Path, cfg: dict) -> dict:
@@ -26,7 +27,7 @@ def verify(path: Path, cfg: dict) -> dict:
                           report['api'], report['candidate_latency'], report['feature_store'])
     if report['metrics'] != expected or any(row['value'] is None for row in expected):
         raise ValueError('required metrics missing or inconsistent')
-    quality = 'FAIL' if any(row['status'] == 'FAIL' for row in expected) else 'PASS'
+    quality = quality_status(expected, report['recommendation'], cfg['recommend']['candidate_k'])
     if report['quality_status'] != quality:
         raise ValueError('quality status differs from unchanged thresholds')
     rec = report['recommendation']
