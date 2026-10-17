@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "baseline_commit": "4e157d3b50473a8c773a24072497063fa91f8437",
+  "same_outputs_and_shuffle": true,
+  "data_fingerprint": "2ecc32e094d04ac8a9f1f434eab22b274e8305c27fe7e2a35db590dc9498810c",
+  "train_rows": 9600,
+  "training_samples": 6939,
+  "repeats": 3,
+  "statistic": "median; alternating before/after order",
+  "measurements": {
+    "dataset": {
+      "before_seconds": 3.5057646089990158,
+      "after_seconds": 0.329415207999773,
+      "speedup": 10.642388462530946,
+      "reduction_percent": 90.6036130562163,
+      "raw_before_seconds": [
+        3.5057646089990158,
+        3.4473661510000966,
+        3.560819383001217
+      ],
+      "raw_after_seconds": [
+        0.329415207999773,
+        0.4001188649999676,
+        0.3288783299994975
+      ]
+    },
+    "session": {
+      "before_seconds": 1.6859826660002,
+      "after_seconds": 0.8554135560007126,
+      "speedup": 1.9709562166428838,
+      "reduction_percent": 49.26320577007574,
+      "raw_before_seconds": [
+        1.7820746630004578,
+        1.6182266799987701,
+        1.6859826660002
+      ],
+      "raw_after_seconds": [
+        0.8651966690013069,
+        0.8554135560007126,
+        0.8434518190006202
+      ]
+    },
+    "batch_loading": {
+      "before_seconds": 0.18152712600021914,
+      "after_seconds": 0.04798788499829243,
+      "speedup": 3.782769880495431,
+      "reduction_percent": 73.56434486918803,
+      "raw_before_seconds": [
+        0.20627306799906364,
+        0.18152712600021914,
+        0.16790685700107133
+      ],
+      "raw_after_seconds": [
+        0.053082487000210676,
+        0.04798788499829243,
+        0.047136678998867865
+      ]
+    }
+  },
+  "environment": {
+    "cpu": "aarch64",
+    "python": "3.12.3",
+    "torch": "2.6.0+cpu",
+    "torch_threads": 4,
+    "env_threads": {
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "source_hashes": {
+    "src/recommendation/datasets.py": "b271d46e1162c04ffcd0ff55b38b45d0130c6aba3270bb9683e3c8860056d9c5",
+    "src/recommendation/train_session.py": "1024c6c7587a59a9ca831a7fc98c2e7941c651c9f2ab858bc7df3f2a9249d3b7",
+    "src/recommendation/train_two_tower.py": "6a772caf3728dd67e9c9bbecbafa047dec93498cc4545fb236fa91d94c03e0ac"
+  },
+  "limits": [
+    "compact train data CPU microbenchmark; not HTTP or full-training speedup",
+    "concurrent full Docker training on the same host; repeat on target hardware"
+  ]
+}

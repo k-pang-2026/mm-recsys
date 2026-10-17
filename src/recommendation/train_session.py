@@ -7,6 +7,7 @@ import argparse
 import copy
 import json
 import time
+from itertools import groupby
 from pathlib import Path
 
 import numpy as np
@@ -27,15 +28,16 @@ def examples(events: pd.DataFrame,table: Any,max_length: int,start: pd.Timestamp
     views=events[(events.event_type=='view') & events.product_id.notna()].sort_values(['timestamp','event_id'])
     for _,group in views.groupby(['user_id','session_id'],sort=False):
         history: list[int] = []; last_time: pd.Timestamp | None = None
-        for at,simultaneous in group.groupby('timestamp',sort=True):
+        for at,rows in groupby(group.itertuples(index=False),key=lambda row:row.timestamp):
+            simultaneous=list(rows)
             if history and start<=at<=end:
                 assert last_time is not None
                 sequence=np.zeros(max_length,np.int64); recent=history[-max_length:]; sequence[:len(recent)]=recent
-                for row in simultaneous.itertuples(index=False):
+                for row in simultaneous:
                     target=table.id_to_index[str(row.product_id)]
                     if table.created[target]>at.value: raise ValueError('session target is future product')
                     inputs.append(sequence.copy()); targets.append(target); times.append(at.value); latest.append(last_time.value)
-            history.extend(table.id_to_index[str(p)] for p in simultaneous.product_id); last_time=at
+            history.extend(table.id_to_index[str(row.product_id)] for row in simultaneous); last_time=at
     if not inputs: raise ValueError('no next-view session samples')
     return np.stack(inputs),np.array(targets,np.int64),np.array(times,np.int64),np.array(latest,np.int64)
 

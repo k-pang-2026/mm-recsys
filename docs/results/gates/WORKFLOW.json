@@ -2,7 +2,7 @@
   "step": "WORKFLOW",
   "owner": "A",
   "status": "PASS",
-  "scale": "dev",
+  "scale": "full",
   "acceptance": "UNMEASURED",
   "commands": [
     {
@@ -10,7 +10,7 @@
       "exit_code": 0
     },
     {
-      "command": "CONFIG_PATH=config.yaml REDIS_HOST=127.0.0.1 REDIS_PORT=17379 PYTHONHASHSEED=42 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests/test_ponytail_refactor.py tests/test_setup_env.py tests/test_team_workflow.py tests/test_pull_request.py",
+      "command": "CONFIG_PATH=config.yaml SCALE=dev REDIS_HOST=127.0.0.1 REDIS_PORT=17379 PYTHONHASHSEED=42 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests/test_ponytail_refactor.py tests/test_setup_env.py tests/test_team_workflow.py tests/test_pull_request.py",
       "exit_code": 0
     },
     {
@@ -18,7 +18,7 @@
       "exit_code": 0
     },
     {
-      "command": "CONFIG_PATH=config.yaml .venv/bin/python -c 'import hashlib,json; from pathlib import Path; import xml.etree.ElementTree as E; p=json.loads(Path(\"docs/results/experiments/A/workflow_ponytail_refactor_20261017.json\").read_text()); assert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in p[\"source_hashes\"].items()); t=p[\"verification\"][\"pytest\"]; x=Path(t[\"committed_xml\"]); assert hashlib.sha256(x.read_bytes()).hexdigest()==t[\"sha256\"]; s=E.parse(x).getroot().find(\"testsuite\"); assert int(s.attrib[\"tests\"])==349 and all(int(s.attrib[k])==0 for k in (\"failures\",\"errors\",\"skipped\")); assert p[\"verification\"][\"docker\"][\"recovery\"][\"status\"]==\"PASS\"; assert p[\"final_acceptance\"]==\"UNMEASURED\"; print(\"349 regression results, final source hashes and scoped Docker evidence: PASS\")'",
+      "command": "CONFIG_PATH=config.yaml .venv/bin/python -c 'import hashlib,json; from pathlib import Path; import xml.etree.ElementTree as E\np=json.loads(Path(\"docs/results/experiments/A/workflow_ponytail_refactor_20261017.json\").read_text())\nassert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in p[\"source_hashes\"].items())\nt=p[\"verification\"][\"pytest\"]; x=Path(t[\"xml\"]); assert hashlib.sha256(x.read_bytes()).hexdigest()==t[\"sha256\"]\ns=E.parse(x).getroot().find(\"testsuite\"); assert int(s.attrib[\"tests\"])==351 and all(int(s.attrib[k])==0 for k in (\"failures\",\"errors\",\"skipped\"))\nf=p[\"verification\"][\"full_docker\"]\nassert p[\"full_numeric_quality\"]==f[\"status\"]==\"PASS\"\nfor split in (\"valid\",\"test\"):\n q=f[split][\"report\"]; assert q[\"quality_status\"]==\"PASS\" and len(q[\"metrics\"])==11 and all(r[\"status\"]==\"PASS\" for r in q[\"metrics\"])\n assert q[\"recommendation\"][\"constraint_violations\"]==0 and q[\"recommendation\"][\"infeasible_candidate_pools\"]==0\nassert f[\"valid\"][\"report\"][\"identity\"]==f[\"test\"][\"report\"][\"identity\"]\nassert not f[\"test\"][\"report\"][\"test_used_for_selection\"]\nassert p[\"optimizations\"][\"training_preprocessing\"][\"report\"][\"same_outputs_and_shuffle\"]\nassert p[\"verification\"][\"docker\"][\"recovery\"][\"status\"]==\"PASS\"\nassert f[\"dashboard\"][\"status\"]==\"PASS\" and p[\"final_acceptance\"]==\"UNMEASURED\"\nprint(\"351 regressions, exact performance comparison, matching full sources and frozen 11-metric valid/test quality: PASS\")'",
       "exit_code": 0
     }
   ],
@@ -31,9 +31,12 @@
     "docker/simulator.py",
     "docs/contracts.md",
     "docs/contributions/A.md",
+    "docs/results/experiments/A/workflow_before_full_20261017.json",
     "docs/results/experiments/A/workflow_before_ponytail_20261017.json",
     "docs/results/experiments/A/workflow_before_refactor_20261017.json",
     "docs/results/experiments/A/workflow_ponytail_audit_20261017.json",
+    "docs/results/experiments/A/workflow_ponytail_efficiency.py",
+    "docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json",
     "docs/results/experiments/A/workflow_ponytail_probes.py",
     "docs/results/experiments/A/workflow_ponytail_pytest_20261017.xml",
     "docs/results/experiments/A/workflow_ponytail_refactor_20261017.json",
@@ -51,11 +54,13 @@
     "src/evaluation/reporting.py",
     "src/evaluation/run_all.py",
     "src/evaluation/verify_evaluation.py",
+    "src/recommendation/datasets.py",
     "src/recommendation/ranking_labels.py",
     "src/recommendation/recommender.py",
     "src/recommendation/reranking.py",
     "src/recommendation/train_deepfm.py",
     "src/recommendation/train_session.py",
+    "src/recommendation/train_two_tower.py",
     "src/search/api.py",
     "src/serving/feature_store.py",
     "src/serving/main.py",
@@ -66,24 +71,27 @@
     "tests/test_redis_features.py",
     "tests/test_setup_env.py"
   ],
-  "data_fingerprint": "2ecc32e094d04ac8a9f1f434eab22b274e8305c27fe7e2a35db590dc9498810c",
-  "config_fingerprint": "b82823c7147b39628c78926dc565b9049c8a839116393ca86cecb1b452a63b0d",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "config_fingerprint": "4f590bae78249bb24d67f3323467c9d975d29333e640737df65995b57885a4cb",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
     "AGENTS.md": "e1fe828e4cc1fef32c3abb2f4cf4793c8cd60129db1accbaf17a9fd7ff07f2ae",
-    "README.md": "c49bf1fe15273535620283673e25ac13ae09767ba4d4ae14443e4bd86dd9067d",
+    "README.md": "1e28868877b4f010a3bda0e127dda5bf65d916c759e21b926cd165cb743bd217",
     "config.yaml": "cd4fbdae0e4fe2c85e35c7e133c0dead1cd398d79e7b30ce373cb4e57134392e",
-    "config/team_workflow.yaml": "1d6e8523db04c67fdaba94d7d4672327c6484ca639602f44ae1ada05984a53ab",
+    "config/team_workflow.yaml": "1643a0c9ef27721d84230f0e2e9532bb286bce81d924e2124017f857c4c72ff7",
     "docker/quality.py": "433986d4d0fc3082e1705e724fae6160c1b53c6f3dfb3db5f92a5d738423ba92",
     "docker/simulator.py": "45acbb88a41ac3b22da5bbbb9f016e7dd0d823d5cf904eaa60b16652dd9c74be",
     "docs/contracts.md": "a0d93d628f8cce8850fd6cc1c9a8b8f16e83e19d58d7f79e19b0160409f8fc5b",
-    "docs/contributions/A.md": "1fd5e751682f4134a6479f8459bd933c7429e9d448abf8d0673445a579d70bdf",
+    "docs/contributions/A.md": "3f7357b96c06bce2b784c997c0d02d3af351b26c2ebd1a771f56703ad9bd404e",
+    "docs/results/experiments/A/workflow_before_full_20261017.json": "b5b1dd6b453d78ae949f8330f66ab2dbde1229bf8e6d2f49059b39fbef72e139",
     "docs/results/experiments/A/workflow_before_ponytail_20261017.json": "9eb26b6c4a2280121f4a99626006dff78034e5f4b43de1c85e2b04b8f542d981",
     "docs/results/experiments/A/workflow_before_refactor_20261017.json": "d9b15a253cac2f3cf3f91e7a4fb44732f401e10b3c0ca8c040f590477a7be2db",
     "docs/results/experiments/A/workflow_ponytail_audit_20261017.json": "a6707c46ecc61feadba313c8b7649fdac58be1567de642629bfbb78813062981",
+    "docs/results/experiments/A/workflow_ponytail_efficiency.py": "04474aec57575e02976de8b4e63d67127ed6c596512e1561cbe2d571ae11f8bc",
+    "docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json": "c3cee7dd78bbec150f2bcdd749958dbbd3a8d8f1511af843a24ec567669ff58b",
     "docs/results/experiments/A/workflow_ponytail_probes.py": "f5c8d0f4620062c4655812f5b632d24a961db9e302a799a086128261f662a44b",
-    "docs/results/experiments/A/workflow_ponytail_pytest_20261017.xml": "833103821f36919644dd67c37d77698c824ac943b78c2c79367aa05b2363e42d",
-    "docs/results/experiments/A/workflow_ponytail_refactor_20261017.json": "f751cbb632e67480d47103f8982ffe397ddc70d8d513bb2591fc231edb98d0ad",
+    "docs/results/experiments/A/workflow_ponytail_pytest_20261017.xml": "e1da0e2897c0192170439936759faefe533a0a711a2c9da34ae8044239481b56",
+    "docs/results/experiments/A/workflow_ponytail_refactor_20261017.json": "702e86aadd719b63d10bcc6c00a25c096a7b2b5ec54824b41431dac4964c6c8f",
     "scripts/pull_request.py": "755e2aad1473b48668b655bd6f855aab7c2ba931d2987fe34cd2bdfc14b10540",
     "scripts/step_git.py": "79d214ee0aa59279147d7d891d36f1dede6ac01f15c15a2ace6e578cca58fb6a",
     "setup_env.sh": "5611474e38fd7bd65944b44c71c9083f0e7948e37bc1dbb89743ea24881be1d2",
@@ -98,20 +106,22 @@
     "src/evaluation/reporting.py": "1771a978c20f12cf36613df0712fd2fb8172b44afd0c788db39c07e0629b9431",
     "src/evaluation/run_all.py": "20df6c13f90e408d132c023ea2489f033136513815d323595c60b553e0a01a2e",
     "src/evaluation/verify_evaluation.py": "55ef6ed0ac506a97ccce30946b2677bc5d5984c3360b0e1decfe0b37cf2fa7c3",
+    "src/recommendation/datasets.py": "b271d46e1162c04ffcd0ff55b38b45d0130c6aba3270bb9683e3c8860056d9c5",
     "src/recommendation/ranking_labels.py": "ce41aff99972e10e9111e3e2c4b7ea7dd7963ffb842845b5b4bc788c1a3268e3",
     "src/recommendation/recommender.py": "95ed75210bfe80f50a870496f81e6168fbffb67414d87188eaf5bf0a4088babb",
     "src/recommendation/reranking.py": "9a3c4145b5251953b2fd3b2aa9a4aa0f02d5b4d38027cd3c2e00767cf27393e8",
     "src/recommendation/train_deepfm.py": "f804967eca0f5ee15facc46dc6dae77cc0438bc34a6a8d2a1497e46f8acae6a9",
-    "src/recommendation/train_session.py": "6406ae7f23d24b900df57704256eea1d219f47da45472299f3010116cb2265ba",
+    "src/recommendation/train_session.py": "1024c6c7587a59a9ca831a7fc98c2e7941c651c9f2ab858bc7df3f2a9249d3b7",
+    "src/recommendation/train_two_tower.py": "6a772caf3728dd67e9c9bbecbafa047dec93498cc4545fb236fa91d94c03e0ac",
     "src/search/api.py": "b5a01db256d312f4b1437d5c66feaa62c77aff34df143008f581c21b6b9bfc76",
     "src/serving/feature_store.py": "7aa902599cea49df7b90762c4e0b4eafda87683f2bd11314e6537bbe037f1f18",
     "src/serving/main.py": "c72ffec4f1c20136fb81076dbf29d79055a95b60fc74ade5b1d88bdad60cedea",
     "src/serving/stream_features.py": "fe62826bedb794e96cc9879f24bc1ae5d8083395a4f473bd582a5cf9b892276c",
     "src/simulator/events.py": "c3cdb53c3917d9fed87a5770fffb3e19fba42e77a07d3f8bec76e5112322834b",
     "src/simulator/generate.py": "b57ab075eb499145d85b8756158136d6138e7d0f8a9eae02ba833dfdc031de18",
-    "tests/test_ponytail_refactor.py": "7459276f9ccf43264c6c9a22683fd89d72a9bcbe9ddebed768aee49fc57885fa",
+    "tests/test_ponytail_refactor.py": "4abc29945b60901f9cfb2d5a4224666605c524109b73bdf884b0732915a3f2e0",
     "tests/test_redis_features.py": "108b071197544c3cbc5d47f7698a2f58f09a7fc0435dc236c95494015385bf71",
     "tests/test_setup_env.py": "3021b96b4e78a4ddd9bafe7b8f6e49f540c0104de77fec3c87fa50f32bc61ba9"
   },
-  "commit_summary_ko": "Ponytail 감사 결함 수정과 검색·추천·저장 경로 최적화"
+  "commit_summary_ko": "Ponytail 감사 결함 수정과 full 검증·학습 경로 최적화"
 }

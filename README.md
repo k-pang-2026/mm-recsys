@@ -4,6 +4,10 @@ Ponytail 감사 후 생성기는 4.2로 버전이 변경되었다. 기존 4.1 �
 덮어쓰지 않으며, 새 실행은 빈 데이터·모델 경로 또는 새 클론에서 준비한다.
 기존 full 결과의 PASS는 해당 데이터·소스의 과거 실측이며 현재 버전의 새 품질 판정을 대신하지 않는다.
 이번 수정의 검증 범위와 한계는 [감사 후속 보고서](docs/results/experiments/A/workflow_ponytail_refactor_20261017.json)를 따른다.
+생성기 4.2 full에서 세 모델을 재학습하고 valid 동결 후 test의 수치 조건 11개와 추천 제약을
+통과했다. 전체 회귀 351개·타입 검사 133파일도 통과했다. 새 A/B·자연 CT 효과를 포함한
+최종 종합 판정은 `UNMEASURED`이며, [동일 입력 효율 비교](docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json)는
+부분 전처리·로딩 시간의 3회 중앙값이다.
 
 팀장이 공통 개발 기반을 구현·검증해 `chore/shared-foundation` → main PR로 먼저 병합한 뒤,
 세 사람이 독립 클론에서

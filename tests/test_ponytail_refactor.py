@@ -219,3 +219,36 @@ def test_generator_has_observed_conversions_and_distributed_cold_arrivals():
         assert 0 < labels.cvr.sum() < labels.cvr_mask.sum()
     linked = events[events.product_id.notna()].merge(products[['product_id', 'created_at']], on='product_id')
     assert (linked.timestamp >= linked.created_at).all()
+
+
+def test_session_batching_keeps_same_timestamp_views_out_of_each_others_history():
+    from src.recommendation.train_session import examples
+    at = pd.Timestamp('2026-01-01', tz='UTC')
+    events = pd.DataFrame([dict(event_id=str(i), user_id='u', session_id='s', event_type='view',
+        product_id=f'p{i}', timestamp=at+pd.Timedelta(minutes=i//2)) for i in range(5)])
+    table = SimpleNamespace(id_to_index={f'p{i}': i+1 for i in range(5)},
+                            created=np.zeros(6, dtype=np.int64))
+    sequences, targets, times, latest = examples(events, table, 5, at, at+pd.Timedelta(minutes=3))
+    assert targets.tolist() == [3,4,5]
+    assert sequences.tolist() == [[1,2,0,0,0],[1,2,0,0,0],[1,2,3,4,0]]
+    assert (latest < times).all()
+
+
+def test_vectorized_training_fetch_preserves_batches_and_shuffle_state(tmp_path):
+    import torch
+    from torch.utils.data import BatchSampler, DataLoader, RandomSampler
+    from src.recommendation.testing import service_fixture
+    from src.recommendation.datasets import TrainingDataset, cutoff_for
+    from src.recommendation.features import FeatureEncoder
+    cfg, data = service_fixture(tmp_path)
+    encoder = FeatureEncoder.fit(data['products'], data['users'], cutoff_for(data, 'valid'))
+    dataset = TrainingDataset(data['train'], data['users'], encoder, encoder.item_table(data['products']), cfg)
+    left = torch.Generator().manual_seed(44); right = torch.Generator().manual_seed(44)
+    old = DataLoader(dataset, batch_size=4, shuffle=True, generator=left)
+    new = DataLoader(dataset, batch_size=None,
+        sampler=BatchSampler(RandomSampler(dataset, generator=right), 4, drop_last=False), generator=right)
+    for _ in range(3):
+        old_batches, new_batches = list(old), list(new)
+        assert len(old_batches) == len(new_batches)
+        assert all(torch.equal(a[key], b[key]) for a, b in zip(old_batches, new_batches) for key in a)
+        assert torch.equal(left.get_state(), right.get_state())
