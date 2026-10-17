@@ -70,7 +70,8 @@ class Reranker:
         new={item.product_id for item in pool if at-pd.Timedelta(days=self.spec['new_item_days'])<=self.created[item.product_id]<=at}
         selected_ids: list[str] = []; new_anchor: str | None = None
         for stage in self.spec['reranking']['pipeline'][:-1]:
-            if stage=='cold_start' and history_count<self.spec['cold_start_min_events']:
+            if (stage=='cold_start' and history_count<self.spec['cold_start_min_events']
+                    and self.spec.get('scoring',{}).get('strategy')!='newest'):
                 pool=self.cold.apply(pool,fallback_scores=fallback_scores)
             elif stage=='new_item' and new:
                 new_anchor=next(item.product_id for item in pool if item.product_id in new)

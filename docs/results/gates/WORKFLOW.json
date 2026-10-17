@@ -6,44 +6,54 @@
   "acceptance": "UNMEASURED",
   "commands": [
     {
-      "command": "CONFIG_PATH=config.yaml SCALE=dev .venv/bin/python -m pytest -q tests/test_pull_request.py",
-      "exit_code": 0
-    },
-    {
-      "command": "CONFIG_PATH=config.yaml .venv/bin/python -m mypy --explicit-package-bases --follow-imports=silent src dashboard docker scripts",
-      "exit_code": 0
-    },
-    {
-      "command": "CONFIG_PATH=config.yaml .venv/bin/python -c 'import hashlib,json; from pathlib import Path; import xml.etree.ElementTree as E\nr=json.loads(Path(\"docs/results/experiments/A/workflow_ponytail_merge_retry_20261017.json\").read_text())\nassert r[\"status\"]==\"PASS\" and all(hashlib.sha256(Path(p).read_bytes()).hexdigest()==h for p,h in r[\"source_hashes\"].items())\nt=r[\"verification\"][\"pytest\"];assert t[\"tests\"]==354; p=Path(t[\"xml\"]);assert hashlib.sha256(p.read_bytes()).hexdigest()==t[\"sha256\"]\ns=E.parse(p).getroot().find(\"testsuite\");assert int(s.attrib[\"tests\"])==354 and all(int(s.attrib[k])==0 for k in (\"failures\",\"errors\",\"skipped\"))\nf=r[\"verification\"][\"full_quality\"];assert hashlib.sha256(Path(f[\"source\"]).read_bytes()).hexdigest()==f[\"sha256\"]\nfull=json.loads(Path(f[\"source\"]).read_text())[\"verification\"][\"full_docker\"]\nassert all(hashlib.sha256(Path(p).read_bytes()).hexdigest()==h for p,h in full[\"source_hashes\"].items())\nassert full[\"valid\"][\"report\"][\"quality_status\"]==full[\"test\"][\"report\"][\"quality_status\"]==\"PASS\"\nassert r[\"verification\"][\"efficiency\"][\"source_hashes_unchanged\"]\nassert r[\"finding\"][\"live_verification\"][\"sha\"]==r[\"base_commit\"]\nprint(\"354 regressions, merged-PR retry, and unchanged measured model/serving sources: PASS\")'",
-      "exit_code": 0
-    },
-    {
-      "command": "CONFIG_PATH=config.yaml .venv/bin/python -c 'from pathlib import Path;import yaml;from scripts.pull_request import GitHubAPI,merge_reviewed\np=yaml.safe_load(Path(\"config/team_workflow.yaml\").read_text());r=merge_reviewed(GitHubAPI(Path.cwd(),p),p,\"WORKFLOW\",\"A\",15,\"c0e7f5f5201c3135b37521e68f9ab3da4b6561d3\")\nassert r[\"merged\"] and r[\"sha\"]==\"24ab0d0cc38b331554ca58298e8e1a8f0fa4b15d\";print(\"Live already-merged PR retry: PASS\",r[\"sha\"])'",
+      "command": ".venv/bin/python .team/checks/checklist-fix-20261017/verify_results.py",
       "exit_code": 0
     }
   ],
   "artifacts": [
     "README.md",
-    "docs/contributions/A.md",
-    "docs/results/experiments/A/workflow_before_merge_retry_20261017.json",
-    "docs/results/experiments/A/workflow_ponytail_merge_retry_20261017.json",
-    "docs/results/experiments/A/workflow_ponytail_refactor_20261017.json",
-    "docs/results/experiments/A/workflow_ponytail_retry_pytest_20261017.xml",
-    "scripts/pull_request.py",
-    "tests/test_pull_request.py"
+    "config/recommend.yaml",
+    "config/team_workflow.yaml",
+    "dashboard/app.py",
+    "docs/contracts.md",
+    "scripts/prepare_all.py",
+    "src/ct/retrain_trigger.py",
+    "src/recommendation/recommender.py",
+    "src/recommendation/reranking.py",
+    "src/recommendation/scoring.py",
+    "src/serving/ct_admin.py",
+    "src/serving/main.py",
+    "src/serving/model_loader.py",
+    "src/simulator/generate.py",
+    "tests/test_ponytail_refactor.py",
+    "tests/test_simulator.py",
+    "tests/test_checklist_fixes.py",
+    "docs/results/experiments/A/workflow_checklist_fix_20261017.json",
+    "docs/results/experiments/A/workflow_checklist_fix_20261017.md"
   ],
   "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
-  "config_fingerprint": "4f590bae78249bb24d67f3323467c9d975d29333e640737df65995b57885a4cb",
+  "config_fingerprint": "e2636a7a17dd43c58ca6301032ad12a88b9d9576d0c42529b9a9bda1773b4f67",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
-    "README.md": "0e841ac5419abc5744be76ce357ef9d684169170210e7a6754ec4760cfc68fbb",
-    "docs/contributions/A.md": "a3aee0fb43a55b7634a18e5f8873893063f2f5038ea522ed9f6948391bc1c096",
-    "docs/results/experiments/A/workflow_before_merge_retry_20261017.json": "5d6d944a40a68c31ff0c120e6d178de83a345b0548d44e0da687ae42ac58fb2f",
-    "docs/results/experiments/A/workflow_ponytail_merge_retry_20261017.json": "28a241e5b65cc4fc010befef0f6a5ed646e57e27881822813a83527a05a0e2c2",
-    "docs/results/experiments/A/workflow_ponytail_refactor_20261017.json": "702e86aadd719b63d10bcc6c00a25c096a7b2b5ec54824b41431dac4964c6c8f",
-    "docs/results/experiments/A/workflow_ponytail_retry_pytest_20261017.xml": "58bf8aeb917a7043b5e31956a146dc164c268ca306da8ad8d6036a93889a87bd",
-    "scripts/pull_request.py": "3a2071421f33f1b49433c0b4023b094e711d23471ecf0a78bb248475ac796037",
-    "tests/test_pull_request.py": "ceeb95b604d398b877e9882f1fe27a2279178d3f44daa9645dc7e970b2acf26b"
+    "README.md": "ad89f4d1c3d18b2cdd093c0321905cf146e1d276c9282e3b591a9d55daae046f",
+    "config/recommend.yaml": "bea0ed232d12156aad5196b30d0c2d86ff4815caae9fb31469870024b90c74d4",
+    "config/team_workflow.yaml": "b651f4d82a2d511fe52620c4ac76ea7699c05212c63e7c41bcd7c430219881e8",
+    "dashboard/app.py": "f72cb9ef1180c3d97f02c6b39bb42c1777653ca5e8a85b70c8ff80a152d5f7a1",
+    "docs/contracts.md": "9e704e8b71c7b6b8f408b6f2b98482dc35230356ccd92e0de38bce486ab6ca7a",
+    "scripts/prepare_all.py": "20785998ad5f1583bd8e20955e64943a3e0aecb6e39173cfb572dba24ddb76cd",
+    "src/ct/retrain_trigger.py": "ec818ec9cb332507ed0a4f85fcb44fbd26fe31128f34d9b4fe4ae4224f87cd03",
+    "src/recommendation/recommender.py": "d2f189cab87eff8230d31f790a20428dedf84e3ec00866e884d29446ca203f93",
+    "src/recommendation/reranking.py": "2f3732eefe3c7b2ddad02cdfab9e58c8fa6815dd8f11f4cabd0aff4cd86feae2",
+    "src/recommendation/scoring.py": "b2cd350b1f6b255553ffea3b3db4495939895ecc86e2e3dbb227c976243188f9",
+    "src/serving/ct_admin.py": "47ccd969735c2bf055c8b7557946c593d70831cca9bd23bfbf5ce5899f80fcd8",
+    "src/serving/main.py": "bf1ffbd1aaefd734288528c078ed4a53175cc93ce9c2d2a20df0f12e64f6d4d6",
+    "src/serving/model_loader.py": "53cba7658cff9bba0308d3e9206303b86ab377093f4af14cbbbcc8ff7343c94b",
+    "src/simulator/generate.py": "a1cda93dcafa4b1a19fe2ef22404f13b91fd9e28c1c069cdb97b4648eba03766",
+    "tests/test_ponytail_refactor.py": "f3084726def29be6aac129c60cba17bc22e2fe7679d66d399bf678c2eb031307",
+    "tests/test_simulator.py": "f0e6bce11c3762abe166bd24ccdf41c2f8407cfe18d5fd00db277c265d31bf12",
+    "tests/test_checklist_fixes.py": "6cae34c182a43ac661cd13b68d9c9344091dc49d05862d1655aa9faea7d5e73b",
+    "docs/results/experiments/A/workflow_checklist_fix_20261017.json": "8a0d32dea27aed0380e539a6ac65386e6573ca16db1ca489b70cd7c67bd5047a",
+    "docs/results/experiments/A/workflow_checklist_fix_20261017.md": "56dfc614f393bfa175be7ef7b2028124902f80e6a44b2f1430943b02bec00a8f"
   },
-  "commit_summary_ko": "GitHub 병합 완료 재시도의 SHA 검증 호환성 수정"
+  "commit_summary_ko": "빈 데이터 Docker 기동·신상품 누락·최신순 설정 오류 수정"
 }

@@ -1,6 +1,7 @@
 # B owns this overlay; top-level key stays recommend.
 recommend:
   scoring:
+    # ctr / ctr_cvr / rank_fusion / similarity / newest; quotas still apply after sorting.
     strategy: ctr
   candidate_config_snapshot: docs/results/candidate_config_original.json
   ranking:

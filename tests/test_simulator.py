@@ -62,3 +62,19 @@ def test_timestamp_ties_remain_in_one_split():
     split=chronological_split(frame,{'train':.5,'valid':.3,'test':.2})
     for a,b in [('train','valid'),('valid','test')]:
         if len(split[a]) and len(split[b]):assert split[a].timestamp.max()<split[b].timestamp.min()
+
+
+def test_generation_publishes_within_mounted_filesystem(tmp_path,tiny_config,monkeypatch):
+    import errno
+    root=tmp_path/'mounted-data'
+    original=Path.rename
+    def rename(source,target):
+        if source.is_relative_to(root)!=Path(target).is_relative_to(root):
+            raise OSError(errno.EXDEV,'cross-device rename')
+        return original(source,target)
+    monkeypatch.setattr(Path,'rename',rename)
+    result=generate(tiny_config,root)
+    assert result['counts']['products']==450
+    assert (root/'split_manifest.json').is_file()
+    assert len(list((root/'images').glob('*.jpg')))==450
+    assert not list(root.glob('.generation-*'))

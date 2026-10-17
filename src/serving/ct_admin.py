@@ -39,8 +39,9 @@ def reload_model(payload: ReloadRequest, request: Request) -> dict:
     if not version or version != registry.read()['active']:
         raise HTTPException(409, 'only the registry active version may be loaded; rollback the registry first')
     try:
-        replacement = load_record(registry, version, request.app.state.store)
         current = request.app.state.recommend
+        replacement = load_record(registry, version, request.app.state.store,
+                                  scoring=getattr(current, 'scoring', None))
         if current is not None and hasattr(current, 'data'):
             old_catalog = current.data['manifest']['file_hashes']['products.parquet']
             if replacement.data['manifest']['file_hashes']['products.parquet'] != old_catalog:

@@ -185,7 +185,7 @@ def system_tab(report: dict, config: dict) -> None:
 
 def main() -> None:
     st.set_page_config(page_title='검색·추천 평가실', page_icon='◈', layout='wide')
-    st.markdown('<style>.block-container{padding-top:2rem;max-width:1400px}h1{letter-spacing:-.04em}div[data-testid="stMetric"]{background:#f5f7fb;padding:1rem;border-radius:.75rem}</style>', unsafe_allow_html=True)
+    st.markdown('<style>.block-container{padding-top:2rem;max-width:1400px}h1{letter-spacing:-.04em}div[data-testid="stMetric"]{padding:1rem;border-radius:.75rem}</style>', unsafe_allow_html=True)
     st.title('검색·추천 평가실')
     st.caption('고정된 평가 기준으로 검색, 추천, 실험과 시스템 상태를 확인합니다.')
     config = settings(Path(__file__).resolve().parents[1])

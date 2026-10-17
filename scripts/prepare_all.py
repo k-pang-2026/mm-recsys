@@ -88,13 +88,14 @@ def stage(cfg: dict, name: str) -> None:
             from src.serving.memory_store import MemoryFeatureStore
             _, _, registry = components(cfg)
             record = registry.verify(state['active'])
-            if record['config']['recommend'] != cfg['recommend']:
+            if ({k:v for k,v in record['config']['recommend'].items() if k!='scoring'}
+                    != {k:v for k,v in cfg['recommend'].items() if k!='scoring'}):
                 raise ValueError('active release uses a different recommendation configuration; explicit new release required')
             current = json.loads((Path(cfg['paths']['data_dir']) / 'split_manifest.json').read_text())
             active = json.loads((Path(record['data_path']) / 'split_manifest.json').read_text())
             if active['file_hashes']['products.parquet'] != current['file_hashes']['products.parquet']:
                 raise ValueError('active recommendation catalog differs from search; coordinated migration required')
-            load_record(registry, state['active'], MemoryFeatureStore())
+            load_record(registry, state['active'], MemoryFeatureStore(),scoring=cfg['recommend'].get('scoring'))
     else:
         raise ValueError(f'unknown preparation stage: {name}')
 
