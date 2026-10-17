@@ -154,7 +154,17 @@ def merge_reviewed(client: GitHubAPI,plan: dict,step: str,role: str,number: int,
             or pr['base']['ref']!=plan['pull_requests']['base']):
         raise ValueError('PR state/branches/head differ from the reviewed merge approval')
     if pr.get('merged'):
-        return {'number':number,'merged':True,'sha':pr['merge_commit_sha'],'url':pr['html_url']}
+        merge_sha=pr.get('merge_commit_sha')
+        if merge_sha is None:
+            graph=client.request('POST','/graphql',{'query':'query($id:ID!){node(id:$id){... on PullRequest{merged mergeCommit{oid}}}}',
+                                                    'variables':{'id':pr['node_id']}})
+            node=(graph.get('data') or {}).get('node') or {}
+            if graph.get('errors') or not node.get('merged'):
+                raise ValueError('could not verify merged pull request')
+            merge_sha=(node.get('mergeCommit') or {}).get('oid')
+        if not isinstance(merge_sha,str) or not re.fullmatch('[0-9a-f]{40}',merge_sha):
+            raise ValueError('could not verify merged commit SHA')
+        return {'number':number,'merged':True,'sha':merge_sha,'url':pr['html_url']}
     if pr['state']!='open' or pr['draft']:raise MergeNotReady('PR must be open and ready')
     if pr.get('mergeable') is False:raise MergeNotReady('PR has merge conflicts; resolve and revalidate first')
     base_sha=pr['base']['sha']

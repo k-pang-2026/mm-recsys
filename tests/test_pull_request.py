@@ -182,6 +182,29 @@ def test_merge_retry_accepts_already_merged_same_commit_without_second_write():
     assert result['merged'] and not any(c[0]=='PUT' for c in client.calls)
 
 
+@pytest.mark.parametrize('response_kind', ['valid', 'graphql_error', 'missing_sha'])
+def test_merge_retry_verifies_graphql_when_rest_omits_merge_sha(monkeypatch, response_kind):
+    client=MergeAPI();client.pr.update(state='closed',merged=True,node_id='merged-pr')
+    original=client.request
+    response={'data':{'node':{'merged':True,'mergeCommit':{'oid':'b'*40}}}}
+    if response_kind=='graphql_error':response={'data':None,'errors':[{'message':'unavailable'}]}
+    if response_kind=='missing_sha':response={'data':{'node':{'merged':True,'mergeCommit':None}}}
+    def request(method,path,payload=None):
+        if path=='/graphql':
+            client.calls.append((method,path,payload))
+            assert method=='POST' and payload['variables']=={'id':'merged-pr'}
+            return response
+        return original(method,path,payload)
+    monkeypatch.setattr(client,'request',request)
+    if response_kind=='valid':
+        result=merge_reviewed(client,merge_plan(),'B5','B',1,'a'*40)
+        assert result['merged'] and result['sha']=='b'*40
+    else:
+        with pytest.raises(ValueError,match='verify merged'):
+            merge_reviewed(client,merge_plan(),'B5','B',1,'a'*40)
+    assert not any(c[0]=='PUT' for c in client.calls)
+
+
 def test_cli_merge_uses_authorized_policy_without_new_confirmation(tmp_path,monkeypatch):
     import scripts.pull_request as pr
     import yaml
