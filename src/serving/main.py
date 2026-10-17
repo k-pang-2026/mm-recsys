@@ -33,7 +33,8 @@ def create_app(cfg: dict | None = None, search_service: Any=None, recommend_serv
             module_name = serving['plugins'][kind]
             if backend is None and kind == 'recommend' and active:
                 assert app.state.ct is not None
-                backend = load_record(app.state.ct[2], active, app.state.store)
+                backend = load_record(app.state.ct[2], active, app.state.store,
+                                      scoring=cfg['recommend'].get('scoring'))
             if backend is None and importlib.util.find_spec(module_name) is not None:
                 backend = importlib.import_module(module_name).create_service(cfg, app.state.store)
             setattr(app.state, kind, backend)

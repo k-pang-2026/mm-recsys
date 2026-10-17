@@ -49,7 +49,7 @@ def generate(cfg: dict, data_dir: Path | None = None) -> dict:
                 raise ValueError(f'Incomplete or modified product image: {name}')
         return manifest
     data_dir.mkdir(parents=True,exist_ok=True)
-    temporary=Path(tempfile.mkdtemp(prefix='.generation-',dir=data_dir.parent))
+    temporary=Path(tempfile.mkdtemp(prefix='.generation-',dir=data_dir))
     try:
         rng=np.random.default_rng(cfg['seed'])
         products=make_catalog(cfg,rng);users=make_users(cfg,rng)

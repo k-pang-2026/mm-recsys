@@ -8,8 +8,12 @@ Ponytail 감사 후 생성기는 4.2로 버전이 변경되었다. 기존 4.1 �
 통과했다. 전체 회귀 351개·타입 검사 133파일도 통과했다. 새 A/B·자연 CT 효과를 포함한
 최종 종합 판정은 `UNMEASURED`이며, [동일 입력 효율 비교](docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json)는
 부분 전처리·로딩 시간의 3회 중앙값이다.
-이후 GitHub 병합 완료 재조회 호환성을 보완했으며, 최신 전체 회귀 **354개**와 실제 PR 재조회는
+이후 GitHub 병합 완료 재조회 호환성을 보완했으며, 당시 전체 회귀 **354개**와 실제 PR 재조회는
 [후속 검증](docs/results/experiments/A/workflow_ponytail_merge_retry_20261017.json)에 별도 기록했다.
+체크리스트 후속 수정에서는 빈 Docker 데이터 생성·신상품 노출·최신순 설정과 다크모드 카드를 보완했다.
+최신 전체 회귀 **368개**, 기본 ctr 정책의 full valid/test 수치 조건 11개·추천 제약 및 실제 API 검증은
+[체크리스트 수정 보고서](docs/results/experiments/A/workflow_checklist_fix_20261017.md)에 기록했다.
+초기 중복 배포의 이미지 지연 실패도 보존했으며, 단일 스택 재측정과 종합 `UNMEASURED`를 구분한다.
 
 팀장이 공통 개발 기반을 구현·검증해 `chore/shared-foundation` → main PR로 먼저 병합한 뒤,
 세 사람이 독립 클론에서
@@ -55,6 +59,19 @@ flowchart LR
 ```
 
 환경을 직접 실행할 경우 한 명령으로 준비한다.
+
+추천 정렬은 `config/recommend.yaml`의 `recommend.scoring.strategy`로 선택한다.
+기본값 `ctr` 외에 `ctr_cvr`, `rank_fusion`, `similarity`, `newest`를 지원한다.
+`similarity`는 ANN 후보 순위, `newest`는 등록일이 최신인 사용 가능한 상품을 우선한다.
+최신순은 클릭 이력이 없는 사용자에게도 적용되며, MAB·신상품·카테고리 연속 제한은
+후속 재정렬에서 유지된다. 따라서 최종 출력은 제약을 만족하는 최신순이며 단순 날짜 정렬과 다를 수 있다.
+설정을 바꾼 뒤 서비스를 재시작한다. Docker에서는 설정이 이미지에 포함되므로
+`docker compose up --build -d api-server`로 반영한다. 기본 정책의 품질 결과를 다른 전략의 결과로 사용하지 않는다.
+
+기본 추천은 등록 7일 이내의 사용 가능한 신상품이 있으면 서빙 후보에 최소 1개를 확보한다.
+구매 제외·등록 시점·후보 300개 상한을 지키며 별도로 측정하는 전체 카탈로그 ANN Recall@300은 바꾸지 않는다.
+신상품이 없거나 다른 제약과 함께 충족할 수 없으면 진단을 남긴다. 7일 판정은 설정한 시뮬레이션 시각 기준이다.
+빈 Docker 데이터 폴더의 첫 생성도 같은 파일시스템 안에서 임시 파일을 게시한다.
 
 ```bash
 bash setup_env.sh . --role=B

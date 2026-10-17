@@ -160,11 +160,15 @@ def test_cold_pool_is_bounded_diverse_and_excludes_future_and_purchases():
     cfg = load_config()
     service = object.__new__(Recommender)
     service.cfg = cfg
+    service.scoring = {'strategy': 'ctr'}
+    service.at = pd.Timestamp(cfg['simulator']['reference_time'])
     service.fallback_sorted = [f'p{i}' for i in range(500)]
     mapping = {p: i for i, p in enumerate(service.fallback_sorted)}
     service.table = SimpleNamespace(id_to_index=mapping)
     service.candidate = SimpleNamespace(allowed=set(range(499)))
     service.reranker = SimpleNamespace(categories={p: 'a' if i < 400 else 'b' for p, i in mapping.items()})
+    service.reranker.created = {p: service.at-pd.Timedelta(days=30) for p in mapping}
+    service.catalog_by_recency = service.fallback_sorted
     cfg['recommend']['exclude_purchased'] = True
     context = SimpleNamespace(history_count=0, purchased=frozenset({400}))
     products = service.candidate_products(context, UserFeatures(), 50)

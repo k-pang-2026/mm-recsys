@@ -34,6 +34,7 @@ class Recommender:
         self.history_index=HistoryIndex(self.history,table,popularity_events=data['train'])
         self.candidate=FaissCandidate(candidate,table,table.eligible(self.at),index)
         self.reranker=Reranker(cfg,data['products']); self.rng=np.random.default_rng(cfg['seed']+20)
+        self.catalog_by_recency=sorted(self.reranker.created,key=lambda p:(-self.reranker.created[p].value,p))
         self._lock=threading.RLock(); self.last_diagnostics: dict = {}
         self.ct_version: str = "v1.0"
         self.exposure_clock: list[float] = [0.0]
@@ -60,7 +61,10 @@ class Recommender:
         k=self.cfg['recommend']['candidate_k']
         allowed=self.candidate.allowed
         excluded=user_context.purchased if self.cfg['recommend']['exclude_purchased'] else frozenset()
-        if user_context.history_count<self.cfg['recommend']['cold_start_min_events']:
+        if self.scoring['strategy']=='newest':
+            products=list(islice((p for p in self.catalog_by_recency
+                if self.table.id_to_index[p] in allowed and self.table.id_to_index[p] not in excluded),k))
+        elif user_context.history_count<self.cfg['recommend']['cold_start_min_events']:
             products=list(islice((p for p in self.fallback_sorted
                 if self.table.id_to_index[p] in allowed and self.table.id_to_index[p] not in excluded),k))
         else:
@@ -71,17 +75,30 @@ class Recommender:
         # Repair the serving pool within K; the separately measured ANN Top300 is unchanged.
         if self.cfg['recommend'].get('enable_reranking',True):
             categories=self.reranker.categories
+            cutoff=self.at-pd.Timedelta(days=self.cfg['recommend']['new_item_days'])
+            new=next((p for p in products if cutoff<=self.reranker.created[p]<=self.at),None)
+            if new is None:
+                for product in self.catalog_by_recency:
+                    if self.reranker.created[product]<cutoff: break
+                    index=self.table.id_to_index[product]
+                    if index in allowed and index not in excluded and self.reranker.created[product]<=self.at:
+                        new=product
+                        if len(products)<k: products.append(product)
+                        else: products[-1]=product
+                        break
             counts=Counter(categories[p] for p in products)
             limit=self.cfg['recommend']['max_consecutive_same_category']
             target=min(top_n,len(products)); selected=set(products)
             if diversity_capacity(counts,limit)<target:
-                for product in self.fallback_sorted:
+                for product in (self.catalog_by_recency if self.scoring['strategy']=='newest' else self.fallback_sorted):
                     index=self.table.id_to_index[product]; category=categories[product]
                     dominant=max(counts,key=lambda c:counts[c])
                     if (product in selected or index not in allowed or index in excluded
                             or counts[category]>=counts[dominant]-1):
                         continue
-                    position=next(i for i in range(len(products)-1,-1,-1) if categories[products[i]]==dominant)
+                    position=next((i for i in range(len(products)-1,-1,-1)
+                        if categories[products[i]]==dominant and products[i]!=new),None)
+                    if position is None: continue
                     selected.remove(products[position]); selected.add(product)
                     products[position]=product
                     counts[dominant]-=1; counts[category]+=1
@@ -96,7 +113,7 @@ class Recommender:
         return probabilities
 
     def rank_products(self,products: list[str],probabilities: Any) -> list[RankedItem]:
-        return score_items(products,probabilities,self.scoring)
+        return score_items(products,probabilities,self.scoring,created_at=self.reranker.created)
 
     def rerank_items(self,items: Any,top_n: int,user_context: Any) -> tuple[list[RankedItem], dict]:
         if self.cfg['recommend'].get('enable_reranking',True):

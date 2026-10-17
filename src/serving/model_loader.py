@@ -10,10 +10,12 @@ from pathlib import Path
 from src.ct.model_registry import ModelRegistry
 
 
-def load_record(registry: ModelRegistry, version: str, store: Any) -> Any:
+def load_record(registry: ModelRegistry, version: str, store: Any, *, scoring: dict | None = None) -> Any:
     from src.recommendation.service import create_service
     record = registry.verify(version)
     cfg = copy.deepcopy(record['config'])
+    if scoring is not None:
+        cfg['recommend']['scoring'] = copy.deepcopy(scoring)
     cfg['paths']['data_dir'] = record['data_path']
     cfg['recommend'].pop('candidate_bundle', None)
     # B loaders intentionally share the fixed v1.0 format. A transient directory

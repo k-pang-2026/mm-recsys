@@ -104,8 +104,10 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
     staged.root.mkdir(parents=True)
     (staged.root / version).symlink_to(registry.root / version, target_is_directory=True)
     staged.register(version, local, data_path, {}, None, through)
-    baseline = validation(load_record(registry, parent['version'], MemoryFeatureStore()), local)
-    candidate = validation(load_record(staged, version, MemoryFeatureStore()), local)
+    baseline = validation(load_record(registry, parent['version'], MemoryFeatureStore(),
+                                     scoring=local['recommend'].get('scoring')), local)
+    candidate = validation(load_record(staged, version, MemoryFeatureStore(),
+                                      scoring=local['recommend'].get('scoring')), local)
     if baseline['validation_fingerprint'] != candidate['validation_fingerprint']:
         raise ValueError('paired validation cohort changed')
     comparison = dict(split='valid', validation_fingerprint=candidate['validation_fingerprint'],
