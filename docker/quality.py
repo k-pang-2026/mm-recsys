@@ -16,7 +16,7 @@ if __name__ == '__main__':
 from src.common.artifacts import file_hash, write_json
 from src.common.seed import set_seed
 from src.evaluation.run_all import input_identity, check_frozen, metric_rows
-from src.evaluation.reporting import VERSION, environment
+from src.evaluation.reporting import VERSION, environment, quality_status
 
 
 def configure_query_encoder(encoder: Any) -> None:
@@ -58,9 +58,7 @@ def run(cfg: dict, split: str) -> dict:
     api = dict(modes=bench['modes'])
     rows = metric_rows(cfg, split, search, recommendation, api, bench['candidate'], bench['feature'])
     counts_ok = recommendation['candidate']['ann_two_tower']['candidate_count_min'] >= cfg['recommend']['candidate_k']
-    quality = ('FAIL' if any(row['status'] == 'FAIL' for row in rows) or not counts_ok
-               or recommendation['feasible_constraint_violations'] else
-               'UNMEASURED' if any(row['status'] == 'UNMEASURED' for row in rows) else 'PASS')
+    quality = quality_status(rows, recommendation, cfg['recommend']['candidate_k'])
     manifest_path = Path(cfg['paths']['data_dir']) / 'split_manifest.json'
     manifest = json.loads(manifest_path.read_text())
     measured_environment = environment()
@@ -117,7 +115,7 @@ def main() -> int:
                                result['candidate_latency'], result['feature_store'])
         if expected != result['metrics'] or any(row['status'] != 'PASS' for row in expected):
             raise ValueError('quality metric mismatch or failure')
-        if result['recommendation']['candidate']['ann_two_tower']['candidate_count_min'] < cfg['recommend']['candidate_k'] or result['recommendation']['feasible_constraint_violations']:
+        if quality_status(expected, result['recommendation'], cfg['recommend']['candidate_k']) != 'PASS':
             raise ValueError('candidate count/constraint failure')
         print(f"Verified Docker quality {args.split}: {result['quality_status']}", flush=True)
     else:

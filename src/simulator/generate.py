@@ -13,7 +13,7 @@ from src.simulator.users import make_users
 from src.simulator.events import make_events
 from src.simulator.split import chronological_split
 
-GENERATOR_VERSION='4.1.0'
+GENERATOR_VERSION='4.2.0'
 
 
 def ordered_recipe(value: object) -> object:

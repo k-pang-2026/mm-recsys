@@ -105,8 +105,10 @@ def test_failure_returns_empty_features_and_warning_and_recovers(store, caplog):
     store.client.pipeline.side_effect = ConnectionError("offline")
     assert store.get_features("u").model_dump() == {
         "recent_clicks": [], "session_clicks": 0, "session_interest": None, "profile": {}}
-    assert not store.append_event(event("e"))
-    assert not store.update_reward(FeedbackRequest(**event("e").model_dump()))
+    with pytest.raises(OSError, match='event write failed'):
+        store.append_event(event("e"))
+    with pytest.raises(OSError, match='reward write failed'):
+        store.update_reward(FeedbackRequest(**event("e").model_dump()))
     assert "using empty features" in caplog.text
     store.client = original
     assert store.append_event(event("recovered"))

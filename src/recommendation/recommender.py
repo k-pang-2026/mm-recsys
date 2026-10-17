@@ -5,6 +5,8 @@ from typing import Any
 
 import threading
 import time
+from collections import Counter
+from itertools import islice
 import numpy as np
 import pandas as pd
 import torch
@@ -13,7 +15,7 @@ from src.common.schemas import RecommendResponse,RecommendationItem,PipelineLate
 from src.recommendation.candidate import FaissCandidate
 from src.recommendation.datasets import context_for,padded_history
 from src.recommendation.ranking_features import HistoryIndex
-from src.recommendation.reranking import Reranker,RankedItem
+from src.recommendation.reranking import Reranker,RankedItem,diversity_capacity
 from src.recommendation.session import sequence_for
 from src.recommendation.scoring import score_items, policy
 
@@ -54,16 +56,37 @@ class Recommender:
             context.history_count+=len(known)
         return context
 
-    def candidate_products(self,user_context: Any,features: Any) -> list[str]:
+    def candidate_products(self,user_context: Any,features: Any,top_n: int=50) -> list[str]:
         k=self.cfg['recommend']['candidate_k']
+        allowed=self.candidate.allowed
+        excluded=user_context.purchased if self.cfg['recommend']['exclude_purchased'] else frozenset()
         if user_context.history_count<self.cfg['recommend']['cold_start_min_events']:
-            allowed=self.candidate.allowed
-            products=[p for p in self.fallback_sorted if self.table.id_to_index[p] in allowed][:k]
+            products=list(islice((p for p in self.fallback_sorted
+                if self.table.id_to_index[p] in allowed and self.table.id_to_index[p] not in excluded),k))
         else:
             vector=self.candidate.user_vectors([user_context])
             if self.session_model is not None and features.recent_clicks:
                 vector=self.session_model.combine(vector,sequence_for(features.recent_clicks,self.table,self.cfg['recommend']['session']['max_length']),self.cfg['recommend']['session'])
             products=self.candidate.search(vector,k,user_context.purchased if self.cfg['recommend']['exclude_purchased'] else frozenset())[0]
+        # Repair the serving pool within K; the separately measured ANN Top300 is unchanged.
+        if self.cfg['recommend'].get('enable_reranking',True):
+            categories=self.reranker.categories
+            counts=Counter(categories[p] for p in products)
+            limit=self.cfg['recommend']['max_consecutive_same_category']
+            target=min(top_n,len(products)); selected=set(products)
+            if diversity_capacity(counts,limit)<target:
+                for product in self.fallback_sorted:
+                    index=self.table.id_to_index[product]; category=categories[product]
+                    dominant=max(counts,key=lambda c:counts[c])
+                    if (product in selected or index not in allowed or index in excluded
+                            or counts[category]>=counts[dominant]-1):
+                        continue
+                    position=next(i for i in range(len(products)-1,-1,-1) if categories[products[i]]==dominant)
+                    selected.remove(products[position]); selected.add(product)
+                    products[position]=product
+                    counts[dominant]-=1; counts[category]+=1
+                    if diversity_capacity(counts,limit)>=target:
+                        break
         return products
 
     def predict_products(self,user_id: str,products: list[str],features: Any) -> np.ndarray:
@@ -95,7 +118,7 @@ class Recommender:
                 row=dict(features.profile,signup_at=self.at)
                 if all(f in row for f in ['age_group','gender']):
                     user_context.demographics=self.encoder.demographics(row,self.at)
-            products=self.candidate_products(user_context,features)
+            products=self.candidate_products(user_context,features,top_n)
             candidate_done=time.perf_counter()
             probabilities=self.predict_products(user_id,products,features)
             items=self.rank_products(products,probabilities)

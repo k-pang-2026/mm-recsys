@@ -48,7 +48,7 @@ fi
 import shutil,sys
 from pathlib import Path
 source,target=map(Path,sys.argv[1:3]);refresh=sys.argv[3]=='1'
-roots=['src','tests','scripts','config','docs','dashboard','.github','.vscode','docker']
+roots=['src','tests','scripts','config','docs','dashboard','.github','.vscode','docker','skills']
 files=['setup_env.sh','config.yaml','README.md','AGENTS.md','ai_step_prompts_optimized.md',
        'requirements.txt','requirements-torch.txt','requirements-dashboard.txt','requirements-dev.txt',
        'pytest.ini','mypy.ini','.gitignore','.dockerignore','.env','docker-compose.yml']

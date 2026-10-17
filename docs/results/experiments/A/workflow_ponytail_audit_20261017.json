@@ -1,0 +1,743 @@
+{
+  "report_type": "Ponytail whole-project audit",
+  "created_at": "2026-10-17T07:27:43.363384+00:00",
+  "language": "ko",
+  "status": "AUDITED_WITH_FINDINGS",
+  "service_fixes_applied": false,
+  "base_commit": "b93c13faaff8c65553fa93c7813701906a977769",
+  "scope": {
+    "root": "/home/peachpetal/ecommerce/mm-recsys",
+    "what_this_repo_does": "상품 텍스트·이미지 검색과 후보 추출→순위 예측→다양성·탐색 재정렬 추천을 제공한다. Redis 실시간 행동, A/B 모의 실험, 연속 학습, Docker와 대시보드가 연결되어 있다.",
+    "expected_load": "상품 50,000개·사용자 10,000명·행동 1,000,000개의 로컬 CPU 데모. 기본 4개 컨테이너, API 4CPU/4GiB, 직렬 벤치마크와 일반 사용자 요청 및 시뮬레이터·선택 CT 작업의 동시 접근. 대규모 동시 사용자 성능을 가정하지 않음.",
+    "inventory_counts": {
+      "src": 102,
+      "dashboard": 3,
+      "docker": 17,
+      "scripts": 19,
+      "tests": 37,
+      "config": 4,
+      "docs": 391,
+      "skills": 4,
+      ".github": 1
+    },
+    "inventory_sha256": "e4d5d64ccb866bf9591931eb53a64c9a71986589714a7f6228050b7170c17fb5",
+    "reviewed_flows": [
+      "README·계약·설정·의존성·CI·Docker·환경 생성",
+      "입력 검증→검색 전처리→임베딩→인덱스 검색",
+      "행동 생성→시간 분할→특징·라벨→학습·모델 재로딩",
+      "추천 후보→점수→세션·콜드·탐색·다양성",
+      "API→Redis 이력·노출·보상→시뮬레이터 체크포인트",
+      "노출 일지→CT 스냅샷→학습→승격·API 교체·롤백",
+      "평가 동결→test→품질·제출 판정과 대시보드 보고서 선택",
+      "역할별 Git 소유권·로컬 커밋·원격 승인 흐름"
+    ],
+    "review_depth": "현재 실행 경로를 우선하여 정독·추적. 전체 파일 목록과 참조는 검색했으나 모든 문서·모든 테스트·과거 실험 사본을 줄별로 읽은 감사는 아님."
+  },
+  "upstream": {
+    "repository": "https://github.com/DietrichGebert/ponytail",
+    "revision": "16352ac229eb08a9598dcae48fe9f2b342567d86",
+    "fetched_at": "2026-10-17T07:20:07.695751+00:00",
+    "license": "MIT",
+    "license_source": "https://raw.githubusercontent.com/DietrichGebert/ponytail/16352ac229eb08a9598dcae48fe9f2b342567d86/LICENSE",
+    "installation": "project-local; read through AGENTS.md; no global hooks or executable plugin installed",
+    "files": {
+      "skills/ponytail/SKILL.md": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509",
+      "skills/ponytail-audit/SKILL.md": "2b3223a02c386d1263e1b08343cb8eb3a53e444cdafb1d79e26c8ec2a8fcad28",
+      "skills/PONYTAIL_LICENSE": "fb1bc6909ac3ef82d5c22106e32ef682b0cff66788fa915fb9b53b15c9d2f3ab"
+    }
+  },
+  "new_verification": {
+    "pytest": {
+      "tests": 336,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 83.746,
+      "warnings": 2,
+      "real_redis": "127.0.0.1:17379",
+      "source": ".team/checks/ponytail-20261017/pytest.xml",
+      "sha256": "bbd2e40357f77f3e1acb86fccb3fdc9f9dcb932da887f07642ebe950d46c83d9"
+    },
+    "reproductions": {
+      "command": "PYTHONPATH=. .venv/bin/python docs/results/experiments/A/workflow_ponytail_probes.py --data-dir <existing-full-data-dir>",
+      "source": "docs/results/experiments/A/workflow_ponytail_probes.py",
+      "sha256": "f5c8d0f4620062c4655812f5b632d24a961db9e302a799a086128261f662a44b",
+      "result": {
+        "diversity": {
+          "requested": 5,
+          "returned": 5,
+          "exploration_slots": 2,
+          "new_available": 5,
+          "diversity_capacity": 2,
+          "diversity_feasible_for_returned": false,
+          "candidate_category_counts": {
+            "same": 5
+          },
+          "diagnostics": [
+            "diversity_infeasible_with_remaining_quotas"
+          ],
+          "violations": [
+            "diversity"
+          ],
+          "status": "INFEASIBLE"
+        },
+        "repeated_clicks": {
+          "journal_accepted": 2,
+          "error": "multiple views for an impression; explicit dedup policy required"
+        },
+        "redis_event_failure": {
+          "status": 200,
+          "response": {
+            "applied": false,
+            "features": {
+              "recent_clicks": [],
+              "session_clicks": 0,
+              "session_interest": null,
+              "profile": {}
+            }
+          },
+          "simulator_returns_normally": true
+        },
+        "ct_reload_failure": {
+          "error": "temporary HTTP 503",
+          "retries": 0,
+          "watch_loop_exited": true
+        },
+        "image_pixels": {
+          "accepted": true,
+          "dimensions": [
+            12000,
+            12000
+          ],
+          "body_bytes": 186503,
+          "rgb_bytes_before_additional_copies": 432000000,
+          "warnings": [
+            "Image size (144000000 pixels) exceeds limit of 89478485 pixels, could be decompression bomb DOS attack."
+          ],
+          "allocation_scope": "validation only; no RGB decode or live stress"
+        },
+        "malformed_content_type": {
+          "unhandled": "UnicodeDecodeError"
+        },
+        "conversion_timing": {
+          "source": ".team/checks/main-20261017/data/full/events.parquet",
+          "purchases": 44623,
+          "purchases_with_preceding_same_session_view": 44623,
+          "attribution_window_seconds": 1800,
+          "minimum_view_to_purchase_seconds": 25176.096,
+          "median_view_to_purchase_seconds": 50269.248,
+          "within_window": 0
+        }
+      },
+      "scope": "기존 데이터는 읽기 전용; fixture·임시 SQLite·격리 어댑터와 제어된 장애 주입."
+    },
+    "earlier_attempts": [
+      {
+        "command": "sandbox audit probes",
+        "result": "로컬 TestClient 대기; 해당 프로세스 종료 후 정상 escalation 환경에서 성공; 서비스 결함으로 판정하지 않음",
+        "log": ".team/checks/ponytail-20261017/probes.log"
+      },
+      {
+        "command": ".venv/bin/python -m mypy src scripts/team.py scripts/step_git.py scripts/pull_request.py",
+        "exit_code": 2,
+        "result": "team과 scripts.team 이중 모듈 경로. --explicit-package-bases를 사용하여 재확인; 로그 보존.",
+        "log": ".team/checks/ponytail-20261017/mypy.log"
+      }
+    ],
+    "mypy_repository": {
+      "command": ".venv/bin/python -m mypy src dashboard docker",
+      "exit_code": 0,
+      "source": ".team/checks/ponytail-20261017/mypy_repository.log",
+      "sha256": "9228e83ff0320df9dd545732802c318b2da0af9e2bf8107358d8c2b6ec9b472b",
+      "output": "Success: no issues found in 116 source files"
+    },
+    "mypy_git_helpers_extra": {
+      "command": ".venv/bin/python -m mypy --explicit-package-bases src scripts/team.py scripts/step_git.py scripts/pull_request.py",
+      "exit_code": 1,
+      "source": ".team/checks/ponytail-20261017/mypy_recheck.log",
+      "sha256": "02117259edbe36b5e69008b546f8cec70cb507808e77794f554c13401b609fcf",
+      "output": "scripts/pull_request.py:97: error: Unsupported operand types for + (\"str\" and \"None\")  [operator]\nscripts/pull_request.py:97: note: Right operand is of type \"str | None\"\nscripts/step_git.py:172: error: Argument 4 to \"render\" has incompatible type \"Any | None\"; expected \"dict[Any, Any]\"  [arg-type]\nscripts/step_git.py:173: error: Argument 2 to \"GitHubAPI\" has incompatible type \"Any | None\"; expected \"dict[Any, Any]\"  [arg-type]\nscripts/step_git.py:185: error: Argument 1 to \"automatic_merge_enabled\" has incompatible type \"Any | None\"; expected \"dict[Any, Any]\"  [arg-type]\nscripts/step_git.py:186: error: Argument 3 to \"auto_merge\" has incompatible type \"Any | None\"; expected \"dict[Any, Any]\"  [arg-type]\nFound 5 errors in 2 files (checked 105 source files)",
+      "interpretation": "추가 범위 검사에서 기존 Git 도구 두 파일의 타입 오류 5개를 발견. scripts/pull_request.py:97 및 scripts/step_git.py:172-186. 실행 시 결함을 입증한 번호별 발견 사항과 구분하며 서비스/이번 설치 변경의 기본 타입 검사 통과와 섞지 않음."
+    }
+  },
+  "prior_full_run": {
+    "source": "docs/results/integration/runtime/main-20261017/quality_full_test.json",
+    "sha256": "511981dd90ec988f0dd715944f0cc0faefc87bb20216eb9c20e209f5c8f8d818",
+    "when": "2026-10-17 같은 세션의 이전 main/Docker 검증 요청에서 실행; 이번 감사에서 재학습/재평가하지 않음",
+    "quality_status": "PASS",
+    "acceptance": "UNMEASURED",
+    "current_source_matches": {
+      "src/evaluation/run_all.py": true,
+      "src/evaluation/reporting.py": true,
+      "src/evaluation/search.py": true,
+      "src/evaluation/recommendation.py": true,
+      "src/evaluation/api_benchmark.py": true,
+      "src/evaluation/metrics.py": true,
+      "src/evaluation/bench_latency.py": true,
+      "src/common/__init__.py": true,
+      "src/common/artifacts.py": true,
+      "src/common/config.py": true,
+      "src/common/data.py": true,
+      "src/common/schemas.py": true,
+      "src/common/seed.py": true,
+      "src/recommendation/__init__.py": true,
+      "src/recommendation/baselines.py": true,
+      "src/recommendation/bench_app.py": true,
+      "src/recommendation/bench_candidate.py": true,
+      "src/recommendation/bench_ranking.py": true,
+      "src/recommendation/bench_tcp.py": true,
+      "src/recommendation/bundle_compat.py": true,
+      "src/recommendation/candidate.py": true,
+      "src/recommendation/datasets.py": true,
+      "src/recommendation/deepfm.py": true,
+      "src/recommendation/diagnose_candidate.py": true,
+      "src/recommendation/eval_candidate.py": true,
+      "src/recommendation/eval_deepfm.py": true,
+      "src/recommendation/eval_policy.py": true,
+      "src/recommendation/eval_ranking.py": true,
+      "src/recommendation/feature_store.py": true,
+      "src/recommendation/features.py": true,
+      "src/recommendation/index.py": true,
+      "src/recommendation/mab.py": true,
+      "src/recommendation/ranking_features.py": true,
+      "src/recommendation/ranking_labels.py": true,
+      "src/recommendation/recommender.py": true,
+      "src/recommendation/reranking.py": true,
+      "src/recommendation/runtime.py": true,
+      "src/recommendation/scoring.py": true,
+      "src/recommendation/select_candidate.py": true,
+      "src/recommendation/service.py": true,
+      "src/recommendation/session.py": true,
+      "src/recommendation/testing.py": true,
+      "src/recommendation/train_deepfm.py": true,
+      "src/recommendation/train_session.py": true,
+      "src/recommendation/train_two_tower.py": true,
+      "src/recommendation/two_tower.py": true,
+      "src/recommendation/verify_candidate.py": true,
+      "src/recommendation/verify_deepfm.py": true,
+      "src/recommendation/verify_policy.py": true,
+      "src/recommendation/verify_ranking.py": true,
+      "src/search/__init__.py": true,
+      "src/search/api.py": true,
+      "src/search/benchmark.py": true,
+      "src/search/bm25.py": true,
+      "src/search/build_embeddings.py": true,
+      "src/search/build_index.py": true,
+      "src/search/encoder.py": true,
+      "src/search/eval_search.py": true,
+      "src/search/eval_support.py": true,
+      "src/search/finalize.py": true,
+      "src/search/index.py": true,
+      "src/search/locking.py": true,
+      "src/search/queries.py": true,
+      "src/search/searcher.py": true,
+      "src/search/service.py": true,
+      "src/search/testing.py": true,
+      "src/search/text.py": true,
+      "src/search/verify.py": true,
+      "src/serving/__init__.py": true,
+      "src/serving/ct_admin.py": true,
+      "src/serving/feature_store.py": true,
+      "src/serving/main.py": true,
+      "src/serving/memory_store.py": true,
+      "src/serving/model_loader.py": true,
+      "src/serving/pytest_support.py": true,
+      "src/serving/stream_features.py": true,
+      "src/serving/warmup_features.py": true
+    },
+    "all_current_sources_match": true,
+    "metrics": [
+      {
+        "name": "mrr",
+        "value": 0.9316666666666666,
+        "target": 0.55,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "search.primary",
+        "reason": null
+      },
+      {
+        "name": "ndcg_at_10",
+        "value": 0.9316666666666666,
+        "target": 0.5,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "search.primary",
+        "reason": null
+      },
+      {
+        "name": "recall_at_300",
+        "value": 0.7501409489114407,
+        "target": 0.3,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.candidate.ann_two_tower",
+        "reason": null
+      },
+      {
+        "name": "auc",
+        "value": 0.964766793453099,
+        "target": 0.7,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.classification.ctr",
+        "reason": null
+      },
+      {
+        "name": "hit_rate_at_50",
+        "value": 0.7008847254748894,
+        "target": 0.2,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.metrics.full_pipeline",
+        "reason": null
+      },
+      {
+        "name": "ndcg_at_50",
+        "value": 0.3421754358191502,
+        "target": 0.08,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.metrics.full_pipeline",
+        "reason": null
+      },
+      {
+        "name": "coverage",
+        "value": 0.41534,
+        "target": 0.2,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.metrics.full_pipeline",
+        "reason": null
+      },
+      {
+        "name": "search_p95_ms",
+        "value": 181.8086997002183,
+        "target": 200,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "api.modes; worst-mode HTTP p95",
+        "reason": null
+      },
+      {
+        "name": "recommend_p95_ms",
+        "value": 47.707007450230776,
+        "target": 200,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "api.modes.recommendation.http",
+        "reason": null
+      },
+      {
+        "name": "candidate_p95_ms",
+        "value": 5.034553849986878,
+        "target": 100,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "candidate_latency",
+        "reason": null
+      },
+      {
+        "name": "feature_p95_ms",
+        "value": 0.7346504499537327,
+        "target": 10,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "feature_store",
+        "reason": null
+      }
+    ],
+    "cohort": {
+      "warm": 9700,
+      "warm_truth": 7686,
+      "cold": 300,
+      "cold_truth": 0,
+      "user_ids_sha256": "d29078a72539255c5bbb1abd3aff36f14089fe9286705daf831195b1ba986fa8",
+      "total_users": 10000,
+      "truth_users": 7686,
+      "all_truth_users": 7686,
+      "empty_truth_users": 2314,
+      "eligible_catalog": 48872,
+      "unavailable_truth_items": 58
+    },
+    "classification": {
+      "ctr": {
+        "auc": 0.964766793453099,
+        "auc_status": "MEASURED",
+        "logloss": 0.15979980922572484,
+        "samples": 225422,
+        "positives": 56639,
+        "denominator": "observed exposures"
+      },
+      "cvr": {
+        "auc": null,
+        "auc_status": "UNDEFINED_SINGLE_CLASS",
+        "logloss": 1.1620825780078663e-05,
+        "samples": 56261,
+        "positives": 0,
+        "denominator": "observed clicked exposures"
+      }
+    },
+    "infeasible_candidate_pools": 2738
+  },
+  "findings": [
+    {
+      "number": 1,
+      "priority": "Must fix",
+      "title": "CVR 구매 학습 표본이 모두 0이 된다",
+      "locations": [
+        "src/simulator/events.py:39-46",
+        "src/recommendation/ranking_labels.py:37-50"
+      ],
+      "what_this_is": "CVR은 클릭한 상품을 구매할 가능성이며, 현재 30분 이내의 구매만 앞선 조회에 연결한다.",
+      "problem": "full 데이터 구매 44,623건 모두 같은 사용자·상품·세션의 앞선 조회와 최소 25,176.096초 떨어져 있다. 30분 이내 구매는 0건이고 test CVR 양성도 0/56,261이다.",
+      "smallest_fix": "새 생성기 버전에서 세션 안의 행동 간격을 현실적인 분 단위로 생성하고 전역 시간 순서를 보존한다. train/valid에 관측 가능한 양성·음성이 있는지 확인한 뒤 새 데이터를 동결하여 다시 평가한다. 기존 test 정답이나 30분 기준을 임의로 바꾸지 않는다.",
+      "if_skipped": "구매 확률 학습과 구분 성능을 입증할 수 없다. 현재 CTR AUC 통과가 CVR 검증을 대신하지 않는다.",
+      "evidence": {
+        "probe": "conversion_timing",
+        "fresh_test": {
+          "auc": null,
+          "auc_status": "UNDEFINED_SINGLE_CLASS",
+          "logloss": 1.1620825780078663e-05,
+          "samples": 56261,
+          "positives": 0,
+          "denominator": "observed clicked exposures"
+        }
+      }
+    },
+    {
+      "number": 2,
+      "priority": "Must fix",
+      "title": "다양성을 지키지 못하는 후보 풀이 있어도 품질 PASS가 가능하다",
+      "locations": [
+        "src/evaluation/recommendation.py:87-89",
+        "docker/quality.py:56-60",
+        "src/recommendation/reranking.py:112-145"
+      ],
+      "what_this_is": "추천 목록에서 같은 카테고리가 3개 연속 나오지 않아야 한다.",
+      "problem": "카테고리 하나뿐인 상품 5개를 요청하면 5개를 그대로 반환하며 diversity 위반을 기록한다. 평가기는 다양성 충족이 가능한 경우만 위반 건수에 더해 full 10,000명 중 불가능한 후보 풀 2,738개가 품질 FAIL 조건에서 빠진다.",
+      "smallest_fix": "기본 Recall@300 평가와 정답을 유지하면서 최종 재정렬 단계에 필요한 다른 카테고리 후보를 보충한다. 불가능한 풀 비율과 실제 위반을 별도 필수 판정에 연결하고 전체 사용자 조건 통과로 해석하지 않는다.",
+      "if_skipped": "품질 점수는 통과해도 사용자 일부에게는 미션의 연속 카테고리 제한을 보장하지 못한다.",
+      "evidence": {
+        "probe": "diversity",
+        "full_infeasible_candidate_pools": 2738,
+        "full_users": 10000,
+        "quality_status": "PASS"
+      }
+    },
+    {
+      "number": 3,
+      "priority": "Must fix",
+      "title": "Redis 저장 실패를 성공 응답으로 보내 재생 위치가 넘어간다",
+      "locations": [
+        "src/serving/feature_store.py:77-115",
+        "src/serving/main.py:92-101",
+        "docker/simulator.py:28-36",
+        "docker/simulator.py:64-71"
+      ],
+      "what_this_is": "시뮬레이터는 행동을 API에 저장한 뒤 어디까지 보냈는지 기록한다.",
+      "problem": "append_event가 일시적으로 실패해 False를 반환해도 API는 HTTP 200을 보낸다. send_rows는 applied=False를 무시하고 정상 종료하므로 Redis가 체크포인트 기록 전에 회복하면 저장되지 않은 행동을 지나갈 수 있다.",
+      "smallest_fix": "중복 처리와 저장 장애를 구분하여 장애에는 재시도 가능한 실패 응답을 보낸다. 양쪽 기록의 성공 또는 확인된 중복일 때만 재생 위치를 진행시키고, 실패 후 회복 사례를 통합 검증한다.",
+      "if_skipped": "조회 이력과 보상 기록이 누락될 수 있다. CT 일지가 남아도 온라인 특징값 누락을 자동 복구하지 않는다.",
+      "evidence": {
+        "probe": "redis_event_failure",
+        "scope": "실제 API 핸들러와 send_rows를 격리 어댑터로 검증; live Redis 장애 주입은 하지 않음"
+      }
+    },
+    {
+      "number": 4,
+      "priority": "Must fix",
+      "title": "같은 추천 상품을 두 번 클릭하면 후속 재학습이 중단된다",
+      "locations": [
+        "src/ct/storage.py:79-93",
+        "src/ct/retrain_trigger.py:79-86",
+        "src/recommendation/ranking_labels.py:25-28"
+      ],
+      "what_this_is": "연속 학습은 추천 노출과 클릭 기록을 합쳐 학습용 정답을 만든다.",
+      "problem": "한 추천 요청의 같은 상품에 서로 다른 event_id로 두 번 클릭하면 일지는 둘 다 받는다. 두 행을 같은 request_id:product_id 노출로 변환한 뒤 build_labels가 multiple views 오류를 내며, 이 행이 학습/검증 구간에 들어오면 학습이 실패한다.",
+      "smallest_fix": "노출 하나의 CTR 클릭 정답을 하나로 만드는 명시적 집계 정책을 연결 단계에 적용한다. 원시 세션 행동과 구매 연결에 필요한 마지막 조회는 보존하고 반복 클릭에서 학습 입력 생성까지 테스트한다.",
+      "if_skipped": "정상적인 반복 클릭 때문에 새 모델 생성이 막히며 같은 입력으로 재시도해도 실패한다.",
+      "evidence": {
+        "probe": "repeated_clicks"
+      }
+    },
+    {
+      "number": 5,
+      "priority": "Must fix",
+      "title": "모델 승격 후 API 교체가 한 번 실패하면 감시 작업이 끝난다",
+      "locations": [
+        "src/ct/retrain_trigger.py:120-137",
+        "src/ct/retrain_trigger.py:160-169",
+        "docker/ct_worker.py:16-19",
+        "docker/compose.ct.yml:1-36"
+      ],
+      "what_this_is": "검증을 통과한 새 모델을 등록한 다음 실행 중인 API가 그 모델을 읽도록 요청한다.",
+      "problem": "--watch 상태의 PROMOTED 뒤 reload_api에서 일시적 HTTP 오류가 발생하면 예외가 전파되어 대기/재시도 없이 종료한다. Compose에도 재시작 정책이 없고 새 실행의 WAITING 상태는 이전 승격의 교체를 재시도하지 않는다.",
+      "smallest_fix": "활성 등록 버전과 API 적용 버전을 확인해 미적용 교체를 제한된 간격으로 재시도한다. 다음 학습 이전에 맞추고 실패 후 회복을 검증한다. 컨테이너 재시작만으로 해결됐다고 판단하지 않는다.",
+      "if_skipped": "등록상 활성 모델과 실제 응답 모델이 달라지고 이후 자동 감시도 멈출 수 있다.",
+      "evidence": {
+        "probe": "ct_reload_failure",
+        "scope": "승격 결과 및 reload 장애를 주입한 실제 CLI 감시 루프; 모델 재학습은 모의 처리"
+      }
+    },
+    {
+      "number": 6,
+      "priority": "Must fix",
+      "title": "작게 압축된 대형 이미지가 픽셀 제한 없이 통과한다",
+      "locations": [
+        "src/common/schemas.py:18-28",
+        "src/search/api.py:15-27",
+        "src/search/service.py:23-30"
+      ],
+      "what_this_is": "이미지는 전송 파일 크기와 압축을 푼 뒤의 크기가 다르다.",
+      "problem": "12,000×12,000 PNG는 JSON 본문 186,503바이트로 8MiB 제한을 통과하고 Pillow 경고만 나온다. 검색 서비스는 잠금에 들어가기 전 원본을 읽고 RGB로 바꾸어 RGB 한 벌만 432,000,000바이트가 필요하다.",
+      "smallest_fix": "이미지 헤더를 읽은 직후 허용 픽셀 수/가로·세로를 제한하고 경고를 검증 실패로 처리한다. 필요하면 이미지 전처리 동시 실행도 제한하고 작은 압축 파일·과대 픽셀 입력을 검증한다.",
+      "if_skipped": "API의 4GiB 메모리를 큰 원본과 복사본이 압박할 수 있다. 실제 메모리 고갈이나 동시 부하 장애를 발생시킨 것은 아니다.",
+      "evidence": {
+        "probe": "image_pixels"
+      }
+    },
+    {
+      "number": 7,
+      "priority": "Should fix",
+      "title": "콜드스타트 사용자의 추천 품질은 현재 test로 측정되지 않는다",
+      "locations": [
+        "src/simulator/events.py:32-44",
+        "src/evaluation/recommendation.py:73-78"
+      ],
+      "what_this_is": "콜드스타트는 과거 행동이 적은 사용자에게도 알맞은 상품을 추천하는 기능이다.",
+      "problem": "행동 수가 3개로 제한된 사용자들은 생성 초반에만 등장한다. full test의 cold 300명 중 정답 행동이 있는 cold_truth는 0명이라 반환 동작은 확인해도 이들의 추천 품질은 측정하지 못한다.",
+      "smallest_fix": "새 데이터 버전에서 사용자 유입 시점을 분산해 valid/test에 과거 이력이 적고 미래 정답이 있는 집단을 만든다. 기존 전체 사용자 평가와 test 정답은 보존하고 해당 집단의 표본 수·품질을 별도로 보고한다.",
+      "if_skipped": "전체 점수가 좋아도 신규 사용자에게 좋은 추천인지 알 수 없다.",
+      "evidence": {
+        "fresh_test_cohort": {
+          "warm": 9700,
+          "warm_truth": 7686,
+          "cold": 300,
+          "cold_truth": 0,
+          "user_ids_sha256": "d29078a72539255c5bbb1abd3aff36f14089fe9286705daf831195b1ba986fa8",
+          "total_users": 10000,
+          "truth_users": 7686,
+          "all_truth_users": 7686,
+          "empty_truth_users": 2314,
+          "eligible_catalog": 48872,
+          "unavailable_truth_items": 58
+        }
+      }
+    },
+    {
+      "number": 8,
+      "priority": "Should fix",
+      "title": "잘못 인코딩된 Content-Type이 검증 밖의 예외를 낸다",
+      "locations": [
+        "src/search/api.py:34-35"
+      ],
+      "what_this_is": "검색 어댑터는 요청 헤더를 읽고 JSON 또는 파일 업로드 형식을 고른다.",
+      "problem": "ASGI 헤더의 content-type 값이 바이트 0xff이면 예외 처리 바깥의 decode()에서 UnicodeDecodeError가 발생한다. 격리 재현에서 검증 응답을 만들지 못했다.",
+      "smallest_fix": "헤더 디코딩도 검증 범위 안에 두고 허용 형식 외의 값은 4xx로 응답한다. 해당 바이트 입력을 한 번 검증하는 테스트를 추가한다.",
+      "if_skipped": "잘못된 요청이 제어된 입력 오류 응답 대신 내부 예외가 된다. 실제 외부 프록시를 통과시키는 검증은 하지 않았다.",
+      "evidence": {
+        "probe": "malformed_content_type"
+      }
+    }
+  ],
+  "counts": {
+    "Must fix": 6,
+    "Should fix": 2,
+    "Nice to have": 0,
+    "omitted_smaller_findings": 0
+  },
+  "verdict": "정상 경로 회귀는 통과한다. 구매 라벨과 다양성 판정, 저장 실패·반복 클릭·모델 교체 복구 및 이미지 메모리 제한을 먼저 수정해야 전체 요구 충족과 운영 복구를 주장할 수 있다.",
+  "not_checked": [
+    "모든 과거 실험 소스 사본과 문서·테스트 파일의 줄별 정독",
+    "외부 실사용자 데이터와 실제 매출 개선",
+    "대규모 동시 부하·실제 메모리 고갈 및 운영 장애 주입",
+    "외부 패키지 CVE 전수 검사와 침투 테스트",
+    "이번 요청에서 새 full 학습·A/B·자연 발생 CT 개선 재측정",
+    "WSL 외 다른 OS/하드웨어에서 재실행"
+  ],
+  "source_hashes": {
+    "dashboard/__init__.py": "c491190ae986f28679f50cf7168bca7c6477b28eed442005fafa0ad553d26792",
+    "dashboard/app.py": "d7c8db4e911684a7f61d2d02b61c989c0f2c3b8a83607944b037097aff18b333",
+    "dashboard/data.py": "2e3712a8b29201b22e5cf3793d8ad37180c234fad2eb580aa7f2e2039f45fc2f",
+    "docker/__init__.py": "3db8248c1255d031339db2bcb3afa8899e018608c53587bfc19fef58dfa38b58",
+    "docker/api_entrypoint.py": "cd388d3517e1c4af8db24364429eed974ac7080a3097cf5d99331c13e7ed7568",
+    "docker/ct_worker.py": "1d16b93aca75affebc6506b415eb98c1a93465b75f1d3e7894a0fec326329b9e",
+    "docker/http.py": "e2e78703e0724044cfd10219166a1c75975f72ba9aa6f96fd3c478b5d899e52e",
+    "docker/inspect_runtime.py": "96bbafcc3823b91ea8d3b8b5ef77a2268565c67361292b92780d1a903c12f0b8",
+    "docker/quality.py": "81210dce4811981dc9eafd479cb680587ea80a7c4026b1193175af14436808fc",
+    "docker/runtime.py": "8c26feefb9ca14acd4aba7d699bf3d605d925be1b9077104a7b02a73fc72fd7a",
+    "docker/serve.py": "f0a8cee23deb67858af5271e77f409572a9c54006179aff6c96c297c4aad954a",
+    "docker/simulator.py": "eb9ffe60e32f3637ad10c36ef0238815e22a9ae8964b93b36339a4b6c708b3f3",
+    "docker/verify_evidence.py": "5c9c0ff3618672c0705869eebe13c00d57fdd1865ba9215d44d0a837230be8e0",
+    "docker/vision.py": "ac51e6c77f62c18a0cce436a8b494f2d4816f48e763ae25545a00c611ebf358b",
+    "scripts/archive_integration_ab.py": "4cd04ee41c3b7d0b3b89e1eeece914c41f1816041135e114bc39fcbc3c862747",
+    "scripts/check_environment.py": "81e316cc8bfb9726e1dddfd5d0ee03606579549b7d84eb1ae264438830ca0022",
+    "scripts/check_submission.py": "fddc3c8a4373611b7351b236c567a1df4771a812bcbf8bd12b46dffb0fe9b7ba",
+    "scripts/check_submission_evidence.py": "0206833cf487a4f4da58860bf6c89782725091f21c8d54cf8bbe8679fbd7c5a5",
+    "scripts/prepare_all.py": "738a6a6d19dd8c5c50f7cacf51d355ced34d10b38ea067b2d92e70809af746b6",
+    "scripts/pull_request.py": "9815f93cb60dda4f14c9b464fa58d0c9d401dbeee70ba14cca02d06de3892294",
+    "scripts/record_gate.py": "8f38f06797a989d0a619b3b53b0eddb7bc57ddaa6aa9d335bd10095ad877a5d2",
+    "scripts/resume_integration_ct.py": "513b0b99beeb84f0b9b9b373b472c9b27267af4c4799325c48f1d175ab139d85",
+    "scripts/smoke_test.py": "7ed07e82175448e3c8d3174d1b5cac55abd5021d973af2efcbdc7df0aa99c1b7",
+    "scripts/step_git.py": "81c96943d581190d83be67a6bacb3706e57e8d60cbadab9f1d24855d00f27942",
+    "scripts/team.py": "ad7f7a678c71d27182ffcc8a5e67d0ab765bc2f8106c4860162eaaa59a76fb94",
+    "scripts/train_all.py": "f2a1f71838def547b588781db5bc3cf6e8b271e566fe997e8379450fc49907b4",
+    "scripts/validate_common.py": "56910c9c3cd7ec21c2b80489548268f280f4e079afae4dfc7c34945440c69d51",
+    "scripts/verify_integration_ct.py": "68723c42bb3ef4f802bb256a36b0d30013cd991d8036b8aeb7c18c769b8a5db7",
+    "scripts/verify_integration_ct_lifecycle.py": "de449817b99ced8e724e3770e244c309aecc6ccaad51b8c9ebd323f131545481",
+    "scripts/verify_integration_data.py": "5f4a9e1ac4a349c2c16acfe21e1982c2abe4e7fb468cf77be3047822e1301074",
+    "scripts/verify_integration_mab.py": "ff654e262b29a85449bd69cc17b29bdcd905cddba1d4efe89a1470a37d042bd2",
+    "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/common/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/common/artifacts.py": "985e9b6dfd79fbc439c95eabaed50300fd92818d3f9600604aeee774fe5726f8",
+    "src/common/config.py": "06db019c4ff0594271273a94b08d24eabd1a0fea334c450e6f854a0c9f90dad8",
+    "src/common/data.py": "df82715bce3f5c74bddc6233ffe9b37f1b930f90af91e54d1f9f51c6b592afa5",
+    "src/common/schemas.py": "6c4eb0b645fc0e8250c2d0bb44cb586c864549736991f6a05feb93e528b530ea",
+    "src/common/seed.py": "36141dd058389bc188be51d0923d41f6e64d89cca05da833700742a8b873e696",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/bootstrap.py": "253408a549248b6366fa5ff71fd73e53aa465c666af781252be17e2491e1dc65",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/monitor.py": "399d6f95ecc6bd109bb1d6d15bb92da42c26279a703d9cf5a9217fe060c98e9e",
+    "src/ct/retrain_trigger.py": "4ee0a7fb08fe42f2e5487c9554be5d01c3fc232bcc8df0c22ef6be67b2af3fab",
+    "src/ct/storage.py": "3752aae27268e2fec1b133821ef3343830291c58aaa747787023fe4672c6c40a",
+    "src/ct/training.py": "655af9f3f6c492c1c6ef383e416bb7e3827f12bed2a69bfff24533f86f8dd0b0",
+    "src/ct/verify_ct.py": "5fbed8379aabed2bf9ffaed3fd99e63e32cb6fb4528902ed885ade0c2e846d83",
+    "src/ct/verify_serving.py": "a6b06579c507ddb5558b9163c06b13f74b25316ce3f8b081e143471b8b63dfb7",
+    "src/evaluation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/evaluation/ab_prepare.py": "52e803c86aadb8f27f52cdfaeffaa98ead3c3991a2c2a7631246ffe1ea8bb1c1",
+    "src/evaluation/ab_statistics.py": "e3a07e3ad1f5ce2989f25f93ab9d4b289987a88754acf5dfe7a8b9723dbf427a",
+    "src/evaluation/ab_test.py": "693dd65d921f64a05a22fca5f7e3bf0eb55d619c77f6abec796dc2bab6f4685a",
+    "src/evaluation/acceptance.py": "baa812a8640c044c4ac5b6b29451faeb88f968691dba16a453e1893e91e76011",
+    "src/evaluation/api_benchmark.py": "aa61bba6d98fa94e03cf6416dd185ce6a468ab866208600e36c716a82fd8b635",
+    "src/evaluation/bench_latency.py": "ace1990cbaa2d159774da9ac3c59e369d7e98cb3a444204a44d06ad2f0c2651b",
+    "src/evaluation/diagnose_data.py": "655ff1a8a6c59b0cab9313752793a62d94184e2e32ded2ca32c8eaa0b4b8fde6",
+    "src/evaluation/metrics.py": "e2021540b159701537217ad896638fa3cc3e083c480e0408976377dec5722284",
+    "src/evaluation/recommendation.py": "21e4b5b0d13d0d745f5602d15fe10c09767d7d9de2973104fb6b9fbd6aa72b72",
+    "src/evaluation/reporting.py": "ba551f68ed8b28e82e0c8fd8e3d1b2eeccfd7a65e8760c57bf7bbe84eecce359",
+    "src/evaluation/run_all.py": "6880612c6a747b1d9c7282d498abcc769fbe32ebedd8a6f6c3eddf6e28edb35e",
+    "src/evaluation/search.py": "44089d073a3921fdd20a2c8c2bbc8e5e629cddc055b9861bb8c33e7908dc1579",
+    "src/evaluation/verify_ab.py": "599a965747b5799f02031e47715e95c24dadc9cb3aa0404b2f9a44e815974490",
+    "src/evaluation/verify_evaluation.py": "ddbd9c606e37ba5adab7efd4a9fa53da9984d1e0b4476a5f0ee37291c446ceef",
+    "src/recommendation/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/recommendation/baselines.py": "ee4212555bb71173c93d0112f6252269ee5d1b81ab55c08689f6cf0269496ac1",
+    "src/recommendation/bench_app.py": "a74e49ba135a0b20919648059303a75fb16dab8c35a8e7dab54433a6f8348dea",
+    "src/recommendation/bench_candidate.py": "09e1f2927dfdd88524c4594787a1ccbfd082419baa4c12de9b81a7ec2cf65c3c",
+    "src/recommendation/bench_ranking.py": "6ac8ac6f54388d36b097f785c15816cf112a2b09ca480d01953c9e68e1bc8ee5",
+    "src/recommendation/bench_tcp.py": "ce7cd4a9be0e42f735738ab84e8aa88d9bc968590bb285977eb67494c6522979",
+    "src/recommendation/bundle_compat.py": "ad66ea17501be1639f229f4f786c22a413d4f45049d786e9a5a00337019de68e",
+    "src/recommendation/candidate.py": "d9aff86c96406b7af9d1b314c783383a1eceee220efd6567a787c47665cc1e0b",
+    "src/recommendation/datasets.py": "d671fe9f74ebb2df412ebe60abb1e4fb75d04677d86e6b908b460f1fd082a85d",
+    "src/recommendation/deepfm.py": "2933f21129e5d8b72b002df718568876a59218ba3522c814a78d0d470a7dd2ea",
+    "src/recommendation/diagnose_candidate.py": "b6aee4fac778459d5d81ad86f73d66d8bf6d085b47a721e37502a0f90e80eae1",
+    "src/recommendation/eval_candidate.py": "4ba20aad6cd23673918d6cce03c9e6309e889addee0e245f3cf57c0ac04b49ab",
+    "src/recommendation/eval_deepfm.py": "063a6a873823538b41cde5420f4dec0a7af05655802eda2dcf82a1e79e63d18b",
+    "src/recommendation/eval_policy.py": "f51be965eef8d018f4a73af594ab2cd39ef08b84a3094cb5f32f415ec3299efa",
+    "src/recommendation/eval_ranking.py": "a3fc2a6a25f4190a70674c987252e32afb4d2887af316915b06698e38584c282",
+    "src/recommendation/feature_store.py": "04a88f19de2d73547b0ffe4eeaa6153edde09f2f3ff2a4658986e0c318425d79",
+    "src/recommendation/features.py": "2be600ee6cf1137123e98c74cf54e8938174069fad4b3a22182e177fb2ee02a2",
+    "src/recommendation/index.py": "75461a38125fdc9b333abd00083dbc71446f67ee72f7cac884e7158fa2076c55",
+    "src/recommendation/mab.py": "a6e1cb1c65e121f8dacb9e0eb68dc3a56de44b63a3a9ed1fdd760af9e2d5d8b3",
+    "src/recommendation/ranking_features.py": "6102223aa751111c85302b25a169e9030bec498e7dcc092000646187f8bf2a5b",
+    "src/recommendation/ranking_labels.py": "106e94afa9acc2cdd62c8b7a2de20d138a9e5c95b3993f3353b2cf0a52c59128",
+    "src/recommendation/recommender.py": "bb17365e2669e2fe46ba08575fc4ab9cc421cd46c4bc9938949210ec33933d0b",
+    "src/recommendation/reranking.py": "522fa6fdfd812372419f86ccd358e27ff4d2392c53b0bebe3ce39352ace9e786",
+    "src/recommendation/runtime.py": "3345e29b917680523ddbfa32fc9c7f656f48b2cdfdb81684a07ba84cd0c4bfa2",
+    "src/recommendation/scoring.py": "935f752f0cb8b3c016c121bbd7ab5ce86622c01b697f6d2d0c321fcc5ab31bb0",
+    "src/recommendation/select_candidate.py": "8bef1a4e59ea299b34a55a4ff8f3c8e1e7dd6a152aea2e02d26db4f44da2de46",
+    "src/recommendation/service.py": "8c6c3034e440b2ab508a943b7e0179666bd9964f602ca31d9ec5c8255348e034",
+    "src/recommendation/session.py": "3a9014eb898084f6bffdb54de10fb103dcaa3b02c3565a01315641a6a86c6cbb",
+    "src/recommendation/testing.py": "4ab38889cbb5be933c2fe9ce246d0ed957139432413f3da8a43545bfcd70f440",
+    "src/recommendation/train_deepfm.py": "a743a7c0f260673a6a68f68628402acbc19d4bf096bdc613a0cac91e66e86c16",
+    "src/recommendation/train_session.py": "bdc46440f56521679c7aa1fc609c85999d94555e790c1271a74356a28f4e6972",
+    "src/recommendation/train_two_tower.py": "64b8d787b9f9e52f2cb56e05e2fb488d5c47b9f677b557db3dc7ed55c10b873e",
+    "src/recommendation/two_tower.py": "738298fd2d563e500ae876ae6223b873678adb5ef97467d46b87b736b85b79fa",
+    "src/recommendation/verify_candidate.py": "8dd47b32018d0483f848a118fe501dc72b6ae2f275cdee7125427f935792aaa0",
+    "src/recommendation/verify_deepfm.py": "48f270e8e395501e440308dd4aeca3d687926ab1447683dd79575c6985512de8",
+    "src/recommendation/verify_policy.py": "809312d51cb569f8231ba51d75dc6a5e7ee6c7e4a24756ccf71b493b3118920d",
+    "src/recommendation/verify_ranking.py": "3ec0062d60e7d67ff7b40f6525b594e171e0a640cf1b0f84a0e57a50d8e3a93d",
+    "src/search/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/search/api.py": "74ee18bf55e96f87e04990b8edea1107131358b97df722f4674f76587781f432",
+    "src/search/benchmark.py": "3613459e21c15ea116f3c78d135cb0f2eb130739ff640aea69f2922945d76e49",
+    "src/search/bm25.py": "6d739624d1b803fa50c1f5aae13ae95276d5fba5017c73e596ed453a3aa3eecd",
+    "src/search/build_embeddings.py": "dd38d8a12356a223cc863253edeb3894ac2e6cbd03dc90a0bf995b9fbc17fbdb",
+    "src/search/build_index.py": "1c48d807231012e4432b3af32677e20a337197542197c070126e1993693e56c1",
+    "src/search/encoder.py": "6eb104d8c80cff4142a9a2af5bcd420cbf480a24afdd9cfbb1ff5dec2732be9e",
+    "src/search/eval_search.py": "c8c2cdfe8aef5cec92fd9d7c378e958412fe36f484edf5f87a6dfd69fd7e2d77",
+    "src/search/eval_support.py": "cd609ce06fb28ba05c9a25bd6f894ac9cfef1be3ef5b2fe7a562f2b39aa2f390",
+    "src/search/finalize.py": "cba5ad1c4c9f6260f4d6b31b208f0b99d9b940c318ce2eafd656216663085712",
+    "src/search/index.py": "6cafe13858e2134cc1adaadb563a676f8ab6657e67106c5808b96ba82c89bf76",
+    "src/search/locking.py": "5c6b673651b26545c56fc7204ac1c9d2062045aa5354b1e2d747aad2c5c18f10",
+    "src/search/queries.py": "8aa6c03da382ce0902d5fe97cbefd7677ca60d75269842b3129dc602cb34993a",
+    "src/search/searcher.py": "b423a8b75e8ba84dd85baf1ea71e9ca79b8d02f85a5a1e6004771342382a7379",
+    "src/search/service.py": "a586f6896bdc4b8c37910f873e1ff7999aaad1bf298b2018a58be9dfccbfc880",
+    "src/search/testing.py": "b2fff6def6f6c64f44119af02e272ea80f61a728b65583c0996ba5c91cd79c26",
+    "src/search/text.py": "a8f862a14c61aaf990d2ebf38ebe60668a1e5057d9ed3b98a6bdf55da9084280",
+    "src/search/verify.py": "2c80d5445eb40d127ebe29af77fec2162bcf7b733401e4d35976662863540226",
+    "src/serving/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/serving/ct_admin.py": "1f739d8576d3d5cdef3e8115fa9f344a9f6f368cf6bf313057f091fdf401be7c",
+    "src/serving/feature_store.py": "1d9fcb770cb10042d6b530dc255ecf535e55fa65c5380aa1f0f71fda4dfd570d",
+    "src/serving/main.py": "37f6819543dfbcb34afeb061703f27514e3ecdac6d402a887028b87b08e76175",
+    "src/serving/memory_store.py": "f7c0b78a0493a93b796a1b07f4db9003b2a25ad429fd737379e771f7c1764508",
+    "src/serving/model_loader.py": "2f20393e0a81dabfe37ecc0dbce747307fb06bdc69dcb11dbb6eb66a36c1eb1b",
+    "src/serving/pytest_support.py": "1db8c0c5f75d98e16b6202c31f5c513e495a80fc533697cdd524807af580dfd2",
+    "src/serving/stream_features.py": "c402883cef647a34ebbc6e62c3fe08ad3af78b4c7d15086d12d073b708d79d29",
+    "src/serving/warmup_features.py": "026965fca8bd412d689c31a89902cae996dc9a7bfba0970404c5119b53eb7dc8",
+    "src/simulator/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/simulator/catalog.py": "94b132ba09135d1f3c25701f47d68c5845e1afd37d40f3de454cf8bb3b8ec51d",
+    "src/simulator/events.py": "da7be21da6e235f20c1faf0fa6bbaf1f4a9581fdc873de934d32ad4552b72795",
+    "src/simulator/generate.py": "47f65ce241eb22c2409704472c51b5937442045eb4b6719c99f380325d070a94",
+    "src/simulator/run.py": "8bd6fc798e70bf4f880973cdac858d88c2cab621456de574aea315727484a940",
+    "src/simulator/split.py": "7c8a9e5608e90255c3b1824ddec677c1900d42ccbe602d6845dd4711af22e9a5",
+    "src/simulator/users.py": "dd00f065bdcb67fc98f41df173a19f7bb11912ff306dbcb1e5183c9df2dc0eb0",
+    "tests/test_ab.py": "74888115829330dece05ca15068db964dbd2a6ca91a6ff25baa0cf47f9b66651",
+    "tests/test_candidate.py": "6c258c9da97209d4b9d3bc4c0fa9fb26c45ad383b742de9cafe3c45053750289",
+    "tests/test_config.py": "1c3e7c25280162be458f75c91615d0b71ce9ae9848d4f716e8cc2aaa8a149043",
+    "tests/test_ct.py": "5a9f63cf0fe82f267047fab373bc9e9b8a6995399ed7c4ea6201ed1deb38b606",
+    "tests/test_dashboard.py": "f92c9d76e1266005d5bccb86082a44d03f8467f88015b26d6408819fa60cd047",
+    "tests/test_deepfm.py": "b54b251c5505551764bec564d6570701a8ca5ff2263c6b3c753994c86b24d878",
+    "tests/test_docker.py": "31a62de38072c1ab2f890c81f1345be41002aedc18fd1f56f28aba2ae3dcfb78",
+    "tests/test_docker_vision.py": "667e175a67868d0f831be2f59892297324e81cf65d86145d2f393727269bb19e",
+    "tests/test_encoder.py": "a49795568bc3bc5dabb6af2d9b1ce8a3f175979f81519658f3652e643d1133b2",
+    "tests/test_evaluation_acceptance.py": "f6e4f6a25b17206df558a29a5fe14f161abe83eb631f77fcdcb605d8b06a9c6a",
+    "tests/test_evaluation_dashboard.py": "cce91bd0b0515a81acae6696e0d71c63b6ac99d62f56706ba9f5637782cea076",
+    "tests/test_feature_stream.py": "b9a4959403fad4208efa903f6d27e65779ea55ca8a15b6d04ed45557520f8ca1",
+    "tests/test_index.py": "33283f9c43258a5614c2ca2beb794ad04b3c04dca80f7cbfd05daee1f78d87eb",
+    "tests/test_integration_mab.py": "79e71d731d59907b0f5c6bb014bb104354c7952742b99aca91668a0f534d1d1b",
+    "tests/test_integration_redis.py": "30fa0d4d66cf04d95c74df79bc31e0000388228729ff0f18ad5314cbb5eb06d3",
+    "tests/test_metrics.py": "cd5911a70a49f6e56b3154e333d59477e41f2c48f14be809216a4abea4466e34",
+    "tests/test_pull_request.py": "29e669aba59f37cdd1c65afc35e3e116f123765c96e42c3edde7f5db168ac2e0",
+    "tests/test_ranking.py": "329bf188a989624ac195bcaced92fa343b27af2e37a625da8569843c82a5b72a",
+    "tests/test_ranking_lookup.py": "5d41d0ee4f717fe75ff9f2987f6fe18ef59ab244b2a1d25f34b401e7c13478a9",
+    "tests/test_ranking_scoring.py": "e0214f72e327720d21e650777a77e2996ace3a7a43bae89eed788a461c255b6c",
+    "tests/test_redis_features.py": "085cef9c02c3656858b3bc67291f24e3fa66b1e01040646f3d93ff279ca458d0",
+    "tests/test_reranking.py": "876544f1e9d2b058019309fe9f89d2c0bf804f91c1aceaf3f25fcc0c1c656c3a",
+    "tests/test_search_api.py": "7986e9f1bab07db1acc711fb67a22c1a08b8815415d4e35be5f41fcf265e5122",
+    "tests/test_search_artifacts.py": "fa40b85014885951b1b718b82afec9f6ad028e69a4e0e4ea047d6f1e262a9f61",
+    "tests/test_search_buckets.py": "f22e7886f36796f09ffca84209cde238795d84da0c68765876b046faf8e22e3d",
+    "tests/test_search_evaluation.py": "aa38d9906b5d6cd66281e91372101ef76bd9b6072b9fa46992c5057f6cf893d0",
+    "tests/test_search_finalize.py": "d9d25b7fef7343c16bd0fedc0a83c998f457654777b3beeb335448ebc35c29d5",
+    "tests/test_search_queries.py": "a1a86386e169968a68088ad578a1cf41cbeb7c406f60f2913c41c7389261b4e1",
+    "tests/test_serving_contract.py": "e6bca388f8748792ecdccfaa2075120e7b568c6746339b01b0fbc61a48fddd41",
+    "tests/test_session.py": "aebaa1001b5c3eae6650dae7ffaa31c6efb223512a2859a5fc8dbe8260f7b90d",
+    "tests/test_setup_env.py": "3021b96b4e78a4ddd9bafe7b8f6e49f540c0104de77fec3c87fa50f32bc61ba9",
+    "tests/test_simulator.py": "75b8a4b666369dff4ae80b339abaa3982b8333b4ce362b460e04af2f78fc83d0",
+    "tests/test_simulator_recipe.py": "4d5f03b963098aafd284fb91a6086ce394848af25f48ca2965fba529d5190809",
+    "tests/test_smoke.py": "6f4ed2eead4dbb1309faada026b3f1c99531153aca28e964deb8d6ff7ad3f727",
+    "tests/test_submission.py": "e9215ad04284d948a1f774ec19ecb97c6ba0da474ac19e4a1577bce2c5063236",
+    "tests/test_team_workflow.py": "74ffc17bf83ad38e6e624f3607c3eb6d31f61126873edc11ec2db3284119609f",
+    "tests/test_two_tower.py": "50060a534754da704cf8681571d7bb58be2887573a6e15090e701530e8968836"
+  },
+  "interpretation": "WORKFLOW gate PASS는 설치·전파·검증 완료를 뜻하며 위 결함의 수정이나 새로운 final acceptance PASS를 뜻하지 않는다."
+}

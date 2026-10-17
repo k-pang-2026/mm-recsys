@@ -58,6 +58,9 @@ class SetupTests(unittest.TestCase):
             self.assertIn('-r requirements-torch.txt', text)
         for name in ('docs/team_workflow.md', 'docs/contracts.md', 'scripts/step_git.py', 'setup_env.sh', '.github/workflows/ci.yml'):
             self.assertEqual((ROOT / name).read_bytes(), (self.project / name).read_bytes())
+        for name in ('skills/ponytail/SKILL.md', 'skills/ponytail-audit/SKILL.md',
+                     'skills/ponytail-source.json', 'skills/PONYTAIL_LICENSE'):
+            self.assertEqual((ROOT / name).read_bytes(), (self.project / name).read_bytes())
         self.assertEqual((ROOT / 'ai_step_prompts_optimized.md').read_bytes(),
                          (self.project / 'docs/ai_step_prompts.md').read_bytes())
         for p in (self.project / 'docs/results/gates').glob('*.json'):

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from itertools import groupby
 from pathlib import Path
 import json
 
@@ -126,12 +127,12 @@ class TrainingDataset(Dataset):
             seen: set[int] = set()
             latest = np.iinfo(np.int64).min
             # All samples in a timestamp group see the same strictly preceding state.
-            for at, simultaneous in group.groupby('timestamp', sort=True):
+            for at, simultaneous in groupby(group.itertuples(index=False), key=lambda row: row.timestamp):
                 snapshot = padded_history(history, spec['history_n'])
                 profile = encoder.profile(purchases, table)
                 demo = encoder.demographics(user_rows.get(user_id), at)
                 additions = []
-                for row in simultaneous.itertuples(index=False):
+                for row in simultaneous:
                     if row.event_type not in weights or pd.isna(row.product_id):
                         continue
                     positive = table.id_to_index[str(row.product_id)]
@@ -165,6 +166,6 @@ class TrainingDataset(Dataset):
     def __len__(self) -> int:
         return len(self.items)
 
-    def __getitem__(self, index: int) -> dict[str, torch.Tensor]:
+    def __getitem__(self, index: int | list[int]) -> dict[str, torch.Tensor]:
         return dict(history=self.history[index], demographics=self.demographics[index],
                     profile=self.profile[index], items=self.items[index], weights=self.weights[index])

@@ -92,13 +92,19 @@ def create_app(cfg: dict | None = None, search_service: Any=None, recommend_serv
     @app.post('/api/event')
     def event(payload: EventRequest, request: Request) -> dict:
         record_outcome(payload, request)
-        applied = request.app.state.store.append_event(payload)
+        try:
+            applied = request.app.state.store.append_event(payload)
+        except ConnectionError as error:
+            raise HTTPException(503, 'event storage unavailable; retry the same event ID') from error
         return {'applied': applied, 'features': request.app.state.store.get_features(payload.user_id)}
 
     @app.post('/api/feedback')
     def feedback(payload: FeedbackRequest, request: Request) -> dict:
         record_outcome(payload, request)
-        return {'applied': request.app.state.store.update_reward(payload)}
+        try:
+            return {'applied': request.app.state.store.update_reward(payload)}
+        except ConnectionError as error:
+            raise HTTPException(503, 'feedback storage unavailable; retry the same event ID') from error
 
     return app
 

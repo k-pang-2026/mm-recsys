@@ -14,7 +14,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from torch.utils.data import DataLoader
+from torch.utils.data import BatchSampler, DataLoader, RandomSampler
 
 from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.config import load_config
@@ -155,8 +155,10 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
     tiny = tiny_fit(model, dataset, cfg)
     evaluation = Evaluation(data, encoder, table, cfg)
     baselines = evaluation.baseline_metrics()
-    loader = DataLoader(dataset, batch_size=spec['batch_size'], shuffle=True, num_workers=spec['num_workers'],
-                        generator=torch.Generator().manual_seed(cfg['seed'] + 2), worker_init_fn=seed_worker)
+    generator = torch.Generator().manual_seed(cfg['seed'] + 2)
+    batches = BatchSampler(RandomSampler(dataset, generator=generator), spec['batch_size'], drop_last=False)
+    loader = DataLoader(dataset, batch_size=None, sampler=batches, num_workers=spec['num_workers'],
+                        generator=generator, worker_init_fn=seed_worker)
     optimizer = torch.optim.AdamW(model.parameters(), lr=spec['learning_rate'], weight_decay=spec['weight_decay'])
     best_recall, best_epoch, stale, epochs = -1.0, 0, 0, []
     best_state = None

@@ -88,6 +88,10 @@ def load_ranking(cfg: dict, data: dict) -> tuple[DeepFM, RankingEncoder, dict]:
 def train(cfg: dict) -> dict:
     started=time.perf_counter(); set_seed(cfg['seed']); spec=cfg['recommend']['ranking']; torch.set_num_threads(spec['threads'])
     data,labels,diagnostics=prepare(cfg)
+    for split in ('train','valid'):
+        observed=labels[split].loc[labels[split].cvr_mask,'cvr']
+        if observed.nunique()!=2:
+            raise ValueError(f'{split} CVR requires observed purchases and non-purchases; regenerate a versioned dataset')
     write_json(Path(cfg['paths']['results_dir'])/f'ranking_labels_{cfg["scale"]}.json', diagnostics)
     metadata=FeatureEncoder.fit(data['products'],data['users'],cutoff_for(data,'valid'))
     table=metadata.item_table(data['products']); history=HistoryIndex(data['train'],table)

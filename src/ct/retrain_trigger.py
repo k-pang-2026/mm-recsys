@@ -8,6 +8,7 @@ import copy
 import json
 from pathlib import Path
 import time
+import requests
 
 from src.common.artifacts import write_json
 from src.common.config import load_config
@@ -120,7 +121,6 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
 def reload_api(url: str, version: str) -> dict:
     from urllib.parse import urlparse
     import ipaddress
-    import requests
     parsed = urlparse(url)
     try:
         loopback = parsed.hostname == 'localhost' or ipaddress.ip_address(parsed.hostname or '').is_loopback
@@ -131,6 +131,11 @@ def reload_api(url: str, version: str) -> dict:
         raise ValueError('reload URL must be a direct local HTTP API origin')
     with requests.Session() as session:
         session.trust_env = False
+        health = session.get(url.rstrip('/') + '/health', timeout=10, allow_redirects=False)
+        if health.status_code != 200:
+            raise RuntimeError(f'API health unavailable: HTTP {health.status_code}')
+        if health.json().get('model_version') == version:
+            return dict(status='unchanged', version=version)
         response = session.post(url.rstrip('/') + '/api/admin/reload', json=dict(version=version),
                                 timeout=60, allow_redirects=False)
     if response.status_code != 200:
@@ -158,11 +163,22 @@ def main() -> int:
         print(json.dumps(dict(status='ROLLED_BACK', active=registry.read()['active'])))
         return 0
     while True:
+        if args.train and args.reload_url and registry.read()['active']:
+            try:
+                reload_api(args.reload_url, registry.read()['active'])
+            except (requests.RequestException, RuntimeError) as error:
+                if not args.watch:
+                    raise
+                append_log(registry.log, dict(event='reload_retry', error=str(error)))
+                time.sleep(float(spec['poll_seconds']))
+                continue
         monitor(journal, spec, time.time(), registry.log)
         if args.train:
             result = trigger(cfg, lambda version, through, reg: build_from_journal(cfg, version, through, reg))
             print(json.dumps(result), flush=True)
             if result['status'] == 'PROMOTED' and args.reload_url:
+                if args.watch:
+                    continue  # Synchronize the registry active version before any further training.
                 reload_api(args.reload_url, result['active'])
         if not args.watch:
             break

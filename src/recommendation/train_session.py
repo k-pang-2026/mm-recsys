@@ -7,6 +7,7 @@ import argparse
 import copy
 import json
 import time
+from itertools import groupby
 from pathlib import Path
 
 import numpy as np
@@ -27,15 +28,16 @@ def examples(events: pd.DataFrame,table: Any,max_length: int,start: pd.Timestamp
     views=events[(events.event_type=='view') & events.product_id.notna()].sort_values(['timestamp','event_id'])
     for _,group in views.groupby(['user_id','session_id'],sort=False):
         history: list[int] = []; last_time: pd.Timestamp | None = None
-        for at,simultaneous in group.groupby('timestamp',sort=True):
+        for at,rows in groupby(group.itertuples(index=False),key=lambda row:row.timestamp):
+            simultaneous=list(rows)
             if history and start<=at<=end:
                 assert last_time is not None
                 sequence=np.zeros(max_length,np.int64); recent=history[-max_length:]; sequence[:len(recent)]=recent
-                for row in simultaneous.itertuples(index=False):
+                for row in simultaneous:
                     target=table.id_to_index[str(row.product_id)]
                     if table.created[target]>at.value: raise ValueError('session target is future product')
                     inputs.append(sequence.copy()); targets.append(target); times.append(at.value); latest.append(last_time.value)
-            history.extend(table.id_to_index[str(p)] for p in simultaneous.product_id); last_time=at
+            history.extend(table.id_to_index[str(row.product_id)] for row in simultaneous); last_time=at
     if not inputs: raise ValueError('no next-view session samples')
     return np.stack(inputs),np.array(targets,np.int64),np.array(times,np.int64),np.array(latest,np.int64)
 
@@ -83,8 +85,7 @@ def train(cfg: dict) -> dict:
     data=read_data(cfg['paths']['data_dir'],'valid'); candidate,_,table,candidate_meta=load_bundle(Path(cfg['paths']['model_dir'])/'v1.0',data,cfg)
     with torch.inference_mode():
         vectors=candidate.encode_items(torch.arange(len(table.ids))).numpy()
-    # Respect the simulator's recorded session_id. Its offline timestamps span hours;
-    # serving's 30-minute inactivity TTL is a separate, explicitly reported limitation.
+    # Preserve recorded sessions; legacy datasets may differ from the live inactivity TTL.
     boundary=data['manifest']['boundaries']; training=examples(data['train'],table,spec['max_length'],pd.Timestamp(boundary['train']['start']),pd.Timestamp(boundary['train']['end']))
     valid=examples(pd.concat([data['train'],data['valid']],ignore_index=True),table,spec['max_length'],pd.Timestamp(boundary['valid']['start']),pd.Timestamp(boundary['valid']['end']))
     train_seq=torch.from_numpy(training[0]); valid_seq=torch.from_numpy(valid[0])
@@ -123,7 +124,7 @@ def train(cfg: dict) -> dict:
     report=dict(status='PASS',scale=cfg['scale'],acceptance='UNMEASURED',epochs=epochs,best_epoch=best_epoch,selected_valid=selected,
                 checkpoint_reload='PASS',bundle=meta,elapsed_seconds=time.perf_counter()-started,train_samples=len(train_seq),
                 strictly_preceding=bool((training[3]<training[2]).all() and (valid[3]<valid[2]).all()),
-                semantics='offline recorded session_id; live store inactivity TTL=30min; generator may span hours',
+                semantics='offline recorded session_id; live store inactivity TTL=30min; generator 4.2 uses minute-scale session steps',
                 environment=dict(torch=torch.__version__,threads=torch.get_num_threads(),device='cpu'))
     write_json(output,report); return report
 

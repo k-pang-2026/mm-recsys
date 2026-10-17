@@ -42,12 +42,11 @@ def replay_stream(cfg: dict, store: RedisFeatureStore) -> dict:
                                  product_id=str(row["product_id"]), event_type=row["event_type"],
                                  session_id=str(row["session_id"]),
                                  category=category.get(row["product_id"]))
-            store.append_event(event)
-            if not store.available:
-                raise ConnectionError("Redis event write failed; chunk checkpoint was preserved")
-            store.update_reward(FeedbackRequest(**event.model_dump()))
-            if not store.available:
-                raise ConnectionError("Redis reward write failed; chunk checkpoint was preserved")
+            try:
+                store.append_event(event)
+                store.update_reward(FeedbackRequest(**event.model_dump()))
+            except ConnectionError as error:
+                raise ConnectionError('Redis write failed; chunk checkpoint was preserved') from error
             count += 1
         saved["chunks"][path.name] = digest
         write_json(checkpoint, saved)

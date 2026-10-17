@@ -10,6 +10,18 @@ from src.common.artifacts import file_hash, fingerprint
 VERSION = 'evaluation-dashboard-v1'
 
 
+def quality_status(rows: list[dict], recommendation: dict, candidate_k: int) -> str:
+    count = recommendation.get('candidate', {}).get('ann_two_tower', {}).get('candidate_count_min')
+    violations = recommendation.get('constraint_violations', recommendation.get('feasible_constraint_violations', 0))
+    if (any(row['status'] == 'FAIL' for row in rows) or violations
+            or recommendation.get('infeasible_candidate_pools', 0)
+            or count is not None and count < candidate_k):
+        return 'FAIL'
+    if count is None or any(row['status'] == 'UNMEASURED' for row in rows):
+        return 'UNMEASURED'
+    return 'PASS'
+
+
 def metric(name: str, value: float | None, cfg: dict, split: str,
            source: str, reason: str | None = None) -> dict:
     target = cfg['targets'].get(name)
