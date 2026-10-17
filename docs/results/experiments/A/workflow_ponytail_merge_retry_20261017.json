@@ -1,0 +1,127 @@
+{
+  "kind": "Ponytail audit follow-up: already-merged PR retry",
+  "created_at": "2026-10-17T08:51:57.709418+00:00",
+  "base_commit": "24ab0d0cc38b331554ca58298e8e1a8f0fa4b15d",
+  "status": "PASS",
+  "final_acceptance": "UNMEASURED",
+  "finding": {
+    "number": 9,
+    "priority": "Must fix",
+    "what_this_is": "병합 도구는 재실행해도 같은 승인 SHA의 완료 상태를 확인해야 한다.",
+    "problem": "실제 GitHub REST API 2026-03-10의 이미 병합된 PR 응답에 merge_commit_sha가 없어서 KeyError로 종료한다.",
+    "fix": "기존 REST SHA를 우선 사용하고 없으면 같은 PR node_id의 GraphQL merged/mergeCommit.oid를 확인한다. 오류·누락·잘못된 SHA는 성공으로 처리하지 않는다.",
+    "if_skipped": "병합은 완료됐어도 재실행에서 오류를 표시해 운영자가 상태를 신뢰하기 어렵다.",
+    "source": "scripts/pull_request.py",
+    "reproduction": {
+      "test": "tests/test_pull_request.py::test_merge_retry_verifies_graphql_when_rest_omits_merge_sha",
+      "before": "3 failed: KeyError merge_commit_sha",
+      "after": "36 PR tests passed, including success/error/missing SHA",
+      "observed_api": {
+        "rest_keys": [
+          "_links",
+          "active_lock_reason",
+          "additions",
+          "assignees",
+          "author_association",
+          "auto_merge",
+          "base",
+          "body",
+          "changed_files",
+          "closed_at",
+          "comments",
+          "comments_url",
+          "commits",
+          "commits_url",
+          "created_at",
+          "deletions",
+          "diff_url",
+          "draft",
+          "head",
+          "html_url",
+          "id",
+          "issue_url",
+          "labels",
+          "locked",
+          "maintainer_can_modify",
+          "mergeable",
+          "mergeable_state",
+          "merged",
+          "merged_at",
+          "merged_by",
+          "milestone",
+          "node_id",
+          "number",
+          "patch_url",
+          "rebaseable",
+          "requested_reviewers",
+          "requested_teams",
+          "review_comment_url",
+          "review_comments",
+          "review_comments_url",
+          "state",
+          "statuses_url",
+          "title",
+          "updated_at",
+          "url",
+          "user"
+        ],
+        "graphql": {
+          "data": {
+            "node": {
+              "merged": true,
+              "mergeCommit": {
+                "oid": "24ab0d0cc38b331554ca58298e8e1a8f0fa4b15d"
+              }
+            }
+          }
+        },
+        "api_version": "2026-03-10"
+      }
+    },
+    "live_verification": {
+      "number": 15,
+      "merged": true,
+      "sha": "24ab0d0cc38b331554ca58298e8e1a8f0fa4b15d",
+      "url": "https://github.com/k-pang-2026/mm-recsys/pull/15"
+    },
+    "second_merge_write": false
+  },
+  "verification": {
+    "pytest": {
+      "tests": 354,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "warnings": 2,
+      "seconds": 143.351,
+      "xml": "docs/results/experiments/A/workflow_ponytail_retry_pytest_20261017.xml",
+      "sha256": "58bf8aeb917a7043b5e31956a146dc164c268ca306da8ad8d6036a93889a87bd",
+      "command": "REDIS_HOST=127.0.0.1 REDIS_PORT=17379 CONFIG_PATH=config.yaml SCALE=dev PYTHONHASHSEED=42 RUN_REDIS_TESTS=1 .venv/bin/python -m pytest -q -rA -p src.serving.pytest_support tests"
+    },
+    "mypy": "Success: no issues found in 133 source files",
+    "full_quality": {
+      "status": "PASS_UNCHANGED_MEASURED_CORE",
+      "measured_commit": "c0e7f5f5201c3135b37521e68f9ab3da4b6561d3",
+      "source": "docs/results/experiments/A/workflow_ponytail_refactor_20261017.json",
+      "sha256": "702e86aadd719b63d10bcc6c00a25c096a7b2b5ec54824b41431dac4964c6c8f",
+      "valid": "11/11 PASS",
+      "test": "11/11 PASS",
+      "frozen_source_files_matching": 113,
+      "scope": "이전 full 학습·평가·HTTP 실측은 보존한다. 이번 diff는 GitHub 도구·테스트·문서뿐이며 전체 서빙/모델 Python 및 평가 identity 소스 해시는 그대로다. full 재학습·재평가 시간이나 개선율을 새로 측정했다고 주장하지 않는다."
+    },
+    "efficiency": {
+      "source": "docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json",
+      "sha256": "c3cee7dd78bbec150f2bcdd749958dbbd3a8d8f1511af843a24ec567669ff58b",
+      "source_hashes_unchanged": true
+    }
+  },
+  "source_hashes": {
+    "scripts/pull_request.py": "3a2071421f33f1b49433c0b4023b094e711d23471ecf0a78bb248475ac796037",
+    "tests/test_pull_request.py": "ceeb95b604d398b877e9882f1fe27a2279178d3f44daa9645dc7e970b2acf26b"
+  },
+  "new_dependencies": 0,
+  "not_measured": [
+    "새 full A/B·자연 CT·실사용 매출 효과",
+    "대규모 동시 부하·외부 패키지 CVE 전수 검사"
+  ]
+}

@@ -353,3 +353,17 @@ cold truth valid 7명/test 5명의 작은 표본도 그대로 공개한다.
 실측 원본·동결 identity·모델/소스 해시·중간 실패/재검사와 정확한 범위는 감사 후속 보고서에 기록했다.
 새 full A/B·자연 CT·실사용 매출 효과와 대규모 동시 부하는 미측정이며
 WORKFLOW `acceptance=UNMEASURED`를 유지한다. 수치 조건 통과를 최종 종합 acceptance와 구분한다.
+
+### GitHub 병합 완료 재조회 호환성 보완
+
+PR #15는 CI를 통과해 24ab0d0으로 정상 병합됐다. 마지막 재조회에서 실제 REST API
+2026-03-10 응답에 `merge_commit_sha`가 없어 이미 병합된 PR 재실행이 KeyError로 끝나는 문제를 발견했다.
+기존 필드가 있으면 그대로 쓰고, 없으면 같은 PR node_id로 기존 GraphQL API의
+`merged`·`mergeCommit.oid`를 확인한다. 오류·누락·유효하지 않은 SHA는 성공으로 처리하지 않는다.
+원래 실패하던 회귀 3건과 기존 PR 검사 36건, 전체 **354개** 테스트 및 타입 검사 133파일을 통과했다.
+실제 PR #15를 두 번째 병합 쓰기 없이 재조회해 정확한 SHA를 확인했다.
+
+이번 후속 diff는 PR 자동화·테스트·문서에 한정된다. 앞서 측정한 full 모델·서빙 소스 113개와
+평가 identity 소스, 효율 비교 대상 3파일은 그대로다. 원래 full 보고서·351개 테스트 XML은
+그 실측 커밋의 근거로 보존하고 최신 354개 XML과 API 응답·실패/수정·실조회 근거는
+[후속 보고서](../results/experiments/A/workflow_ponytail_merge_retry_20261017.json)에 따로 남겼다.

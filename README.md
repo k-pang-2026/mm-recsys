@@ -8,6 +8,8 @@ Ponytail 감사 후 생성기는 4.2로 버전이 변경되었다. 기존 4.1 �
 통과했다. 전체 회귀 351개·타입 검사 133파일도 통과했다. 새 A/B·자연 CT 효과를 포함한
 최종 종합 판정은 `UNMEASURED`이며, [동일 입력 효율 비교](docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json)는
 부분 전처리·로딩 시간의 3회 중앙값이다.
+이후 GitHub 병합 완료 재조회 호환성을 보완했으며, 최신 전체 회귀 **354개**와 실제 PR 재조회는
+[후속 검증](docs/results/experiments/A/workflow_ponytail_merge_retry_20261017.json)에 별도 기록했다.
 
 팀장이 공통 개발 기반을 구현·검증해 `chore/shared-foundation` → main PR로 먼저 병합한 뒤,
 세 사람이 독립 클론에서
