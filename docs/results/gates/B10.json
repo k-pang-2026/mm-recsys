@@ -6,54 +6,52 @@
   "acceptance": "UNMEASURED",
   "commands": [
     {
+      "command": "SCALE=full CONFIG_PATH=config.yaml PYTHONHASHSEED=42 .venv/bin/python docs/results/experiments/A/docker_remove_replay_20261020/verify_checks.py",
+      "exit_code": 0
+    },
+    {
       "command": "docker compose config --quiet",
       "exit_code": 0
     },
     {
-      "command": "SCALE=dev .venv/bin/python -m pytest -q -p no:cacheprovider tests/test_docker.py",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/python -m mypy docker scripts/prepare_all.py",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/python .team/checks/docker-full-cli-20261020/verify_gate.py",
+      "command": "git diff --check",
       "exit_code": 0
     }
   ],
   "artifacts": [
-    ".env",
-    "docker-compose.yml",
-    "docker/Dockerfile.dashboard",
-    "docker/dashboard_entrypoint.py",
-    "docker/serve.py",
-    "docker/simulator.py",
-    "scripts/prepare_all.py",
-    "tests/test_docker.py",
-    "config/team_workflow.yaml",
     "README.md",
-    "docs/contributions/A.md",
-    "docs/results/experiments/A/docker_full_cli_20261020.json",
-    "docs/results/docker/full_cli_20261020/smoke_full.json"
+    "config/team_workflow.yaml",
+    "docker/simulator.py",
+    "tests/test_docker.py",
+    "tests/test_ponytail_refactor.py",
+    "docs/results/experiments/A/docker_remove_replay_20261020.json",
+    "docs/results/experiments/A/docker_remove_replay_20261020/initial_local_failures.txt",
+    "docs/results/experiments/A/docker_remove_replay_20261020/mypy.txt",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pip_check.txt",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pytest.txt",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pytest.xml",
+    "docs/results/experiments/A/docker_remove_replay_20261020/runtime.json",
+    "docs/results/experiments/A/docker_remove_replay_20261020/verify_checks.py",
+    "docs/results/experiments/A/docker_remove_replay_20261020/verify_runtime.py"
   ],
   "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
   "config_fingerprint": "032da72095cfd2987ac09e6b87f0d01314d9888a13e19ac0f5586cdd78cc0f6f",
   "evaluation_version": "fixed-origin-v1",
   "source_hashes": {
-    ".env": "0c506e6b5e8dd505ba119899cede78a1b8f45864fb531108360ff40ca3632bad",
-    "docker-compose.yml": "d66d2e2695cd1c74580143e658444e9b0379cd057f6f06b666c89d397fe7105e",
-    "docker/Dockerfile.dashboard": "fd789710372e7ef659ae0d3402f021ca181def88a78ca9df0aac568570366663",
-    "docker/dashboard_entrypoint.py": "c2bd1c67c41ed80e026aeecc108a0f658f4d453ceea635cf1380a66e6da49d35",
-    "docker/serve.py": "50a1a61c468d50a3c563b19d4842322cc3fa5826d88d9934a20bacfac67ff597",
-    "docker/simulator.py": "9ff28062859853631197556114ac02a785749555369819033ce1a45dc69ea420",
-    "scripts/prepare_all.py": "9ffbf81b532dbaf6a1cacca75afa40f63f43155308781742e0993a278348323a",
-    "tests/test_docker.py": "acceccfbd490ff04fa5a1097c926b7729a9658f4a8cae63d596d08f88824b086",
-    "config/team_workflow.yaml": "cece6ed64d1b86e6c20432101ca7f8daf172c7069af0fc3f7ccb2a9dd4498db3",
-    "README.md": "c25520ed2486ce91652a7005a3a7ac12e69fd849f3bb62843559f057c9f1a0d5",
-    "docs/contributions/A.md": "0ca7fea5287bd6b4c70065e50b9a97eba1a81fce1e66363ed8dd50ecb5cdaf8d",
-    "docs/results/experiments/A/docker_full_cli_20261020.json": "d1bd1284efdfd7a53f1c0b083657cb8b570bbbeadcba47dacd44ed5fe5b46246",
-    "docs/results/docker/full_cli_20261020/smoke_full.json": "5778090848ae6f19b05fc26182aed4b2a3b3a542a287ce7860825b5a7658595a"
+    "README.md": "e206b8da1ee816285c2e384158ea9faed9e87890003abb600454c2bb853987ea",
+    "config/team_workflow.yaml": "956c24e74f4b9cd0b2c6d98e0693e54bf69b243478c8f264ec7190016bff68ba",
+    "docker/simulator.py": "284c9f34521880ea2c82f5ce28e1127207b118eaee133a3f6367c126a2d2eaf1",
+    "tests/test_docker.py": "c34f554263fe9b7077d6c393e625c70e966e12fede3d694b987d5c5963d4ee8a",
+    "tests/test_ponytail_refactor.py": "8da8aa602df4daabc728f306c72e565c2522a99cabc2675cd4c8f0c5de3b9fe0",
+    "docs/results/experiments/A/docker_remove_replay_20261020.json": "d3109369709cfca14ae183a1a44827759aa063a3dcd6c128434d690decba3634",
+    "docs/results/experiments/A/docker_remove_replay_20261020/initial_local_failures.txt": "699e6efaf1f798bdd23a49648d40b2e7f9ad8bb69d3e8529c0214d8d6cec4cac",
+    "docs/results/experiments/A/docker_remove_replay_20261020/mypy.txt": "8b88f6d12bd312c1b024b66d07a7f7619a68482ac4d64e475759b1823199faa5",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pip_check.txt": "6a869f0778b40b2b24e66801d7986576b3104b6d700e56b1ec727197f0618df7",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pytest.txt": "f5063e70d17fc034bf85d5e8add864d1ace084837752ee2811378d8d875d4265",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pytest.xml": "fdcf86885c88ac77e6656fb3329c5c3c48746fa99beaf80543eeb6f891baf0c3",
+    "docs/results/experiments/A/docker_remove_replay_20261020/runtime.json": "41e5c72ca8eaabf10f88b6651f4c5d03e68fc861fe19940dc9ce6075353f5e70",
+    "docs/results/experiments/A/docker_remove_replay_20261020/verify_checks.py": "19585afaac84a0bfc336ef48e1cea9bafac4742d0851fdb25a471f683d2bffc7",
+    "docs/results/experiments/A/docker_remove_replay_20261020/verify_runtime.py": "e030907e3d9073e11a2014ff5816a43b92dfd6eb0d7fe281d86cd5d70c9c032f"
   },
-  "commit_summary_ko": "기본 full Docker 기동과 한국어 로그·API 연결 검증"
+  "commit_summary_ko": "불필요한 전량 API 재전송 제거 및 필수 실시간 로그 생성 유지"
 }
