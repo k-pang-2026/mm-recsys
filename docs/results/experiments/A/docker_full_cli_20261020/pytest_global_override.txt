@@ -1,0 +1,294 @@
+..............................FF........................................ [ 19%]
+........................................................................ [ 38%]
+................................................FFF...........F......... [ 58%]
+.....F.................................................................. [ 77%]
+........................................................................ [ 97%]
+...........                                                              [100%]
+=================================== FAILURES ===================================
+______ test_docker_warmup_allows_sorting_but_rejects_model_config_changes ______
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-5/test_docker_warmup_allows_sort0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf803f8d92540>
+
+    def test_docker_warmup_allows_sorting_but_rejects_model_config_changes(tmp_path,monkeypatch):
+        import copy
+        import fakeredis
+        from scripts.prepare_all import stage
+        from src.ct.bootstrap import bootstrap
+        from src.serving import feature_store,warmup_features
+        cfg,_=service_fixture(tmp_path)
+        cfg['paths']['results_dir']=str(tmp_path/'results')
+>       bootstrap(cfg)
+
+tests/test_checklist_fixes.py:164: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/ct/bootstrap.py:24: in bootstrap
+    load_record(registry, 'v1.0', MemoryFeatureStore())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+registry = <src.ct.model_registry.ModelRegistry object at 0xf803f7f60590>
+version = 'v1.0'
+store = <src.serving.memory_store.MemoryFeatureStore object at 0xf803f7f63590>
+
+    def load_record(registry: ModelRegistry, version: str, store: Any, *, scoring: dict | None = None) -> Any:
+        from src.recommendation.service import create_service
+        record = registry.verify(version)
+        cfg = copy.deepcopy(record['config'])
+        if scoring is not None:
+            cfg['recommend']['scoring'] = copy.deepcopy(scoring)
+        cfg['paths']['data_dir'] = record['data_path']
+        cfg['recommend'].pop('candidate_bundle', None)
+        # B loaders intentionally share the fixed v1.0 format. A transient directory
+        # view exposes one complete immutable release to all three loaders together.
+        # No model is copied or modified; all inference objects are resident on return.
+        with tempfile.TemporaryDirectory(prefix='mm-ct-load-') as temporary:
+            Path(temporary, 'v1.0').symlink_to(record['bundle_path'], target_is_directory=True)
+            cfg['paths']['model_dir'] = temporary
+            # Avoid B's optional RECOMMEND_MODEL_DIR override bypassing this release.
+            import os
+            if os.getenv('RECOMMEND_MODEL_DIR'):
+>               raise ValueError('unset RECOMMEND_MODEL_DIR when loading a registered release')
+E               ValueError: unset RECOMMEND_MODEL_DIR when loading a registered release
+
+src/serving/model_loader.py:30: ValueError
+____________ test_ct_compares_models_under_the_same_runtime_policy _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-5/test_ct_compares_models_under_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf803f7f75670>
+
+    def test_ct_compares_models_under_the_same_runtime_policy(tmp_path,monkeypatch):
+        import copy,shutil
+        from pathlib import Path
+        from src.ct import training
+        from src.ct.bootstrap import bootstrap
+        from src.ct.retrain_trigger import build_from_journal,components
+        cfg,data=service_fixture(tmp_path);cfg['paths']['results_dir']=str(tmp_path/'results')
+        source=Path(cfg['paths']['data_dir'])
+        pd.concat([data['train'],data['valid']]).to_parquet(source/'events.parquet',index=False)
+        pd.DataFrame(columns=['impression_id','request_id','user_id','product_id','exposed_at','position']).to_parquet(source/'impressions.parquet',index=False)
+>       bootstrap(cfg);registry=components(cfg)[2]
+
+tests/test_checklist_fixes.py:185: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/ct/bootstrap.py:24: in bootstrap
+    load_record(registry, 'v1.0', MemoryFeatureStore())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+registry = <src.ct.model_registry.ModelRegistry object at 0xf803f8d90e90>
+version = 'v1.0'
+store = <src.serving.memory_store.MemoryFeatureStore object at 0xf803f8d87230>
+
+    def load_record(registry: ModelRegistry, version: str, store: Any, *, scoring: dict | None = None) -> Any:
+        from src.recommendation.service import create_service
+        record = registry.verify(version)
+        cfg = copy.deepcopy(record['config'])
+        if scoring is not None:
+            cfg['recommend']['scoring'] = copy.deepcopy(scoring)
+        cfg['paths']['data_dir'] = record['data_path']
+        cfg['recommend'].pop('candidate_bundle', None)
+        # B loaders intentionally share the fixed v1.0 format. A transient directory
+        # view exposes one complete immutable release to all three loaders together.
+        # No model is copied or modified; all inference objects are resident on return.
+        with tempfile.TemporaryDirectory(prefix='mm-ct-load-') as temporary:
+            Path(temporary, 'v1.0').symlink_to(record['bundle_path'], target_is_directory=True)
+            cfg['paths']['model_dir'] = temporary
+            # Avoid B's optional RECOMMEND_MODEL_DIR override bypassing this release.
+            import os
+            if os.getenv('RECOMMEND_MODEL_DIR'):
+>               raise ValueError('unset RECOMMEND_MODEL_DIR when loading a registered release')
+E               ValueError: unset RECOMMEND_MODEL_DIR when loading a registered release
+
+src/serving/model_loader.py:30: ValueError
+______ test_resident_lookup_matches_original_dataframe_path[u-recent0-0] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-5/test_resident_lookup_matches_o0')
+uid = 'u', recent = [], count = 0
+
+    @pytest.mark.parametrize('uid,recent,count', [('u', [], 0), ('unknown', [], 0),
+                                                 ('u', ['p00', 'p01', 'missing'], 3)])
+    def test_resident_lookup_matches_original_dataframe_path(tmp_path, uid, recent, count):
+        cfg, data = service_fixture(tmp_path)
+        service = create_service(cfg, RecommendationFeatureStore(cfg, data['products']))
+>       products = service.table.ids[1:]
+E       AttributeError: 'NoneType' object has no attribute 'table'
+
+tests/test_ranking_lookup.py:17: AttributeError
+___ test_resident_lookup_matches_original_dataframe_path[unknown-recent1-0] ____
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-5/test_resident_lookup_matches_o1')
+uid = 'unknown', recent = [], count = 0
+
+    @pytest.mark.parametrize('uid,recent,count', [('u', [], 0), ('unknown', [], 0),
+                                                 ('u', ['p00', 'p01', 'missing'], 3)])
+    def test_resident_lookup_matches_original_dataframe_path(tmp_path, uid, recent, count):
+        cfg, data = service_fixture(tmp_path)
+        service = create_service(cfg, RecommendationFeatureStore(cfg, data['products']))
+>       products = service.table.ids[1:]
+E       AttributeError: 'NoneType' object has no attribute 'table'
+
+tests/test_ranking_lookup.py:17: AttributeError
+______ test_resident_lookup_matches_original_dataframe_path[u-recent2-3] _______
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-5/test_resident_lookup_matches_o2')
+uid = 'u', recent = ['p00', 'p01', 'missing'], count = 3
+
+    @pytest.mark.parametrize('uid,recent,count', [('u', [], 0), ('unknown', [], 0),
+                                                 ('u', ['p00', 'p01', 'missing'], 3)])
+    def test_resident_lookup_matches_original_dataframe_path(tmp_path, uid, recent, count):
+        cfg, data = service_fixture(tmp_path)
+        service = create_service(cfg, RecommendationFeatureStore(cfg, data['products']))
+>       products = service.table.ids[1:]
+E       AttributeError: 'NoneType' object has no attribute 'table'
+
+tests/test_ranking_lookup.py:17: AttributeError
+___________ test_policy_stores_rng_and_configuration_are_independent ___________
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-5/test_policy_stores_rng_and_con0')
+
+    def test_policy_stores_rng_and_configuration_are_independent(tmp_path):
+        from src.recommendation.eval_policy import isolated_policy
+        from src.recommendation.service import create_service
+        cfg,data=service_fixture(tmp_path)
+        base=create_service(cfg,RecommendationFeatureStore(cfg,data['products']))
+>       a=isolated_policy(base,{'strategy':'ctr'});b=isolated_policy(base,{'strategy':'rank_fusion','alpha':.25})
+
+tests/test_ranking_scoring.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+base = None, spec = {'strategy': 'ctr'}
+
+    def isolated_policy(base: Any, spec: dict) -> Any:
+        """Share immutable models/features, never mutable exposure/config/RNG state."""
+        service = copy.copy(base)
+>       service.cfg = copy.deepcopy(base.cfg)
+E       AttributeError: 'NoneType' object has no attribute 'cfg'
+
+src/recommendation/eval_policy.py:42: AttributeError
+___ test_recommendation_with_supplied_service_remains_200_when_redis_is_down ___
+
+caplog = <_pytest.logging.LogCaptureFixture object at 0xf803d2d45250>
+
+    def test_recommendation_with_supplied_service_remains_200_when_redis_is_down(caplog):
+        client = Mock()
+        client.pipeline.side_effect = ConnectionError("offline")
+        store = RedisFeatureStore(client)
+        class ColdStartService:
+            def recommend(self, user_id, top_n):
+                features = store.get_features(user_id)
+                return RecommendResponse(user_id=user_id, recommendations=[],
+                                         pipeline_latency={}, session_context={
+                                             "recent_clicks": features.recent_clicks,
+                                             "session_interest": features.session_interest})
+        with TestClient(create_app(load_config(), recommend_service=ColdStartService(),
+                                   feature_store=store)) as api:
+>           response = api.get("/api/recommend", params={"user_id": "unknown"})
+
+tests/test_redis_features.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:514: in get
+    return super().get(
+.venv/lib/python3.12/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+.venv/lib/python3.12/site-packages/starlette/testclient.py:484: in request
+    return super().request(
+.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+.venv/lib/python3.12/site-packages/starlette/testclient.py:377: in handle_request
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/testclient.py:374: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:187: in __call__
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:165: in __call__
+    await self.app(scope, receive, _send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:735: in app
+    await route.handle(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:288: in handle
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:76: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:73: in app
+    response = await f(request)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:301: in app
+    raw_response = await run_endpoint_function(
+.venv/lib/python3.12/site-packages/fastapi/routing.py:214: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+.venv/lib/python3.12/site-packages/starlette/concurrency.py:39: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+.venv/lib/python3.12/site-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1100: in run
+    result = context.run(func, *args)
+src/serving/main.py:78: in recommend
+    request.app.state.ct[1].exposure(request_id, user_id,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <src.ct.storage.Journal object at 0xf803d31e33e0>
+request_id = '7fe4925de01a45458d9cbaa29417179a', user_id = 'unknown'
+products = [], top_n = 10, version = 'v1.0', at = 1792481953.2761848
+
+    def exposure(self, request_id: str, user_id: str, products: list[str], top_n: int,
+                 version: str, at: float) -> None:
+        if len(set(products)) != len(products) or len(products) > top_n or top_n < 1:
+            raise ValueError('invalid exposure list')
+        with self.connect() as db:
+>           db.execute('INSERT INTO requests VALUES (?,?,?,?,?,?)',
+                       (request_id, user_id, at, json.dumps(products), top_n, version))
+E           sqlite3.OperationalError: attempt to write a readonly database
+
+src/ct/storage.py:75: OperationalError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:57 Redis get_features unavailable; using empty features: offline
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_checklist_fixes.py::test_docker_warmup_allows_sorting_but_rejects_model_config_changes
+FAILED tests/test_checklist_fixes.py::test_ct_compares_models_under_the_same_runtime_policy
+FAILED tests/test_ranking_lookup.py::test_resident_lookup_matches_original_dataframe_path[u-recent0-0]
+FAILED tests/test_ranking_lookup.py::test_resident_lookup_matches_original_dataframe_path[unknown-recent1-0]
+FAILED tests/test_ranking_lookup.py::test_resident_lookup_matches_original_dataframe_path[u-recent2-3]
+FAILED tests/test_ranking_scoring.py::test_policy_stores_rng_and_configuration_are_independent
+FAILED tests/test_redis_features.py::test_recommendation_with_supplied_service_remains_200_when_redis_is_down
+7 failed, 364 passed, 2 warnings in 37.44s

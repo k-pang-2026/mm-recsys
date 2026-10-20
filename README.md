@@ -105,11 +105,15 @@ Docker Engine/Desktop와 Compose v2 이상을 실행한 뒤 저장소 루트에�
 ```bash
 git clone https://github.com/k-pang-2026/mm-recsys.git
 cd mm-recsys
-docker compose up --build
+docker compose up
 # 백그라운드 실행을 원하면 위 up 대신 다음을 사용한다.
-docker compose up --build -d
+docker compose up -d
 docker compose logs -f api-server
 ```
+
+기본 실행은 **full(상품 50,000·사용자 10,000·이벤트 1,000,000)** 이다.
+`pull_policy: build`로 현재 소스를 이미지에 반영하므로 별도 `--build` 없이 시작한다.
+의존성 레이어와 호환 산출물은 재사용한다. [Compose build 정책](https://docs.docker.com/reference/compose-file/services/#pull_policy)을 사용한다.
 
 API만 준비 작업을 소유한다. 데이터 생성·검증 → 고정 revision의 CLIP 다운로드와 임베딩 →
 FAISS 인덱스 → Two Tower·DeepFM·세션 학습 → Redis 프로필 warmup 순서다.
@@ -117,6 +121,23 @@ FAISS 인덱스 → Two Tower·DeepFM·세션 학습 → Redis 프로필 warmup 
 추천 산출물은 실제 모델 로딩으로 호환성을 확인한다. 완전한 호환 산출물만 재사용한다.
 불완전하거나 다른 설정의 데이터·모델을 발견하면 보존하고 오류로 중단한다.
 해당 파일을 삭제해 재시도하지 말고 새 버전의 data/model 경로를 설정한다.
+
+한국어 준비 로그 뒤 실제 서비스 로딩 완료와 연결 상태를 출력한다. 예시에서 상품 수는
+실제 카탈로그 크기이며 중복 벡터를 묶은 FAISS 내부 label 수와 구별한다.
+
+```text
+[api-server] FAISS 인덱스 로딩 완료 (50,000 상품)
+[api-server] Two-Tower 모델 로딩 완료
+[api-server] DeepFM Ranking 모델 로딩 완료
+[api-server] http://localhost:8000 에서 검색·추천 API 서버 시작
+[dashboard] 검색·추천 API 연결 완료
+[dashboard] http://localhost:8501 에서 대시보드 시작
+[simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 (모의 이벤트 API 재생, ...)
+```
+
+대시보드는 API `/ready`가 200이 된 뒤 시작하고, 시뮬레이터는 대시보드 HTTP health까지
+통과한 뒤 생성된 이벤트를 API에 재생한다. 컨테이너의 Started는 모델 준비 완료와 다르다.
+첫 다운로드·데이터 생성·학습은 기기에 따라 오래 걸리며, 예시 로그의 초 단위 기동 시간을 보장하지 않는다.
 
 | 서비스 | 로컬 주소 | 준비 상태 |
 |---|---|---|
@@ -138,7 +159,7 @@ docker compose exec api-server python scripts/smoke_test.py --benchmark
 
 지연 검사는 각 모드 10회 warmup·100회 순차 HTTP, 후보 검색, 실제 Redis 조회의
 p50/p95/p99와 원시 샘플을 기록한다. 검색/추천 200ms, 후보 100ms·300개, Redis 10ms 기준을
-그대로 사용하며 미달 시 명령이 실패한다. 결과는 `docs/results/docker/smoke_dev.json`,
+그대로 사용하며 미달 시 명령이 실패한다. 결과는 기본 full에서 `docs/results/docker/smoke_full.json`,
 `docs/results/latency.json`에 남는다. HTTP 확인은 실제 브라우저 화면 검증과 구별한다.
 고정 벤치마크는 초기 v1.0과 CT 재학습이 동시에 실행되지 않는 조건을 대상으로 한다.
 승격된 release나 측정 중 버전 변경은 거부하며 해당 release는 별도로 평가한다.
@@ -146,22 +167,22 @@ p50/p95/p99와 원시 샘플을 기록한다. 검색/추천 200ms, 후보 100ms�
 학습·CT 로그와 새 평가는 `docs/results/docker/runtime/<scale>/`에 분리한다.
 Streamlit도 이 경로를 읽으며 새 통합 평가가 없으면 미측정으로 표시하고 데모는 제공한다.
 저장소의 다른 머신 평가를 새 컨테이너의 측정으로 표시하지 않는다.
-기존 C 평가 CLI로 dev/valid 결과를 생성할 때는 다음과 같이 실행한다.
+기존 C 평가 CLI로 기본 full/valid 결과를 생성할 때는 다음과 같이 실행한다.
 
 ```bash
-docker compose exec -e CONFIG_PATH=models/.docker/config.yaml api-server \
+docker compose exec -e CONFIG_PATH=models/full/.docker/config.yaml api-server \
   python -m src.evaluation.run_all --split valid
 ```
 
-기본 규모는 dev(상품 10,000·사용자 2,000·이벤트 200,000)다.
-full은 상품 50,000·사용자 10,000·이벤트 1,000,000이며 dev와 별도 경로를 사용한다.
+Docker 기본 규모 full은 dev와 별도 경로 `data/full`, `models/full`을 사용한다.
+로컬 Python의 `config.yaml` 기본값은 dev로 유지한다. 작은 데이터로 실행하려면 명시한다.
 
 ```bash
-SCALE=full docker compose up --build -d
-SCALE=full docker compose exec api-server python scripts/smoke_test.py --benchmark
+SCALE=dev docker compose up -d
+SCALE=dev docker compose exec api-server python scripts/smoke_test.py --benchmark
 ```
 
-기본 dev와 함께 full을 검증할 때는 별도 프로젝트·포트를 사용한다. B10 gate의
+dev와 full을 함께 검증할 때는 별도 프로젝트·포트를 사용한다. B10 gate의
 `mm-recsys-b10-full` 명령을 다시 실행하려면 다음과 같이 준비한다.
 
 ```bash

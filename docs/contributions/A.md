@@ -367,3 +367,21 @@ PR #15는 CI를 통과해 24ab0d0으로 정상 병합됐다. 마지막 재조회
 평가 identity 소스, 효율 비교 대상 3파일은 그대로다. 원래 full 보고서·351개 테스트 XML은
 그 실측 커밋의 근거로 보존하고 최신 354개 XML과 API 응답·실패/수정·실조회 근거는
 [후속 보고서](../results/experiments/A/workflow_ponytail_merge_retry_20261017.json)에 따로 남겼다.
+
+## B10 후속 — 기본 full CLI 기동과 한국어 상태 로그 (2026-10-20)
+
+기본 `docker compose up`이 full 상품 50,000개·사용자 10,000명·행동 1,000,000건을 준비한다.
+현재 소스를 자동 빌드하고 실제 모델 로딩, API 연결, Streamlit HTTP 준비와 시뮬레이터 재생을
+한국어로 출력한다. 대시보드는 API `/ready`, 시뮬레이터는 대시보드 health 뒤에 시작한다.
+Docker 기본 `.env`와 해당 단계 경로를 B10 범위에 포함했으며 사람별 역할은 유지했다.
+
+옵션 없는 실제 `docker compose up`, full 검색 3모드·기존/신규 사용자 추천·세션 smoke,
+호스트 API/대시보드 HTTP와 실제 API를 호출하는 Streamlit 폼을 검증했다.
+독립 checkout의 전체 회귀 371개와 Docker/준비 코드 13파일 타입 검사를 통과했다.
+첫 로컬 검사에서는 Docker Redis 주소·생성된 로컬 모델 및 전역 모델 override로 실패했으며,
+테스트·정답 수정 없이 독립 checkout과 localhost Redis 조건으로 해결하고 원본 로그를 보존했다.
+
+full 데이터·검색 임베딩·인덱스는 새로 만들었다. 추천 모델은 fingerprint와 복사 해시가 일치하는
+기존 full 4.2 모델을 원본 보존 후 재사용했다. 이번 준비 206.497초는 새 full 학습 시간이 아니다.
+실제 브라우저 렌더링, 새 품질·지연·A/B·CT 효과와 최종 종합 acceptance는 미측정이다.
+실행 로그·소스/산출물 해시·응답은 [full CLI 보고서](../results/experiments/A/docker_full_cli_20261020.json)에 남겼다.

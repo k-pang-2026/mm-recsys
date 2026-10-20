@@ -1,0 +1,126 @@
+........................................................................ [ 19%]
+........................................................................ [ 38%]
+........................................................................ [ 58%]
+.....F....................................................F............. [ 77%]
+........................................................................ [ 97%]
+...........                                                              [100%]
+=================================== FAILURES ===================================
+___ test_recommendation_with_supplied_service_remains_200_when_redis_is_down ___
+
+caplog = <_pytest.logging.LogCaptureFixture object at 0xff1699b44ef0>
+
+    def test_recommendation_with_supplied_service_remains_200_when_redis_is_down(caplog):
+        client = Mock()
+        client.pipeline.side_effect = ConnectionError("offline")
+        store = RedisFeatureStore(client)
+        class ColdStartService:
+            def recommend(self, user_id, top_n):
+                features = store.get_features(user_id)
+                return RecommendResponse(user_id=user_id, recommendations=[],
+                                         pipeline_latency={}, session_context={
+                                             "recent_clicks": features.recent_clicks,
+                                             "session_interest": features.session_interest})
+>       with TestClient(create_app(load_config(), recommend_service=ColdStartService(),
+                                   feature_store=store)) as api:
+
+tests/test_redis_features.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:739: in __enter__
+    portal.call(self.wait_startup)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:774: in wait_startup
+    await receive()
+.venv/lib/python3.12/site-packages/starlette/testclient.py:765: in receive
+    self.task.result()
+/usr/lib/python3.12/concurrent/futures/_base.py:449: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/starlette/testclient.py:755: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:152: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:48: in __call__
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:724: in app
+    await self.lifespan(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:693: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:133: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+/usr/lib/python3.12/contextlib.py:210: in __aenter__
+    return await anext(self.gen)
+src/serving/main.py:39: in lifespan
+    backend = importlib.import_module(module_name).create_service(cfg, app.state.store)
+src/search/service.py:54: in create_service
+    return SearchService(Searcher(cfg))
+src/search/searcher.py:19: in __init__
+    folder, self.bundle = current_indexes(cfg)
+src/search/build_index.py:86: in current_indexes
+    manifest = json.loads((folder/'manifest.json').read_text())
+/usr/lib/python3.12/pathlib.py:1029: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('models/search/indexes/9004659a2b17fc1ed9abdf29ff9a56300e553429e7e64566b300958fcf31084c/manifest.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       PermissionError: [Errno 13] Permission denied: 'models/search/indexes/9004659a2b17fc1ed9abdf29ff9a56300e553429e7e64566b300958fcf31084c/manifest.json'
+
+/usr/lib/python3.12/pathlib.py:1015: PermissionError
+_____________ test_unimplemented_models_never_report_empty_success _____________
+
+    def test_unimplemented_models_never_report_empty_success():
+        with TestClient(create_app()) as client:
+            assert client.get('/health').status_code==200
+            assert client.get('/ready').status_code==503
+            assert client.post('/api/search',json={}).status_code==422
+            assert client.post('/api/search',json={'query_text':'black shirt'}).status_code==503
+            assert client.get('/api/recommend',params={'user_id':'new'}).status_code==503
+            body={'event_id':'e1','user_id':'u','product_id':'p','event_type':'view','category':'tops'}
+>           assert client.post('/api/event',json=body).json()['features']['recent_clicks']==['p']
+E           KeyError: 'features'
+
+tests/test_serving_contract.py:15: KeyError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:57 Redis append_event unavailable; using empty features: Error -2 connecting to redis:6379. Name or service not known.
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_redis_features.py::test_recommendation_with_supplied_service_remains_200_when_redis_is_down
+FAILED tests/test_serving_contract.py::test_unimplemented_models_never_report_empty_success
+2 failed, 369 passed, 2 warnings in 27.68s

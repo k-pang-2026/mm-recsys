@@ -1,0 +1,71 @@
+api-server-1  | 2026-10-20T07:36:14.289582633Z [api-server] full 환경 준비 시작 (상품 50,000개); 최초 생성·학습에는 시간이 걸립니다.
+api-server-1  | 2026-10-20T07:36:14.289661042Z [api-server] 데이터 준비 시작
+api-server-1  | 2026-10-20T07:37:07.051504301Z [api-server] 데이터 준비 완료 (52.0초)
+api-server-1  | 2026-10-20T07:37:07.052334761Z [api-server] 검색 임베딩 준비 시작
+api-server-1  | 2026-10-20T07:37:08.438442577Z [api-server] 고정 CLIP 다운로드 캐시 재사용 (오프라인)
+api-server-1  | 2026-10-20T07:37:19.654297932Z text: unique 256/1440
+api-server-1  | 2026-10-20T07:37:22.615126911Z text: unique 512/1440
+api-server-1  | 2026-10-20T07:37:25.638081557Z text: unique 768/1440
+api-server-1  | 2026-10-20T07:37:28.680080274Z text: unique 1024/1440
+api-server-1  | 2026-10-20T07:37:31.801528043Z text: unique 1280/1440
+api-server-1  | 2026-10-20T07:37:33.722996742Z text: unique 1440/1440
+api-server-1  | 2026-10-20T07:38:09.060818064Z image: unique 256/256
+api-server-1  | 2026-10-20T07:38:10.816232681Z [api-server] 검색 임베딩 준비 완료 (62.3초)
+api-server-1  | 2026-10-20T07:38:10.816586742Z [api-server] FAISS 인덱스 준비 시작
+api-server-1  | 2026-10-20T07:38:12.530590702Z text: 1440 indexed vectors, IP HNSW
+api-server-1  | 2026-10-20T07:38:12.661575248Z image: 256 indexed vectors, IP HNSW
+api-server-1  | 2026-10-20T07:38:12.869103531Z hybrid: 2880 indexed vectors, IP HNSW
+api-server-1  | 2026-10-20T07:38:12.990328652Z LOADED FAISS text: vectors=1440, dim=512
+api-server-1  | 2026-10-20T07:38:12.990488399Z LOADED FAISS image: vectors=256, dim=512
+api-server-1  | 2026-10-20T07:38:12.992189669Z LOADED FAISS hybrid: vectors=2880, dim=512
+api-server-1  | 2026-10-20T07:38:13.299063557Z [api-server] FAISS 인덱스 준비 완료 (2.5초)
+api-server-1  | 2026-10-20T07:38:13.299094218Z [api-server] 추천 모델 준비 시작
+api-server-1  | 2026-10-20T07:38:44.176525456Z [api-server] 호환되는 추천 모델 재사용 완료
+api-server-1  | 2026-10-20T07:38:44.613345963Z [api-server] 추천 모델 준비 완료 (30.5초)
+api-server-1  | 2026-10-20T07:38:44.614161368Z [api-server] Redis 사용자 프로필 준비 시작
+api-server-1  | 2026-10-20T07:38:46.876557127Z {"status": "PASS", "scale": "full", "profile_count": 10000, "batch_size": 1000, "history_loaded": false, "namespace": "mm-recsys:full"}
+api-server-1  | 2026-10-20T07:39:45.186916022Z [api-server] Redis 사용자 프로필 준비 완료 (59.1초)
+api-server-1  | 2026-10-20T07:39:45.876455362Z PREPARATION COMPLETE; catalog=50000; CLIP=openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268; FAISS + Two Tower/DeepFM/session
+api-server-1  | 2026-10-20T07:39:46.459676848Z INFO:     Started server process [7]
+api-server-1  | 2026-10-20T07:39:46.459710032Z INFO:     Waiting for application startup.
+api-server-1  | 2026-10-20T07:40:19.217213436Z /usr/local/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py:243: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+api-server-1  | 2026-10-20T07:40:19.217248576Z   if not interpolate_pos_encoding and (height != self.image_size or width != self.image_size):
+api-server-1  | 2026-10-20T07:40:21.153852346Z GC generation2: {'elapsed_ms': 196.5387139998711, 'at_ns': 1792482021149497051, 'frozen_objects': 0}
+api-server-1  | 2026-10-20T07:40:21.194085947Z SERVING RUNTIME: {'torch_threads': 2, 'faiss_threads': 2, 'inference_worker_budget': True, 'parallel_hybrid': True, 'vision_optimization': {'enabled': True, 'implementation': 'torch.jit.optimize_for_inference', 'dtype': 'float32', 'query_shape': [1, 3, 224, 224], 'startup_max_abs_vector_error': 3.129243850708008e-07, 'process_environment': {'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '2'}, 'scope': 'same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache'}, 'gc_enabled': True, 'gc_freeze_enabled': True, 'gc_frozen_objects': 645701, 'configured_search_threads': 1, 'configured_candidate_training_threads': 4, 'scope': 'one shared serving process; model weights and ranking policy unchanged'}
+api-server-1  | 2026-10-20T07:40:21.194296396Z [api-server] FAISS 인덱스 로딩 완료 (50,000 상품)
+api-server-1  | 2026-10-20T07:40:21.194314551Z [api-server] Two-Tower 모델 로딩 완료
+api-server-1  | 2026-10-20T07:40:21.194316991Z [api-server] DeepFM Ranking 모델 로딩 완료
+api-server-1  | 2026-10-20T07:40:21.194323727Z [api-server] http://localhost:8000 에서 검색·추천 API 서버 시작
+api-server-1  | 2026-10-20T07:40:21.194474438Z INFO:     Application startup complete.
+api-server-1  | 2026-10-20T07:40:21.195395298Z INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+simulator-1   | 2026-10-20T07:40:28.692640479Z [simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 (모의 이벤트 API 재생, 0/1,000,000건)
+simulator-1   | 2026-10-20T07:40:29.325065101Z [simulator] 행동 로그 전송 완료: 100/1,000,000건
+simulator-1   | 2026-10-20T07:40:35.226903700Z [simulator] 행동 로그 전송 완료: 200/1,000,000건
+simulator-1   | 2026-10-20T07:40:41.175083973Z [simulator] 행동 로그 전송 완료: 300/1,000,000건
+simulator-1   | 2026-10-20T07:40:47.292849524Z [simulator] 행동 로그 전송 완료: 400/1,000,000건
+simulator-1   | 2026-10-20T07:40:54.198391918Z [simulator] 행동 로그 전송 완료: 500/1,000,000건
+simulator-1   | 2026-10-20T07:41:00.173913109Z [simulator] 행동 로그 전송 완료: 600/1,000,000건
+simulator-1   | 2026-10-20T07:41:06.031310484Z [simulator] 행동 로그 전송 완료: 700/1,000,000건
+simulator-1   | 2026-10-20T07:41:11.826546540Z [simulator] 행동 로그 전송 완료: 800/1,000,000건
+simulator-1   | 2026-10-20T07:41:17.752203147Z [simulator] 행동 로그 전송 완료: 900/1,000,000건
+simulator-1   | 2026-10-20T07:41:24.856207106Z [simulator] 행동 로그 전송 완료: 1,000/1,000,000건
+simulator-1   | 2026-10-20T07:41:30.732220122Z [simulator] 행동 로그 전송 완료: 1,100/1,000,000건
+simulator-1   | 2026-10-20T07:41:36.536379539Z [simulator] 행동 로그 전송 완료: 1,200/1,000,000건
+simulator-1   | 2026-10-20T07:41:42.415604664Z [simulator] 행동 로그 전송 완료: 1,300/1,000,000건
+simulator-1   | 2026-10-20T07:41:48.285586892Z [simulator] 행동 로그 전송 완료: 1,400/1,000,000건
+simulator-1   | 2026-10-20T07:41:54.934547656Z [simulator] 행동 로그 전송 완료: 1,500/1,000,000건
+simulator-1   | 2026-10-20T07:42:00.850670790Z [simulator] 행동 로그 전송 완료: 1,600/1,000,000건
+simulator-1   | 2026-10-20T07:42:06.660351109Z [simulator] 행동 로그 전송 완료: 1,700/1,000,000건
+simulator-1   | 2026-10-20T07:42:12.529971353Z [simulator] 행동 로그 전송 완료: 1,800/1,000,000건
+simulator-1   | 2026-10-20T07:42:18.356838725Z [simulator] 행동 로그 전송 완료: 1,900/1,000,000건
+dashboard-1   | 2026-10-20T07:36:19.950588047Z [dashboard] 검색·추천 API 준비 완료를 기다립니다...
+dashboard-1   | 2026-10-20T07:40:22.318362251Z [dashboard] 검색·추천 API 연결 완료
+dashboard-1   | 2026-10-20T07:40:22.864386506Z 
+dashboard-1   | 2026-10-20T07:40:22.864414715Z Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+dashboard-1   | 2026-10-20T07:40:22.864417741Z 
+dashboard-1   | 2026-10-20T07:40:22.925778876Z 
+dashboard-1   | 2026-10-20T07:40:22.925814113Z   You can now view your Streamlit app in your browser.
+dashboard-1   | 2026-10-20T07:40:22.925816651Z 
+dashboard-1   | 2026-10-20T07:40:22.925818896Z   URL: http://0.0.0.0:8501
+dashboard-1   | 2026-10-20T07:40:22.925821531Z 
+dashboard-1   | 2026-10-20T07:40:23.323341678Z [dashboard] http://localhost:8501 에서 대시보드 시작

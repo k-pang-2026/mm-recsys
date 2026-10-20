@@ -63,6 +63,8 @@ def main() -> None:
     if batch < 1 or interval <= 0:
         raise ValueError('positive simulator batch and interval required')
     offset = int(saved['offset'])
+    print(f'[simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 '
+          f'(모의 이벤트 API 재생, {offset:,}/{len(events):,}건)', flush=True)
     while True:
         try:
             rows = events.iloc[offset:offset+batch]
@@ -75,12 +77,12 @@ def main() -> None:
         except HTTPError as error:
             if error.code < 500:
                 raise
-            print(f'API replay retry at {offset}: HTTP {error.code}', flush=True)
+            print(f'[simulator] 행동 로그 재시도 {offset:,}건: HTTP {error.code}', flush=True)
         except (OSError, RedisError) as error:
-            print(f'API replay retry at {offset}: {type(error).__name__}', flush=True)
+            print(f'[simulator] 행동 로그 재시도 {offset:,}건: {type(error).__name__}', flush=True)
         else:
             offset = next_offset
-            print(f'synthetic API replay: {offset}/{len(events)}', flush=True)
+            print(f'[simulator] 행동 로그 전송 완료: {offset:,}/{len(events):,}건', flush=True)
         time.sleep(interval)
 
 
