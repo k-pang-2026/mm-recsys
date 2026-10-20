@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/publish_integration_dashboard.py", line 94, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/publish_integration_dashboard.py", line 88, in main
+    report = publish(ROOT, args.submission, args.output)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/publish_integration_dashboard.py", line 79, in publish
+    write_json(output, report)
+  File "/home/peachpetal/ecommerce/mm-recsys/src/common/artifacts.py", line 27, in write_json
+    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2, default=str) + '\n', encoding='utf-8')
+  File "/usr/lib/python3.12/pathlib.py", line 1049, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'docs/results/docker/runtime/full/.evaluation_full_test.json.12.tmp'

@@ -41,6 +41,30 @@ def offline(*args, **kwargs):
     return dict(ok=False, status_code=None, data=None, error='fixture: API unavailable')
 
 
+def test_test_report_is_preferred_and_integration_receipt_is_visible(tmp_path, monkeypatch, report):
+    (tmp_path / 'evaluation_dev_valid.json').write_text(json.dumps(report))
+    report.update(split='test', integration=dict(stage='INTEGRATE', status='UNMEASURED'))
+    (tmp_path / 'evaluation_dev_test.json').write_text(json.dumps(report))
+    monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
+    monkeypatch.setattr(data, 'api_call', offline)
+    app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
+    assert not app.exception
+    assert app.selectbox[0].value.name == 'evaluation_dev_test.json'
+    assert any(item.label == '최종 통합 검사 근거' for item in app.expander)
+    assert next(m.value for m in app.metric if m.label == '최종 종합 품질') == 'UNMEASURED'
+
+
+def test_missing_full_test_falls_back_to_full_valid_before_dev(tmp_path, monkeypatch, report):
+    (tmp_path / 'evaluation_dev_test.json').write_text(json.dumps(dict(report, split='test')))
+    (tmp_path / 'evaluation_full_valid.json').write_text(json.dumps(dict(report, scale='full')))
+    monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
+    monkeypatch.setenv('SCALE', 'full')
+    monkeypatch.setattr(data, 'api_call', offline)
+    app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
+    assert not app.exception
+    assert app.selectbox[0].value.name == 'evaluation_full_valid.json'
+
+
 def test_four_tabs_charts_and_metric_tables_match_json(tmp_path, monkeypatch, report):
     path = tmp_path / 'evaluation_dev_valid.json'
     path.write_text(json.dumps(report))

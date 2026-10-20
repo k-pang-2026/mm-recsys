@@ -1,5 +1,6 @@
 """Resume only interrupted paired validation of verified, already trained full CT artifacts."""
 from __future__ import annotations
+import argparse
 import json
 from pathlib import Path
 import sys
@@ -17,9 +18,12 @@ from src.serving.model_loader import load_record
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output-dir', type=Path, default=Path('docs/results/integration'))
+    args = parser.parse_args()
     cfg = load_config()
     spec, journal, registry = components(cfg)
-    out = Path('docs/results/integration')
+    out = args.output_dir
     running = json.loads((out / 'ct_full_running.json').read_text())
     assert cfg['scale'] == 'full' and running['observed_events'] == spec['retrain_log_threshold']
     events = [json.loads(line) for line in registry.log.read_text().splitlines()]

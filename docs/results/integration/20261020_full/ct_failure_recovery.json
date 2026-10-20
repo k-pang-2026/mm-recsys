@@ -1,0 +1,27 @@
+{
+  "status": "RECOVERED_WITH_LIMITS",
+  "original_failure": {
+    "source": "docs/results/integration/20261020_full/ct_memory_failure.json",
+    "sha256": "a02575a153ce08284ec57ffc1df1a1548d95d945e5207d3ae792f04cf89e8a50"
+  },
+  "natural": {
+    "source": "docs/results/integration/20261020_full/ct_full.json",
+    "sha256": "511af838e464c33a291929b15286a2b288eff43498ed0ae7ac91f4ed63894be2"
+  },
+  "functional": {
+    "source": "docs/results/integration/20261020_full/ct_acceptance_full.json",
+    "sha256": "06b0430c5a9f023865983f248a5a2c69f7a641f0ef33cf1b238e85755e22e410"
+  },
+  "resources": {
+    "source": "docs/results/integration/20261020_full/commands/ct_recovery_resources.jsonl",
+    "sha256": "5f442be15eb92c1aa9a692fd01b2c3a6bdca31dba1e87e10661601730eea3d30"
+  },
+  "observed_recovery_peak_bytes": 3189202944,
+  "recovery_exit_code": 2,
+  "recovery_oom_killed": false,
+  "scope": "verified already trained full artifacts compared in a fresh process with one verification API; natural retention exit2 is expected; separate full lifecycle passed",
+  "limitations": [
+    "original monolithic 4GiB full training plus comparison still failed and has not been reclassified",
+    "parallel multi-deployment workload capacity not established"
+  ]
+}

@@ -2,7 +2,30 @@
 
 저장소: https://github.com/k-pang-2026/mm-recsys
 
-## INTEGRATE 실행 환경과 버전 이관
+## 현재 full 4.2 통합 결과 재검증
+
+2026-10-20 실행은 [현재 보고서](../results/integration/20261020_full/report.md)를 따른다.
+사용자의 full 평가 원본을 보존·재사용하며 새 A/B·CT·Compose·HTTP·제출 검사는
+`docs/results/integration/20261020_full/`에 분리한다. 현재 기본 API/대시보드 포트는
+8000/8501이다. 아래 명령은 필수 검사를 모두 완료한 뒤 저장된 결과를 검증·연결한다.
+
+```bash
+source scripts/local_env.sh
+SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/check_submission.py \
+  --verify-existing --require-ready \
+  --output-dir docs/results/integration/20261020_full/submission
+SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/publish_integration_dashboard.py \
+  --submission docs/results/integration/20261020_full/submission/checks.json \
+  --output docs/results/docker/runtime/full/evaluation_full_test.json
+```
+
+전체 full A/B와 CT 학습·비교는 순차 실행한다. 이번 7.5GiB Docker 환경에서
+두 API와 A/B·CT를 병렬 실행한 실패를 [별도 기록](../results/integration/20261020_full/parallel_load_failure.json)에
+보존했다. 지연 측정은 검증용 중복 배포와 학습 워커를 종료한 뒤 단일 기본 배포에서 수행한다.
+대시보드는 **결과 새로고침** 후 test 결과의 최종 판정·A/B·CT 근거를 표시한다.
+품질 평가나 시뮬레이터 재생만으로 필수 통합 검사를 대체하지 않는다.
+
+## 이전 full 4.1 통합 실행 환경과 버전 이관
 
 현재 통합 실행과 최초 실패·재검사 기록은 [INTEGRATE 보고서](../results/integration/report.md)를 따른다.
 generator 4.1.0은 생성에 영향을 주는 YAML mapping 순서를 fingerprint에 포함한다.

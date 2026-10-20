@@ -1,0 +1,11 @@
+[dashboard] 검색·추천 API 준비 완료를 기다립니다...
+[dashboard] 검색·추천 API 연결 완료
+
+Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://0.0.0.0:8501
+
+[dashboard] http://localhost:18501 에서 대시보드 시작

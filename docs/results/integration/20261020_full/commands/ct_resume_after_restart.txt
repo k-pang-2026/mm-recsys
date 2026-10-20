@@ -1,0 +1,3 @@
+CT actual full valid evaluation: baseline
+CT actual full valid evaluation: candidate
+Full CT PARTIAL

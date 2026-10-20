@@ -1,0 +1,1 @@
+Strict full acceptance, published PASS/AB/CT/UI hashes and four running local services: PASS

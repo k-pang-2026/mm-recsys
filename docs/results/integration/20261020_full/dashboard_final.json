@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "acceptance_displayed": "PASS",
+  "quality_displayed": "PASS",
+  "selected_report": "evaluation_full_test.json",
+  "search_results": 10,
+  "recommendation_results": 10,
+  "metrics": {
+    "측정 기준 판정": "PASS",
+    "측정 지표": "11/11",
+    "최종 종합 품질": "PASS",
+    "Control CVR": "1.2469%",
+    "Treatment CVR": "0.8653%",
+    "CVR 상대 lift": "-30.61%",
+    "API 연결": "정상",
+    "모델 준비": "준비됨",
+    "현재 모델 버전": "v1.0"
+  },
+  "tabs": [
+    "검색",
+    "추천",
+    "A/B 실험",
+    "시스템"
+  ],
+  "exceptions": 0,
+  "source_hashes": {
+    "dashboard/app.py": "8cd4ad1ab099cedbf7231c5260fc9f0a9bd52a624217cb257f0066567ac4311c",
+    "dashboard/data.py": "2e3712a8b29201b22e5cf3793d8ad37180c234fad2eb580aa7f2e2039f45fc2f"
+  },
+  "seconds": 1.5669191550005053,
+  "scope": "actual standalone dashboard container Streamlit AppTest and real API forms; no mocks; no browser pixel assertion"
+}

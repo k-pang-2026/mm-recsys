@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "original_evaluation_files": 7,
+  "original_evaluation_unchanged": true,
+  "original_data_manifest_unchanged": true,
+  "data_file_hashes_verified": 8,
+  "original_model_metadata_unchanged": true,
+  "original_model_files": 12,
+  "source_files_verified": 82,
+  "active_model": "v1.0",
+  "scope": "post-integration preservation of user frozen evaluation and primary dataset/model bundle; no model weights committed"
+}

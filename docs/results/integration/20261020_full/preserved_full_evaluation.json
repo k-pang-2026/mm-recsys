@@ -1,0 +1,17 @@
+{
+  "status": "PRESERVED",
+  "created_at": "2026-10-20T08:29:15.464596+00:00",
+  "reviewed_base": "aaa4184c0d03eb47e90eb899aac77cc9797cbb18",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "files": {
+    "docs/results/docker/evaluation_20261020_165756/quality_selection_full.json": "4edcbe525f715f1aa9141e7118f8962d61a284f5a75a0503f035dc477467cb91",
+    "docs/results/docker/evaluation_20261020_165756/preparation_full.json": "b82933925737af009ef27c4550038e91a71ba4e694705f668f7f44e02012e9cc",
+    "docs/results/docker/evaluation_20261020_165756/smoke_full.json": "d1483333c2b789916ce183cbe766bbd633a9d9805244907304d450de8f82d2e3",
+    "docs/results/docker/evaluation_20261020_165756/latency.json": "d1483333c2b789916ce183cbe766bbd633a9d9805244907304d450de8f82d2e3",
+    "docs/results/docker/evaluation_20261020_165756/quality_full_valid.json": "eda1ce115c7546570d7f058da35949be10049967741cd374ef78c7e03cbf562a",
+    "docs/results/docker/evaluation_20261020_165756/quality_full_test.json": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+    "docs/results/docker/evaluation_20261020_165756/freezes/eda1ce115c7546570d7f058da35949be10049967741cd374ef78c7e03cbf562a.json": "eda1ce115c7546570d7f058da35949be10049967741cd374ef78c7e03cbf562a"
+  },
+  "quality_reused": true,
+  "latency_reused": true
+}

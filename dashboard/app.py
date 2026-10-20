@@ -170,6 +170,10 @@ def system_tab(report: dict, config: dict) -> None:
         fig.add_scatter(name='각 지표 기준', x=[LABELS[row['name']] for row in rows], y=[row['target'] for row in rows], mode='markers', marker=dict(symbol='line-ew', size=25, color=COLORS['target']))
         st.plotly_chart(layout(fig, 'p95와 기준', 'ms'), use_container_width=True)
     st.subheader('CT 기록')
+    ct = report.get('integration', {}).get('ct')
+    if ct:
+        st.info(f'full 재학습 {ct["retraining"]} · 교체·복구 검사 {ct["lifecycle"]} · 신규 관측 {ct["observed_new_events"]:,}건')
+        st.caption('별도 full 배포의 통합 검증 결과입니다. 현재 API 모델은 위 실시간 상태를 따릅니다.')
     logs = ct_log(config['results_dir'])
     if logs['rows']:
         if any(row.get('scope') == 'controlled_fixture' for row in logs['rows']):
@@ -194,7 +198,8 @@ def main() -> None:
     with st.sidebar:
         st.subheader('평가 결과')
         if files:
-            preferred = next((i for i, path in enumerate(files) if f'_{config["scale"]}_valid' in path.name), 0)
+            preferred = next((i for split in ('test', 'valid') for i, path in enumerate(files)
+                              if path.name == f'evaluation_{config["scale"]}_{split}.json'), 0)
             path = st.selectbox('결과 파일', files, index=preferred, format_func=lambda p: p.name)
             try:
                 report = read_report(path, config['results_dir'])
@@ -211,6 +216,10 @@ def main() -> None:
         a.metric('측정 기준 판정', report['quality_status'])
         b.metric('측정 지표', f'{sum(row["value"] is not None for row in report["metrics"])}/{len(report["metrics"])}')
         c.metric('최종 종합 품질', report['acceptance'])
+        if report.get('integration'):
+            st.caption('full test와 필수 통합 검사 결과를 연결한 판정입니다. A/B의 양의 효과나 CT 모델 교체를 뜻하지 않습니다.')
+            with st.expander('최종 통합 검사 근거'):
+                st.json(report['integration'])
         st.caption('dev/valid 결과는 full test 최종 통과를 뜻하지 않습니다. 기준 미달과 미측정은 그대로 표시합니다.')
     else:
         st.info('통합 평가를 실행하면 측정값이 표시됩니다. 데모는 실행 중인 API에 연결합니다.')

@@ -188,7 +188,8 @@ def main() -> int:
         submission_sources = ['scripts/check_submission.py', 'scripts/check_submission_evidence.py',
                               'scripts/verify_integration_data.py', 'scripts/verify_integration_mab.py',
                               'scripts/verify_integration_ct.py', 'scripts/archive_integration_ab.py',
-                              'scripts/resume_integration_ct.py', 'scripts/verify_integration_ct_lifecycle.py']
+                              'scripts/resume_integration_ct.py', 'scripts/verify_integration_ct_lifecycle.py',
+                              'scripts/publish_integration_dashboard.py']
         paths += submission_sources
         audit = audit_python(ROOT, paths, policy['setting_names'])
         write_json(ROOT / OUTPUT / 'python_audit.json', audit)

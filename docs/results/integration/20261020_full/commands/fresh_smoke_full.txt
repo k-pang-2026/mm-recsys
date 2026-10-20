@@ -1,0 +1,1 @@
+Docker smoke: PASS -> docs/results/integration/20261020_full/fresh_smoke_full.json

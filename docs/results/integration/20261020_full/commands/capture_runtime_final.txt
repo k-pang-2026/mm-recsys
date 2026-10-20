@@ -1,0 +1,1 @@
+Four primary services running, simulator unpaused, API ready, frozen source and Korean logs: PASS

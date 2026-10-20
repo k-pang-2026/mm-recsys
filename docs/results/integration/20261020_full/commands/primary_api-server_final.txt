@@ -1,0 +1,30 @@
+[api-server] full 환경 준비 시작 (상품 50,000개); 최초 생성·학습에는 시간이 걸립니다.
+[api-server] 데이터 준비 시작
+[api-server] 데이터 준비 완료 (9.7초)
+[api-server] 검색 임베딩 준비 시작
+[api-server] 고정 CLIP 다운로드 캐시 재사용 (오프라인)
+[api-server] 검색 임베딩 준비 완료 (8.0초)
+[api-server] FAISS 인덱스 준비 시작
+LOADED FAISS text: vectors=1440, dim=512
+LOADED FAISS image: vectors=256, dim=512
+LOADED FAISS hybrid: vectors=2880, dim=512
+[api-server] FAISS 인덱스 준비 완료 (1.7초)
+[api-server] 추천 모델 준비 시작
+[api-server] 호환되는 추천 모델 재사용 완료
+[api-server] 추천 모델 준비 완료 (32.4초)
+[api-server] Redis 사용자 프로필 준비 시작
+{"status": "PASS", "scale": "full", "profile_count": 10000, "batch_size": 1000, "history_loaded": false, "namespace": "mm-recsys:full"}
+[api-server] Redis 사용자 프로필 준비 완료 (30.6초)
+PREPARATION COMPLETE; catalog=50000; CLIP=openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268; FAISS + Two Tower/DeepFM/session
+INFO:     Started server process [7]
+INFO:     Waiting for application startup.
+/usr/local/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py:243: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if not interpolate_pos_encoding and (height != self.image_size or width != self.image_size):
+GC generation2: {'elapsed_ms': 183.43358200036164, 'at_ns': 1792492225263995483, 'frozen_objects': 0}
+SERVING RUNTIME: {'torch_threads': 2, 'faiss_threads': 2, 'inference_worker_budget': True, 'parallel_hybrid': True, 'vision_optimization': {'enabled': True, 'implementation': 'torch.jit.optimize_for_inference', 'dtype': 'float32', 'query_shape': [1, 3, 224, 224], 'startup_max_abs_vector_error': 3.129243850708008e-07, 'process_environment': {'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '2'}, 'scope': 'same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache'}, 'gc_enabled': True, 'gc_freeze_enabled': True, 'gc_frozen_objects': 645701, 'configured_search_threads': 1, 'configured_candidate_training_threads': 4, 'scope': 'one shared serving process; model weights and ranking policy unchanged'}
+[api-server] FAISS 인덱스 로딩 완료 (50,000 상품)
+[api-server] Two-Tower 모델 로딩 완료
+[api-server] DeepFM Ranking 모델 로딩 완료
+[api-server] http://localhost:8000 에서 검색·추천 API 서버 시작
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)

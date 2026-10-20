@@ -31,7 +31,8 @@
     "scripts/verify_integration_ct.py",
     "scripts/archive_integration_ab.py",
     "scripts/resume_integration_ct.py",
-    "scripts/verify_integration_ct_lifecycle.py"
+    "scripts/verify_integration_ct_lifecycle.py",
+    "scripts/publish_integration_dashboard.py"
   ],
   "modules": [
     "src/common/config.py",

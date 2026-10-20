@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2252916
+  },
+  "original_manifest_sha256": "e53220bb34637137e4d42b50c6d8a8a8a173e6c24c27ac37658b1e15ffe566e8",
+  "repeat_manifest_sha256": "e53220bb34637137e4d42b50c6d8a8a8a173e6c24c27ac37658b1e15ffe566e8",
+  "all_manifest_fields_identical": true,
+  "file_hashes_identical": true,
+  "source": "independent remote main clone; empty-path Compose generation; no prepared data copied",
+  "scope": "every parquet/image checksum, split boundary and generator field matches the preserved full dataset"
+}

@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "display_path": "docs/results/docker/runtime/full/evaluation_full_test.json",
+  "archive": {
+    "source": "docs/results/integration/20261020_full/dashboard_published_full_test.json",
+    "sha256": "20485369c156fef0b05fd52577df277078e8d275eaad50f00f9bbda9868d97db"
+  },
+  "ui": {
+    "source": "docs/results/integration/20261020_full/dashboard_final.json",
+    "sha256": "a036eb8db376ce0ddd2f8c56e656476f4a3765a0524a5bf3faf3e8f6e1d029da"
+  },
+  "runner": {
+    "source": "docs/results/integration/20261020_full/commands/dashboard_appcheck.py",
+    "sha256": "2b87086252dc324134a3c8c911bf3b3a864ad24fd4e18699424e9b50a5f38fad"
+  },
+  "source_preservation": {
+    "source": "docs/results/integration/20261020_full/preservation_final.json",
+    "sha256": "e18de4f8c24e14b4beb3a3d90d74e835d35838eb2ceaef3f5cd8f7b21fba5ee5"
+  },
+  "scope": "validated current final acceptance published to local dashboard; final AppTest and real API forms; original frozen quality unchanged"
+}

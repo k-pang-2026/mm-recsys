@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "training_sources": {
+    "candidate": {
+      "source": "docs/results/integration/20261020_full/ct_training_candidate_full.json",
+      "sha256": "50761e89d8febccdd2929237bf84731f71e5d7ce3a77552dbe6a674da9863509"
+    },
+    "ranking": {
+      "source": "docs/results/integration/20261020_full/ct_training_ranking_full.json",
+      "sha256": "c99e99e485d8e3b048e691a96cad08bcdc1f9da2cdb40ec89266bf1be41dc6db"
+    },
+    "session": {
+      "source": "docs/results/integration/20261020_full/ct_training_session_full.json",
+      "sha256": "828db89a42ccb04f20e82f20160618dd8be0cbfb356fb1fda824cdb3fee36035"
+    }
+  },
+  "snapshot": {
+    "source": "docs/results/integration/20261020_full/ct_data_manifest_full.json",
+    "sha256": "eb5ccdb686cc884d62b4456bf4b7acf576e45b97c3daf22b034a15568b7143b1"
+  },
+  "lifecycle": {
+    "source": "docs/results/integration/20261020_full/ct_lifecycle_full.jsonl",
+    "sha256": "7e29d24437c4a76537078f903eb8c1e18a7a0e841bd46d5e60d40b508fad0f33"
+  },
+  "scope": "actual completed full CT candidate/ranking/session training, checkpoint reload and observed-data manifest; no weights copied"
+}

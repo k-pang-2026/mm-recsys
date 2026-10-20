@@ -1,0 +1,68 @@
+ Image mm-recsys-dashboard Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 557B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.dashboard
+#2 transferring dockerfile: 532B 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 ...
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.6s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 292B done
+#5 DONE 0.0s
+
+#6 [1/8] FROM docker.io/library/python:3.11-slim@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce
+#6 resolve docker.io/library/python:3.11-slim@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 61.81kB 0.0s done
+#7 DONE 0.0s
+
+#8 [3/8] COPY requirements-dashboard.txt .
+#8 CACHED
+
+#9 [4/8] COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
+#9 CACHED
+
+#10 [2/8] WORKDIR /app
+#10 CACHED
+
+#11 [5/8] RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
+#11 CACHED
+
+#12 [6/8] COPY dashboard ./dashboard
+#12 DONE 0.0s
+
+#13 [7/8] COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
+#13 DONE 0.1s
+
+#14 [8/8] COPY config.yaml .env ./
+#14 DONE 0.0s
+
+#15 exporting to image
+#15 exporting layers 0.1s done
+#15 exporting manifest sha256:8737f8acafc274029e2543106bed0a872d26391e06aedbb5290478850912db71 0.0s done
+#15 exporting config sha256:f28a82d3ff73db389ca1f5640e7c4268c84002d19525442b598acb128a572ea9 0.0s done
+#15 exporting attestation manifest sha256:1c5bc2a3a975fc64b6f7a4803621343cabcf766cba1961098277c0220a99c8f7 0.0s done
+#15 exporting manifest list sha256:6e3165dc3e9515d2fb701b1cba65cf1acdee7679aae423d0885691599c37d6c6 0.0s done
+#15 naming to docker.io/library/mm-recsys-dashboard:latest done
+#15 unpacking to docker.io/library/mm-recsys-dashboard:latest 0.1s done
+#15 DONE 0.3s
+
+#16 resolving provenance for metadata file
+#16 DONE 0.0s
+ Image mm-recsys-dashboard Built 
+ Container mm-recsys-dashboard-1 Recreate 
+ Container mm-recsys-dashboard-1 Recreated 
+ Container mm-recsys-dashboard-1 Starting 
+ Container mm-recsys-dashboard-1 Started 

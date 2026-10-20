@@ -1,0 +1,20 @@
+{
+  "status": "FAIL",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "condition": "primary full serving + independent full API + offline full A/B + separate full CT trainer; scripted observation collector used 8 HTTP workers",
+  "failed_service": "mm-recsys-integration-20261020-api-server-1",
+  "exit_code": 137,
+  "oom_killed": true,
+  "primary_api_oom_killed": false,
+  "observed_events_completed": 10000,
+  "evidence": {
+    "source": "docs/results/integration/20261020_full/commands/parallel_ct_api_oom.json",
+    "sha256": "824b9e1510f71b27c5e86dd0ab4a9da8a41dcc1aa7a461539cf871f0d2fac086"
+  },
+  "worker_resources": {
+    "source": "docs/results/integration/20261020_full/commands/ct_worker_resources.json",
+    "sha256": "46fd9460ae5c04c9773dbd674ea39e3935dbc1c3e35cec616371ee1a38b5201d"
+  },
+  "resolution": "PENDING: preserve actual training and recheck the affected HTTP load after heavy workers finish; no concurrent full-load capacity claim"
+}

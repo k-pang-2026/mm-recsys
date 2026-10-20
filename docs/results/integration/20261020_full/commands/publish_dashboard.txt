@@ -1,0 +1,1 @@
+대시보드 최종 통합 판정: PASS; docs/results/docker/runtime/full/evaluation_full_test.json
