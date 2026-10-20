@@ -149,6 +149,13 @@ def install_runtime_limits(shared: Any, cfg: dict) -> None:
                          scope='one shared serving process; model weights and ranking policy unchanged')
             write_json(Path(cfg['paths']['results_dir']) / 'serving_runtime.json', state)
             print(f'SERVING RUNTIME: {state}', flush=True)
+            if getattr(application.state, 'search', None) is not None and getattr(application.state, 'recommend', None) is not None:
+                count = len(application.state.search.searcher.products)
+                print(f'[api-server] FAISS 인덱스 로딩 완료 ({count:,} 상품)', flush=True)
+                print('[api-server] Two-Tower 모델 로딩 완료', flush=True)
+                print('[api-server] DeepFM Ranking 모델 로딩 완료', flush=True)
+                url = os.getenv('PUBLIC_API_URL', 'http://localhost:8000')
+                print(f'[api-server] {url} 에서 검색·추천 API 서버 시작', flush=True)
             try:
                 yield
             finally:

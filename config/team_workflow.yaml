@@ -47,7 +47,7 @@ stages:
     branch: feat/A/docker
     pr_ready: true
     # A completes Docker instructions here and submission documentation in the subsequent B11 PR.
-    paths: [docker/, docker-compose.yml, .dockerignore, scripts/prepare_all, scripts/smoke_test, tests/test_docker, docs/results/latency, docs/results/docker, docs/results/experiments/A/, docs/contributions/A.md, README.md]
+    paths: [docker/, docker-compose.yml, .dockerignore, .env, config/team_workflow.yaml, scripts/prepare_all, scripts/smoke_test, tests/test_docker, docs/results/latency, docs/results/docker, docs/results/experiments/A/, docs/contributions/A.md, README.md]
   B11:
     owner: A
     requires: [B9, B10]

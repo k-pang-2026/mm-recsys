@@ -1,0 +1,234 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "ready": {
+    "status": "ready"
+  },
+  "health": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "full",
+    "model_version": "v1.0"
+  },
+  "search": {
+    "search_type": "text",
+    "results": [
+      {
+        "product_id": "P000780",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 112000.0
+      },
+      {
+        "product_id": "P001542",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 36000.0
+      },
+      {
+        "product_id": "P003447",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 85000.0
+      },
+      {
+        "product_id": "P003627",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 20000.0
+      },
+      {
+        "product_id": "P003786",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 43000.0
+      },
+      {
+        "product_id": "P004774",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 117000.0
+      },
+      {
+        "product_id": "P005252",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 58000.0
+      },
+      {
+        "product_id": "P005957",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 114000.0
+      },
+      {
+        "product_id": "P008510",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 131000.0
+      },
+      {
+        "product_id": "P009019",
+        "name": "black oversized hoodie",
+        "score": 0.9088106155395508,
+        "price": 60000.0
+      }
+    ],
+    "latency_ms": 40.96426300020539,
+    "total_count": 50000
+  },
+  "recommendation": {
+    "user_id": "U000001",
+    "recommendations": [
+      {
+        "product_id": "P000580",
+        "score": 0.9996869564056396,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P029765",
+        "score": 0.9461765289306641,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P004074",
+        "score": 0.7607172727584839,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000543",
+        "score": 0.9995056390762329,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P002556",
+        "score": 0.9989811778068542,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P006683",
+        "score": 0.578571617603302,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P001334",
+        "score": 0.9987989664077759,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000558",
+        "score": 0.9986615180969238,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P010811",
+        "score": 0.37381237745285034,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000959",
+        "score": 0.9981847405433655,
+        "reason": "DeepFM 클릭 가능성",
+        "is_exploration": false
+      }
+    ],
+    "pipeline_latency": {
+      "candidate_ms": 11.303470999791898,
+      "ranking_ms": 22.29430900024454,
+      "reranking_ms": 5.889772000045923,
+      "total_ms": 39.48755200008236
+    },
+    "session_context": {
+      "recent_clicks": [],
+      "session_interest": null
+    }
+  },
+  "new_user_recommendation": {
+    "user_id": "__full_cli_new_20261020",
+    "recommendations": [
+      {
+        "product_id": "P000066",
+        "score": 0.5391566265060241,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P000628",
+        "score": 0.0,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P001816",
+        "score": 1.0,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000022",
+        "score": 1.0,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000229",
+        "score": 0.9919678714859438,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000462",
+        "score": 0.9467871485943775,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000301",
+        "score": 0.8920682730923695,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000068",
+        "score": 0.8644578313253012,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000255",
+        "score": 0.8493975903614458,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000104",
+        "score": 0.8473895582329317,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      }
+    ],
+    "pipeline_latency": {
+      "candidate_ms": 2.206871999987925,
+      "ranking_ms": 15.359793000243371,
+      "reranking_ms": 6.180352999763272,
+      "total_ms": 23.74701799999457
+    },
+    "session_context": {
+      "recent_clicks": [],
+      "session_interest": null
+    }
+  },
+  "dashboard_http": 200,
+  "dashboard_health": "ok",
+  "api_docs_http": 200
+}

@@ -25,7 +25,7 @@ def prefetch(cfg: dict) -> None:
         for name in ('config.json', 'preprocessor_config.json', 'tokenizer_config.json',
                      'vocab.json', 'merges.txt', 'pytorch_model.bin'):
             hf_hub_download(spec['clip_model'], name, revision=spec['clip_revision'], local_files_only=True)
-        print('REUSE: complete pinned CLIP cache (offline)', flush=True)
+        print('[api-server] 고정 CLIP 다운로드 캐시 재사용 (오프라인)', flush=True)
         return
     except LocalEntryNotFoundError:
         pass
@@ -61,7 +61,7 @@ def stage(cfg: dict, name: str) -> None:
                 raise ValueError(f'Incomplete recommendation bundle: {missing}; use a new model path')
             if create_service(cfg, MemoryFeatureStore()) is None:
                 raise ValueError('incompatible recommendation bundle')
-            print('REUSE: fully loaded compatible recommendation bundle', flush=True)
+            print('[api-server] 호환되는 추천 모델 재사용 완료', flush=True)
         else:
             import uuid
             work = Path(cfg['paths']['model_dir']) / '.docker' / f'train-{uuid.uuid4().hex[:12]}'
@@ -117,16 +117,22 @@ def prepare(cfg: dict) -> dict:
             search_indexes=(Path(cfg['paths']['model_dir']) / cfg['search']['artifact_subdir'] / 'indexes_current.json').exists(),
             recommendation=(Path(cfg['paths']['model_dir']) / 'v1.0').exists())
         steps = []
+        labels = dict(data='데이터', embeddings='검색 임베딩', indexes='FAISS 인덱스',
+                      recommendation='추천 모델', warmup='Redis 사용자 프로필')
+        print(f'[api-server] {cfg["scale"]} 환경 준비 시작 '
+              f'(상품 {cfg["simulator"]["n_products"]:,}개); 최초 생성·학습에는 시간이 걸립니다.', flush=True)
         for name in ('data', 'embeddings', 'indexes', 'recommendation', 'warmup'):
             before = time.perf_counter()
             command = [sys.executable, str(Path(__file__).resolve()), '--stage', name]
-            print(f'PREPARE {name}', flush=True)
+            print(f'[api-server] {labels[name]} 준비 시작', flush=True)
             result = subprocess.run(command, env=env, timeout=float(os.getenv('PREPARE_TIMEOUT_SECONDS', '21600')))
             steps.append(dict(stage=name, command=command, exit_code=result.returncode,
                               seconds=time.perf_counter() - before))
             if result.returncode:
+                print(f'[api-server] {labels[name]} 준비 실패: exit {result.returncode}', flush=True)
                 write_json(output, dict(status='FAIL', scale=cfg['scale'], stages=steps))
                 raise RuntimeError(f'preparation failed at {name}: exit {result.returncode}')
+            print(f'[api-server] {labels[name]} 준비 완료 ({steps[-1]["seconds"]:.1f}초)', flush=True)
         manifest = Path(cfg['paths']['data_dir']) / 'split_manifest.json'
         report = dict(status='PASS', acceptance='UNMEASURED', scale=cfg['scale'],
                       data_fingerprint=json.loads(manifest.read_text())['generation_fingerprint'],

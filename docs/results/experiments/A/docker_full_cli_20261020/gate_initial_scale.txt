@@ -1,0 +1,99 @@
+......F........FF                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_runtime_does_not_mutate_role_configuration ________________
+
+    def test_runtime_does_not_mutate_role_configuration():
+        original = load_config()
+        runtime = runtime_config(original)
+        assert original['paths']['results_dir'] == 'docs/results'
+>       assert runtime['paths']['results_dir'] == 'docs/results/docker/runtime/dev'
+E       AssertionError: assert 'docs/results.../runtime/full' == 'docs/results...r/runtime/dev'
+E         
+E         - docs/results/docker/runtime/dev
+E         ?                             ^^^
+E         + docs/results/docker/runtime/full
+E         ?                             ^^^^
+
+tests/test_docker.py:141: AssertionError
+__________ test_evidence_recomputes_latency_instead_of_trusting_pass ___________
+
+measurement_fixture = ({'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresh...': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}], 'status': 'PASS'}, {'generation_fingerprint': 'dataset'})
+
+    def test_evidence_recomputes_latency_instead_of_trusting_pass(measurement_fixture):
+        from docker.verify_evidence import verify
+        cfg, smoke, prep, manifest = measurement_fixture
+>       verify(cfg, smoke, prep, manifest)
+
+tests/test_docker.py:294: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+smoke = {'benchmark': {'candidate': {'calls': 100, 'candidate_count_min': 300, 'data_fingerprint': 'dataset', 'elapsed_ms': [1...http': 'PASS', 'invalid_search': 'PASS', 'multipart': 'PASS', ...}, 'data_fingerprint': 'dataset', 'scale': 'dev', ...}
+preparation = {'data_fingerprint': 'dataset', 'scale': 'dev', 'stages': [{'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}], 'status': 'PASS'}
+manifest = {'generation_fingerprint': 'dataset'}
+
+    def verify(cfg: dict, smoke: dict, preparation: dict, manifest: dict) -> None:
+        if smoke.get('status') != 'PASS' or preparation.get('status') != 'PASS':
+            raise ValueError('successful smoke and preparation are required')
+        if smoke.get('scale') != cfg['scale'] or preparation.get('scale') != cfg['scale']:
+>           raise ValueError('scale mismatch')
+E           ValueError: scale mismatch
+
+docker/verify_evidence.py:29: ValueError
+_____________ test_evidence_rejects_short_samples_and_foreign_data _____________
+
+measurement_fixture = ({'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresh...': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}], 'status': 'PASS'}, {'generation_fingerprint': 'dataset'})
+
+    def test_evidence_rejects_short_samples_and_foreign_data(measurement_fixture):
+        from docker.verify_evidence import verify
+        cfg, smoke, prep, manifest = measurement_fixture
+        smoke['data_fingerprint'] = 'foreign'
+        with pytest.raises(ValueError, match='fingerprint'):
+>           verify(cfg, smoke, prep, manifest)
+
+tests/test_docker.py:305: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+smoke = {'benchmark': {'candidate': {'calls': 100, 'candidate_count_min': 300, 'data_fingerprint': 'dataset', 'elapsed_ms': [1...http': 'PASS', 'invalid_search': 'PASS', 'multipart': 'PASS', ...}, 'data_fingerprint': 'foreign', 'scale': 'dev', ...}
+preparation = {'data_fingerprint': 'dataset', 'scale': 'dev', 'stages': [{'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}], 'status': 'PASS'}
+manifest = {'generation_fingerprint': 'dataset'}
+
+    def verify(cfg: dict, smoke: dict, preparation: dict, manifest: dict) -> None:
+        if smoke.get('status') != 'PASS' or preparation.get('status') != 'PASS':
+            raise ValueError('successful smoke and preparation are required')
+        if smoke.get('scale') != cfg['scale'] or preparation.get('scale') != cfg['scale']:
+>           raise ValueError('scale mismatch')
+E           ValueError: scale mismatch
+
+docker/verify_evidence.py:29: ValueError
+
+During handling of the above exception, another exception occurred:
+
+measurement_fixture = ({'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresh...': 0}, {'exit_code': 0}, {'exit_code': 0}, {'exit_code': 0}], 'status': 'PASS'}, {'generation_fingerprint': 'dataset'})
+
+    def test_evidence_rejects_short_samples_and_foreign_data(measurement_fixture):
+        from docker.verify_evidence import verify
+        cfg, smoke, prep, manifest = measurement_fixture
+        smoke['data_fingerprint'] = 'foreign'
+>       with pytest.raises(ValueError, match='fingerprint'):
+E       AssertionError: Regex pattern did not match.
+E        Regex: 'fingerprint'
+E        Input: 'scale mismatch'
+
+tests/test_docker.py:304: AssertionError
+=============================== warnings summary ===============================
+tests/test_docker.py::test_parallel_hybrid_overlaps_towers_and_preserves_fusion
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+tests/test_docker.py::test_process_budget_applies_after_both_factories
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_docker.py::test_runtime_does_not_mutate_role_configuration
+FAILED tests/test_docker.py::test_evidence_recomputes_latency_instead_of_trusting_pass
+FAILED tests/test_docker.py::test_evidence_rejects_short_samples_and_foreign_data
+3 failed, 14 passed, 2 warnings in 3.98s

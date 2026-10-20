@@ -1,10 +1,11 @@
 x-runtime: &runtime
   env_file: .env
   environment: &environment
-    SCALE: ${SCALE:-dev}
+    SCALE: ${SCALE:-full}
     REDIS_HOST: redis
     REDIS_PORT: "6379"
     API_URL: http://api-server:8000
+    PUBLIC_API_URL: http://localhost:${API_PORT:-8000}
     HF_HOME: /app/.cache/huggingface
     PYTHONHASHSEED: "42"
     TOKENIZERS_PARALLELISM: "false"
@@ -40,6 +41,7 @@ services:
   api-server:
     <<: *runtime
     build: {context: ., dockerfile: docker/Dockerfile.api}
+    pull_policy: build
     ports: ["127.0.0.1:${API_PORT:-8000}:8000"]
     depends_on:
       redis: {condition: service_healthy}
@@ -55,11 +57,14 @@ services:
 
   dashboard:
     build: {context: ., dockerfile: docker/Dockerfile.dashboard}
+    pull_policy: build
     env_file: .env
     environment:
-      SCALE: ${SCALE:-dev}
+      SCALE: ${SCALE:-full}
       API_URL: http://api-server:8000
-      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}/${SCALE:-dev}
+      PUBLIC_DASHBOARD_URL: http://localhost:${DASHBOARD_PORT:-8501}
+      READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
+      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}/${SCALE:-full}
     ports: ["127.0.0.1:${DASHBOARD_PORT:-8501}:8501"]
     depends_on:
       api-server: {condition: service_healthy}
@@ -69,14 +74,17 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+      start_period: ${READY_TIMEOUT_SECONDS:-21600}s
     mem_limit: 512m
 
   simulator:
     <<: *runtime
     build: {context: ., dockerfile: docker/Dockerfile.simulator}
+    pull_policy: build
     depends_on:
       redis: {condition: service_healthy}
       api-server: {condition: service_healthy}
+      dashboard: {condition: service_healthy}
     init: true
     mem_limit: 512m
 
