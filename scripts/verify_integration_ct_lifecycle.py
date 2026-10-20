@@ -18,6 +18,10 @@ sys.path.insert(0, str(ROOT))
 
 
 def main() -> int:
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--api-only',type=Path)
+    parser.add_argument('--output-dir',type=Path,default=Path('docs/results/integration'))
+    args=parser.parse_args()
     import requests
     import torch
     import uvicorn
@@ -32,7 +36,7 @@ def main() -> int:
     from src.serving.main import create_app
     from src.serving.memory_store import MemoryFeatureStore
     from src.serving.model_loader import load_record
-    cfg=load_config();out=Path('docs/results/integration')
+    cfg=load_config();out=args.output_dir
     natural=json.loads((out/'ct_full.json').read_text())
     assert cfg['scale']=='full' and natural['status']=='PARTIAL'
     assert natural['retraining']['status']=='RETAINED' and not natural['real_reload_and_rollback']
@@ -41,9 +45,6 @@ def main() -> int:
     candidate_version=natural['retraining']['version']
     trained=production.verify(candidate_version);initial=production.verify('v1.0')
     assert trained['status']=='REJECTED' and trained['hashes']==json.loads((out/'ct_candidate_valid_full.json').read_text())['bundle_hashes']
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--api-only',type=Path)
-    args=parser.parse_args()
     if args.api_only:
         work=args.api_only.resolve()
         assert work.is_relative_to(production.root/'.ct') and work.name.startswith('full-lifecycle-')
@@ -100,7 +101,7 @@ def main() -> int:
             fixture_cfg=fixture_cfg,manifest=manifest,comparison=comparison,
             bundle_hashes={version:registry.verify(version)['hashes'] for version in ('v1.0','v1.1')}))
         print('Full paired CTR complete; replace process before loading HTTP API to release evaluation memory',flush=True)
-        os.execv(sys.executable,[sys.executable,str(Path(__file__)), '--api-only',str(work)])
+        os.execv(sys.executable,[sys.executable,str(Path(__file__)), '--output-dir',str(out), '--api-only',str(work)])
     namespace='mm-recsys:full:ct-lifecycle-'+work.name
     store=RedisFeatureStore(host=cfg['redis']['host'],port=cfg['redis']['port'],namespace=namespace,mab_spec=cfg['recommend']['mab'])
     assert store.client.ping()

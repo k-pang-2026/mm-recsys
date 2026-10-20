@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "original_failure": {
+    "source": "docs/results/integration/20261020_full/parallel_load_failure.json",
+    "sha256": "b4671ebcedf1f08ea470a0f9bec7895f54937a7c2619ab77cb694721e026abab"
+  },
+  "separate_load": {
+    "source": "docs/results/integration/20261020_full/separate_http_load_full.json",
+    "sha256": "6ba92b40c9178baf84c9027429a7631f3a8aa6dde1741e2930ab95f1b67d52fd"
+  },
+  "scope": "same verification API, 200 top50 requests with 8 HTTP workers, full model v1.0 and no offline training/A-B worker",
+  "limitations": [
+    "does not establish original two-API plus A/B/CT parallel workload capacity",
+    "original OOM/137 remains FAIL"
+  ]
+}

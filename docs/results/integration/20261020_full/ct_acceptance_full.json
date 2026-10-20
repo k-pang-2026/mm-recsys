@@ -1,0 +1,37 @@
+{
+  "schema": "ct-full-separated-lifecycle-v1",
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "natural": {
+    "source": "docs/results/integration/20261020_full/ct_full.json",
+    "sha256": "511af838e464c33a291929b15286a2b288eff43498ed0ae7ac91f4ed63894be2"
+  },
+  "controlled_lifecycle": {
+    "source": "docs/results/integration/20261020_full/ct_controlled_lifecycle_full.json",
+    "sha256": "fb6935bfc1e1ef2f34f667eb51cb8a1b953528514417668285a054b13828b795"
+  },
+  "training": {
+    "source": "docs/results/integration/20261020_full/ct_training_sources_full.json",
+    "sha256": "609a3fd5f73f2395fb4245fa61647c84b219927b2fa324d40bf470a999bd4c58"
+  },
+  "candidate_validation": {
+    "source": "docs/results/integration/20261020_full/ct_candidate_valid_full.json",
+    "sha256": "771eddb0e873b59b3b0d46878729ca9a6a5421a6b407828628e09d9d6ed0ec7e"
+  },
+  "configuration": {
+    "source": "docs/results/integration/20261020_full/configuration_full.json",
+    "sha256": "730d5f2bf3e93cb5b3ff72f0165371fc6b5547fc4f350f0e1e19faf8a478ba67"
+  },
+  "controlled_reload": {
+    "source": "docs/results/integration/20261020_full/ct_controlled_reload_full.jsonl",
+    "sha256": "5c68297361e60bce44732cd461d168f89942d8b8234a678e2545e99c26b86516"
+  },
+  "scope": "actual full three-model retraining naturally RETAINED; exact trained candidate in independent full-size constant-initial fixture for real HTTP promotion/reload/rollback; primary v1.0 unchanged",
+  "limitations": [
+    "natural improvement below original .001 guard; no production model improvement established",
+    "controlled initial ranker fault is functional coverage, not a natural promotion",
+    "original 4GiB comparison OOM preserved; verified artifacts resumed separately after Docker memory recovery",
+    "scripted view observations; monitor maturity advances query clock only; CT selection uses valid, not test"
+  ]
+}

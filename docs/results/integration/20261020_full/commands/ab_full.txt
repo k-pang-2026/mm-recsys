@@ -1,0 +1,134 @@
+ Container mm-recsys-integration-ab-20261020 Creating 
+ Container mm-recsys-integration-ab-20261020 Created 
+AB day=1/30 users_per_group=5000
+AB day=2/30 users_per_group=5000
+AB day=3/30 users_per_group=5000
+AB day=4/30 users_per_group=5000
+AB day=5/30 users_per_group=5000
+AB day=6/30 users_per_group=5000
+AB day=7/30 users_per_group=5000
+AB day=8/30 users_per_group=5000
+AB day=9/30 users_per_group=5000
+AB day=10/30 users_per_group=5000
+AB day=11/30 users_per_group=5000
+AB day=12/30 users_per_group=5000
+AB day=13/30 users_per_group=5000
+AB day=14/30 users_per_group=5000
+AB day=15/30 users_per_group=5000
+AB day=16/30 users_per_group=5000
+AB day=17/30 users_per_group=5000
+AB day=18/30 users_per_group=5000
+AB day=19/30 users_per_group=5000
+AB day=20/30 users_per_group=5000
+AB day=21/30 users_per_group=5000
+AB day=22/30 users_per_group=5000
+AB day=23/30 users_per_group=5000
+AB day=24/30 users_per_group=5000
+AB day=25/30 users_per_group=5000
+AB day=26/30 users_per_group=5000
+AB day=27/30 users_per_group=5000
+AB day=28/30 users_per_group=5000
+AB day=29/30 users_per_group=5000
+AB day=30/30 users_per_group=5000
+{
+  "output": "docs/results/integration/20261020_full/ab_full.json",
+  "arms": {
+    "control": {
+      "users": 5000,
+      "impressions": 1500000,
+      "clicks": 377500,
+      "purchases": 18704,
+      "explorations": 0,
+      "ctr": 0.25166666666666665,
+      "cvr": 0.012469333333333334,
+      "purchase_given_click": 0.04954701986754967,
+      "exploration_rate": 0.0,
+      "users_clicked": 5000,
+      "users_purchased": 4609,
+      "unattributed_feedback": 0
+    },
+    "treatment": {
+      "users": 5000,
+      "impressions": 1500000,
+      "clicks": 307112,
+      "purchases": 12979,
+      "explorations": 300000,
+      "ctr": 0.20474133333333333,
+      "cvr": 0.008652666666666666,
+      "purchase_given_click": 0.04226145510432676,
+      "exploration_rate": 0.2,
+      "users_clicked": 5000,
+      "users_purchased": 4246,
+      "unattributed_feedback": 0
+    }
+  },
+  "inference": {
+    "experimental_unit": "randomized user; repeated exposures clustered within user",
+    "independent_user_risks": {
+      "any_click": {
+        "control": 1.0,
+        "treatment": 1.0,
+        "difference": 0.0,
+        "relative_lift": 0.0,
+        "z_statistic": 0.0,
+        "z_p_value": 1.0,
+        "chi_square": 0.0,
+        "chi_square_p_value": 1.0,
+        "difference_ci95": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      },
+      "any_purchase": {
+        "control": 0.9218,
+        "treatment": 0.8492,
+        "difference": -0.0726,
+        "relative_lift": -0.07875894988066823,
+        "z_statistic": -11.40012462262952,
+        "z_p_value": 4.175209853526071e-30,
+        "chi_square": 129.9628414114839,
+        "chi_square_p_value": 4.175209853525962e-30,
+        "difference_ci95": [
+          -0.08500036608479011,
+          -0.06019963391520989
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": false,
+        "asymptotic_reliable": true,
+        "fisher_p_value": null,
+        "experimental_unit": "one independent randomized user"
+      }
+    },
+    "ctr": {
+      "status": "PASS",
+      "control": 0.25166666666666665,
+      "treatment": 0.20474133333333333,
+      "difference": -0.04692533333333332,
+      "relative_lift": -0.18645827814569527,
+      "difference_ci95": [
+        -0.04860289639610907,
+        -0.04524777027055757
+      ],
+      "z_p_value": 0.0,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    },
+    "cvr": {
+      "status": "PASS",
+      "control": 0.012469333333333334,
+      "treatment": 0.008652666666666666,
+      "difference": -0.003816666666666668,
+      "relative_lift": -0.30608426005132605,
+      "difference_ci95": [
+        -0.0041241451537241056,
+        -0.00350918817960923
+      ],
+      "z_p_value": 9.761936622080936e-131,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    }
+  }
+}

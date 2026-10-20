@@ -1,0 +1,6 @@
+2
+Actual full CT trainer evidence: PASS
+Natural CT decision: RETAINED
+Flag --time has been deprecated, use --timeout instead
+mm-recsys-integration-20261020-api-server-1
+Natural full retraining and separate full functional lifecycle completed

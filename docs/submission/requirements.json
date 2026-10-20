@@ -11,10 +11,10 @@
       "tests": [
         "tests/test_simulator.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "status": "PASS",
-      "scope": "새 full 고정시점 품질; valid 동결 후 test; cohort/분모/목표 유지"
+      "scope": "사용자 full 4.2 valid 동결·test 원본 보존 재사용; 현재 데이터/모델/소스 해시 검증; K·기준·정답 유지"
     },
     {
       "requirement": "seed·시간분할·관측 cutoff·학습 분리",
@@ -28,10 +28,10 @@
         "tests/test_simulator.py",
         "tests/test_candidate.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "status": "PASS",
-      "scope": "새 full 고정시점 품질; valid 동결 후 test; cohort/분모/목표 유지"
+      "scope": "사용자 full 4.2 valid 동결·test 원본 보존 재사용; 현재 데이터/모델/소스 해시 검증; K·기준·정답 유지"
     },
     {
       "requirement": "CLIP 3모드·FAISS ANN·검색 품질",
@@ -46,10 +46,10 @@
         "tests/test_index.py",
         "tests/test_search_api.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "status": "PASS",
-      "scope": "새 full 고정시점 품질; valid 동결 후 test; cohort/분모/목표 유지"
+      "scope": "사용자 full 4.2 valid 동결·test 원본 보존 재사용; 현재 데이터/모델/소스 해시 검증; K·기준·정답 유지"
     },
     {
       "requirement": "Two Tower·full catalog top300",
@@ -62,10 +62,10 @@
         "tests/test_two_tower.py",
         "tests/test_candidate.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "status": "PASS",
-      "scope": "새 full 고정시점 품질; valid 동결 후 test; cohort/분모/목표 유지"
+      "scope": "사용자 full 4.2 valid 동결·test 원본 보존 재사용; 현재 데이터/모델/소스 해시 검증; K·기준·정답 유지"
     },
     {
       "requirement": "DeepFM·CTR/CVR",
@@ -78,10 +78,10 @@
         "tests/test_deepfm.py",
         "tests/test_ranking.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "status": "PARTIAL",
-      "scope": "CTR AUC PASS; CVR 양성 0으로 AUC 미정의"
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "status": "PASS",
+      "scope": "CTR AUC 0.965100; CVR AUC 0.507732(3513/54393 양성) 측정; 구매 예측력 개선을 주장하지 않음"
     },
     {
       "requirement": "다양성·cold-start·신규·MAB·세션",
@@ -95,10 +95,10 @@
         "tests/test_reranking.py",
         "tests/test_session.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "status": "PASS",
-      "scope": "새 full 고정시점 품질; valid 동결 후 test; cohort/분모/목표 유지"
+      "scope": "사용자 full 4.2 valid 동결·test 원본 보존 재사용; 현재 데이터/모델/소스 해시 검증; K·기준·정답 유지"
     },
     {
       "requirement": "최종 추천 품질·Coverage",
@@ -109,10 +109,10 @@
       "tests": [
         "tests/test_evaluation_dashboard.py"
       ],
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "status": "PASS",
-      "scope": "새 full 고정시점 품질; valid 동결 후 test; cohort/분모/목표 유지"
+      "scope": "사용자 full 4.2 valid 동결·test 원본 보존 재사용; 현재 데이터/모델/소스 해시 검증; K·기준·정답 유지"
     },
     {
       "requirement": "API 스키마·세션 이벤트 응답",
@@ -126,8 +126,8 @@
         "tests/test_session.py",
         "tests/test_serving_contract.py"
       ],
-      "source": "docs/results/integration/smoke_full.json",
-      "sha256": "5d70753ceb7325de4cd6b05ab6293dc058d3be0bb5645bc0c5b1c498379250eb",
+      "source": "docs/results/integration/20261020_full/current_benchmark/smoke_full.json",
+      "sha256": "bf83b139fbaeed9bcb37e9d0497ee08df21bb5c7b440af8751beedbf4d794d8a",
       "status": "PASS",
       "scope": "현재 full HTTP/이벤트/스키마 및 10 warmup+100 serial raw latency; CT 동시 학습 없음"
     },
@@ -142,8 +142,8 @@
         "tests/test_integration_redis.py",
         "tests/test_docker.py"
       ],
-      "source": "docs/results/integration/smoke_full.json",
-      "sha256": "5d70753ceb7325de4cd6b05ab6293dc058d3be0bb5645bc0c5b1c498379250eb",
+      "source": "docs/results/integration/20261020_full/current_benchmark/smoke_full.json",
+      "sha256": "bf83b139fbaeed9bcb37e9d0497ee08df21bb5c7b440af8751beedbf4d794d8a",
       "status": "PASS",
       "scope": "현재 full HTTP/이벤트/스키마 및 10 warmup+100 serial raw latency; CT 동시 학습 없음"
     },
@@ -157,10 +157,10 @@
       "tests": [
         "tests/test_docker.py"
       ],
-      "source": "docs/results/integration/fresh_checkout.json",
-      "sha256": "d07c5e2a68343160f6cf254ee8160bf20a9daa9b78f41bbcf3f6d95c5c85273b",
+      "source": "docs/results/integration/20261020_full/fresh_checkout.json",
+      "sha256": "4e7b6db67461cfd423649dc8d1d5598fb587755d5d5df0387c3c498348d914e8",
       "status": "PASS",
-      "scope": "원격 main clone+현재 통합 patch; 빈 data/models 전체 생성, serving FP32 수정 후 동일 가중치 재배포; HF 사전학습 cache 재사용"
+      "scope": "병합 main 독립 원격 clone의 빈 data/models full 재생성·세 모델 학습·네 서비스 준비/API; 12파일 동일; HF 캐시와 소스 일치 이미지 재사용; 후속 병렬 OOM 별도 보존"
     },
     {
       "requirement": "A/B 두 전략·통계·CI",
@@ -173,8 +173,8 @@
       "tests": [
         "tests/test_ab.py"
       ],
-      "source": "docs/results/integration/ab_acceptance_full.json",
-      "sha256": "bd7b9a7e180e272f492f6e90871f68f51bb26e2a31478327d66dda9b68ddee2d",
+      "source": "docs/results/integration/20261020_full/ab_acceptance_full.json",
+      "sha256": "ba84ea999c4a7f8254f79e111b553de9597536ea15d9b3c816694c9d43bb9282",
       "status": "PASS",
       "scope": "실제 full 5000/arm·30일·top10, C verifier 통계 재검산, 원본 byte hash 무손실 보존; 생산 lift와 구별"
     },
@@ -188,10 +188,10 @@
       "tests": [
         "tests/test_dashboard.py"
       ],
-      "source": "docs/results/integration/dashboard_full.json",
-      "sha256": "7fdac492f8739efd0699fd6d183e2dadae9ed81355a3e003fa28b1403704625e",
+      "source": "docs/results/integration/20261020_full/dashboard_full.json",
+      "sha256": "28a36c1f29cf5d83f5827a0415108e70ff2a6246b72dd0ef5789351c965aa2d4",
       "status": "PASS",
-      "scope": "실제 dashboard 컨테이너에서 full test 품질·A/B 4탭과 실제 차트·live API 버튼; 브라우저 픽셀 미측정"
+      "scope": "실제 배포 컨테이너 AppTest·4탭·live API 검색/추천 폼, 최종 완료 전 UNMEASURED 표시; 완료 후 PASS/AB/CT 표시는 별도 dashboard_final.json; 브라우저 픽셀 미측정"
     },
     {
       "requirement": "CT 모니터·재학습·버전·롤백",
@@ -204,8 +204,8 @@
       "tests": [
         "tests/test_ct.py"
       ],
-      "source": "docs/results/integration/ct_acceptance_full.json",
-      "sha256": "37b32308d03b5816d33ae2e81a749961a43704ddee4574916b926147fac8eb58",
+      "source": "docs/results/integration/20261020_full/ct_acceptance_full.json",
+      "sha256": "06b0430c5a9f023865983f248a5a2c69f7a641f0ef33cf1b238e85755e22e410",
       "status": "PASS",
       "scope": "실제 10000건 추가 HTTP 관측·full 세 모델 재학습·paired valid; 자연 유지와 별도 full controlled 초기 fault 승격/롤백을 분리하며 운영 개선을 주장하지 않음"
     },
@@ -220,10 +220,10 @@
       "tests": [
         "tests/test_submission.py"
       ],
-      "source": "docs/results/integration/submission/repository.json",
-      "sha256": "1a7e57b69949803eab36a5108da13844ea61e9ff123f9fae0830f9fe297fd6a3",
+      "source": "docs/results/integration/20261020_full/submission/repository.json",
+      "sha256": "0b8e29a19e9362344525c4804c8d5a4770a88f3eef20be4633d498ff26711873",
       "status": "PASS",
-      "scope": "public/익명 접근 및 PR #1–13 병합 확인; INTEGRATE 원격 반영과 과제 시스템 URL 입력 별도"
+      "scope": "공개/익명 접근 및 A/B/C 실제 병합 PR와 PR18 head 확인; 현재 INTEGRATE 원격 반영은 승인 대기"
     },
     {
       "requirement": "외부 데이터 요구 해석",
@@ -249,8 +249,8 @@
       "tests": [
         "tests/test_integration_mab.py"
       ],
-      "source": "docs/results/integration/mab_full.json",
-      "sha256": "786fae21cdeb31bcc5238480b830974b5ee5845282d3ecc87d95d304aa3c87a2",
+      "source": "docs/results/integration/20261020_full/mab_full.json",
+      "sha256": "fcef3395afc302021e4ca8ccce2fc608a4f5171d828f62877767fbeda181b8b6",
       "status": "PASS",
       "scope": "실제 HTTP와 별도 Redis 관측: 최신 user/product 노출, 중복 방지·최대 보상·세션 반응; native real Redis TTL/경합 별도 검사"
     }

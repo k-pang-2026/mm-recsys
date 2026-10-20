@@ -1,5 +1,34 @@
 # A/B 합성 모의실험 보고서
 
+## 2026-10-20 현재 full 데이터의 새 실험
+
+생성기 4.2 데이터 `8b578e5c...`와 보존된 full 품질 평가의 동일 v1.0 모델을 사용했다.
+각 군 5,000명, 30일, top10이며 control=popularity, treatment=full_pipeline이다.
+각 군의 노출은 1,500,000건이다. 사용자 무작위 배정·반응 집계·군집 신뢰구간·
+데이터/설정/소스 해시를 실제 실행 후 검증했다.
+
+| 항목 | Control | Treatment |
+|---|---:|---:|
+| 클릭 | 377,500 | 307,112 |
+| 구매 | 18,704 | 12,979 |
+| CTR | 25.1667% | 20.4741% |
+| CVR | 1.2469% | 0.8653% |
+
+CVR 상대 변화는 **−30.61%**, 차이는 −0.3817%p이며 사용자 cluster 95% CI는
+[−0.4124, −0.3509]%p, 양측 Z p-value는 9.76194e−131이다.
+이 합성 반응 가설에서 treatment의 CVR이 낮았다. 통계/집계 검증 PASS는 성능 개선을
+뜻하지 않는다. 이 결과로 정책을 바꾸거나 기존 test 정답·목표를 조정하지 않았다.
+seed42의 이번 full 실행을 검증했으며 full 반복 실행 동등성은 별도로 측정하지 않았다.
+실서비스의 전환 개선 효과를 측정한 결과로 해석하지 않는다.
+
+실행 원본은 손실 없이 11개 통계 shard와
+[archive](results/integration/20261020_full/ab_full_archive.json)에 보관했고,
+[통계 검증](results/integration/20261020_full/ab_verification_full.json)과 원본 SHA를 연결했다.
+실제 환경은 CPU Docker/Python 3.11.17/Torch 2.6.0+cpu, 모델 프로세스 Torch 4 threads다.
+아래 이전 실험은 데이터/모델이 다른 과거 기록이다.
+
+## 이전 full·dev 실험 보존
+
 최종 full 실험과 과거 dev 결과를 구별한다. 양 arm의 동일 반응 가설·seed42를 사용하며 test 행동과 잠재 선호를 추천기에 전달하지 않는다.
 full 5000명/arm, 30일, top10; control=popularity, treatment=full_pipeline.
 사용자 단위 무작위 배정, arm/사용자별 가변 상태·RNG 분리이며 불변 catalog만 공유한다.

@@ -1,0 +1,19 @@
+{
+  "status": "RECOVERED",
+  "checked_at": "2026-10-20T10:09:48.055000+00:00",
+  "reason": "Docker management API and Windows interop timed out during memory/swap saturation",
+  "observed_conditions": {
+    "wsl_memory_mb": 7728,
+    "available_mb_approximately": 217,
+    "swap_mb": 2048,
+    "swap_free_mb": 0
+  },
+  "recovery": "user terminated only docker-desktop from Windows PowerShell and reopened Docker Desktop",
+  "post_restart_available_kb": 4690444,
+  "sequence": "keep primary API/dashboard/simulator stopped temporarily; run one verification API plus CT; restore primary after CT; no volume reset",
+  "ct_resume_log": "docs/results/integration/20261020_full/commands/ct_resume_after_restart.txt",
+  "limitations": [
+    "interrupted comparison requires new completion evidence",
+    "does not erase original OOM failures"
+  ]
+}

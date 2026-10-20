@@ -1,0 +1,10 @@
+CT lifecycle exited successfully; restart only verification API for affected HTTP load
+mm-recsys-integration-20261020-api-server-1
+Verification API ready; run original 200 top50 requests / 8 workers separately
+Separate affected HTTP load passed; stop verification deployment
+mm-recsys-integration-20261020-api-server-1
+mm-recsys-integration-20261020-redis-1
+Restore all four primary services using preserved data/models
+Four primary services restored; pause replay for single-deployment benchmark
+mm-recsys-simulator-1
+New single-deployment HTTP benchmark complete

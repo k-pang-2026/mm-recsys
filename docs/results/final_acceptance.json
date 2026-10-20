@@ -2,94 +2,94 @@
   "scale": "full",
   "stage": "INTEGRATE",
   "status": "PASS",
-  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
   "data_counts": {
     "products": 50000,
     "users": 10000,
     "events": 1000000,
-    "impressions": 2255024
+    "impressions": 2252916
   },
   "metrics": {
     "mrr": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "value": 0.9316666666666666,
       "split": "test",
       "status": "PASS"
     },
     "ndcg_at_10": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "value": 0.9316666666666666,
       "split": "test",
       "status": "PASS"
     },
     "recall_at_300": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 0.7501409489114407,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 0.7373766270919754,
       "split": "test",
       "status": "PASS"
     },
     "auc": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 0.964766793453099,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 0.9651002138524184,
       "split": "test",
       "status": "PASS"
     },
     "hit_rate_at_50": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 0.7008847254748894,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 0.6629952796452582,
       "split": "test",
       "status": "PASS"
     },
     "ndcg_at_50": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 0.3421754358191502,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 0.3231532373765219,
       "split": "test",
       "status": "PASS"
     },
     "coverage": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 0.41534,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 0.35388,
       "split": "test",
       "status": "PASS"
     },
     "candidate_p95_ms": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 6.821933299625015,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 4.104735999840159,
       "split": "benchmark",
       "status": "PASS"
     },
     "search_p95_ms": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 123.4956392001095,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 81.56195390040466,
       "split": "benchmark",
       "status": "PASS"
     },
     "recommend_p95_ms": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 54.32276309948065,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 43.14002554999661,
       "split": "benchmark",
       "status": "PASS"
     },
     "feature_p95_ms": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
-      "value": 0.3944216498894093,
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
+      "value": 0.2277727496675652,
       "split": "benchmark",
       "status": "PASS"
     },
     "candidate_count": {
-      "source": "docs/results/integration/quality_full_test.json",
-      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "source": "docs/results/integration/20261020_full/quality_full_test.json",
+      "sha256": "72d419f03fce623de3cc9026bf89afdf055427cc52e6d228ac8f224d33b41de3",
       "value": 300,
       "split": "test",
       "status": "PASS"
@@ -97,48 +97,51 @@
   },
   "checks": {
     "docker_reproduction": {
+      "source": "docs/results/integration/20261020_full/fresh_checkout.json",
+      "sha256": "4e7b6db67461cfd423649dc8d1d5598fb587755d5d5df0387c3c498348d914e8",
       "status": "PASS",
-      "exit_code": 0,
-      "source": "docs/results/integration/fresh_checkout.json",
-      "sha256": "d07c5e2a68343160f6cf254ee8160bf20a9daa9b78f41bbcf3f6d95c5c85273b"
+      "exit_code": 0
     },
     "api_schemas": {
+      "source": "docs/results/integration/20261020_full/current_benchmark/smoke_full.json",
+      "sha256": "bf83b139fbaeed9bcb37e9d0497ee08df21bb5c7b440af8751beedbf4d794d8a",
       "status": "PASS",
-      "exit_code": 0,
-      "source": "docs/results/integration/smoke_full.json",
-      "sha256": "5d70753ceb7325de4cd6b05ab6293dc058d3be0bb5645bc0c5b1c498379250eb"
+      "exit_code": 0
     },
     "ab_statistics": {
+      "source": "docs/results/integration/20261020_full/ab_acceptance_full.json",
+      "sha256": "ba84ea999c4a7f8254f79e111b553de9597536ea15d9b3c816694c9d43bb9282",
       "status": "PASS",
-      "exit_code": 0,
-      "source": "docs/results/integration/ab_acceptance_full.json",
-      "sha256": "bd7b9a7e180e272f492f6e90871f68f51bb26e2a31478327d66dda9b68ddee2d"
+      "exit_code": 0
     },
     "session_response": {
+      "source": "docs/results/integration/20261020_full/mab_full.json",
+      "sha256": "fcef3395afc302021e4ca8ccce2fc608a4f5171d828f62877767fbeda181b8b6",
       "status": "PASS",
-      "exit_code": 0,
-      "source": "docs/results/integration/mab_full.json",
-      "sha256": "786fae21cdeb31bcc5238480b830974b5ee5845282d3ecc87d95d304aa3c87a2"
+      "exit_code": 0
     },
     "ct_retrain_and_rollback": {
+      "source": "docs/results/integration/20261020_full/ct_acceptance_full.json",
+      "sha256": "06b0430c5a9f023865983f248a5a2c69f7a641f0ef33cf1b238e85755e22e410",
       "status": "PASS",
-      "exit_code": 0,
-      "source": "docs/results/integration/ct_acceptance_full.json",
-      "sha256": "37b32308d03b5816d33ae2e81a749961a43704ddee4574916b926147fac8eb58"
+      "exit_code": 0
     },
     "submission": {
-      "source": "docs/results/integration/submission/checks.json",
-      "sha256": "1ca3bb7274139a8b0baee749e8d07ebebd8bc762710abd217637209a76a7b2f2",
+      "source": "docs/results/integration/20261020_full/submission/checks.json",
+      "sha256": "a90950bd28b16007e7bbe471e3c0e8b15c9847b9b27e2ffef1a0b0dbad93c970",
       "status": "PASS",
       "exit_code": 0
     }
   },
   "limitations": [
-    "full test has prior B10 observation history; current performance changes selected on valid before frozen revalidation",
-    "synthetic A/B is a user-randomized simulation; seeded full repeat unmeasured",
-    "natural CT full training was RETAINED; rollback is a separately measured full-size controlled INITIAL constant-ranker lifecycle, not production lift",
-    "CVR AUC is undefined due to no positive clicked-exposure purchases in this evaluation",
-    "benchmark is initial v1.0 without concurrent training; other hardware/concurrency and browser pixels unmeasured"
+    "Original user full valid/test/latency evidence preserved and reused; current supplemental HTTP benchmark is a separate measurement.",
+    "Synthetic 5000/arm 30-day A/B CVR relative change -30.6084%; no positive production effect claimed.",
+    "Natural full CT retained v1.0; separate full-size constant-initial functional drill covers actual promotion/reload/rollback using the exact trained candidate.",
+    "Parallel two-API plus A/B/CT API OOM and monolithic 4GiB CT comparison OOM remain preserved in parallel_load_failure.json and ct_memory_failure.json; sequential follow-ups resolve only their documented scopes.",
+    "Docker Desktop was restarted after WSL memory/swap saturation; stored data, models and frozen evaluation were retained.",
+    "Current benchmark uses one deployment with replay paused, no A/B/CT worker; no multi-deployment training/load latency guarantee.",
+    "Dashboard Streamlit AppTest and real API forms verified; browser pixel rendering and live-user lift unmeasured.",
+    "Current INTEGRATE commit remote publication needs fresh explicit approval; external submission URL entry not performed."
   ],
   "dataset_scope": {
     "status": "RESOLVED_OPTIONAL",

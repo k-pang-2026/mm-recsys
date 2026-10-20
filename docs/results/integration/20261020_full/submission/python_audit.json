@@ -1,0 +1,194 @@
+{
+  "files": 126,
+  "public_functions": 433,
+  "missing_annotations": [],
+  "seed_calls": [
+    {
+      "file": "docker/quality.py",
+      "line": 40,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/common/seed.py",
+      "line": 11,
+      "call": "random.seed(seed)"
+    },
+    {
+      "file": "src/common/seed.py",
+      "line": 12,
+      "call": "np.random.seed(seed)"
+    },
+    {
+      "file": "src/common/seed.py",
+      "line": 13,
+      "call": "torch.manual_seed(seed)"
+    },
+    {
+      "file": "src/ct/training.py",
+      "line": 73,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/evaluation/ab_test.py",
+      "line": 291,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/evaluation/run_all.py",
+      "line": 90,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/testing.py",
+      "line": 38,
+      "call": "torch.manual_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_deepfm.py",
+      "line": 89,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_deepfm.py",
+      "line": 106,
+      "call": "torch.Generator().manual_seed(cfg['seed'] + 4)"
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 84,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_session.py",
+      "line": 96,
+      "call": "torch.Generator().manual_seed(cfg['seed'] + 12)"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 32,
+      "call": "np.random.seed(seed)"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 32,
+      "call": "random.seed(seed)"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 147,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 158,
+      "call": "torch.Generator().manual_seed(cfg['seed'] + 2)"
+    },
+    {
+      "file": "src/search/build_embeddings.py",
+      "line": 178,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/search/build_index.py",
+      "line": 100,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/search/eval_search.py",
+      "line": 151,
+      "call": "set_seed(cfg['seed'])"
+    },
+    {
+      "file": "src/search/verify.py",
+      "line": 99,
+      "call": "set_seed(cfg['seed'])"
+    }
+  ],
+  "suspected_settings": [
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 36,
+      "name": "n_products",
+      "value": 400
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 36,
+      "name": "n_users",
+      "value": 24
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 36,
+      "name": "n_events",
+      "value": 6000
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 37,
+      "name": "epochs",
+      "value": 3
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 38,
+      "name": "epochs",
+      "value": 20
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 38,
+      "name": "batch_size",
+      "value": 128
+    },
+    {
+      "file": "src/ct/verify_ct.py",
+      "line": 165,
+      "name": "seed",
+      "value": 42
+    },
+    {
+      "file": "src/evaluation/api_benchmark.py",
+      "line": 101,
+      "name": "top_n",
+      "value": 10
+    },
+    {
+      "file": "src/recommendation/bench_ranking.py",
+      "line": 84,
+      "name": "top_n",
+      "value": 50
+    },
+    {
+      "file": "src/recommendation/bench_tcp.py",
+      "line": 23,
+      "name": "top_n",
+      "value": 50
+    },
+    {
+      "file": "src/recommendation/bench_tcp.py",
+      "line": 52,
+      "name": "top_n",
+      "value": 50
+    },
+    {
+      "file": "src/recommendation/train_two_tower.py",
+      "line": 160,
+      "name": "batch_size",
+      "value": null
+    },
+    {
+      "file": "scripts/check_submission.py",
+      "line": 97,
+      "name": "top_k",
+      "value": 10
+    },
+    {
+      "file": "scripts/check_submission.py",
+      "line": 104,
+      "name": "top_n",
+      "value": 10
+    }
+  ],
+  "scope": "AST inventory; absence of findings does not prove complete typing or determinism"
+}

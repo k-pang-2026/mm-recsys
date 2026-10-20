@@ -1,0 +1,152 @@
+{
+  "scale": "full",
+  "stage": "INTEGRATE",
+  "status": "PASS",
+  "data_fingerprint": "6cbd02ebd828afc464e02bc95edd25c80f96175f2f14f53af707edcba3665ae9",
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2255024
+  },
+  "metrics": {
+    "mrr": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.9316666666666666,
+      "split": "test",
+      "status": "PASS"
+    },
+    "ndcg_at_10": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.9316666666666666,
+      "split": "test",
+      "status": "PASS"
+    },
+    "recall_at_300": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.7501409489114407,
+      "split": "test",
+      "status": "PASS"
+    },
+    "auc": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.964766793453099,
+      "split": "test",
+      "status": "PASS"
+    },
+    "hit_rate_at_50": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.7008847254748894,
+      "split": "test",
+      "status": "PASS"
+    },
+    "ndcg_at_50": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.3421754358191502,
+      "split": "test",
+      "status": "PASS"
+    },
+    "coverage": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.41534,
+      "split": "test",
+      "status": "PASS"
+    },
+    "candidate_p95_ms": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 6.821933299625015,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "search_p95_ms": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 123.4956392001095,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "recommend_p95_ms": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 54.32276309948065,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "feature_p95_ms": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 0.3944216498894093,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "candidate_count": {
+      "source": "docs/results/integration/quality_full_test.json",
+      "sha256": "593197cfbfe00213a3498947b59dd061f05235f75168a82ed2091ec21bae11c3",
+      "value": 300,
+      "split": "test",
+      "status": "PASS"
+    }
+  },
+  "checks": {
+    "docker_reproduction": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/fresh_checkout.json",
+      "sha256": "d07c5e2a68343160f6cf254ee8160bf20a9daa9b78f41bbcf3f6d95c5c85273b"
+    },
+    "api_schemas": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/smoke_full.json",
+      "sha256": "5d70753ceb7325de4cd6b05ab6293dc058d3be0bb5645bc0c5b1c498379250eb"
+    },
+    "ab_statistics": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/ab_acceptance_full.json",
+      "sha256": "bd7b9a7e180e272f492f6e90871f68f51bb26e2a31478327d66dda9b68ddee2d"
+    },
+    "session_response": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/mab_full.json",
+      "sha256": "786fae21cdeb31bcc5238480b830974b5ee5845282d3ecc87d95d304aa3c87a2"
+    },
+    "ct_retrain_and_rollback": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/integration/ct_acceptance_full.json",
+      "sha256": "37b32308d03b5816d33ae2e81a749961a43704ddee4574916b926147fac8eb58"
+    },
+    "submission": {
+      "source": "docs/results/integration/submission/checks.json",
+      "sha256": "1ca3bb7274139a8b0baee749e8d07ebebd8bc762710abd217637209a76a7b2f2",
+      "status": "PASS",
+      "exit_code": 0
+    }
+  },
+  "limitations": [
+    "full test has prior B10 observation history; current performance changes selected on valid before frozen revalidation",
+    "synthetic A/B is a user-randomized simulation; seeded full repeat unmeasured",
+    "natural CT full training was RETAINED; rollback is a separately measured full-size controlled INITIAL constant-ranker lifecycle, not production lift",
+    "CVR AUC is undefined due to no positive clicked-exposure purchases in this evaluation",
+    "benchmark is initial v1.0 without concurrent training; other hardware/concurrency and browser pixels unmeasured"
+  ],
+  "dataset_scope": {
+    "status": "RESOLVED_OPTIONAL",
+    "date": "2026-10-16",
+    "decision_source": "사용자가 전달한 강사 지시",
+    "primary_acceptance": "합성 full 데이터로 개발과 필수 검증을 완료한다",
+    "real_datasets_required": false,
+    "real_datasets_use": "H&M, Retailrocket, DeepFashion은 개발 완료 후 추가적인 모델 검증에 사용한다",
+    "acquisition_performed": false
+  }
+}

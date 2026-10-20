@@ -1,0 +1,77 @@
+[api-server] full 환경 준비 시작 (상품 50,000개); 최초 생성·학습에는 시간이 걸립니다.
+[api-server] 데이터 준비 시작
+[api-server] 데이터 준비 완료 (58.6초)
+[api-server] 검색 임베딩 준비 시작
+[api-server] 고정 CLIP 다운로드 캐시 재사용 (오프라인)
+text: unique 256/1440
+text: unique 512/1440
+text: unique 768/1440
+text: unique 1024/1440
+text: unique 1280/1440
+text: unique 1440/1440
+image: unique 256/256
+[api-server] 검색 임베딩 준비 완료 (72.3초)
+[api-server] FAISS 인덱스 준비 시작
+text: 1440 indexed vectors, IP HNSW
+image: 256 indexed vectors, IP HNSW
+hybrid: 2880 indexed vectors, IP HNSW
+LOADED FAISS text: vectors=1440, dim=512
+LOADED FAISS image: vectors=256, dim=512
+LOADED FAISS hybrid: vectors=2880, dim=512
+[api-server] FAISS 인덱스 준비 완료 (3.2초)
+[api-server] 추천 모델 준비 시작
+epoch=1 loss=0.32517 valid_recall@300=0.736491 updates=1133
+epoch=2 loss=0.24178 valid_recall@300=0.739093 updates=1133
+epoch=3 loss=0.22425 valid_recall@300=0.742428 updates=1133
+epoch=4 loss=0.21181 valid_recall@300=0.737358 updates=1133
+epoch=5 loss=0.20259 valid_recall@300=0.739782 updates=1133
+epoch=6 loss=0.19364 valid_recall@300=0.739048 updates=1133
+best_epoch=3; valid_recall@300=0.742428; result=models/full/.docker/train-f3a1af864180/results/candidate_training_full.json
+epoch=1 loss=2.10524 valid_ctr_auc=0.958311 cvr_auc=0.5077162779760996
+epoch=2 loss=0.46654 valid_ctr_auc=0.963226 cvr_auc=0.5140840380050735
+epoch=3 loss=0.42675 valid_ctr_auc=0.965101 cvr_auc=0.5105060061584324
+epoch=4 loss=0.41281 valid_ctr_auc=0.964711 cvr_auc=0.5165495649919443
+epoch=5 loss=0.40168 valid_ctr_auc=0.964742 cvr_auc=0.5143226873749589
+epoch=6 loss=0.39230 valid_ctr_auc=0.965674 cvr_auc=0.5138471864864785
+epoch=7 loss=0.38660 valid_ctr_auc=0.965437 cvr_auc=0.5084145595966285
+epoch=8 loss=0.38244 valid_ctr_auc=0.966044 cvr_auc=0.5199271311131682
+epoch=9 loss=0.37958 valid_ctr_auc=0.965979 cvr_auc=0.518604063268726
+epoch=10 loss=0.37712 valid_ctr_auc=0.965548 cvr_auc=0.5214581829702423
+epoch=11 loss=0.37528 valid_ctr_auc=0.966038 cvr_auc=0.518319977293499
+session epoch=1 valid_loss=0.12412 sampled_hit@10=1.00000
+session epoch=2 valid_loss=0.10745 sampled_hit@10=1.00000
+session epoch=3 valid_loss=0.10127 sampled_hit@10=1.00000
+session epoch=4 valid_loss=0.09751 sampled_hit@10=1.00000
+session epoch=5 valid_loss=0.09474 sampled_hit@10=1.00000
+session epoch=6 valid_loss=0.09260 sampled_hit@10=1.00000
+session epoch=7 valid_loss=0.09111 sampled_hit@10=1.00000
+session epoch=8 valid_loss=0.08990 sampled_hit@10=1.00000
+session epoch=9 valid_loss=0.08907 sampled_hit@10=1.00000
+session epoch=10 valid_loss=0.08849 sampled_hit@10=1.00000
+session epoch=11 valid_loss=0.08778 sampled_hit@10=1.00000
+session epoch=12 valid_loss=0.08734 sampled_hit@10=1.00000
+session epoch=13 valid_loss=0.08683 sampled_hit@10=1.00000
+session epoch=14 valid_loss=0.08674 sampled_hit@10=1.00000
+session epoch=15 valid_loss=0.08627 sampled_hit@10=1.00000
+session epoch=16 valid_loss=0.08600 sampled_hit@10=1.00000
+session epoch=17 valid_loss=0.08570 sampled_hit@10=1.00000
+session epoch=18 valid_loss=0.08555 sampled_hit@10=1.00000
+session epoch=19 valid_loss=0.08533 sampled_hit@10=1.00000
+session epoch=20 valid_loss=0.08506 sampled_hit@10=1.00000
+[api-server] 추천 모델 준비 완료 (1699.0초)
+[api-server] Redis 사용자 프로필 준비 시작
+{"status": "PASS", "scale": "full", "profile_count": 10000, "batch_size": 1000, "history_loaded": false, "namespace": "mm-recsys:full"}
+[api-server] Redis 사용자 프로필 준비 완료 (73.3초)
+PREPARATION COMPLETE; catalog=50000; CLIP=openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268; FAISS + Two Tower/DeepFM/session
+INFO:     Started server process [7]
+INFO:     Waiting for application startup.
+/usr/local/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py:243: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+  if not interpolate_pos_encoding and (height != self.image_size or width != self.image_size):
+GC generation2: {'elapsed_ms': 262.22218699967925, 'at_ns': 1792487119912623041, 'frozen_objects': 0}
+SERVING RUNTIME: {'torch_threads': 2, 'faiss_threads': 2, 'inference_worker_budget': True, 'parallel_hybrid': True, 'vision_optimization': {'enabled': True, 'implementation': 'torch.jit.optimize_for_inference', 'dtype': 'float32', 'query_shape': [1, 3, 224, 224], 'startup_max_abs_vector_error': 3.129243850708008e-07, 'process_environment': {'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '2'}, 'scope': 'same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache'}, 'gc_enabled': True, 'gc_freeze_enabled': True, 'gc_frozen_objects': 645701, 'configured_search_threads': 1, 'configured_candidate_training_threads': 4, 'scope': 'one shared serving process; model weights and ranking policy unchanged'}
+[api-server] FAISS 인덱스 로딩 완료 (50,000 상품)
+[api-server] Two-Tower 모델 로딩 완료
+[api-server] DeepFM Ranking 모델 로딩 완료
+[api-server] http://localhost:18000 에서 검색·추천 API 서버 시작
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)

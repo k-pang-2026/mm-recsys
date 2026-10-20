@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "finished_at": "2026-10-20T09:06:00.199820+00:00",
+  "source_url": "https://github.com/k-pang-2026/mm-recsys.git",
+  "reviewed_base": "aaa4184c0d03eb47e90eb899aac77cc9797cbb18",
+  "checkout": "/tmp/mm-recsys-integration-20261020",
+  "project": "mm-recsys-integration-20261020",
+  "initial_data_files": 0,
+  "initial_model_files": 0,
+  "prepared_data_and_models_from_empty": true,
+  "preparation": {
+    "source": "docs/results/integration/20261020_full/preparation_first_full.json",
+    "sha256": "16e3802fc94e71a33fd0c6b4d209cb54f2cc72923b6179478fa6a504937708d5"
+  },
+  "runtime_sources": {
+    "source": "docs/results/integration/20261020_full/runtime_sources_full.json",
+    "sha256": "3d31801b9fa80dbf2606ff7ca7e136144144e52d05f9df9e14de598289a31e9c"
+  },
+  "runtime": {
+    "source": "docs/results/integration/20261020_full/fresh_runtime_full.json",
+    "sha256": "20a25d0fe678e6e8208103840fba0c2703455b7d41f60bbe588cf2b019f31906"
+  },
+  "smoke": {
+    "source": "docs/results/integration/20261020_full/fresh_smoke_full.json",
+    "sha256": "738fc4eb9e4e1e7b7000f526ef46a9521c8f45482c2744bcf74cebc64e01a413"
+  },
+  "model_identity": {
+    "source": "docs/results/integration/20261020_full/fresh_model_identity_full.json",
+    "sha256": "21d16353731b823ffb3dc22c2772454e6f9f4f1cc4038b6eee9aab4ce41d8dae"
+  },
+  "pretrained_hf_cache": "existing pinned mm-recsys_hf_cache; no prepared data, embeddings, indexes or recommendation models reused",
+  "scope": "actual independent remote main clone, empty-path full generation and all three trainers, four healthy/running services and live smoke; reuses existing pinned source-compatible service images and pretrained HF cache"
+}

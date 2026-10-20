@@ -1,0 +1,145 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "scenario": "controlled_initial_constant_ranker",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1010001,
+    "impressions": 2262946
+  },
+  "natural_retraining": "RETAINED",
+  "comparison": {
+    "split": "valid",
+    "validation_fingerprint": "844a41eab8b06911d07f0e565b50b276f93d60af0098a2130d9f1f8b82b9f39c",
+    "baseline": {
+      "ctr_auc": 0.5,
+      "ctr_logloss": 0.6931471805599451,
+      "ctr_samples": 227736,
+      "ctr_positives": 57222,
+      "validation_fingerprint": "844a41eab8b06911d07f0e565b50b276f93d60af0098a2130d9f1f8b82b9f39c"
+    },
+    "candidate": {
+      "ctr_auc": 0.9659462994096842,
+      "ctr_logloss": 0.14349369631161185,
+      "ctr_samples": 227736,
+      "ctr_positives": 57222,
+      "validation_fingerprint": "844a41eab8b06911d07f0e565b50b276f93d60af0098a2130d9f1f8b82b9f39c"
+    }
+  },
+  "guard": {
+    "enabled": true,
+    "poll_seconds": 60,
+    "recent_seconds": 86400,
+    "attribution_seconds": 3600,
+    "min_mature_requests": 20,
+    "ctr_threshold": 0.01,
+    "promotion_metric": "ctr_auc",
+    "min_improvement": 0.001,
+    "promotion_floor": 0.7,
+    "hitrate_threshold": 0.2,
+    "retrain_log_threshold": 10000
+  },
+  "real_reload_and_rollback": true,
+  "http": [
+    {
+      "version": "v1.0",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    },
+    {
+      "version": "v1.1",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.1",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    }
+  ],
+  "reloads": [
+    {
+      "status": "reloaded",
+      "version": "v1.1"
+    },
+    {
+      "status": "reloaded",
+      "version": "v1.0"
+    }
+  ],
+  "original_candidate_hashes": {
+    "meta.json": "d7cffb602b9a2336d883ad5ab43374c322dc52f161cd6b0cc5ae342c0e850932",
+    "two_tower.pt": "d0ae21b516aa7b73481b266df7167de1dd2631d82539a9362244679fe2c56fe9",
+    "feature_vocab_scalers.json": "fb85ae1fe33717f899036b829c8040d32d3f2bb68baf12e5134f9a26e80b9a44",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "1c007eeb2b76682d7cb853bac1be06af8511054b376051c5ca24cc8a0cff5fa7",
+    "index_manifest.json": "002a1068eeaf8ccccce437c1fcb9c505bf84a41b2d2aedc307e786623281eb98",
+    "ranking/meta.json": "14d00e2698e3cdf739677d54271f9e2d63dba64b11ac2a200026f7f312f83023",
+    "ranking/deepfm.pt": "aaef127c3458fa10d5d075833161e6eaf794fa045a084c02db572493623f83ad",
+    "ranking/features.json": "74ac5ef771131ff67a994e6959614cfd5edb16c89b81f620e1a40d0673700fb9",
+    "session/meta.json": "258d656144453ae663af06da69e3443a23e6d17eb1e7fea43d23a36a0d12235d",
+    "session/session.pt": "8c1cea5337e13ad3ff5b62de5e17e12fb0dc06cabeb822ec7f66987a1ed5651b",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "candidate_hashes": {
+    "meta.json": "d7cffb602b9a2336d883ad5ab43374c322dc52f161cd6b0cc5ae342c0e850932",
+    "two_tower.pt": "d0ae21b516aa7b73481b266df7167de1dd2631d82539a9362244679fe2c56fe9",
+    "feature_vocab_scalers.json": "fb85ae1fe33717f899036b829c8040d32d3f2bb68baf12e5134f9a26e80b9a44",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "1c007eeb2b76682d7cb853bac1be06af8511054b376051c5ca24cc8a0cff5fa7",
+    "index_manifest.json": "002a1068eeaf8ccccce437c1fcb9c505bf84a41b2d2aedc307e786623281eb98",
+    "ranking/meta.json": "14d00e2698e3cdf739677d54271f9e2d63dba64b11ac2a200026f7f312f83023",
+    "ranking/deepfm.pt": "aaef127c3458fa10d5d075833161e6eaf794fa045a084c02db572493623f83ad",
+    "ranking/features.json": "74ac5ef771131ff67a994e6959614cfd5edb16c89b81f620e1a40d0673700fb9",
+    "session/meta.json": "258d656144453ae663af06da69e3443a23e6d17eb1e7fea43d23a36a0d12235d",
+    "session/session.pt": "8c1cea5337e13ad3ff5b62de5e17e12fb0dc06cabeb822ec7f66987a1ed5651b",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "production_unchanged": true,
+  "fixture_active": "v1.0",
+  "redis_namespace": "mm-recsys:full:ct-lifecycle-full-lifecycle-5f7db4b651",
+  "natural": {
+    "source": "docs/results/integration/20261020_full/ct_full.json",
+    "sha256": "511af838e464c33a291929b15286a2b288eff43498ed0ae7ac91f4ed63894be2"
+  },
+  "lifecycle": {
+    "source": "docs/results/integration/20261020_full/ct_controlled_lifecycle_full.jsonl",
+    "sha256": "51d7480221d448dcae452ef0713bd5b628118d8cb651ccc424ebd3b1888d7dd1"
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "399d6f95ecc6bd109bb1d6d15bb92da42c26279a703d9cf5a9217fe060c98e9e",
+    "src/ct/verify_serving.py": "a6b06579c507ddb5558b9163c06b13f74b25316ce3f8b081e143471b8b63dfb7",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "3752aae27268e2fec1b133821ef3343830291c58aaa747787023fe4672c6c40a",
+    "src/ct/retrain_trigger.py": "ec818ec9cb332507ed0a4f85fcb44fbd26fe31128f34d9b4fe4ae4224f87cd03",
+    "src/ct/training.py": "655af9f3f6c492c1c6ef383e416bb7e3827f12bed2a69bfff24533f86f8dd0b0",
+    "src/ct/verify_ct.py": "5fbed8379aabed2bf9ffaed3fd99e63e32cb6fb4528902ed885ade0c2e846d83",
+    "src/ct/bootstrap.py": "253408a549248b6366fa5ff71fd73e53aa465c666af781252be17e2491e1dc65",
+    "scripts/verify_integration_ct_lifecycle.py": "2ba328a4a32c8dfc576e0a61854d0f6a453d64f799dcbbb787b4cb94bf8acc8f"
+  },
+  "scope": "full-size independent functional promotion/reload/rollback, deliberately weak INITIAL fixture, exact naturally retrained candidate and original guard; production remains naturally RETAINED",
+  "limitations": [
+    "controlled fault injection does not measure production improvement",
+    "CTR paired valid comparison; no new test evaluation",
+    "not a second training run; exact actual full three-model candidate reused",
+    "production initial bundle and registry pointer remain unchanged"
+  ]
+}

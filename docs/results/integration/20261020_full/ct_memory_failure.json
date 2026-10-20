@@ -1,0 +1,20 @@
+{
+  "status": "FAIL",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "exit_code": 137,
+  "oom_killed": true,
+  "memory_limit_bytes": 4294967296,
+  "phase": "paired valid comparison after actual three-model full training",
+  "completed_training_reports": {
+    "candidate": "50761e89d8febccdd2929237bf84731f71e5d7ce3a77552dbe6a674da9863509",
+    "ranking": "c99e99e485d8e3b048e691a96cad08bcdc1f9da2cdb40ec89266bf1be41dc6db",
+    "session": "828db89a42ccb04f20e82f20160618dd8be0cbfb356fb1fda824cdb3fee36035"
+  },
+  "staged_candidate": "v1.1",
+  "resolution": "PENDING: existing verified-artifact comparison recovery in separate process; preserve trained model bytes and event watermark",
+  "evidence": {
+    "source": "docs/results/integration/20261020_full/commands/ct_worker_exit.json",
+    "sha256": "1898781c3aeada20ed9fa17b4c60f3b5e96de189cde3d26a32a19d375b094bdc"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "status": "RUNNING",
+  "observed_events": 10000,
+  "run_id": "ct-integration-96a595b72626421f8d39df56f3adf3af",
+  "start_watermark": 1241,
+  "monitor": {
+    "event": "monitor",
+    "status": "ALERT",
+    "ctr": 0.9970089730807578,
+    "hit_rate_at_50": 0.0,
+    "clicks": 10000,
+    "exposures": 10030,
+    "mature_requests": 203,
+    "top50_requests": 200,
+    "hit_requests": 0,
+    "alerts": [
+      "hitrate_below_threshold"
+    ],
+    "window_start": 1792404436.5337415,
+    "observed_through": 1792490836.5337415,
+    "attribution_seconds": 3600,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 20
+    }
+  },
+  "scope": "scripted view-only responses to real top50 HTTP requests; monitor maturity uses explicit advanced clock"
+}

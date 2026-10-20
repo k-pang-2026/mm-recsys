@@ -1,5 +1,11 @@
 # 멀티모달 검색 및 Multi-Stage 추천 시스템
 
+2026-10-20 현재 full 통합은 [실행 기록](docs/results/integration/20261020_full/report.md)을 따른다.
+기존 full 평가를 보존하고 빈 경로의 네 서비스 기동·재현, 새 A/B와 실제 CT 학습·비교를
+확인했다. 자연 CT는 기존 모델을 유지했으며 별도 full 환경에서 실제 교체·복구를 검증했다.
+현재 데이터의 최종 판정은 [이번 제출 검사](docs/results/integration/20261020_full/submission/checks.json)와
+[최종 집계](docs/results/final_acceptance.json)를 따른다. 아래의 이전 검증 수치와 새 실행을 구분한다.
+
 Ponytail 감사 후 생성기는 4.2로 버전이 변경되었다. 기존 4.1 이하 데이터와 모델은
 덮어쓰지 않으며, 새 실행은 빈 데이터·모델 경로 또는 새 클론에서 준비한다.
 기존 full 결과의 PASS는 해당 데이터·소스의 과거 실측이며 현재 버전의 새 품질 판정을 대신하지 않는다.
@@ -163,10 +169,35 @@ p50/p95/p99와 원시 샘플을 기록한다. 검색/추천 200ms, 후보 100ms�
 `docs/results/latency.json`에 남는다. HTTP 확인은 실제 브라우저 화면 검증과 구별한다.
 고정 벤치마크는 초기 v1.0과 CT 재학습이 동시에 실행되지 않는 조건을 대상으로 한다.
 승격된 release나 측정 중 버전 변경은 거부하며 해당 release는 별도로 평가한다.
+full A/B와 CT 전체 재학습은 순서대로 실행하고, 지연 측정 전에는 검증용 중복 배포와
+학습 워커를 정리한다. 7.5GiB Docker 환경에서 두 full 배포·A/B·CT를 병렬 실행했을 때
+검증용 API가 OOM/137로 종료된 기록은
+[병렬 실행 근거](docs/results/integration/20261020_full/parallel_load_failure.json)에 보존했다.
 
 학습·CT 로그와 새 평가는 `docs/results/docker/runtime/<scale>/`에 분리한다.
 Streamlit도 이 경로를 읽으며 새 통합 평가가 없으면 미측정으로 표시하고 데모는 제공한다.
 저장소의 다른 머신 평가를 새 컨테이너의 측정으로 표시하지 않는다.
+대시보드는 test 결과를 우선 선택한다. valid/test 품질 평가만 실행하면 종합 판정은
+`UNMEASURED`이며, 시뮬레이터의 재생 완료만으로 A/B·CT 통합 검사가 완료되지는 않는다.
+현재 데이터의 full A/B, 실제 CT 재학습·교체/복구, 빈 클론 Compose 재현, HTTP·Redis·제출 검사를
+모두 통과한 INTEGRATE 결과는 다음과 같이 검증 후 대시보드에 연결한다.
+아래 경로는 2026-10-20 실행의 근거이며 새 실험에서는 해당 실험의 제출 결과 경로를 사용한다.
+
+```bash
+SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/check_submission.py \
+  --verify-existing --require-ready \
+  --output-dir docs/results/integration/20261020_full/submission
+SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/publish_integration_dashboard.py \
+  --submission docs/results/integration/20261020_full/submission/checks.json \
+  --output docs/results/docker/runtime/full/evaluation_full_test.json
+```
+
+발행 명령은 동결한 품질·지연 파일을 덮어쓰지 않는다. 소스, 데이터, 모델 또는 통합 근거가
+달라지면 발행을 거부한다. 연결 후 http://localhost:8501 에서 **결과 새로고침**을 누르면
+종합 판정, A/B 수치, 필수 통합 검사 근거를 확인할 수 있다. 새 품질 평가로 표시 파일을
+갱신했다면 같은 검증·발행 절차를 다시 실행한다. 합성 A/B의 음의 lift와 CT의 기존 모델 유지도
+그대로 공개하며, 기능 통합 통과와 실제 서비스 효과는 구분한다.
+
 기존 C 평가 CLI로 기본 full/valid 결과를 생성할 때는 다음과 같이 실행한다.
 
 ```bash
@@ -323,20 +354,21 @@ INTEGRATE의 구현·실측은 현재 기능 브랜치에서 진행하며, 미�
 ```bash
 source scripts/local_env.sh
 SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/check_submission.py \
-  --verify-existing --require-ready --output-dir docs/results/integration/submission
+  --verify-existing --require-ready --output-dir docs/results/integration/20261020_full/submission
 ```
 
 이 명령은 저장된 INTEGRATE 결과·소스·원시 지연·실행 근거를 재검증하며 새 모델 측정이 아니다.
 최종 결과가 생성되기 전에는 미완료/누락으로 실패한다. 최종 판정은 `final_acceptance.json`을 따르며
 구조 검증과 구분한다. 과거 B11 검사는 `final_submission/` 원본으로 보존했다.
-full valid/test 품질·A/B 통계 재검산·CT 기능 검증을 마쳤다. 최종 제출 판정은 별도 checker 원본을 따른다. 라이브 Redis MAB와 cold 준비·성능은 새 원본에 기록했다.
+이전 생성기 4.1 통합의 full valid/test 품질·A/B 통계 재검산·CT 기능 검증 기록은 보존한다.
+현재 생성기 4.2의 종합 판정은 위 Docker 절차의 `20261020_full/submission` 검사 원본을 따른다.
 P0는 사용자 전달 강사 결정에 따라 RESOLVED_OPTIONAL이며, 실제 데이터셋은 개발 후 추가 검증용이다.
 [결정 원본](docs/submission/dataset_scope.json)과 [데이터 출처](docs/data_sources.md)를 확인한다.
 원격 접근은 [확인 시각의 read-only snapshot](docs/results/final_submission/repository.json)이며,
 과제 시스템에 URL을 제출하거나 공개 범위를 변경하는 작업은 수행하지 않았다.
 
 
-## INTEGRATE의 추론 실행 경로
+## 이전 생성기 4.1 통합의 추론 실행 경로
 
 기본 CPU API는 `SERVING_OPTIMIZE_VISION=1`로 같은 pinned FP32 CLIP vision graph를
 시작 시 최적화한다. 전처리·가중치·합성·FAISS는 유지하며 응답 cache나 양자화는 사용하지 않는다.
@@ -376,7 +408,7 @@ SCALE=full RUNTIME_RESULTS_DIR=docs/results/integration/runtime docker compose e
 현재 머신의 19000 API와 보존된 이전 artifact 경로를 구분하는 환경은
 [재현 절차](docs/submission/reproduction.md)를 따른다. 기본 B11 인수만으로 새 INTEGRATE를 집계하지 않는다.
 
-### full A/B와 CT의 해석
+### 이전 생성기 4.1 full A/B와 CT의 해석
 
 full A/B는 5,000명/arm·30일이며 CTR 상대 lift −23.73%, CVR −37.18%였다.
 합성 반응 가설에서 popularity 대조군보다 낮은 결과이며 실제 사용자 개선을 주장하지 않는다.

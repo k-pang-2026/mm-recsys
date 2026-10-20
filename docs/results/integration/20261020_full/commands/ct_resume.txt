@@ -1,0 +1,2 @@
+CT actual full valid evaluation: baseline
+time="2026-10-20T19:08:18+09:00" level=error msg="error waiting for container: unexpected EOF"
