@@ -5,6 +5,8 @@
 확인했다. 자연 CT는 기존 모델을 유지했으며 별도 full 환경에서 실제 교체·복구를 검증했다.
 현재 데이터의 최종 판정은 [이번 제출 검사](docs/results/integration/20261020_full/submission/checks.json)와
 [최종 집계](docs/results/final_acceptance.json)를 따른다. 아래의 이전 검증 수치와 새 실행을 구분한다.
+기존 100만 건의 API 전량 재전송을 제거한 Docker 동작 변경과 검증은
+[후속 기록](docs/results/experiments/A/docker_remove_replay_20261020.json)을 따른다.
 
 Ponytail 감사 후 생성기는 4.2로 버전이 변경되었다. 기존 4.1 이하 데이터와 모델은
 덮어쓰지 않으며, 새 실행은 빈 데이터·모델 경로 또는 새 클론에서 준비한다.
@@ -138,11 +140,13 @@ FAISS 인덱스 → Two Tower·DeepFM·세션 학습 → Redis 프로필 warmup 
 [api-server] http://localhost:8000 에서 검색·추천 API 서버 시작
 [dashboard] 검색·추천 API 연결 완료
 [dashboard] http://localhost:8501 에서 대시보드 시작
-[simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 (모의 이벤트 API 재생, ...)
+[simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 (소량 모의 로그 생성·Redis 피처 갱신)
 ```
 
 대시보드는 API `/ready`가 200이 된 뒤 시작하고, 시뮬레이터는 대시보드 HTTP health까지
-통과한 뒤 생성된 이벤트를 API에 재생한다. 컨테이너의 Started는 모델 준비 완료와 다르다.
+통과한 뒤 소량의 새 모의 로그를 생성하고 Redis 실시간 피처를 갱신한다.
+학습·평가용 100만 건은 준비 단계에서 생성하며, 전체 API 재전송이나 완주 대기는 없다.
+컨테이너의 Started는 모델 준비 완료와 다르다.
 첫 다운로드·데이터 생성·학습은 기기에 따라 오래 걸리며, 예시 로그의 초 단위 기동 시간을 보장하지 않는다.
 
 | 서비스 | 로컬 주소 | 준비 상태 |
@@ -150,7 +154,7 @@ FAISS 인덱스 → Two Tower·DeepFM·세션 학습 → Redis 프로필 warmup 
 | 검색·추천 API | http://localhost:8000/docs | `/health`는 준비 중에도 200, `/ready`는 모델 로딩 완료 후 200 |
 | Streamlit | http://localhost:8501 | HTTP health와 검색·추천 데모 제공 |
 | Redis | localhost:6379 | ping healthcheck, 1GB 제한·allkeys-lru |
-| 시뮬레이터 | 공개 포트 없음 | `/ready` 이후 생성된 이벤트를 시간순으로 API에 재생 |
+| 시뮬레이터 | 공개 포트 없음 | 준비 완료 후 소량 모의 로그 생성·Redis 피처 갱신 |
 
 준비 중 모델 API와 `/ready`는 503이다. 준비 서버에서 실제 API로 전환하는 순간에는
 연결이 잠시 끊길 수 있으므로 readiness 검사는 재시도한다. 준비 실패는 API 컨테이너 종료와
@@ -178,7 +182,7 @@ full A/B와 CT 전체 재학습은 순서대로 실행하고, 지연 측정 전�
 Streamlit도 이 경로를 읽으며 새 통합 평가가 없으면 미측정으로 표시하고 데모는 제공한다.
 저장소의 다른 머신 평가를 새 컨테이너의 측정으로 표시하지 않는다.
 대시보드는 test 결과를 우선 선택한다. valid/test 품질 평가만 실행하면 종합 판정은
-`UNMEASURED`이며, 시뮬레이터의 재생 완료만으로 A/B·CT 통합 검사가 완료되지는 않는다.
+`UNMEASURED`이며, 시뮬레이터의 모의 로그 생성만으로 A/B·CT 통합 검사가 완료되지는 않는다.
 현재 데이터의 full A/B, 실제 CT 재학습·교체/복구, 빈 클론 Compose 재현, HTTP·Redis·제출 검사를
 모두 통과한 INTEGRATE 결과는 다음과 같이 검증 후 대시보드에 연결한다.
 아래 경로는 2026-10-20 실행의 근거이며 새 실험에서는 해당 실험의 제출 결과 경로를 사용한다.
@@ -254,11 +258,16 @@ CT 자동 재학습은 기본 네 서비스와 분리된 선택 profile이다. A
 docker compose -f docker-compose.yml -f docker/compose.ct.yml --profile ct up --build -d
 ```
 
-시뮬레이터의 합성 이벤트는 API 도착 시각으로 처리하고 체크포인트·이벤트 ID로 중복 적용을
-방지한다. 진행 위치는 Redis 상태와 함께 저장하므로 새 Redis에서 이전 서버의 이벤트를
-건너뛰지 않는다. 데이터 경로의 cursor JSON은 진단용 snapshot이다.
-이 재생은 추천 노출에 귀속된 실제 사용자 반응이 아니므로 CTR·HitRate 개선의
-근거로 사용하지 않는다. CT는 충분한 귀속 반응이 없으면 품질을 미측정으로 유지하고,
+시뮬레이터는 기존 페르소나·Markov 생성기로 기본 5초마다 100건의 새 모의 로그를 만든다.
+한 묶음은 기존 사용자 한 명의 모의 행동이며, ID는 학습 데이터 및 다른 묶음과 구분한다.
+로그는 `data/<scale>/stream/live/<데이터 fingerprint>/`에 별도로 보존하며,
+설정된 모의 시각 `timestamp`와 실제 생성 시각 `generated_at`을 구분한다.
+조회·장바구니·구매는 Redis의 기존 피처·보상 처리로 연결한다. 실패한 작은 묶음만
+같은 ID로 재시도하며 처리 중인 파일은 성공 후 보관한다. 기존 100만 건 데이터와
+평가·모델 파일을 다시 읽어 API로 전송하지 않는다. 재생 완료를 기다릴 필요가 없다.
+이 모의 로그는 추천 노출에 귀속된 실제 사용자 반응이나 새 품질 측정의 근거가 아니다.
+새 추천 반응 수집용 `/api/event`·`/api/feedback`과 선택 CT 워커는 그대로 제공한다.
+CT는 충분한 귀속 반응이 없으면 품질을 미측정으로 유지하고,
 재학습해도 validation 개선 조건을 충족해야 새 모델을 채택한다.
 
 데이터·모델·결과는 호스트의 `data/`, `models/`, `docs/results/`에 유지한다.

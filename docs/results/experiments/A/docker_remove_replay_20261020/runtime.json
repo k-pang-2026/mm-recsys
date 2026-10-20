@@ -1,0 +1,276 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "checked_at": 1792496747.519754,
+  "batch_size": 100,
+  "event_types": {
+    "view": 55,
+    "search": 27,
+    "cart": 11,
+    "purchase": 7
+  },
+  "distinct_batch_ids": true,
+  "recent_user": "U000607",
+  "recent_session_clicks": 1,
+  "redis_features_match_generated_batch": true,
+  "api_replay_removed": true,
+  "search_results": 10,
+  "recommendations": 10,
+  "dashboard_ready": true,
+  "original_evaluation_files_preserved": 7,
+  "original_models_preserved": 12,
+  "static_data_files_verified": 8,
+  "active_model": "v1.0",
+  "live_log": "data/full/stream/live/8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40/events-8a6fc76efb9ce24fe66ae6cba71bcdac9e5f5b555ceb92d3b5ba368c41edc254.parquet",
+  "live_log_sha256": "8a6fc76efb9ce24fe66ae6cba71bcdac9e5f5b555ceb92d3b5ba368c41edc254",
+  "container_sources": {
+    "api-server": {
+      "docker/serve.py": "50a1a61c468d50a3c563b19d4842322cc3fa5826d88d9934a20bacfac67ff597",
+      "docker/http.py": "e2e78703e0724044cfd10219166a1c75975f72ba9aa6f96fd3c478b5d899e52e",
+      "src/ct/storage.py": "3752aae27268e2fec1b133821ef3343830291c58aaa747787023fe4672c6c40a"
+    },
+    "simulator": {
+      "docker/simulator.py": "284c9f34521880ea2c82f5ce28e1127207b118eaee133a3f6367c126a2d2eaf1"
+    }
+  },
+  "runtime": {
+    "status": "PASS",
+    "project": "mm-recsys",
+    "engine": {
+      "server_version": "29.8.2",
+      "architecture": "aarch64",
+      "cpus": 8,
+      "memory_bytes": 8103915520
+    },
+    "services": {
+      "simulator": {
+        "id": "d0f8270a0a1a3ce5bf77c0b7f5166383dd83c2ff633198716c3036fde94b4821",
+        "image": "sha256:212e028ad3f5235a0d198b33b7ab4982cb942bc11750c1717636201b2241fff9",
+        "service": "simulator",
+        "state": {
+          "Dead": false,
+          "Error": "",
+          "ExitCode": 0,
+          "FinishedAt": "0001-01-01T00:00:00Z",
+          "OOMKilled": false,
+          "Paused": false,
+          "Pid": 59208,
+          "Restarting": false,
+          "Running": true,
+          "StartedAt": "2026-10-20T11:41:01.617848222Z",
+          "Status": "running"
+        },
+        "memory_limit_bytes": 536870912,
+        "nano_cpus": 0,
+        "ports": {}
+      },
+      "api-server": {
+        "id": "3764d797df2a18a7a07cc866cab198587dd3c06337e695df75384995247e1dc6",
+        "image": "sha256:971b20b299d72ce93a907ac5d9b1f02aea88ecb07517e49119807cd0e2611015",
+        "service": "api-server",
+        "state": {
+          "Dead": false,
+          "Error": "",
+          "ExitCode": 0,
+          "FinishedAt": "0001-01-01T00:00:00Z",
+          "Health": {
+            "FailingStreak": 0,
+            "Log": [
+              {
+                "End": "2026-10-20T11:45:19.869691797Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:19.763427948Z"
+              },
+              {
+                "End": "2026-10-20T11:45:24.975113207Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:24.871143607Z"
+              },
+              {
+                "End": "2026-10-20T11:45:30.073056984Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:29.975905142Z"
+              },
+              {
+                "End": "2026-10-20T11:45:35.163892833Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:35.073945976Z"
+              },
+              {
+                "End": "2026-10-20T11:45:40.367536058Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:40.165082936Z"
+              }
+            ],
+            "Status": "healthy"
+          },
+          "OOMKilled": false,
+          "Paused": false,
+          "Pid": 55746,
+          "Restarting": false,
+          "Running": true,
+          "StartedAt": "2026-10-20T11:36:19.804638008Z",
+          "Status": "running"
+        },
+        "memory_limit_bytes": 4294967296,
+        "nano_cpus": 4000000000,
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "8000"
+            }
+          ]
+        }
+      },
+      "dashboard": {
+        "id": "25688589b5b43fad126cf82b40bd5bb500e9b01fff5cf1849278ac4b51432e75",
+        "image": "sha256:6e3165dc3e9515d2fb701b1cba65cf1acdee7679aae423d0885691599c37d6c6",
+        "service": "dashboard",
+        "state": {
+          "Dead": false,
+          "Error": "",
+          "ExitCode": 0,
+          "FinishedAt": "2026-10-20T10:17:20.63002339Z",
+          "Health": {
+            "FailingStreak": 0,
+            "Log": [
+              {
+                "End": "2026-10-20T11:45:21.756531238Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:21.674233888Z"
+              },
+              {
+                "End": "2026-10-20T11:45:26.847558576Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:26.757594556Z"
+              },
+              {
+                "End": "2026-10-20T11:45:31.942044657Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:31.848504174Z"
+              },
+              {
+                "End": "2026-10-20T11:45:37.03577069Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:36.943121567Z"
+              },
+              {
+                "End": "2026-10-20T11:45:42.259988448Z",
+                "ExitCode": 0,
+                "Output": "",
+                "Start": "2026-10-20T11:45:42.04025478Z"
+              }
+            ],
+            "Status": "healthy"
+          },
+          "OOMKilled": false,
+          "Paused": false,
+          "Pid": 9846,
+          "Restarting": false,
+          "Running": true,
+          "StartedAt": "2026-10-20T10:28:31.703034699Z",
+          "Status": "running"
+        },
+        "memory_limit_bytes": 536870912,
+        "nano_cpus": 0,
+        "ports": {
+          "8501/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "8501"
+            }
+          ]
+        }
+      },
+      "redis": {
+        "id": "5ef6b36ec98f30c750c418709511bc6aa28deafa93e703d8b0e4b1e65a7412c6",
+        "image": "sha256:c6eabf748fc7a61dbb5a705c78bcf3d6377b1127a97d0ce965c11c44ba46896f",
+        "service": "redis",
+        "state": {
+          "Dead": false,
+          "Error": "",
+          "ExitCode": 0,
+          "FinishedAt": "2026-10-20T10:08:24.918886303Z",
+          "Health": {
+            "FailingStreak": 0,
+            "Log": [
+              {
+                "End": "2026-10-20T11:45:22.528964129Z",
+                "ExitCode": 0,
+                "Output": "PONG\n",
+                "Start": "2026-10-20T11:45:22.488939186Z"
+              },
+              {
+                "End": "2026-10-20T11:45:27.57305055Z",
+                "ExitCode": 0,
+                "Output": "PONG\n",
+                "Start": "2026-10-20T11:45:27.529812335Z"
+              },
+              {
+                "End": "2026-10-20T11:45:32.607055383Z",
+                "ExitCode": 0,
+                "Output": "PONG\n",
+                "Start": "2026-10-20T11:45:32.574454048Z"
+              },
+              {
+                "End": "2026-10-20T11:45:37.66765334Z",
+                "ExitCode": 0,
+                "Output": "PONG\n",
+                "Start": "2026-10-20T11:45:37.607631567Z"
+              },
+              {
+                "End": "2026-10-20T11:45:42.774589587Z",
+                "ExitCode": 0,
+                "Output": "PONG\n",
+                "Start": "2026-10-20T11:45:42.669482713Z"
+              }
+            ],
+            "Status": "healthy"
+          },
+          "OOMKilled": false,
+          "Paused": false,
+          "Pid": 9642,
+          "Restarting": false,
+          "Running": true,
+          "StartedAt": "2026-10-20T10:28:19.877721627Z",
+          "Status": "running"
+        },
+        "memory_limit_bytes": 0,
+        "nano_cpus": 0,
+        "ports": {
+          "6379/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "6379"
+            }
+          ]
+        }
+      }
+    },
+    "api_cgroup": {
+      "memory.max": "4294967296",
+      "memory.peak": "2184331264",
+      "memory.swap.current": "0",
+      "cpu.max": "400000 100000",
+      "cpu.stat": "usage_usec 126975346\nuser_usec 108668900\nsystem_usec 18306446\nnr_periods 2580\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0"
+    },
+    "ready": {
+      "status": "ready"
+    },
+    "errors": [],
+    "scope": "actual four-service state and allocation; quality/latency measured separately"
+  },
+  "simulator_logs": "[simulator] 행동 로그 100건 생성; Redis 피처 68건 처리; 유형 {'view': 53, 'search': 32, 'cart': 11, 'purchase': 4}\n[simulator] 행동 로그 100건 생성; Redis 피처 74건 처리; 유형 {'view': 57, 'search': 26, 'cart': 12, 'purchase': 5}\n[simulator] 행동 로그 100건 생성; Redis 피처 69건 처리; 유형 {'view': 59, 'search': 31, 'cart': 7, 'purchase': 3}\n[simulator] 행동 로그 100건 생성; Redis 피처 68건 처리; 유형 {'view': 52, 'search': 32, 'cart': 10, 'purchase': 6}\n[simulator] 행동 로그 100건 생성; Redis 피처 72건 처리; 유형 {'view': 55, 'search': 28, 'cart': 12, 'purchase': 5}\n[simulator] 행동 로그 100건 생성; Redis 피처 71건 처리; 유형 {'view': 52, 'search': 29, 'cart': 15, 'purchase': 4}\n[simulator] 행동 로그 100건 생성; Redis 피처 73건 처리; 유형 {'view': 55, 'search': 27, 'cart': 11, 'purchase': 7}\n[simulator] 행동 로그 100건 생성; Redis 피처 69건 처리; 유형 {'view': 55, 'search': 31, 'cart': 9, 'purchase': 5}\n",
+  "scope": "actual four-service startup and generated small batches updating Redis; no full API replay, fresh training or new full-quality measurement"
+}

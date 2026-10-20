@@ -6,7 +6,6 @@ from types import SimpleNamespace
 from unittest.mock import Mock
 
 import fakeredis
-import httpx
 import numpy as np
 import pandas as pd
 from PIL import Image
@@ -50,64 +49,65 @@ def test_non_ascii_content_type_returns_validation_response():
     assert output[0]['status'] == 422
 
 
-def test_storage_failure_retries_without_skipping_or_duplicating_events(monkeypatch):
-    from docker import simulator
+def test_storage_failure_retries_without_skipping_or_duplicating_events():
     cfg = load_config(); cfg['serving']['ct']['enabled'] = False
     backend = fakeredis.FakeRedis(decode_responses=True)
     store = RedisFeatureStore(backend)
     unavailable = Mock(); unavailable.pipeline.side_effect = RedisConnectionError('offline')
-    rows = pd.DataFrame([dict(event_id='click', user_id='u', product_id='p', event_type='view', session_id='s')])
+    payload = dict(event_id='click', user_id='u', product_id='p', event_type='view', session_id='s')
     with TestClient(create_app(cfg, search_service=object(), recommend_service=object(), feature_store=store)) as client:
-        def request(url, payload):
-            response = client.post('/api/'+url.rsplit('/', 1)[1], json=payload)
-            response.raise_for_status()
-            return response.json()
-        monkeypatch.setattr(simulator, 'request', request)
         store.client = unavailable
-        with pytest.raises(httpx.HTTPStatusError) as error:
-            simulator.send_rows('http://unused', rows, {})
-        assert error.value.response.status_code == 503
-        assert client.post('/api/feedback', json=rows.iloc[0].to_dict()).status_code == 503
+        for route in ('event', 'feedback'):
+            assert client.post('/api/'+route, json=payload).status_code == 503
         store.client = backend
-        simulator.send_rows('http://unused', rows, {})
-        simulator.send_rows('http://unused', rows, {})
+        for _ in range(2):
+            for route in ('event', 'feedback'):
+                assert client.post('/api/'+route, json=payload).status_code == 200
         assert store.get_features('u').recent_clicks == ['p']
         assert backend.hget(store.key('reward', 'p'), 'clicks') == '1'
 
 
-def test_simulator_retries_both_http_and_checkpoint_failures_without_skipping(monkeypatch, tmp_path):
+def test_simulator_retries_storage_and_log_archiving_without_skipping(monkeypatch, tmp_path):
     import json
-    from urllib.error import HTTPError
+    from pathlib import Path
     from docker import simulator
     (tmp_path/'split_manifest.json').write_text(json.dumps({'generation_fingerprint': 'f'}))
-    pd.DataFrame([dict(event_id='e1', user_id='u', product_id='p', event_type='view',
-        session_id='s', timestamp=pd.Timestamp('2026-01-01'))]).to_parquet(tmp_path/'events.parquet')
     pd.DataFrame([dict(product_id='p', category_l1='a')]).to_parquet(tmp_path/'products.parquet')
+    pd.DataFrame([dict(user_id='u')]).to_parquet(tmp_path/'users.parquet')
+    rows = pd.DataFrame([dict(event_id='live-e1', user_id='u', product_id='p', event_type='view', session_id='s')])
     store = RedisFeatureStore(fakeredis.FakeRedis(decode_responses=True))
-    monkeypatch.setattr(store.client, 'info', lambda *args: {'run_id': 'fixture'})
-    monkeypatch.setattr('src.serving.feature_store.create_feature_store', lambda cfg: store)
-    monkeypatch.setattr(simulator, 'runtime_config', lambda: {'paths': {'data_dir': str(tmp_path)}})
+    monkeypatch.setattr(simulator, 'create_feature_store', lambda cfg: store)
+    monkeypatch.setattr(simulator, 'runtime_config', lambda: {'seed': 42, 'paths': {'data_dir': str(tmp_path)}})
     monkeypatch.setattr(simulator, 'wait_ready', lambda *args: None)
-    sent = []; checkpoints = []; original_set = store.client.set
-    def send(api, rows, categories):
-        sent.append(rows.event_id.tolist())
-        if len(sent) == 1:
-            raise HTTPError(api, 503, 'temporary storage outage', {}, None)
-    def save(*args, **kwargs):
-        if len(sent) == 2:
-            raise RedisConnectionError('checkpoint temporarily unavailable')
-        return original_set(*args, **kwargs)
+    monkeypatch.setattr(simulator, 'generate_batch', lambda *args: rows)
+    calls = []; pending = []; clicks = []
+    original_append, original_rename = store.append_event, Path.rename
+    archive_attempts = 0
+    def append(event):
+        calls.append(event.event_id)
+        if len(calls) == 1:
+            raise RedisConnectionError('temporary storage outage')
+        return original_append(event)
+    def rename(source, target):
+        nonlocal archive_attempts
+        if source.name == 'pending.parquet':
+            archive_attempts += 1
+            if archive_attempts == 1:
+                raise OSError('archive temporarily unavailable')
+        return original_rename(source, target)
     def sleep(seconds):
-        raw = store.client.get(store.key('simulator_checkpoint', 'f'))
-        checkpoints.append(json.loads(raw)['offset'] if raw else 0)
-        if len(checkpoints) == 3:
+        pending.append((tmp_path/'stream/live/f/pending.parquet').exists())
+        clicks.append(store.get_features('u').session_clicks)
+        if len(pending) == 3:
             raise StopIteration
-    monkeypatch.setattr(simulator, 'send_rows', send)
-    monkeypatch.setattr(store.client, 'set', save)
+    monkeypatch.setattr(store, 'append_event', append)
+    monkeypatch.setattr(Path, 'rename', rename)
     monkeypatch.setattr(simulator.time, 'sleep', sleep)
     with pytest.raises(StopIteration):
         simulator.main()
-    assert sent == [['e1'], ['e1'], ['e1']] and checkpoints == [0,0,1]
+    assert calls == ['live-e1']*3 and pending == [True, True, False] and clicks == [0, 1, 1]
+    assert store.client.hget(store.key('reward', 'p'), 'clicks') == '1'
+    assert len(list((tmp_path/'stream/live/f').glob('events-*.parquet'))) == 1
 
 
 def test_repeated_clicks_are_binary_ctr_and_purchase_uses_last_view(tmp_path):

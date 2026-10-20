@@ -13,13 +13,13 @@ import pytest
 from docker.api_entrypoint import PreparingHandler, PreparationServer
 from docker.http import wait_ready
 from docker.runtime import runtime_config
-from docker.simulator import read_checkpoint, send_rows
+from docker.simulator import generate_batch, run_batch
 from scripts import prepare_all
 from src.common.config import load_config
 from src.search.locking import writer_lock
 
 
-def test_compose_defaults_to_full_and_replay_waits_for_dashboard():
+def test_compose_defaults_to_full_and_simulator_waits_for_dashboard():
     import yaml
     from dotenv import dotenv_values
     cfg = yaml.safe_load(Path('docker-compose.yml').read_text())
@@ -239,37 +239,90 @@ def test_partial_recommendation_is_preserved_and_rejected(tmp_path):
     assert list(folder.iterdir()) == [folder / 'two_tower.pt']
 
 
-def test_stream_retries_keep_event_ids_and_stop_at_failed_feedback(monkeypatch):
-    import docker.simulator as simulator
-    frame = pd.DataFrame([
-        dict(event_id='skip', user_id='u', product_id=None, event_type='search', session_id='s'),
-        dict(event_id='e1', user_id='u', product_id='p', event_type='view', session_id='s'),
-        dict(event_id='e2', user_id='u', product_id='p', event_type='purchase', session_id='s')])
-    calls = []
-    def failed(url, payload):
-        calls.append((url, payload.copy()))
-        if url.endswith('/feedback'):
-            raise ConnectionError('offline')
-        return {'applied': True}
-    monkeypatch.setattr(simulator, 'request', failed)
-    with pytest.raises(ConnectionError):
-        send_rows('http://api', frame, {'p': 'category'})
-    assert [v['event_id'] for _, v in calls] == ['e1', 'e1']
-    monkeypatch.setattr(simulator, 'request', lambda url, payload: calls.append((url, payload.copy())))
-    send_rows('http://api', frame, {'p': 'category'})
-    assert [v['event_id'] for _, v in calls[2:]] == ['e1', 'e1', 'e2', 'e2']
-    assert calls[2][1]['category'] == 'category'
+@pytest.fixture
+def live_catalog(tmp_path):
+    import numpy as np
+    from src.simulator.catalog import make_catalog
+    from src.simulator.users import make_users
+    cfg = load_config()
+    cfg['paths']['data_dir'] = str(tmp_path)
+    cfg['simulator'].update(n_products=450, n_users=120, n_events=4000)
+    (tmp_path / 'split_manifest.json').write_text(json.dumps({'generation_fingerprint': 'frozen'}))
+    rng = np.random.default_rng(cfg['seed'])
+    return cfg, make_catalog(cfg, rng), make_users(cfg, rng)
 
 
-def test_replay_checkpoint_follows_redis_state_not_a_former_backend():
+def test_live_generator_has_new_ids_and_preserves_configured_behavior(live_catalog):
+    import copy
+    import numpy as np
+    cfg, products, users = live_catalog
+    before = copy.deepcopy(cfg)
+    first = generate_batch(cfg, products, users, np.random.default_rng(42), 100)
+    second = generate_batch(cfg, products, users, np.random.default_rng(42), 100)
+    assert cfg == before
+    assert len(first) == 100 and first.event_id.is_unique
+    assert set(first.event_type) == {'search', 'view', 'cart', 'purchase'}
+    assert all(value.startswith('live-') for value in first.event_id)
+    assert not set(first.event_id) & set(second.event_id)
+    assert first.user_id.nunique() == 1
+    pd.testing.assert_series_equal(first.product_id, second.product_id)
+    pd.testing.assert_series_equal(first.event_type, second.event_type)
+    assert first.timestamp.is_monotonic_increasing and first.generated_at.notna().all()
+
+
+def test_live_batch_updates_redis_without_reading_or_posting_frozen_events(live_catalog, monkeypatch):
     import fakeredis
-    first, fresh = fakeredis.FakeRedis(decode_responses=True), fakeredis.FakeRedis(decode_responses=True)
-    first.set('checkpoint', json.dumps(dict(data_fingerprint='frozen', offset=100)))
-    assert read_checkpoint(first, 'checkpoint', 'frozen', 200)['offset'] == 100
-    assert read_checkpoint(fresh, 'checkpoint', 'frozen', 200)['offset'] == 0
-    first.set('checkpoint', json.dumps(dict(data_fingerprint='other', offset=100)))
-    with pytest.raises(ValueError, match='frozen dataset'):
-        read_checkpoint(first, 'checkpoint', 'frozen', 200)
+    import numpy as np
+    import docker.http
+    from src.serving.feature_store import RedisFeatureStore
+    cfg, products, users = live_catalog
+    def no_post(*args, **kwargs):
+        raise AssertionError('live simulator must not POST frozen events to the API')
+    monkeypatch.setattr(docker.http, 'request', no_post)
+    store = RedisFeatureStore(fakeredis.FakeRedis(decode_responses=True))
+    result = run_batch(cfg, store, products, users, np.random.default_rng(42), 100)
+    frame = pd.read_parquet(result['source'])
+    assert result['generated'] == 100 and result['features_processed'] > 0
+    assert not Path(cfg['paths']['data_dir'], 'events.parquet').exists()
+    assert not Path(result['source']).with_name('pending.parquet').exists()
+    supported = frame[frame.event_type.isin(['view', 'cart', 'purchase'])]
+    last_session = supported[supported.session_id == supported.session_id.iloc[-1]]
+    features = store.get_features(supported.user_id.iloc[-1])
+    expected = last_session[last_session.event_type == 'view'].product_id.tolist()
+    assert features.recent_clicks == expected[-store.history_limit:]
+    assert features.session_clicks == len(expected)
+
+
+def test_failed_live_batch_preserves_pending_ids_and_retries_without_duplicate_rewards(live_catalog, monkeypatch):
+    import fakeredis
+    import numpy as np
+    import docker.simulator as simulator
+    from src.serving.feature_store import RedisFeatureStore
+    cfg, products, users = live_catalog
+    product = products.product_id.iloc[0]
+    frame = pd.DataFrame([dict(event_id='live-e1', user_id='u', product_id=product,
+                              event_type='view', session_id='live-s'),
+                          dict(event_id='live-e2', user_id='u', product_id=product,
+                              event_type='purchase', session_id='live-s')])
+    class InterruptedStore(RedisFeatureStore):
+        fail = True
+        def update_reward(self, feedback):
+            if feedback.event_id == 'live-e2' and self.fail:
+                self.fail = False
+                raise ConnectionError('interrupted')
+            return super().update_reward(feedback)
+    store = InterruptedStore(fakeredis.FakeRedis(decode_responses=True))
+    monkeypatch.setattr(simulator, 'generate_batch', lambda *args: frame)
+    with pytest.raises(ConnectionError, match='interrupted'):
+        run_batch(cfg, store, products, users, np.random.default_rng(42), 100)
+    folder = Path(cfg['paths']['data_dir'], 'stream/live/frozen')
+    assert (folder / 'pending.parquet').exists() and not list(folder.glob('events-*.parquet'))
+    monkeypatch.setattr(simulator, 'generate_batch', lambda *args: pytest.fail('pending IDs must be reused'))
+    result = run_batch(cfg, store, products, users, np.random.default_rng(42), 100)
+    assert result['generated'] == 2 and (folder / 'pending.parquet').exists() is False
+    assert store.get_features('u').recent_clicks == [product]
+    assert store.client.hgetall(store.key('reward', product)) == {'clicks': '1', 'purchases': '1'}
+    assert pd.read_parquet(result['source']).event_id.tolist() == ['live-e1', 'live-e2']
 
 
 @pytest.fixture

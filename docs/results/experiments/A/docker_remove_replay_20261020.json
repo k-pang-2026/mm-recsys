@@ -1,0 +1,90 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+  "checked_at": "2026-10-20T11:47:26.319344+00:00",
+  "base_commit": "00bd4eb28b668ff3d120b41748741e9255b33434",
+  "requirement_basis": {
+    "pdf_pages": [
+      2,
+      3,
+      5,
+      6
+    ],
+    "required": "full offline data creation, simulator log generation, Redis online features and CT implementation",
+    "removed": "mandatory full historical log API replay and waiting for replay completion"
+  },
+  "implementation": {
+    "offline_source_events_read": false,
+    "full_api_replay": false,
+    "live_batch_size": 100,
+    "interval_seconds": 5,
+    "redis_feature_updates": "existing append_event/update_reward methods",
+    "failure_handling": "persist only the small pending batch, retry same IDs, archive after success",
+    "synthetic_logs_used_for_automatic_ct": false,
+    "offline_data_and_models_preserved": true
+  },
+  "checks": {
+    "pytest": {
+      "command": "SCALE=dev REDIS_HOST=localhost REDIS_PORT=16381 RUN_REDIS_TESTS=1 PYTHONHASHSEED=42 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "workdir": "/tmp/mm-recsys-remove-replay-checks-20261020",
+      "exit_code": 0,
+      "tests": 385,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "runtime": {
+      "command": "SCALE=full REDIS_HOST=localhost CONFIG_PATH=config.yaml PYTHONHASHSEED=42 .venv/bin/python docs/results/experiments/A/docker_remove_replay_20261020/verify_runtime.py",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/docker_remove_replay_20261020/runtime.json"
+    },
+    "mypy": {
+      "command": ".venv/bin/python -m mypy --ignore-missing-imports docker",
+      "exit_code": 0,
+      "source_files": 12
+    },
+    "dependencies": {
+      "command": ".venv/bin/python -m pip check",
+      "exit_code": 0
+    }
+  },
+  "source_hashes": {
+    "README.md": "e206b8da1ee816285c2e384158ea9faed9e87890003abb600454c2bb853987ea",
+    "config/team_workflow.yaml": "956c24e74f4b9cd0b2c6d98e0693e54bf69b243478c8f264ec7190016bff68ba",
+    "docker/simulator.py": "284c9f34521880ea2c82f5ce28e1127207b118eaee133a3f6367c126a2d2eaf1",
+    "tests/test_docker.py": "c34f554263fe9b7077d6c393e625c70e966e12fede3d694b987d5c5963d4ee8a",
+    "tests/test_ponytail_refactor.py": "8da8aa602df4daabc728f306c72e565c2522a99cabc2675cd4c8f0c5de3b9fe0",
+    "docker/http.py": "e2e78703e0724044cfd10219166a1c75975f72ba9aa6f96fd3c478b5d899e52e",
+    "docker/serve.py": "50a1a61c468d50a3c563b19d4842322cc3fa5826d88d9934a20bacfac67ff597",
+    "src/ct/storage.py": "3752aae27268e2fec1b133821ef3343830291c58aaa747787023fe4672c6c40a",
+    "docker-compose.yml": "d66d2e2695cd1c74580143e658444e9b0379cd057f6f06b666c89d397fe7105e"
+  },
+  "initial_attempts": {
+    "operational_redis_attempt": "interrupted: cleanup scanned the primary large cache; switched to isolated Redis without deleting production keys",
+    "local_checkout_attempt": {
+      "failed": 3,
+      "passed": 382,
+      "causes": [
+        "two obsolete simulator API/checkpoint test callers",
+        "pre-existing unreadable dev model index; current full API unaffected"
+      ],
+      "source": "docs/results/experiments/A/docker_remove_replay_20261020/initial_local_failures.txt"
+    },
+    "resolution": "adapted the two Docker regression tests while retaining failure/idempotency checks, and ran all tests from a source-only checkout with isolated real Redis"
+  },
+  "limits": [
+    "new offline quality, A/B and CT retraining were not run; prior full measurements remain historical evidence",
+    "no fresh empty-volume full training run; existing artifacts were checksum-verified and actually loaded"
+  ],
+  "workflow": "B10 scope includes the existing audit test file containing Docker storage/retry regressions; human role owners/order unchanged",
+  "evidence_hashes": {
+    "docs/results/experiments/A/docker_remove_replay_20261020/runtime.json": "41e5c72ca8eaabf10f88b6651f4c5d03e68fc861fe19940dc9ce6075353f5e70",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pytest.xml": "fdcf86885c88ac77e6656fb3329c5c3c48746fa99beaf80543eeb6f891baf0c3",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pytest.txt": "f5063e70d17fc034bf85d5e8add864d1ace084837752ee2811378d8d875d4265",
+    "docs/results/experiments/A/docker_remove_replay_20261020/initial_local_failures.txt": "699e6efaf1f798bdd23a49648d40b2e7f9ad8bb69d3e8529c0214d8d6cec4cac",
+    "docs/results/experiments/A/docker_remove_replay_20261020/mypy.txt": "8b88f6d12bd312c1b024b66d07a7f7619a68482ac4d64e475759b1823199faa5",
+    "docs/results/experiments/A/docker_remove_replay_20261020/pip_check.txt": "6a869f0778b40b2b24e66801d7986576b3104b6d700e56b1ec727197f0618df7"
+  }
+}

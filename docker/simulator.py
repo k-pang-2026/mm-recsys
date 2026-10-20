@@ -1,41 +1,70 @@
-"""Replay generated outcomes through API/CT interfaces after preparation; no generation."""
+"""Generate small live demo batches and update Redis without replaying frozen data."""
 from __future__ import annotations
 
-from typing import Any
-
+import copy
 import json
 import os
 from pathlib import Path
 import time
-from urllib.error import HTTPError
-from typing import cast
+import uuid
 
+import numpy as np
 import pandas as pd
 from redis.exceptions import RedisError
 
-from src.common.artifacts import write_json
-from docker.http import request, wait_ready
+from docker.http import wait_ready
 from docker.runtime import runtime_config
+from src.common.artifacts import file_hash
+from src.common.schemas import FeedbackRequest
+from src.serving.feature_store import RedisFeatureStore, create_feature_store
+from src.simulator.events import make_events
 
 
-def read_checkpoint(client: Any, key: str, identity: str, total: int) -> dict:
-    raw = client.get(key)
-    state = json.loads(raw) if raw else dict(data_fingerprint=identity, offset=0)
-    if state.get('data_fingerprint') != identity or type(state.get('offset')) is not int or not 0 <= state['offset'] <= total:
-        raise ValueError('simulator checkpoint does not match the frozen dataset')
-    return state
+def generate_batch(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
+                   rng: np.random.Generator, size: int) -> pd.DataFrame:
+    local = copy.deepcopy(cfg)
+    local['simulator'].update(n_users=1, n_events=size)
+    selected = users.iloc[[int(rng.integers(len(users)))]]
+    events, _ = make_events(local, products, selected, rng)
+    prefix = 'live-' + uuid.uuid4().hex + '-'
+    for name in ('event_id', 'session_id', 'impression_id'):
+        events[name] = events[name].map(lambda value: prefix + value if pd.notna(value) else value)
+    events['generated_at'] = pd.Timestamp.now(tz='UTC')
+    return events
 
 
-def send_rows(api: str, rows: Any, categories: dict) -> None:
-    """Checkpoint advances only after both writes; duplicate retries retain event IDs."""
-    for row in rows.itertuples(index=False):
+def run_batch(cfg: dict, store: RedisFeatureStore, products: pd.DataFrame, users: pd.DataFrame,
+              rng: np.random.Generator, size: int) -> dict:
+    root = Path(cfg['paths']['data_dir'])
+    identity = json.loads((root / 'split_manifest.json').read_text())['generation_fingerprint']
+    folder = root / 'stream' / 'live' / identity
+    folder.mkdir(parents=True, exist_ok=True)
+    pending = folder / 'pending.parquet'
+    if pending.exists():
+        events = pd.read_parquet(pending)
+    else:
+        events = generate_batch(cfg, products, users, rng, size)
+        temporary = folder / '.pending.parquet'
+        events.to_parquet(temporary, index=False)
+        temporary.replace(pending)
+    categories = dict(zip(products.product_id, products.category_l1))
+    processed = 0
+    for row in events.itertuples(index=False):
         if row.event_type not in ('view', 'cart', 'purchase') or pd.isna(row.product_id):
             continue
-        payload = dict(event_id=str(row.event_id), user_id=str(row.user_id), product_id=str(row.product_id),
-                       event_type=row.event_type, session_id=str(row.session_id),
-                       category=categories.get(row.product_id))
-        request(api + '/api/event', payload)
-        request(api + '/api/feedback', payload)
+        event = FeedbackRequest(event_id=str(row.event_id), user_id=str(row.user_id),
+                                product_id=str(row.product_id), event_type=row.event_type,
+                                session_id=str(row.session_id), category=categories.get(row.product_id))
+        store.append_event(event)
+        store.update_reward(event)
+        processed += 1
+    archive = folder / f'events-{file_hash(pending)}.parquet'
+    if archive.exists():
+        raise ValueError('duplicate live log archive; preserve the pending batch for diagnosis')
+    pending.rename(archive)
+    counts = {str(name): int(count) for name, count in events.event_type.value_counts().items()}
+    return dict(generated=len(events), features_processed=processed,
+                event_types=counts, source=str(archive))
 
 
 def main() -> None:
@@ -43,47 +72,30 @@ def main() -> None:
     wait_ready(api, float(os.getenv('READY_TIMEOUT_SECONDS', '21600')))
     cfg = runtime_config()
     root = Path(cfg['paths']['data_dir'])
-    manifest = json.loads((root / 'split_manifest.json').read_text())
-    events = pd.read_parquet(root / 'events.parquet', columns=[
-        'event_id', 'user_id', 'product_id', 'event_type', 'session_id', 'timestamp'
-    ]).sort_values(['timestamp', 'event_id'], kind='stable')
-    products = pd.read_parquet(root / 'products.parquet', columns=['product_id', 'category_l1'])
-    categories = dict(zip(products.product_id, products.category_l1))
-    from src.serving.feature_store import RedisFeatureStore, create_feature_store
+    size = int(os.getenv('SIMULATOR_BATCH_SIZE', '100'))
+    interval = float(os.getenv('SIMULATOR_INTERVAL_SECONDS', '5'))
+    if not 1 <= size <= 1000 or not np.isfinite(interval) or interval <= 0:
+        raise ValueError('live batch size must be 1..1000 and interval must be finite and positive')
+    products = pd.read_parquet(root / 'products.parquet')
+    users = pd.read_parquet(root / 'users.parquet')
+    rng = np.random.default_rng(cfg['seed'])
     store = create_feature_store(cfg)
     if not isinstance(store, RedisFeatureStore):
-        raise ValueError('simulator checkpoint requires the serving Redis backend')
-    # Persist with Redis state: a fresh backend must not skip a former backend's events.
-    key = store.key('simulator_checkpoint', manifest['generation_fingerprint'])
-    saved = read_checkpoint(store.client, key, manifest['generation_fingerprint'], len(events))
-    run_id = cast(dict, store.client.info('server'))['run_id']
-    cursor = root / 'stream' / f'docker_cursor_{run_id}.json'
-    batch = int(os.getenv('SIMULATOR_BATCH_SIZE', '100'))
-    interval = float(os.getenv('SIMULATOR_INTERVAL_SECONDS', '5'))
-    if batch < 1 or interval <= 0:
-        raise ValueError('positive simulator batch and interval required')
-    offset = int(saved['offset'])
-    print(f'[simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 '
-          f'(모의 이벤트 API 재생, {offset:,}/{len(events):,}건)', flush=True)
-    while True:
-        try:
-            rows = events.iloc[offset:offset+batch]
-            send_rows(api, rows, categories)
-            next_offset = offset+len(rows)
-            state = dict(data_fingerprint=manifest['generation_fingerprint'], offset=next_offset,
-                         scope='synthetic replay in chronological order; API arrival clock; no exposure attribution')
-            store.client.set(key, json.dumps(state))
-            write_json(cursor, state)
-        except HTTPError as error:
-            if error.code < 500:
-                raise
-            print(f'[simulator] 행동 로그 재시도 {offset:,}건: HTTP {error.code}', flush=True)
-        except (OSError, RedisError) as error:
-            print(f'[simulator] 행동 로그 재시도 {offset:,}건: {type(error).__name__}', flush=True)
-        else:
-            offset = next_offset
-            print(f'[simulator] 행동 로그 전송 완료: {offset:,}/{len(events):,}건', flush=True)
-        time.sleep(interval)
+        raise ValueError('live simulator requires the serving Redis backend')
+    print('[simulator] API·대시보드 준비 완료; 행동 로그 생성 시작 '
+          '(소량 모의 로그 생성·Redis 피처 갱신)', flush=True)
+    try:
+        while True:
+            try:
+                result = run_batch(cfg, store, products, users, rng, size)
+            except (OSError, RedisError) as error:
+                print(f'[simulator] 생성 로그 피처 처리 재시도: {type(error).__name__}', flush=True)
+            else:
+                print(f"[simulator] 행동 로그 {result['generated']}건 생성; "
+                      f"Redis 피처 {result['features_processed']}건 처리; 유형 {result['event_types']}", flush=True)
+            time.sleep(interval)
+    finally:
+        store.close()
 
 
 if __name__ == '__main__':
