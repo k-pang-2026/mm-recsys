@@ -1,4 +1,4 @@
-"""Read-only four-tab experiment dashboard; inference uses HTTP only."""
+"""Experiment and dataset dashboard; inference and clicks use the HTTP API."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -10,6 +10,8 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dashboard.data import api_call, available_reports, ct_log, read_report, settings, search_payload
+from dashboard.explore import product_cards, data_tab, catalog_tab
+from dashboard.assets import ab_result
 
 COLORS = dict(primary='#2563eb', baseline='#94a3b8', treatment='#0f766e', target='#e35d42')
 LABELS = dict(mrr='MRR', ndcg_at_10='NDCG@10', recall_at_300='Recall@300', auc='CTR AUC',
@@ -75,10 +77,13 @@ def search_tab(report: dict, config: dict) -> None:
         response = api_call(config['api_url'], 'POST', '/api/search', payload=payload, timeout=config['api_timeout'])
         if response['ok']:
             body = response['data']
+            st.session_state['search_response'] = body
             st.caption(f'{body["search_type"]} · {body["latency_ms"]:.2f}ms · 후보 {body["total_count"]:,}개')
             st.dataframe(pd.DataFrame(body['results']), hide_index=True, use_container_width=True)
         else:
             st.warning(response['error'])
+    if 'search_response' in st.session_state:
+        product_cards(st.session_state['search_response']['results'], config, 'search')
 
 
 def recommendation_tab(report: dict, config: dict) -> None:
@@ -96,6 +101,8 @@ def recommendation_tab(report: dict, config: dict) -> None:
         fig.add_hline(y=target, line_dash='dash', line_color=COLORS['target'], annotation_text=f'기준 {target}')
         st.plotly_chart(layout(fig, '동일 사용자·정답·카탈로그 기준', LABELS[key]), use_container_width=True)
         cvr = rec['classification']['cvr']
+        st.write(f"CVR AUC: {cvr['auc']} · 클릭 노출 {cvr['samples']:,}개 · 구매 양성 {cvr['positives']:,}개")
+        st.caption('사용자가 확인한 기존 계약에 따라 AUC ≥ 0.70은 CTR에 적용하고, CVR AUC는 별도로 보고합니다.')
         if cvr['auc'] is None:
             st.info(f'CVR AUC 미정의: {cvr["auc_status"]} · 클릭 노출 {cvr["samples"]:,}개, 구매 양성 {cvr["positives"]:,}개')
     else:
@@ -113,10 +120,14 @@ def recommendation_tab(report: dict, config: dict) -> None:
         response = api_call(config['api_url'], 'GET', '/api/recommend', params=dict(user_id=uid.strip(), top_n=int(count)), timeout=config['api_timeout'])
         if response['ok']:
             body = response['data']
+            st.session_state['recommend_response'] = (uid.strip(), body)
             st.dataframe(pd.DataFrame(body['recommendations']), hide_index=True, use_container_width=True)
             st.caption(f'파이프라인 {body["pipeline_latency"]["total_ms"]:.2f}ms · 세션 관심사 {body["session_context"]["session_interest"] or "없음"}')
         else:
             st.warning(response['error'])
+    if 'recommend_response' in st.session_state:
+        selected_uid, body = st.session_state['recommend_response']
+        product_cards(body['recommendations'], config, 'recommend', selected_uid)
 
 
 def ab_tab(report: dict) -> None:
@@ -126,7 +137,9 @@ def ab_tab(report: dict) -> None:
         st.info(ab.get('reason', 'A/B 실험 결과가 없습니다.'))
         return
     control, treatment = ab['arms']['control'], ab['arms']['treatment']
-    st.caption(f'합성 실험 · {control["users"]:,}명/군 · {ab["days"]}일 · 사용자별 적응 학습 상태 분리')
+    st.caption(f'합성 실험 · {control["users"]:,}명/군 · {ab["days"]}일 · seed={ab.get("seed", "저장된 실험 근거 참조")} · 사용자별 적응 학습 상태 분리')
+    if ab.get('strategies'):
+        st.write(ab['strategies'])
     inference = ab['inference']['cvr']
     a, b, c = st.columns(3)
     a.metric('Control CVR', f'{control["cvr"]:.4%}' if control['cvr'] is not None else '미측정')
@@ -208,7 +221,7 @@ def main() -> None:
         else:
             st.info('저장된 통합 평가 결과가 없습니다.')
         st.button('결과 새로고침')
-        st.caption(f'API · {config["api_url"]}')
+        st.markdown(f'[API 문서 열기]({config["public_api_url"]}/docs)')
     if report:
         counts = report['data_counts']
         st.caption(f'{report["scale"].upper()} · {report["split"]} · 상품 {counts["products"]:,} · 사용자 {counts["users"]:,} · 이벤트 {counts["events"]:,}')
@@ -223,15 +236,23 @@ def main() -> None:
         st.caption('dev/valid 결과는 full test 최종 통과를 뜻하지 않습니다. 기준 미달과 미측정은 그대로 표시합니다.')
     else:
         st.info('통합 평가를 실행하면 측정값이 표시됩니다. 데모는 실행 중인 API에 연결합니다.')
-    tabs = st.tabs(['검색', '추천', 'A/B 실험', '시스템'])
+    tabs = st.tabs(['검색', '추천', 'A/B 실험', '시스템', 'EDA·구매 이력', '상품·CLIP'])
     with tabs[0]:
         search_tab(report, config)
     with tabs[1]:
         recommendation_tab(report, config)
     with tabs[2]:
-        ab_tab(report)
+        try:
+            actual_ab = ab_result(config['results_dir'])
+            ab_tab(dict(report, ab=actual_ab) if actual_ab else report)
+        except (OSError, ValueError, KeyError) as error:
+            st.error(f'A/B 데이터 확인 실패: {error}')
     with tabs[3]:
         system_tab(report, config)
+    with tabs[4]:
+        data_tab(config)
+    with tabs[5]:
+        catalog_tab(config)
 
 
 if __name__ == '__main__':

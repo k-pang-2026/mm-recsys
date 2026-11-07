@@ -59,7 +59,7 @@ def test_dashboard_connects_to_api_before_launch_and_announces_after_http(monkey
     monkeypatch.setenv('PUBLIC_DASHBOARD_URL', 'http://localhost:18501')
     assert entry.main() == 0
     assert events == ['api_ready', 'launch', 'http_ready']
-    assert 'http://localhost:18501 에서 대시보드 시작' in capsys.readouterr().out
+    assert 'http://localhost:18501 에서 대시보드 시작' in capsys.readouterr().err
 
 
 def test_dashboard_failure_never_announces_success(monkeypatch, capsys):
@@ -69,7 +69,7 @@ def test_dashboard_failure_never_announces_success(monkeypatch, capsys):
     monkeypatch.setattr(entry.subprocess, 'Popen', lambda *args: process)
     with pytest.raises(RuntimeError, match='준비 전에 종료'):
         entry.main()
-    assert '에서 대시보드 시작' not in capsys.readouterr().out
+    assert '에서 대시보드 시작' not in capsys.readouterr().err
 
 
 def test_parallel_hybrid_overlaps_towers_and_preserves_fusion(monkeypatch):
@@ -138,7 +138,7 @@ def test_runtime_does_not_mutate_role_configuration():
     original = load_config()
     runtime = runtime_config(original)
     assert original['paths']['results_dir'] == 'docs/results'
-    assert runtime['paths']['results_dir'] == 'docs/results/docker/runtime/dev'
+    assert runtime['paths']['results_dir'] == 'docs/results/docker/runtime-v43/dev'
     assert runtime['recommend'] == original['recommend'] and runtime['targets'] == original['targets']
 
 
@@ -216,7 +216,7 @@ def test_prepare_failure_stops_dependents_and_records_real_exit(tmp_path, monkey
     monkeypatch.setattr(prepare_all.subprocess, 'run', child)
     with pytest.raises(RuntimeError, match='embeddings: exit 9'):
         prepare_all.prepare(cfg)
-    assert called == ['data', 'embeddings']
+    assert called == ['data', 'audit', 'embeddings']
     result = json.loads((tmp_path / 'results/preparation.json').read_text())
     assert result['status'] == 'FAIL' and result['stages'][-1]['exit_code'] == 9
 
@@ -246,6 +246,7 @@ def live_catalog(tmp_path):
     from src.simulator.users import make_users
     cfg = load_config()
     cfg['paths']['data_dir'] = str(tmp_path)
+    cfg['paths']['model_dir'] = str(tmp_path / 'models')
     cfg['simulator'].update(n_products=450, n_users=120, n_events=4000)
     (tmp_path / 'split_manifest.json').write_text(json.dumps({'generation_fingerprint': 'frozen'}))
     rng = np.random.default_rng(cfg['seed'])
@@ -291,6 +292,9 @@ def test_live_batch_updates_redis_without_reading_or_posting_frozen_events(live_
     expected = last_session[last_session.event_type == 'view'].product_id.tolist()
     assert features.recent_clicks == expected[-store.history_limit:]
     assert features.session_clicks == len(expected)
+    from src.ct.storage import Journal
+    journal = Journal(Path(cfg['paths']['model_dir']) / '.ct/journal.sqlite3')
+    assert journal.count_since(0) == len(supported) == result['ct_new_events']
 
 
 def test_failed_live_batch_preserves_pending_ids_and_retries_without_duplicate_rewards(live_catalog, monkeypatch):
@@ -323,6 +327,8 @@ def test_failed_live_batch_preserves_pending_ids_and_retries_without_duplicate_r
     assert store.get_features('u').recent_clicks == [product]
     assert store.client.hgetall(store.key('reward', product)) == {'clicks': '1', 'purchases': '1'}
     assert pd.read_parquet(result['source']).event_id.tolist() == ['live-e1', 'live-e2']
+    from src.ct.storage import Journal
+    assert Journal(Path(cfg['paths']['model_dir']) / '.ct/journal.sqlite3').count_since(0) == 2
 
 
 @pytest.fixture
@@ -359,4 +365,18 @@ def test_evidence_rejects_short_samples_and_foreign_data(measurement_fixture):
     smoke['data_fingerprint'] = 'dataset'
     smoke['benchmark']['candidate']['elapsed_ms'].pop()
     with pytest.raises(ValueError, match='candidate samples'):
+        verify(cfg, smoke, prep, manifest)
+
+
+def test_v43_preparation_evidence_requires_all_six_ordered_stages(measurement_fixture):
+    from docker.verify_evidence import verify
+    cfg, smoke, prep, manifest = measurement_fixture
+    prep['stages'] = [dict(stage=name, exit_code=0) for name in
+                      ('data','audit','embeddings','indexes','recommendation','warmup')]
+    verify(cfg, smoke, prep, manifest)
+    prep['stages'][1]['exit_code'] = 1
+    with pytest.raises(ValueError, match='preparation stages'):
+        verify(cfg, smoke, prep, manifest)
+    prep['stages'][1].update(exit_code=0, stage='missing_audit')
+    with pytest.raises(ValueError, match='stage order'):
         verify(cfg, smoke, prep, manifest)

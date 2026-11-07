@@ -1,0 +1,117 @@
+{
+  "status": "FAIL",
+  "commands": [
+    {
+      "name": "legacy_full",
+      "command": [
+        "docker-compose",
+        "up",
+        "-d",
+        "--no-build",
+        "--no-recreate"
+      ],
+      "started_at": "2026-11-07T06:32:54.830443+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:56.575187+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/legacy_full_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/legacy_full.log"
+    },
+    {
+      "name": "legacy_full_services",
+      "command": [
+        "docker-compose",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "started_at": "2026-11-07T06:32:56.575672+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:56.666334+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/legacy_full_services_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/legacy_full_services.log"
+    },
+    {
+      "name": "legacy_stop_simulator",
+      "command": [
+        "docker-compose",
+        "stop",
+        "simulator"
+      ],
+      "started_at": "2026-11-07T06:32:56.666840+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:56.974690+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/legacy_stop_simulator_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/legacy_stop_simulator.log"
+    },
+    {
+      "name": "ct_before",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "-c",
+        "from docker.runtime import runtime_config;from src.ct.retrain_trigger import components;from src.common.console import emit_json;s,j,r=components(runtime_config());emit_json(dict(registry=r.read(),new_events=j.count_since(r.read()['last_success_seq']),high_watermark=j.high_watermark(),threshold=s['retrain_log_threshold']))"
+      ],
+      "started_at": "2026-11-07T06:32:56.975103+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:57.588149+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_before_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_before.log"
+    },
+    {
+      "name": "ct_natural",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--memory",
+        "4g",
+        "--cpus",
+        "4",
+        "--network",
+        "container:mm-recsys-api-server-1",
+        "--volumes-from",
+        "mm-recsys-api-server-1",
+        "-e",
+        "CONFIG_PATH=models/full-v43/.docker/config.yaml",
+        "-e",
+        "SCALE=full",
+        "-e",
+        "PYTHONHASHSEED=42",
+        "-e",
+        "DOCKER_RUNTIME=1",
+        "-e",
+        "OMP_NUM_THREADS=1",
+        "-e",
+        "MKL_NUM_THREADS=1",
+        "-e",
+        "OPENBLAS_NUM_THREADS=1",
+        "-e",
+        "TOKENIZERS_PARALLELISM=false",
+        "-e",
+        "HF_HOME=/app/.cache/huggingface",
+        "--entrypoint",
+        "python",
+        "mm-recsys-api-server",
+        "scripts/demo.py",
+        "ct",
+        "--train",
+        "--reload-url",
+        "http://127.0.0.1:8000",
+        "--output",
+        "docs/results/integration/20261107_requirements/ct_natural.json"
+      ],
+      "started_at": "2026-11-07T06:32:57.588557+00:00",
+      "exit_code": 247,
+      "completed_at": "2026-11-07T07:03:16.800781+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_natural_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_natural.log"
+    }
+  ],
+  "started_at": "2026-11-07T06:32:54.830401+00:00",
+  "error": "ct_natural: exit 247",
+  "completed_at": "2026-11-07T07:03:16.841868+00:00"
+}

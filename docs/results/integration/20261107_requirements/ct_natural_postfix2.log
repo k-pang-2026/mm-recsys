@@ -1,0 +1,47 @@
+[2026-11-07T08:12:13+00:00] [CT 시작] [진행] 모니터링 주기=60초 / 재학습 임계치=10000건 / 재학습 활성=True / 활성 모델=v1.1
+[2026-11-07T08:12:13+00:00] [CT 알림] [경고] CTR=0.0 / 기준=0.01 / HitRate@50=None / 기준=0.2 / 성숙 요청=135 / 노출=1350 / 성능 저하 감지. 다음 조치: 표본과 재학습 누적 로그를 확인하세요.
+[2026-11-07T08:12:13+00:00] [CT 재학습] [진행] 신규 로그 10,360건 누적 / v1.1 → v1.3 / 재학습 시작
+/app/src/ct/retrain_trigger.py:90: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
+[2026-11-07T08:15:05+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=0.30591 / valid_recall@300=0.734321 / 갱신=1386
+[2026-11-07T08:17:00+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.23539 / valid_recall@300=0.733409 / 갱신=1386
+[2026-11-07T08:18:52+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.21997 / valid_recall@300=0.733477 / 갱신=1386
+[2026-11-07T08:20:46+00:00] [모델 학습] [진행] Two-Tower epoch=4 / loss=0.20808 / valid_recall@300=0.739080 / 갱신=1386
+[2026-11-07T08:22:49+00:00] [모델 학습] [진행] Two-Tower epoch=5 / loss=0.19905 / valid_recall@300=0.733534 / 갱신=1386
+[2026-11-07T08:24:49+00:00] [모델 학습] [진행] Two-Tower epoch=6 / loss=0.19141 / valid_recall@300=0.734377 / 갱신=1386
+[2026-11-07T08:26:53+00:00] [모델 학습] [진행] Two-Tower epoch=7 / loss=0.18460 / valid_recall@300=0.729661 / 갱신=1386
+[2026-11-07T08:27:06+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=4 / valid_recall@300=0.739080 / 결과=/app/models/full-v43/.ct/runs/v1.3-3cc1e5df/results/candidate_training_full.json
+[2026-11-07T08:28:40+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=1.79031 / valid_ctr_auc=0.960369 / cvr_auc=0.48940203620951767
+[2026-11-07T08:28:59+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=0.44535 / valid_ctr_auc=0.964365 / cvr_auc=0.6340128376406995
+[2026-11-07T08:29:17+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=0.41620 / valid_ctr_auc=0.965502 / cvr_auc=0.5466907756330524
+[2026-11-07T08:29:37+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=0.40696 / valid_ctr_auc=0.964663 / cvr_auc=0.5374752384023587
+[2026-11-07T08:29:57+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=0.39878 / valid_ctr_auc=0.965025 / cvr_auc=0.44194576250364703
+[2026-11-07T08:30:17+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=0.38627 / valid_ctr_auc=0.965880 / cvr_auc=0.6100881436095883
+[2026-11-07T08:30:37+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=0.37890 / valid_ctr_auc=0.966197 / cvr_auc=0.5699705164232736
+[2026-11-07T08:30:55+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=0.37530 / valid_ctr_auc=0.966536 / cvr_auc=0.5382127117212574
+[2026-11-07T08:31:14+00:00] [모델 학습] [진행] DeepFM epoch=9 / loss=0.37299 / valid_ctr_auc=0.965246 / cvr_auc=0.47873996099568494
+[2026-11-07T08:31:33+00:00] [모델 학습] [진행] DeepFM epoch=10 / loss=0.37159 / valid_ctr_auc=0.966275 / cvr_auc=0.5242744276039987
+[2026-11-07T08:31:51+00:00] [모델 학습] [진행] DeepFM epoch=11 / loss=0.37022 / valid_ctr_auc=0.965635 / cvr_auc=0.6150066798728521
+[2026-11-07T08:35:12+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=0.10797 / sampled_hit@10=1.00000
+[2026-11-07T08:35:33+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=0.09468 / sampled_hit@10=1.00000
+[2026-11-07T08:35:53+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=0.08889 / sampled_hit@10=1.00000
+[2026-11-07T08:36:18+00:00] [모델 학습] [진행] 세션 epoch=4 / valid_loss=0.08548 / sampled_hit@10=1.00000
+[2026-11-07T08:36:39+00:00] [모델 학습] [진행] 세션 epoch=5 / valid_loss=0.08338 / sampled_hit@10=1.00000
+[2026-11-07T08:37:00+00:00] [모델 학습] [진행] 세션 epoch=6 / valid_loss=0.08197 / sampled_hit@10=1.00000
+[2026-11-07T08:37:21+00:00] [모델 학습] [진행] 세션 epoch=7 / valid_loss=0.08136 / sampled_hit@10=1.00000
+[2026-11-07T08:37:45+00:00] [모델 학습] [진행] 세션 epoch=8 / valid_loss=0.08024 / sampled_hit@10=1.00000
+[2026-11-07T08:38:07+00:00] [모델 학습] [진행] 세션 epoch=9 / valid_loss=0.07946 / sampled_hit@10=1.00000
+[2026-11-07T08:38:34+00:00] [모델 학습] [진행] 세션 epoch=10 / valid_loss=0.07884 / sampled_hit@10=1.00000
+[2026-11-07T08:38:56+00:00] [모델 학습] [진행] 세션 epoch=11 / valid_loss=0.07877 / sampled_hit@10=1.00000
+[2026-11-07T08:39:19+00:00] [모델 학습] [진행] 세션 epoch=12 / valid_loss=0.07796 / sampled_hit@10=1.00000
+[2026-11-07T08:39:38+00:00] [모델 학습] [진행] 세션 epoch=13 / valid_loss=0.07787 / sampled_hit@10=1.00000
+[2026-11-07T08:39:57+00:00] [모델 학습] [진행] 세션 epoch=14 / valid_loss=0.07760 / sampled_hit@10=1.00000
+[2026-11-07T08:40:16+00:00] [모델 학습] [진행] 세션 epoch=15 / valid_loss=0.07738 / sampled_hit@10=1.00000
+[2026-11-07T08:40:35+00:00] [모델 학습] [진행] 세션 epoch=16 / valid_loss=0.07728 / sampled_hit@10=1.00000
+[2026-11-07T08:40:53+00:00] [모델 학습] [진행] 세션 epoch=17 / valid_loss=0.07684 / sampled_hit@10=1.00000
+[2026-11-07T08:41:13+00:00] [모델 학습] [진행] 세션 epoch=18 / valid_loss=0.07671 / sampled_hit@10=1.00000
+[2026-11-07T08:41:32+00:00] [모델 학습] [진행] 세션 epoch=19 / valid_loss=0.07651 / sampled_hit@10=1.00000
+[2026-11-07T08:41:50+00:00] [모델 학습] [진행] 세션 epoch=20 / valid_loss=0.07631 / sampled_hit@10=1.00000
+[2026-11-07T08:41:51+00:00] [CT 버전 등록] [성공] 모델=v1.3
+[2026-11-07T08:46:12+00:00] [CT 버전 등록] [성공] 모델=v1.3
+[2026-11-07T08:46:12+00:00] [CT 판정] [유지] 검증 개선 조건을 충족하지 못해 기존 모델을 유지합니다. / 후보=v1.3 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': '3ca6028d2b40c1b914635c9e053912eddcfe36e7a15a6237f11c3d559425bdb2', 'baseline': {'ctr_auc': 0.9662781174170919, 'ctr_logloss': 0.15240951537073483, 'hit_rate_at_50': 0.6103286384976526, 'truth_users': 1065, 'ctr_samples': 37772, 'validation_fingerprint': '3ca6028d2b40c1b914635c9e053912eddcfe36e7a15a6237f11c3d559425bdb2'}, 'candidate': {'ctr_auc': 0.9665356715556553, 'ctr_logloss': 0.14211625011386514, 'hit_rate_at_50': 0.6103286384976526, 'truth_users': 1065, 'ctr_samples': 37772, 'validation_fingerprint': '3ca6028d2b40c1b914635c9e053912eddcfe36e7a15a6237f11c3d559425bdb2'}, 'training_reports': {'candidate': '24774de3659ca2bb8a9ace95817297990643d2e41a9097efead6a4ecaaf51ae1', 'ranking': 'e628d40cac465ca498051c33e5617530ef05e68e08daa42d7e1d574d35bffac7', 'session': 'e417d3866fe0a798026e6575e06282094f4f72547f2baec914950de2d4bb7f45'}}

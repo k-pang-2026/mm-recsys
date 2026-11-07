@@ -1,0 +1,6 @@
+{
+  "status": "FAIL",
+  "commands": [],
+  "error": "prior verification failed; inspect execution.json",
+  "completed_at": "2026-11-07T06:30:14.511413+00:00"
+}

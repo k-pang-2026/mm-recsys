@@ -1,0 +1,63 @@
+ Image mm-recsys-api-server Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 555B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.api
+#2 transferring dockerfile: 650B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 ...
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.6s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 292B done
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#6 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 146.17kB 0.0s done
+#7 DONE 0.1s
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY requirements.txt requirements-torch.txt ./
+#9 CACHED
+
+#10 [5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#10 CACHED
+
+#11 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#11 CACHED
+
+#12 [6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#12 CACHED
+
+#13 [7/7] COPY . .
+#13 DONE 0.3s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.3s done
+#14 exporting manifest sha256:1b605ebacfb6580aa31a9bb314a3fba0c372ddd1f88650f157a766273c99b094 0.0s done
+#14 exporting config sha256:72cad85c49107eb3871089017a1b5e9c9ea84b8a3f6d97422b680f9f488342d1 0.0s done
+#14 exporting attestation manifest sha256:e465ffab3d47a406a4437ecfea8bae229ba0436e36fc0701da5a512792eb7860 0.0s done
+#14 exporting manifest list sha256:20e1fbce2723524a14ed28c6854458c6d54e8982bfba9b921eda186f0208fe64 0.0s done
+#14 naming to docker.io/library/mm-recsys-api-server:latest done
+#14 unpacking to docker.io/library/mm-recsys-api-server:latest
+#14 unpacking to docker.io/library/mm-recsys-api-server:latest 0.2s done
+#14 DONE 0.5s
+
+#15 resolving provenance for metadata file
+#15 DONE 0.0s
+ Image mm-recsys-api-server Built 

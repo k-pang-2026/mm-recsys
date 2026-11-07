@@ -1,0 +1,57 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 555B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.api
+#2 transferring dockerfile: 650B done
+#2 DONE 0.0s
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 1.3s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 292B done
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#6 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 53.05kB 0.0s done
+#7 DONE 0.0s
+
+#8 [2/7] WORKDIR /app
+#8 CACHED
+
+#9 [4/7] COPY requirements.txt requirements-torch.txt ./
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#11 CACHED
+
+#12 [6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#12 CACHED
+
+#13 [7/7] COPY . .
+#13 DONE 0.1s
+
+#14 exporting to image
+#14 exporting layers
+#14 exporting layers 0.2s done
+#14 exporting manifest sha256:38ac94f81b8b7c375d33632dae09f379499cfa89d2bfe1aa67c3727afea9f24b 0.0s done
+#14 exporting config sha256:f6f19d1fc477bd1d5cc5f402b4f549177f9b3cbde90095aca0846cc3acfebb9b done
+#14 exporting attestation manifest sha256:24966b926acc755eea707ee5e898bd25bd69986454392a29c7138db125f38a44 0.0s done
+#14 exporting manifest list sha256:e26e9487724d5f4e89760a02a235495d5049ee8622075a6baf7b324b382801e0 0.0s done
+#14 naming to docker.io/library/mm-recsys-api-server:latest done
+#14 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#14 DONE 0.4s
+
+#15 resolving provenance for metadata file
+#15 DONE 0.0s

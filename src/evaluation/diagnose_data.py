@@ -1,6 +1,8 @@
 """Train/valid-only data diagnostics: test outcomes are deliberately never opened here."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -64,7 +66,8 @@ def main() -> None:
     cfg=load_config();result=diagnose(cfg,args.data_dir)
     suffix='_full' if cfg['scale']=='full' else ''
     write_json(Path(cfg['paths']['results_dir'])/f'data_diagnostics{suffix}.json',result)
+    log('데이터 진단', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps(result,ensure_ascii=False,indent=2))
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':run_cli(main, '데이터 진단', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

@@ -1,6 +1,8 @@
 """Valid-only selection and separately invoked frozen test evaluation."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 
 
 import argparse
@@ -146,7 +148,7 @@ def evaluate(cfg: dict, split: str, sweep: bool=False) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='검색 품질 평가')
     parser.add_argument('--split', choices=['valid', 'test'], default='valid'); parser.add_argument('--sweep', action='store_true')
     args = parser.parse_args(); cfg = load_config(); set_seed(cfg['seed'])
     if args.split == 'test':
@@ -166,9 +168,10 @@ def main() -> None:
         if cfg['search']['faiss']['ef_search'] != max(c['ef_search'] for c in selection['selected'].values()):
             raise ValueError('test efSearch differs from valid-selected global setting')
     result = evaluate(cfg, args.split, args.sweep)
+    log('검색 품질 평가', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps({'scale': result['scale'], 'split': args.split, 'primary': result['primary'],
                       'selected': result['selected'], 'per_mode': result['per_mode']}, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '검색 품질 평가', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

@@ -24,8 +24,12 @@ def configure_process_environment() -> dict[str, str]:
 
 def runtime_config(cfg: dict | None = None) -> dict:
     value = copy.deepcopy(cfg if cfg is not None else load_config())
-    base = os.getenv('RUNTIME_RESULTS_DIR', 'docs/results/docker/runtime')
+    base = os.getenv('RUNTIME_RESULTS_DIR', 'docs/results/docker/runtime-v43')
     value['paths']['results_dir'] = str(Path(base) / value['scale'])
+    # Separate observed state when regenerating a catalog with the same product IDs.
+    from src.common.artifacts import fingerprint
+    value['serving'].setdefault('redis', {}).setdefault('namespace',
+        f"mm-recsys:{value['scale']}:{fingerprint(value['paths']['data_dir'])[:12]}")
     return value
 
 

@@ -1,0 +1,223 @@
+{
+  "status": "PASS",
+  "real_http": true,
+  "commands": [
+    {
+      "name": "demo_text",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-text",
+        "검정 오버핏 후드티",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_text.json"
+      ],
+      "started_at": "2026-11-07T05:54:09.142313+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:09.815335+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_text_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_text.log"
+    },
+    {
+      "name": "demo_image",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-image",
+        "data/full-v43/images/P000001.jpg",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_image.json"
+      ],
+      "started_at": "2026-11-07T05:54:09.815753+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:10.386053+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_image_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_image.log"
+    },
+    {
+      "name": "demo_hybrid",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-text",
+        "가방",
+        "--query-image",
+        "data/full-v43/images/P000001.jpg",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_hybrid.json"
+      ],
+      "started_at": "2026-11-07T05:54:10.386507+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:10.778417+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_hybrid_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_hybrid.log"
+    },
+    {
+      "name": "demo_recommend",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "recommend",
+        "--user-id",
+        "U000001",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_recommend.json"
+      ],
+      "started_at": "2026-11-07T05:54:10.778949+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:10.759854+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_recommend_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_recommend.log"
+    },
+    {
+      "name": "demo_session",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "session",
+        "--user-id",
+        "cli-session-v43",
+        "--product-id",
+        "P000001",
+        "--category",
+        "tote bag",
+        "--event-id",
+        "cli-session-v43-click-1",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_session.json"
+      ],
+      "started_at": "2026-11-07T05:54:10.760326+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:11.114972+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_session_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_session.log"
+    }
+  ],
+  "failures": {
+    "status": "PASS",
+    "measured_at": "2026-11-07T05:57:56.300012+00:00",
+    "checks": [
+      {
+        "name": "api_unavailable",
+        "command": [
+          "docker",
+          "compose",
+          "exec",
+          "-T",
+          "api-server",
+          "python",
+          "scripts/demo.py",
+          "recommend",
+          "--user-id",
+          "U000001",
+          "--api-url",
+          "http://127.0.0.1:1",
+          "--json"
+        ],
+        "exit_code": 1,
+        "korean_explanation": true,
+        "original_traceback": true,
+        "stdout_empty": true
+      },
+      {
+        "name": "missing_image",
+        "command": [
+          "docker",
+          "compose",
+          "exec",
+          "-T",
+          "api-server",
+          "python",
+          "scripts/demo.py",
+          "search",
+          "--query-image",
+          "data/query-does-not-exist.jpg",
+          "--json"
+        ],
+        "exit_code": 1,
+        "korean_explanation": true,
+        "original_traceback": true,
+        "stdout_empty": true
+      },
+      {
+        "name": "invalid_ab_days",
+        "command": [
+          "docker",
+          "compose",
+          "exec",
+          "-T",
+          "api-server",
+          "python",
+          "scripts/demo.py",
+          "ab",
+          "--days",
+          "0",
+          "--json"
+        ],
+        "exit_code": 2,
+        "korean_explanation": true,
+        "original_traceback": false,
+        "stdout_empty": true
+      }
+    ]
+  },
+  "windows": {
+    "status": "PASS",
+    "shell": "Windows PowerShell 5.1",
+    "actual_http_search": true,
+    "utf8_saved_and_read": true
+  },
+  "compose_json": {
+    "status": "PASS",
+    "command": [
+      "docker",
+      "compose",
+      "run",
+      "--rm",
+      "--no-deps",
+      "--pull",
+      "never",
+      "--entrypoint",
+      "python",
+      "api-server",
+      "scripts/demo.py",
+      "ct",
+      "--json"
+    ],
+    "exit_code": 0,
+    "measured_at": "2026-11-07T06:42:51.593203+00:00",
+    "single_json_stdout": true,
+    "stderr_utf8": true,
+    "korean_stderr": true,
+    "scope": "prebuilt image --pull never prevents Compose build progress from contaminating CLI JSON stdout"
+  },
+  "json_stdout_matches_saved_files": true
+}

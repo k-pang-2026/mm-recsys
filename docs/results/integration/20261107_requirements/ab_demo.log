@@ -1,0 +1,117 @@
+ Image mm-recsys-api-server Building 
+ Image mm-recsys-api-server Built 
+ Container mm-recsys-api-server-run-40812aaf1c8c Creating 
+ Container mm-recsys-api-server-run-40812aaf1c8c Created 
+[2026-11-07T06:28:44+00:00] [A/B 준비] [진행] 규모=full / seed=42 / 데이터·실제 추천 전략 로딩 시작
+[2026-11-07T06:29:17+00:00] [A/B 준비] [성공] 전략=popularity·full_pipeline / 준비 완료
+[2026-11-07T06:29:20+00:00] [A/B 실험] [진행] 진행 일수=1/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:23+00:00] [A/B 실험] [진행] 진행 일수=2/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:26+00:00] [A/B 실험] [진행] 진행 일수=3/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:29+00:00] [A/B 실험] [진행] 진행 일수=4/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:32+00:00] [A/B 실험] [진행] 진행 일수=5/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:36+00:00] [A/B 실험] [진행] 진행 일수=6/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:39+00:00] [A/B 실험] [진행] 진행 일수=7/7 / 그룹별 사용자=100명 / seed=42
+[2026-11-07T06:29:39+00:00] [A/B 결과] [통과] 클릭률 상대 변화=-16.24% / p-value=3.3887058094531377e-06 / 차이의 95% CI=[-0.05646913684684263, -0.022959434581728836] / 분모=노출 수 / 통계 단위=사용자 / 합성 실험 / 결과=docs/results/integration/20261107_requirements/ab_demo.json
+[2026-11-07T06:29:39+00:00] [A/B 결과] [통과] 구매 전환율 상대 변화=-23.60% / p-value=0.10229079677559945 / 차이의 95% CI=[-0.0065988001336656985, 0.0005988001336656962] / 분모=노출 수 / 통계 단위=사용자 / 합성 실험 / 결과=docs/results/integration/20261107_requirements/ab_demo.json
+{
+  "output": "docs/results/integration/20261107_requirements/ab_demo.json",
+  "arms": {
+    "control": {
+      "users": 100,
+      "impressions": 7000,
+      "clicks": 1712,
+      "purchases": 89,
+      "explorations": 0,
+      "ctr": 0.24457142857142858,
+      "cvr": 0.012714285714285714,
+      "purchase_given_click": 0.051985981308411214,
+      "exploration_rate": 0.0,
+      "users_clicked": 100,
+      "users_purchased": 56,
+      "unattributed_feedback": 0
+    },
+    "treatment": {
+      "users": 100,
+      "impressions": 7000,
+      "clicks": 1434,
+      "purchases": 68,
+      "explorations": 1400,
+      "ctr": 0.20485714285714285,
+      "cvr": 0.009714285714285713,
+      "purchase_given_click": 0.04741980474198047,
+      "exploration_rate": 0.2,
+      "users_clicked": 100,
+      "users_purchased": 49,
+      "unattributed_feedback": 0
+    }
+  },
+  "inference": {
+    "experimental_unit": "randomized user; repeated exposures clustered within user",
+    "independent_user_risks": {
+      "any_click": {
+        "control": 1.0,
+        "treatment": 1.0,
+        "difference": 0.0,
+        "relative_lift": 0.0,
+        "z_statistic": 0.0,
+        "z_p_value": 1.0,
+        "chi_square": 0.0,
+        "chi_square_p_value": 1.0,
+        "difference_ci95": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      },
+      "any_purchase": {
+        "control": 0.56,
+        "treatment": 0.49,
+        "difference": -0.07000000000000006,
+        "relative_lift": -0.1250000000000001,
+        "z_statistic": -0.991189255566705,
+        "z_p_value": 0.3215931760456061,
+        "chi_square": 0.9824561403508772,
+        "chi_square_p_value": 0.32159317604560367,
+        "difference_ci95": [
+          -0.20807664584246302,
+          0.0680766458424629
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": false,
+        "asymptotic_reliable": true,
+        "fisher_p_value": null,
+        "experimental_unit": "one independent randomized user"
+      }
+    },
+    "ctr": {
+      "status": "PASS",
+      "control": 0.24457142857142858,
+      "treatment": 0.20485714285714285,
+      "difference": -0.03971428571428573,
+      "relative_lift": -0.16238317757009346,
+      "difference_ci95": [
+        -0.05646913684684263,
+        -0.022959434581728836
+      ],
+      "z_p_value": 3.3887058094531377e-06,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    },
+    "cvr": {
+      "status": "PASS",
+      "control": 0.012714285714285714,
+      "treatment": 0.009714285714285713,
+      "difference": -0.003000000000000001,
+      "relative_lift": -0.2359550561797753,
+      "difference_ci95": [
+        -0.0065988001336656985,
+        0.0005988001336656962
+      ],
+      "z_p_value": 0.10229079677559945,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    }
+  }
+}

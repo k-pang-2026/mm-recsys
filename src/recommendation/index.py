@@ -1,6 +1,8 @@
 """Persist a normalized all-catalog HNSW/IP index with explicit public-ID mapping."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import Any
 
 import argparse
@@ -113,9 +115,10 @@ def main() -> int:
     data = read_data(cfg['paths']['data_dir'], 'valid')
     model, _, table, meta = load_bundle(bundle, data, cfg)
     manifest = build_index(bundle, model, table, cfg, meta)
-    print(f"index: {manifest['ntotal']} items; {manifest['index_sha256']}")
+    log("후보", "인덱스", f"상품={manifest['ntotal']:,}개 / SHA256={manifest['index_sha256']}", status="완료")
+    emit_json(manifest)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '후보 인덱스', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.'))

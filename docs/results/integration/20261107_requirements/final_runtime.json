@@ -1,0 +1,202 @@
+{
+  "status": "PASS",
+  "commands": [
+    {
+      "name": "final_health_before_restore",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "-c",
+        "import json,urllib.request;print(json.dumps(json.load(urllib.request.urlopen('http://127.0.0.1:8000/health'))))"
+      ],
+      "started_at": "2026-11-07T08:46:23.921993+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:46:24.118478+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_health_before_restore_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_health_before_restore.log"
+    },
+    {
+      "name": "ct_restore_frozen",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "ct",
+        "--rollback",
+        "v1.0",
+        "--reason",
+        "full CT 검증을 완료하여 full test로 검증한 v1.0 시연 상태로 복원",
+        "--reload-url",
+        "http://127.0.0.1:8000",
+        "--output",
+        "docs/results/integration/20261107_requirements/ct_restore_frozen.json"
+      ],
+      "started_at": "2026-11-07T08:46:24.119172+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:47:00.485100+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_restore_frozen_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_restore_frozen.log"
+    },
+    {
+      "name": "final_build_start",
+      "command": [
+        "docker",
+        "compose",
+        "up",
+        "-d",
+        "--build",
+        "api-server",
+        "dashboard"
+      ],
+      "started_at": "2026-11-07T08:47:00.485560+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:47:15.286628+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_build_start_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_build_start.log"
+    },
+    {
+      "name": "final_health",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "-c",
+        "import json,urllib.request;v=json.load(urllib.request.urlopen('http://127.0.0.1:8000/health'));assert v['model_version']=='v1.0' and v['search_ready'] and v['recommend_ready'];print(json.dumps(v))"
+      ],
+      "started_at": "2026-11-07T08:49:20.366363+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:20.573556+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_health_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_health.log"
+    },
+    {
+      "name": "quality_verify_final",
+      "command": [
+        "docker",
+        "compose",
+        "run",
+        "--rm",
+        "--no-deps",
+        "--pull",
+        "never",
+        "-e",
+        "QUALITY_RESULTS_DIR=docs/results/integration/20261107_requirements",
+        "--entrypoint",
+        "python",
+        "api-server",
+        "-m",
+        "docker.quality",
+        "--verify-existing",
+        "--split",
+        "test"
+      ],
+      "started_at": "2026-11-07T08:49:20.574325+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:22.621179+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/quality_verify_final_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/quality_verify_final.log"
+    },
+    {
+      "name": "final_search",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-text",
+        "검정 오버핏 후드티",
+        "--output",
+        "docs/results/integration/20261107_requirements/final_search.json"
+      ],
+      "started_at": "2026-11-07T08:49:22.621859+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:23.195387+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_search_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_search.log"
+    },
+    {
+      "name": "final_recommend",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "recommend",
+        "--user-id",
+        "U000001",
+        "--output",
+        "docs/results/integration/20261107_requirements/final_recommend.json"
+      ],
+      "started_at": "2026-11-07T08:49:23.196440+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:23.533703+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_recommend_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_recommend.log"
+    },
+    {
+      "name": "final_simulator_start",
+      "command": [
+        "docker",
+        "compose",
+        "start",
+        "simulator"
+      ],
+      "started_at": "2026-11-07T08:49:23.534442+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:25.350624+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_simulator_start_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_simulator_start.log"
+    },
+    {
+      "name": "final_services",
+      "command": [
+        "docker",
+        "compose",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "started_at": "2026-11-07T08:49:25.351760+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:25.469978+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_services_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_services.log"
+    },
+    {
+      "name": "final_windows_ready",
+      "command": [
+        "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe",
+        "-NoProfile",
+        "-Command",
+        "$r=Invoke-WebRequest -UseBasicParsing -Uri 'http://localhost:8000/ready'; Write-Output $r.StatusCode; Write-Output $r.Content"
+      ],
+      "started_at": "2026-11-07T08:49:25.470565+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T08:49:28.317167+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/final_windows_ready_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/final_windows_ready.log"
+    }
+  ],
+  "started_at": "2026-11-07T08:46:23.921975+00:00",
+  "completed_at": "2026-11-07T08:49:28.317719+00:00",
+  "active_model": "v1.0",
+  "scope": "CT state restored to full-test frozen model; final source image rebuilt; readiness/HTTP and immutable full quality identity verified; simulator resumed"
+}

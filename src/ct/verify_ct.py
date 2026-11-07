@@ -1,6 +1,8 @@
 """Reproducible small controlled B9 run; never reports full-model acceptance."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import Any
 
 import argparse
@@ -33,7 +35,10 @@ from src.simulator.generate import generate
 def verify(work: Path, output: Path) -> dict:
     if work.exists():
         raise ValueError('choose a fresh work directory; previous evidence is never overwritten')
-    cfg = load_config(); cfg['simulator'].update(n_products=400, n_users=24, n_events=6000, image_size=32)
+    cfg = load_config()
+    # This isolated fixture must not inherit the production SCALE=full label.
+    cfg['scale'] = 'dev'
+    cfg['simulator'].update(n_products=400, n_users=24, n_events=6000, image_size=32)
     cfg['recommend']['candidate'].update(epochs=3, threads=1)
     cfg['recommend']['ranking'].update(epochs=20, batch_size=128, threads=1)
     cfg['recommend']['session']['epochs'] = 3
@@ -225,7 +230,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.verify_existing:
         verify_existing(args.output)
-        print('Existing CT evidence and local registered bundles: PASS')
+        log('CT', '기존 근거 검사', '저장된 CT 근거·등록 번들 검사 통과 / 새 재학습 측정 아님', status='통과(PASS)')
+        emit_json(dict(status='PASS', output=str(args.output)))
         return 0
     work = args.work_dir or Path('models/.ct/verification') / uuid.uuid4().hex[:10]
     report = verify(work.resolve(), args.output)
@@ -236,4 +242,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'CT 검사', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))

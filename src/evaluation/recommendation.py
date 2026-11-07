@@ -1,6 +1,8 @@
 """Frozen-origin candidate/ranking/final evaluation over one fixed user cohort."""
 from __future__ import annotations
 
+from src.common.console import log
+
 import copy
 from collections import Counter
 from pathlib import Path
@@ -95,7 +97,7 @@ def evaluate(cfg: dict, split: str) -> dict:
                     raise ValueError('future inventory entered evaluation')
                 ranked[name].append((uid, ids))
             if (i + 1) % 500 == 0:
-                print(f'B8 recommendation {split}: {i + 1}/{len(users)} users', flush=True)
+                log('추천', '평가', f'{split}: 사용자 {i + 1:,}/{len(users):,}명')
     metrics = {name: aggregate(rows, truth, len(data['products'])) for name, rows in ranked.items()}
     lift = {name: {key: relative_lift(metrics['full_pipeline'][key], row[key])
                    for key in ('hit_rate_at_50', 'ndcg_at_50', 'coverage')}

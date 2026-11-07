@@ -1,6 +1,8 @@
 """Diagnose recorded training and B3b valid evidence without tuning on test."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -78,9 +80,10 @@ def main() -> int:
         result['benchmark_source'] = str(args.benchmark)
         result['benchmark_sha256'] = file_hash(args.benchmark)
     write_json(args.output, result)
+    log('후보 진단', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result['status'] == 'PASS' else 1
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '후보 진단', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.'))

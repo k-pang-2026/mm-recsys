@@ -1,6 +1,8 @@
 """Record real Docker resources and assert all four core services are running."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import Any
 
 import argparse
@@ -69,9 +71,10 @@ def main() -> int:
     args = parser.parse_args()
     report = capture(args.project)
     write_json(args.output, report)
-    print(f"Docker runtime {report['status']}: {args.output}; errors={report['errors']}")
+    log('Docker', '실행 환경 검사', f"결과={args.output} / 오류={report['errors']}", status=report['status'])
+    emit_json(report)
     return 0 if report['status'] == 'PASS' else 1
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'Docker 환경 검사', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))

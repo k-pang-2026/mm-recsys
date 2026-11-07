@@ -1,0 +1,978 @@
+{
+  "pdf": "멀티모달_검색_및_Multi-Stage_추천_시스템_구축.pdf",
+  "interpretation": {
+    "ranking_auc": "CTR >=0.70; CVR separately reported; user confirmed 2026-11-07",
+    "external_datasets": "RESOLVED_OPTIONAL per docs/submission/dataset_scope.json",
+    "example_numbers": "illustrative only"
+  },
+  "requirements": [
+    {
+      "id": "D1",
+      "pdf_pages": [
+        3
+      ],
+      "requirement": "상품 50,000개 이상과 이미지·텍스트 메타",
+      "implementation": [
+        "src/simulator/events.py",
+        "src/simulator/catalog.py",
+        "src/simulator/users.py",
+        "config.yaml"
+      ],
+      "command": "docker compose exec -T -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server python -m src.evaluation.data_audit --output docs/results/docker/runtime-v43/full/data_audit.json",
+      "evidence": "data_audit.json",
+      "checks": "counts.products>=50000",
+      "kind": "mandatory"
+    },
+    {
+      "id": "D2",
+      "pdf_pages": [
+        3
+      ],
+      "requirement": "3단계 카테고리 구조",
+      "implementation": [
+        "src/simulator/events.py",
+        "src/simulator/catalog.py",
+        "src/simulator/users.py",
+        "config.yaml"
+      ],
+      "command": "docker compose exec -T -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server python -m src.evaluation.data_audit --output docs/results/docker/runtime-v43/full/data_audit.json",
+      "evidence": "data_audit.json",
+      "checks": "catalog.category_l1/category_l2/category_l3",
+      "kind": "mandatory"
+    },
+    {
+      "id": "D3",
+      "pdf_pages": [
+        3
+      ],
+      "requirement": "사용자 10,000명 이상과 여섯 페르소나",
+      "implementation": [
+        "src/simulator/events.py",
+        "src/simulator/catalog.py",
+        "src/simulator/users.py",
+        "config.yaml"
+      ],
+      "command": "docker compose exec -T -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server python -m src.evaluation.data_audit --output docs/results/docker/runtime-v43/full/data_audit.json",
+      "evidence": "data_audit.json",
+      "checks": "counts.users>=10000; checks.six_personas",
+      "kind": "mandatory"
+    },
+    {
+      "id": "D4",
+      "pdf_pages": [
+        3
+      ],
+      "requirement": "페르소나별 카테고리·가격 민감도·전환 차별화",
+      "implementation": [
+        "src/simulator/events.py",
+        "src/simulator/catalog.py",
+        "src/simulator/users.py",
+        "config.yaml"
+      ],
+      "command": "docker compose exec -T -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server python -m src.evaluation.data_audit --output docs/results/docker/runtime-v43/full/data_audit.json",
+      "evidence": "data_audit.json",
+      "checks": "checks.category_difference/price_sensitivity/conversion_difference/brand_loyalty",
+      "kind": "mandatory"
+    },
+    {
+      "id": "D5",
+      "pdf_pages": [
+        3
+      ],
+      "requirement": "이벤트 1,000,000건 및 search/view/cart/purchase",
+      "implementation": [
+        "src/simulator/events.py",
+        "src/simulator/catalog.py",
+        "src/simulator/users.py",
+        "config.yaml"
+      ],
+      "command": "docker compose exec -T -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server python -m src.evaluation.data_audit --output docs/results/docker/runtime-v43/full/data_audit.json",
+      "evidence": "data_audit.json",
+      "checks": "counts.events>=1000000; checks.event_types",
+      "kind": "mandatory"
+    },
+    {
+      "id": "D6",
+      "pdf_pages": [
+        3
+      ],
+      "requirement": "페르소나 비율·전이·카테고리 config 변경",
+      "implementation": [
+        "src/simulator/events.py",
+        "src/simulator/catalog.py",
+        "src/simulator/users.py",
+        "config.yaml"
+      ],
+      "command": "RUN_REDIS_TESTS=1 REDIS_HOST=127.0.0.1 REDIS_PORT=6379 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "evidence": "pytest_release_final.xml",
+      "checks": "test_yaml_persona_ratios_and_taxonomy_change_generated_assets; test_generation_causality_and_reproducibility",
+      "kind": "mandatory"
+    },
+    {
+      "id": "S1",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "requirement": "CLIP Text/Image Encoder의 실제 로컬 임베딩",
+      "implementation": [
+        "src/search/encoder.py",
+        "src/search/build_embeddings.py",
+        "src/search/build_index.py",
+        "src/search/service.py"
+      ],
+      "command": "Streamlit http://localhost:8501 → 상품·CLIP → P000001; PLAYWRIGHT_MODULE=<installed-package> node scripts/verify_dashboard_browser.cjs",
+      "evidence": "quality_full_test.json",
+      "checks": "encoder model revision; text/image norm/dim",
+      "kind": "mandatory"
+    },
+    {
+      "id": "S2",
+      "pdf_pages": [
+        1,
+        2,
+        4
+      ],
+      "requirement": "text/image/hybrid 검색 및 필수 JSON 필드",
+      "implementation": [
+        "src/search/encoder.py",
+        "src/search/build_embeddings.py",
+        "src/search/build_index.py",
+        "src/search/service.py"
+      ],
+      "command": "docker compose exec -T api-server python scripts/demo.py search --query-text \"검정 오버핏 후드티\"; docker compose exec -T api-server python scripts/demo.py search --query-image data/full-v43/images/P000001.jpg; docker compose exec -T api-server python scripts/demo.py search --query-text \"가방\" --query-image data/full-v43/images/P000001.jpg",
+      "evidence": "smoke_full.json",
+      "checks": "responses.text/image/hybrid validated by SearchResponse: search_type/results(product_id,name,score,price)/latency_ms/total_count",
+      "kind": "mandatory"
+    },
+    {
+      "id": "S3",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "requirement": "HNSW 또는 IVF-PQ FAISS 인덱스",
+      "implementation": [
+        "src/search/encoder.py",
+        "src/search/build_embeddings.py",
+        "src/search/build_index.py",
+        "src/search/service.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "preparation indexes; index manifests",
+      "kind": "mandatory"
+    },
+    {
+      "id": "S4",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "requirement": "검색 HTTP p95 ≤200ms",
+      "implementation": [
+        "src/search/encoder.py",
+        "src/search/build_embeddings.py",
+        "src/search/build_index.py",
+        "src/search/service.py"
+      ],
+      "command": "python scripts/smoke_test.py --benchmark",
+      "evidence": "smoke_full.json",
+      "checks": "search_p95_ms",
+      "kind": "mandatory"
+    },
+    {
+      "id": "S5",
+      "pdf_pages": [
+        3,
+        4
+      ],
+      "requirement": "MRR ≥0.55·NDCG@10 ≥0.50",
+      "implementation": [
+        "src/search/encoder.py",
+        "src/search/build_embeddings.py",
+        "src/search/build_index.py",
+        "src/search/service.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "mrr ndcg_at_10",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R1",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "User Tower: 최근 행동 시퀀스와 관측 프로필",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "feature_contract; no persona/future input",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R2",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "Item Tower: 카테고리·속성·가격 및 오프라인 FAISS",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "bundle_contract; item_index.faiss",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R3",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "후보 300개 이상·p95 ≤100ms",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "candidate_count_min; candidate_p95_ms",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R4",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "full-catalog macro-user Recall@300 ≥0.30",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "recall_at_300",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R5",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "DeepFM CTR/CVR 예측 및 User/Item/Cross/Context 피처",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "classification.ctr/cvr; feature_contract",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R6",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "Ranking CTR AUC ≥0.70, CVR 별도 보고",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "auc; recommendation.classification.cvr",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R7",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "이력 5개 미만 인기·트렌딩 폴백",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py verify-peer-review",
+      "evidence": "peer_review.json",
+      "checks": "cold_start_0/cold_start_4",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R8",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "MAB 탐색 1~2개·is_exploration 표시",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py verify-peer-review",
+      "evidence": "peer_review.json",
+      "checks": "exploration_U000001/U000002/U000003",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R9",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "등록 7일 이내 신상품 노출",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py verify-peer-review",
+      "evidence": "peer_review.json",
+      "checks": "new_item_U000001/U000002/U000003",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R10",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "3개 사용자에서 같은 카테고리 연속 3개 금지",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py verify-peer-review",
+      "evidence": "peer_review.json",
+      "checks": "diversity_U000001/U000002/U000003",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R11",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "세션 GRU·장단기 결합·실시간 클릭 반영",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py verify-peer-review",
+      "evidence": "peer_review.json",
+      "checks": "session_http/session_redis; session training report",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R12",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "HitRate@50 ≥0.20·NDCG@50 ≥0.08·Coverage ≥0.20",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "hit_rate_at_50 ndcg_at_50 coverage",
+      "kind": "mandatory"
+    },
+    {
+      "id": "R13",
+      "pdf_pages": [
+        4,
+        5
+      ],
+      "requirement": "추천 HTTP p95 ≤200ms",
+      "implementation": [
+        "src/recommendation/two_tower.py",
+        "src/recommendation/deepfm.py",
+        "src/recommendation/reranking.py",
+        "src/recommendation/session.py",
+        "src/recommendation/recommender.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "recommend_p95_ms",
+      "kind": "mandatory"
+    },
+    {
+      "id": "F1",
+      "pdf_pages": [
+        5,
+        8
+      ],
+      "requirement": "Redis 최근 조회·세션 클릭 저장 및 조회 ≤10ms",
+      "implementation": [
+        "docker-compose.yml",
+        "scripts/prepare_all.py",
+        "docker/api_entrypoint.py",
+        "docker/dashboard_entrypoint.py",
+        "src/serving/feature_store.py"
+      ],
+      "command": "docker compose up --build",
+      "evidence": "smoke_full.json",
+      "checks": "session_redis; feature_p95_ms",
+      "kind": "mandatory"
+    },
+    {
+      "id": "F2",
+      "pdf_pages": [
+        2,
+        5,
+        8
+      ],
+      "requirement": "Compose 한 번 실행·독립 API/대시보드 컨테이너",
+      "implementation": [
+        "docker-compose.yml",
+        "scripts/prepare_all.py",
+        "docker/api_entrypoint.py",
+        "docker/dashboard_entrypoint.py",
+        "src/serving/feature_store.py"
+      ],
+      "command": "docker compose up --build",
+      "evidence": "compose_runtime.json",
+      "checks": "four services; health/ready; actual live simulator batches and CT journal ingestion",
+      "kind": "mandatory"
+    },
+    {
+      "id": "F3",
+      "pdf_pages": [
+        5,
+        8
+      ],
+      "requirement": "실패 nonzero·재시작 호환 산출물 재사용",
+      "implementation": [
+        "docker-compose.yml",
+        "scripts/prepare_all.py",
+        "docker/api_entrypoint.py",
+        "docker/dashboard_entrypoint.py",
+        "src/serving/feature_store.py"
+      ],
+      "command": "docker compose up --build",
+      "evidence": "compose_runtime.json",
+      "checks": "preparation stages; artifact_state_before",
+      "kind": "mandatory"
+    },
+    {
+      "id": "A1",
+      "pdf_pages": [
+        5
+      ],
+      "requirement": "동일 조건의 실제 두 추천 전략과 사용자 단위 배정",
+      "implementation": [
+        "src/evaluation/ab_test.py",
+        "src/evaluation/ab_statistics.py",
+        "dashboard/app.py"
+      ],
+      "command": "docker compose run --rm --no-deps --entrypoint python api-server scripts/demo.py ab --users-per-group 100 --days 7 --output docs/results/integration/20261107_requirements/ab_demo.json",
+      "evidence": "ab_demo.json",
+      "checks": "strategies; assignment_sha256; users/days/seed",
+      "kind": "mandatory"
+    },
+    {
+      "id": "A2",
+      "pdf_pages": [
+        5
+      ],
+      "requirement": "Z/Chi-square·p-value·95% CI·분모 및 음수 lift",
+      "implementation": [
+        "src/evaluation/ab_test.py",
+        "src/evaluation/ab_statistics.py",
+        "dashboard/app.py"
+      ],
+      "command": "docker compose run --rm --no-deps --entrypoint python api-server scripts/demo.py ab --users-per-group 100 --days 7 --output docs/results/integration/20261107_requirements/ab_demo.json",
+      "evidence": "ab_demo.json",
+      "checks": "inference; denominators",
+      "kind": "mandatory"
+    },
+    {
+      "id": "A3",
+      "pdf_pages": [
+        5
+      ],
+      "requirement": "검색·추천·A/B 대시보드 시각화",
+      "implementation": [
+        "src/evaluation/ab_test.py",
+        "src/evaluation/ab_statistics.py",
+        "dashboard/app.py"
+      ],
+      "command": "PLAYWRIGHT_MODULE=<installed-package> node scripts/verify_dashboard_browser.cjs",
+      "evidence": "browser.json",
+      "checks": "browser six tabs; actual reports",
+      "kind": "mandatory"
+    },
+    {
+      "id": "C1",
+      "pdf_pages": [
+        5,
+        12,
+        14
+      ],
+      "requirement": "주기적 HitRate·CTR 모니터 및 저하 알림",
+      "implementation": [
+        "src/ct/monitor.py",
+        "src/ct/retrain_trigger.py",
+        "src/ct/model_registry.py",
+        "src/ct/verify_ct.py"
+      ],
+      "command": "docker compose exec -T api-server python scripts/demo.py ct --watch; docker compose run --rm --no-deps --entrypoint python api-server scripts/demo.py ct --drill --output docs/results/integration/20261107_requirements/ct_drill.json",
+      "evidence": "ct_valid_memory_drill/ct_drill.json",
+      "checks": "ct_watch.json actual 60 second cycles; ct_drill.json controlled mature attribution alerts",
+      "kind": "mandatory"
+    },
+    {
+      "id": "C2",
+      "pdf_pages": [
+        5,
+        12,
+        14
+      ],
+      "requirement": "실제 신규 로그 임계치와 trainer 재학습",
+      "implementation": [
+        "src/ct/monitor.py",
+        "src/ct/retrain_trigger.py",
+        "src/ct/model_registry.py",
+        "src/ct/verify_ct.py"
+      ],
+      "command": "docs/requirements_completion.md의 API 네트워크를 공유하는 docker run … scripts/demo.py ct --train --reload-url http://127.0.0.1:8000; 실제 전체 명령은 ct_execution.json",
+      "evidence": "ct_natural.json",
+      "checks": "new_events >= 10000; three actual trainers; ct_execution.json checks watermark and repeat WAITING",
+      "kind": "mandatory"
+    },
+    {
+      "id": "C3",
+      "pdf_pages": [
+        5,
+        12,
+        14
+      ],
+      "requirement": "paired valid 판정·미개선 유지·버전 관리",
+      "implementation": [
+        "src/ct/monitor.py",
+        "src/ct/retrain_trigger.py",
+        "src/ct/model_registry.py",
+        "src/ct/verify_ct.py"
+      ],
+      "command": "python scripts/demo.py ct --drill",
+      "evidence": "ct_valid_memory_drill/ct_drill.json",
+      "checks": "ct_natural.json paired valid; ct_drill.json measured no-improvement retention; no forced promotion",
+      "kind": "mandatory"
+    },
+    {
+      "id": "C4",
+      "pdf_pages": [
+        5,
+        12,
+        14
+      ],
+      "requirement": "격리 제어 실험 승격·실제 HTTP reload·rollback",
+      "implementation": [
+        "src/ct/monitor.py",
+        "src/ct/retrain_trigger.py",
+        "src/ct/model_registry.py",
+        "src/ct/verify_ct.py"
+      ],
+      "command": "python scripts/demo.py ct --drill",
+      "evidence": "ct_valid_memory_drill/ct_drill.json",
+      "checks": "api; checks; production isolated",
+      "kind": "mandatory"
+    },
+    {
+      "id": "P1",
+      "pdf_pages": [
+        6,
+        9
+      ],
+      "requirement": "시간순 train/valid/test 8:1:1·seed42",
+      "implementation": [
+        "src/evaluation/metrics.py",
+        "src/recommendation/datasets.py",
+        "src/evaluation/run_all.py",
+        "docker/quality.py",
+        "scripts/smoke_test.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "split_counts; boundaries; seed",
+      "kind": "mandatory"
+    },
+    {
+      "id": "P2",
+      "pdf_pages": [
+        6,
+        9
+      ],
+      "requirement": "Two-Tower random negative 1:4·Ranking 노출 비클릭",
+      "implementation": [
+        "src/evaluation/metrics.py",
+        "src/recommendation/datasets.py",
+        "src/evaluation/run_all.py",
+        "docker/quality.py",
+        "scripts/smoke_test.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "candidate sampling; classification labels",
+      "kind": "mandatory"
+    },
+    {
+      "id": "P3",
+      "pdf_pages": [
+        6,
+        9
+      ],
+      "requirement": "BM25·Two-Tower 단독·인기도 및 음의 개선율",
+      "implementation": [
+        "src/evaluation/metrics.py",
+        "src/recommendation/datasets.py",
+        "src/evaluation/run_all.py",
+        "docker/quality.py",
+        "scripts/smoke_test.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "search.bm25; recommendation.metrics; relative_lift",
+      "kind": "mandatory"
+    },
+    {
+      "id": "P4",
+      "pdf_pages": [
+        6,
+        9
+      ],
+      "requirement": "검색 k10·추천 k50·metrics.py 정의",
+      "implementation": [
+        "src/evaluation/metrics.py",
+        "src/recommendation/datasets.py",
+        "src/evaluation/run_all.py",
+        "docker/quality.py",
+        "scripts/smoke_test.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "search.primary; recommendation.contract",
+      "kind": "mandatory"
+    },
+    {
+      "id": "P5",
+      "pdf_pages": [
+        6,
+        9
+      ],
+      "requirement": "valid 선택·동결 후 test·전체 cohort·미래 정보 방지",
+      "implementation": [
+        "src/evaluation/metrics.py",
+        "src/recommendation/datasets.py",
+        "src/evaluation/run_all.py",
+        "docker/quality.py",
+        "scripts/smoke_test.py"
+      ],
+      "command": "python scripts/demo.py evaluate --split valid && python scripts/demo.py evaluate --split test",
+      "evidence": "quality_full_test.json",
+      "checks": "quality_selection_full.json; identity; test_used_for_selection=false",
+      "kind": "mandatory"
+    },
+    {
+      "id": "P6",
+      "pdf_pages": [
+        6,
+        9
+      ],
+      "requirement": "warmup10·단건100·CPU/RAM/캐시/스레드·raw samples",
+      "implementation": [
+        "src/evaluation/metrics.py",
+        "src/recommendation/datasets.py",
+        "src/evaluation/run_all.py",
+        "docker/quality.py",
+        "scripts/smoke_test.py"
+      ],
+      "command": "python scripts/smoke_test.py --benchmark",
+      "evidence": "smoke_full.json",
+      "checks": "benchmark modes/candidate/feature/environment",
+      "kind": "mandatory"
+    },
+    {
+      "id": "X1",
+      "pdf_pages": [
+        5,
+        8,
+        13,
+        14
+      ],
+      "requirement": "Python3.10+·PyTorch2+·FastAPI·Streamlit·FAISS·Transformers·Redis",
+      "implementation": [
+        "README.md",
+        "docs/submission/contributions.json",
+        "docker/Dockerfile.api",
+        "config.yaml"
+      ],
+      "command": "RUN_REDIS_TESTS=1 REDIS_HOST=127.0.0.1 REDIS_PORT=6379 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "evidence": "engineering.json",
+      "checks": "environment packages; Dockerfiles",
+      "kind": "mandatory"
+    },
+    {
+      "id": "X2",
+      "pdf_pages": [
+        5,
+        8,
+        13,
+        14
+      ],
+      "requirement": "CPU 로컬 추론·외부 클라우드 추론 없음",
+      "implementation": [
+        "README.md",
+        "docs/submission/contributions.json",
+        "docker/Dockerfile.api",
+        "config.yaml"
+      ],
+      "command": "RUN_REDIS_TESTS=1 REDIS_HOST=127.0.0.1 REDIS_PORT=6379 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "evidence": "engineering.json",
+      "checks": "CLIP local_files_only; actual container run",
+      "kind": "mandatory"
+    },
+    {
+      "id": "X3",
+      "pdf_pages": [
+        5,
+        8,
+        13,
+        14
+      ],
+      "requirement": "하이퍼파라미터·경로 config 분리·타입 힌트",
+      "implementation": [
+        "README.md",
+        "docs/submission/contributions.json",
+        "docker/Dockerfile.api",
+        "config.yaml"
+      ],
+      "command": "RUN_REDIS_TESTS=1 REDIS_HOST=127.0.0.1 REDIS_PORT=6379 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "evidence": "engineering.json",
+      "checks": "mypy; config strategy tests",
+      "kind": "mandatory"
+    },
+    {
+      "id": "X4",
+      "pdf_pages": [
+        5,
+        8,
+        13,
+        14
+      ],
+      "requirement": "README·아키텍처·모듈 분리·역할·개인 기여·재현·실험 보고서",
+      "implementation": [
+        "README.md",
+        "docs/submission/contributions.json",
+        "docker/Dockerfile.api",
+        "config.yaml"
+      ],
+      "command": "RUN_REDIS_TESTS=1 REDIS_HOST=127.0.0.1 REDIS_PORT=6379 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "evidence": "engineering.json",
+      "checks": "README; architecture; contributions; reports",
+      "kind": "mandatory"
+    },
+    {
+      "id": "X5",
+      "pdf_pages": [
+        5,
+        8,
+        13,
+        14
+      ],
+      "requirement": "GitHub URL·평가자 접근 가능",
+      "implementation": [
+        "README.md",
+        "docs/submission/contributions.json",
+        "docker/Dockerfile.api",
+        "config.yaml"
+      ],
+      "command": "RUN_REDIS_TESTS=1 REDIS_HOST=127.0.0.1 REDIS_PORT=6379 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests",
+      "evidence": "engineering.json",
+      "checks": "repository visibility read-only",
+      "kind": "mandatory"
+    },
+    {
+      "id": "U1",
+      "pdf_pages": [],
+      "requirement": "EDA·결측·중복·참조·시간·분포·분모·구매 원장",
+      "implementation": [
+        "src/evaluation/data_audit.py",
+        "dashboard/explore.py"
+      ],
+      "command": "docker compose exec -T -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server python -m src.evaluation.data_audit --output docs/results/docker/runtime-v43/full/data_audit.json",
+      "evidence": "data_audit.json",
+      "checks": "new execution; data/source identity",
+      "kind": "mandatory"
+    },
+    {
+      "id": "U2",
+      "pdf_pages": [],
+      "requirement": "실제 CLIP 입력·product_id mapping·차원·norm·revision",
+      "implementation": [
+        "dashboard/assets.py",
+        "dashboard/explore.py"
+      ],
+      "command": "Streamlit http://localhost:8501 → 상품·CLIP → P000001; PLAYWRIGHT_MODULE=<installed-package> node scripts/verify_dashboard_browser.cjs",
+      "evidence": "clip_item.json",
+      "checks": "new execution; data/source identity",
+      "kind": "mandatory"
+    },
+    {
+      "id": "U3",
+      "pdf_pages": [
+        1,
+        2
+      ],
+      "requirement": "실제 HTTP 검색·추천·세션 CLI·실패 nonzero·JSON/한국어 로그",
+      "implementation": [
+        "scripts/demo.py",
+        "src/common/console.py"
+      ],
+      "command": "docker compose exec -T api-server python scripts/demo.py recommend --user-id U000001; docker compose exec -T api-server python scripts/demo.py session --user-id cli-session-v43 --product-id P000001 --category \"tote bag\" --event-id cli-session-v43-click-1",
+      "evidence": "cli.json",
+      "checks": "SearchResponse/RecommendResponse: user_id/recommendations(product_id,score,reason,is_exploration)/pipeline_latency/session_context; real HTTP CLI",
+      "kind": "mandatory"
+    },
+    {
+      "id": "U4",
+      "pdf_pages": [],
+      "requirement": "이미지·추천 사유·실제 클릭·전후 비교·브라우저 캡처",
+      "implementation": [
+        "dashboard/explore.py"
+      ],
+      "command": "PLAYWRIGHT_MODULE=<installed-package> node scripts/verify_dashboard_browser.cjs",
+      "evidence": "browser.json",
+      "checks": "new execution; data/source identity",
+      "kind": "mandatory"
+    },
+    {
+      "id": "U5",
+      "pdf_pages": [],
+      "requirement": "UTF-8 Windows PowerShell·컨테이너 출력·저장",
+      "implementation": [
+        "scripts/verify_console_utf8.ps1"
+      ],
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/verify_console_utf8.ps1 -Image mm-recsys-api-server:latest -OutputDir .team/console-utf8",
+      "evidence": "powershell_stdout.json",
+      "checks": "new execution; data/source identity",
+      "kind": "mandatory"
+    }
+  ],
+  "peer_review": {
+    "시스템 기동·검색/추천/대시보드 응답": [
+      "F2",
+      "S2",
+      "R13",
+      "A3"
+    ],
+    "신규 사용자 폴백": [
+      "R7"
+    ],
+    "MAB 탐색": [
+      "R8"
+    ],
+    "검색·추천 지연": [
+      "S4",
+      "R13"
+    ],
+    "분할 방식·정량 성능·Feature Store 조회": [
+      "P1",
+      "S5",
+      "R3",
+      "R4",
+      "R6",
+      "R12",
+      "F1"
+    ],
+    "다양성 3명·신상품": [
+      "R9",
+      "R10"
+    ],
+    "유사도순→최신순 config": [
+      "X3"
+    ],
+    "페르소나 비율·카테고리 config": [
+      "D6"
+    ],
+    "모듈 분리·README·역할·기여": [
+      "X4"
+    ],
+    "CLIP·Two-Tower·DeepFM 원리": [
+      "S1",
+      "R1",
+      "R2",
+      "R5"
+    ],
+    "실시간 세션": [
+      "R11"
+    ],
+    "A/B 통계": [
+      "A1",
+      "A2"
+    ],
+    "CT 저하·재학습": [
+      "C1",
+      "C2",
+      "C3",
+      "C4"
+    ]
+  },
+  "optional_bonus": [
+    "Query Understanding",
+    "MMR",
+    "ONNX",
+    "Thompson Sampling"
+  ],
+  "pdf_sha256": "b333d4fdab2127c380b7750f7d8e491141ec15db97c15389f8c9a0ae1b983c7d"
+}

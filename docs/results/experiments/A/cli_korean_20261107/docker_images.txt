@@ -1,0 +1,3 @@
+["mm-recsys-api-server:latest"] sha256:d5f5504969ae442da224603213c96b7fa1701be9ae02576bab51de2c353a98c1 arm64
+["mm-recsys-dashboard:latest"] sha256:2d72d6f6100cd7760945797daced1ea62b1a085129188c07b853c2739876c467 arm64
+["mm-recsys-simulator:latest"] sha256:ce8d1dc9357c7fda8023be8447bdd58d50cad8686372826dc65a1eeba72a7ae3 arm64

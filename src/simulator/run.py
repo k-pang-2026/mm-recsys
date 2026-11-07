@@ -1,6 +1,8 @@
 """Continuous, chronological event replay; generated outcomes are not labeled as live user traffic."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli
+
 import argparse
 import time
 from pathlib import Path
@@ -21,10 +23,11 @@ def main() -> None:
         name=stream/f'events-{offset:09d}.parquet'
         if not name.exists():batch.to_parquet(name,index=False)
         offset+=len(batch);temporary=cursor.with_suffix('.tmp');temporary.write_text(str(offset));temporary.replace(cursor)
-        print(f'event replay: {offset}/{len(events)}',flush=True)
+        log('시뮬레이터', '이벤트 재생', f'{offset:,}/{len(events):,}건', status='처리 완료')
         if args.once:break
         time.sleep(args.interval)
     # B6 connects these chunks to Redis; no repeated emission of the same event IDs.
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    run_cli(main, '시뮬레이터', '배치 크기·주기와 데이터·커서 경로를 확인하세요.')

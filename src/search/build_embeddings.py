@@ -1,6 +1,8 @@
 """Content-deduplicated, checked chunk resume and atomic embedding publication."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli
+
 from typing import Any
 
 import argparse
@@ -77,7 +79,7 @@ def _chunks(folder: Path, mode: str, keys: list[str], values: list, encoder, chu
             write_json(receipt, {'keys': batch_keys, 'sha256': file_hash(path)})
         check_vectors(vectors, encoder.dim, len(batch_keys))
         output.append(vectors)
-        print(f'{mode}: unique {min(start+chunk_size, len(keys))}/{len(keys)}', flush=True)
+        log('모델', '준비', f'CLIP {mode} 임베딩 처리 중(중복 제거 콘텐츠): {min(start+chunk_size, len(keys)):,}/{len(keys):,}')
     return np.concatenate(output)
 
 
@@ -176,8 +178,8 @@ def current_bundle(cfg: dict) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__); parser.parse_args()
     cfg = load_config(); set_seed(cfg['seed'])
-    print('EMBEDDINGS VERIFIED:', build_embeddings(cfg))
+    log('모델', '준비', f'임베딩 검증 완료: {build_embeddings(cfg)}', status='성공')
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '모델 준비', '데이터·CLIP 캐시 경로와 원본 오류를 확인하세요. 호환되지 않는 산출물은 새 버전 경로에서 준비하세요.')

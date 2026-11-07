@@ -1,6 +1,8 @@
 """Measure B8 search/recommendation/store/API with one explicit provenance record."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, report_metrics, run_cli
+
 import argparse
 import json
 import os
@@ -139,9 +141,8 @@ def run(cfg: dict, split: str, output: Path | None = None) -> dict:
         write_json(snapshot, report)
         write_json(frozen_path, dict(selected_on='valid', identity=inputs, source=str(snapshot), sha256=digest,
                                     scope='measurement recipe freeze; no C tuning or model/policy selection'))
-    for row in metrics:
-        print(f'{row["name"]}: {row["value"]} / target={row["target"]} / {row["status"]}', flush=True)
-    print(f'B8 result: {output}; structure=PASS quality={quality} final_acceptance={report["acceptance"]}', flush=True)
+    report_metrics(metrics)
+    log('평가', '결과', f'결과={output} / 구조=PASS / 품질={quality} / 최종 판정={report["acceptance"]}', status='완료')
     return report
 
 
@@ -150,9 +151,10 @@ def main() -> int:
     parser.add_argument('--split', choices=['valid', 'test'], default='valid')
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
-    run(load_config(), args.split, args.output)
-    return 0
+    result = run(load_config(), args.split, args.output)
+    emit_json(result)
+    return 0 if result['quality_status'] == 'PASS' else 1
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '평가', '데이터·모델·설정 fingerprint와 valid 동결 결과, API·Redis 상태를 확인하세요.'))

@@ -1,0 +1,107 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.02kB done
+#1 DONE 0.0s
+
+#2 [dashboard internal] load build definition from Dockerfile.dashboard
+#2 transferring dockerfile: 684B 0.0s done
+#2 DONE 0.0s
+
+#3 [api-server internal] load build definition from Dockerfile.api
+#3 transferring dockerfile: 650B done
+#3 DONE 0.0s
+
+#4 [dashboard internal] load metadata for docker.io/library/python:3.11-slim
+#4 ...
+
+#5 [auth] library/python:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#4 [dashboard internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 2.5s
+
+#6 [api-server internal] load .dockerignore
+#6 transferring context: 292B done
+#6 DONE 0.0s
+
+#7 [dashboard internal] load build context
+#7 transferring context: 1.11kB done
+#7 DONE 0.0s
+
+#8 [api-server 1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#8 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#8 DONE 0.0s
+
+#9 [api-server internal] load build context
+#9 transferring context: 55.50kB 0.0s done
+#9 DONE 0.0s
+
+#10 [dashboard  6/10] COPY dashboard ./dashboard
+#10 CACHED
+
+#11 [dashboard  5/10] RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
+#11 CACHED
+
+#12 [dashboard  8/10] COPY src/__init__.py ./src/
+#12 CACHED
+
+#13 [dashboard  7/10] COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
+#13 CACHED
+
+#14 [dashboard  3/10] COPY requirements-dashboard.txt .
+#14 CACHED
+
+#15 [dashboard  4/10] COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
+#15 CACHED
+
+#16 [dashboard  9/10] COPY src/common/__init__.py src/common/console.py src/common/artifacts.py ./src/common/
+#16 CACHED
+
+#17 [api-server 2/7] WORKDIR /app
+#17 CACHED
+
+#18 [api-server 3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#18 CACHED
+
+#19 [api-server 5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#19 CACHED
+
+#20 [api-server 4/7] COPY requirements.txt requirements-torch.txt ./
+#20 CACHED
+
+#21 [dashboard 10/10] COPY config.yaml .env ./
+#21 CACHED
+
+#22 [api-server 6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#22 CACHED
+
+#23 [dashboard] exporting to image
+#23 exporting layers done
+#23 exporting manifest sha256:1d361420b11b96fc209c2ac06bae335152942749b520ad8d9ccb27e700687b50 done
+#23 exporting config sha256:11b25b951b0b624e4051b4ae8febd78fd6d648b8bae85a813ce4b78c173cbe9b done
+#23 exporting attestation manifest sha256:e0f10085dc09e039d72096dab9af8a19f432bd79aa7bcec23b4b4876daa02c1d
+#23 exporting attestation manifest sha256:e0f10085dc09e039d72096dab9af8a19f432bd79aa7bcec23b4b4876daa02c1d 0.0s done
+#23 exporting manifest list sha256:33a790aa719079e46026916acd0be0b6e0013ba0e8c9518f7dcdbfebe64dad4f 0.0s done
+#23 naming to docker.io/library/mm-recsys-dashboard:latest done
+#23 unpacking to docker.io/library/mm-recsys-dashboard:latest done
+#23 DONE 0.1s
+
+#24 [dashboard] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#25 [api-server 7/7] COPY . .
+#25 DONE 0.2s
+
+#26 [api-server] exporting to image
+#26 exporting layers 0.2s done
+#26 exporting manifest sha256:b753d8935dd5fc34dd9c75412d01bf5fadbc96b5d2a54612d898a713b15ee81e
+#26 exporting manifest sha256:b753d8935dd5fc34dd9c75412d01bf5fadbc96b5d2a54612d898a713b15ee81e 0.0s done
+#26 exporting config sha256:7bfca85f90522e55675460908c3c27959129fa1fe515a85168e9c61ec70887b0 0.0s done
+#26 exporting attestation manifest sha256:641132c5acc038964e10195f23f20c5b5bdeee98d89999ccf2527210dbf223e6 0.0s done
+#26 exporting manifest list sha256:74350757b9879af12661dddf5abccea757d8052f58f1cda21b5d2254b8c1bfc6 0.0s done
+#26 naming to docker.io/library/mm-recsys-api-server:latest done
+#26 unpacking to docker.io/library/mm-recsys-api-server:latest
+#26 unpacking to docker.io/library/mm-recsys-api-server:latest 0.2s done
+#26 DONE 0.5s
+
+#27 [api-server] resolving provenance for metadata file
+#27 DONE 0.0s

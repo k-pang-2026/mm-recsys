@@ -1,6 +1,8 @@
 """Recompute B3b acceptance from checksum-bound saved runs, without rerunning training/test."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -55,10 +57,10 @@ def main() -> int:
     parser.add_argument('--metrics', type=Path, required=True)
     args = parser.parse_args()
     report = verify(args.metrics, load_config())
-    print(f"B3b verified: full test ANN Recall@300={report['ann_two_tower']['recall_at_300']:.6f}; "
-          f"p95={report['benchmark']['p95_ms']:.3f}ms; count={report['ann_two_tower']['candidate_count_min']}")
+    log('후보', '근거 검사', f"full test ANN Recall@300={report['ann_two_tower']['recall_at_300']:.6f} / p95={report['benchmark']['p95_ms']:.3f}ms / 후보 수={report['ann_two_tower']['candidate_count_min']}", status='통과(PASS)')
+    emit_json(report)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '추천 평가', '원본 결과·데이터·모델·설정과 동결된 valid 근거를 확인하세요.'))

@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+from src.common.console import format_log
 import re
 import uuid
 from collections.abc import Mapping
@@ -15,7 +16,6 @@ from redis.exceptions import RedisError, WatchError
 from src.common.schemas import EventRequest, FeedbackRequest, UserFeatures
 from src.serving.memory_store import MemoryFeatureStore
 
-LOG = logging.getLogger(__name__)
 
 
 class RedisFeatureStore:
@@ -54,7 +54,9 @@ class RedisFeatureStore:
 
     def _failure(self, operation: str, error: Exception) -> None:
         self.available = False
-        LOG.warning("Redis %s unavailable; using empty features: %s", operation, error)
+        logging.getLogger(__name__).warning(format_log('Redis', '연결',
+            f'{operation} 실패 / 원인: {error} / 조회는 빈 특징값을 사용하며 쓰기는 실패를 반환합니다. '
+            '다음 조치: Redis 연결·상태를 확인하고 쓰기 재시도에는 동일 event_id를 사용하세요.', status='경고'))
 
     def get_features(self, user_id: str) -> UserFeatures:
         try:

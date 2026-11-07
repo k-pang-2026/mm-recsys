@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "version": "v1.2",
+  "captured_watermark": 217630,
+  "scope": "resume interrupted comparison only; retain original full training, captured observations and immutable staged bundle",
+  "observed_journal": true,
+  "training_reports": {
+    "candidate": "c42af134dd6794da6584de10bd91ec8032fa91f807664e0599cf1e98708f1625",
+    "ranking": "8a0b504e02315722e5368d63149b5c9df9a9c67f702499ec92e30162323cc549",
+    "session": "930886e9eb025c0bbb94cf24803191a41f0b92b2fa683a4dbb55744d48cc333a"
+  },
+  "hashes": {
+    "meta.json": "f67e480c1722e5bce5a05b3804dbadf21f1e6b93184155f2d0b3870282960f00",
+    "two_tower.pt": "1915995ee19b6821ae15437e2fbec26d5d152ce8d08724a657e3f8249db2bb02",
+    "feature_vocab_scalers.json": "7bcc390f76fa65a5f2f7123a65747fe0853b81f7f9f13114c284f67f2b6f3910",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "a2a00064ef3c1fc02134dbe3a8b635384008b2273830060cf1363e415ec72b3d",
+    "index_manifest.json": "937f8f436abf4e9c397a4acbc704d78d1479c8306752348a18a6ce59bd5db5e9",
+    "ranking/meta.json": "f75a18de3cbae0526eb25bc71f23c0a894d848df6a5c95e7ccdc38965d067305",
+    "ranking/deepfm.pt": "ea383996de4098a8de74c507ee72978907a34b6a697c11d32c486653cc9cca5a",
+    "ranking/features.json": "52eda5925a34101eabd9abf73dd02124b2eb1269d976a6059553e28ca3243d07",
+    "session/meta.json": "7b7f9c1c1f823715ffb5907c0da4e53854e139334020955fb51acb89484c6f44",
+    "session/session.pt": "8b95b6504353101895172506a685233ea4728802a6e4251661d3d26ea23ed5de",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "399bbe44309543afb1a4dcceea5690cd573682bcaf1617fcac804963412ca1ba",
+    "src/ct/verify_serving.py": "af7268ede3da2cebb7c970319430a892761506551ca9db98a4a338276be578f1",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "447508833d09d6538f9ca97454879d048fcbccac135f6788a5daeae53571537d",
+    "src/ct/retrain_trigger.py": "fb57f4f7eeb24481d80082ead83d1838e3cc25220f9504038c50801ca5f20683",
+    "src/ct/training.py": "67710db3e7c90777ed7a4a940ca72f7648bd700e35be3b6139cd165a35b7faa5",
+    "src/ct/verify_ct.py": "de840dd031010e10a3604954af8d56a47fa9993148d1d1033fce7194cfc58523",
+    "src/ct/bootstrap.py": "841307aa2f7ae7357856f4ea1db9b17fbe77b5e4cfc006598e7e72bda0497e1e"
+  },
+  "repeated_trigger": {
+    "status": "WAITING",
+    "new_events": 0,
+    "threshold": 10000
+  },
+  "reloads": []
+}

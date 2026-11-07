@@ -1,0 +1,394 @@
+{
+  "status": "FAIL",
+  "started_at": "2026-11-07T05:35:54.517508+00:00",
+  "commands": [
+    {
+      "name": "initial_prepare_log",
+      "command": [
+        "docker",
+        "compose",
+        "logs",
+        "--no-color",
+        "api-server"
+      ],
+      "started_at": "2026-11-07T05:51:08.326655+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:51:08.468482+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/initial_prepare_log_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/initial_prepare_log.log"
+    },
+    {
+      "name": "compose_release",
+      "command": [
+        "docker",
+        "compose",
+        "up",
+        "-d",
+        "--build"
+      ],
+      "started_at": "2026-11-07T05:51:08.470792+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:53:19.191877+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_release_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_release.log"
+    },
+    {
+      "name": "compose_four_services",
+      "command": [
+        "docker",
+        "compose",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "started_at": "2026-11-07T05:54:07.337147+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:07.469614+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_four_services_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_four_services.log"
+    },
+    {
+      "name": "simulator_log",
+      "command": [
+        "docker",
+        "compose",
+        "logs",
+        "--no-color",
+        "simulator"
+      ],
+      "started_at": "2026-11-07T05:54:07.470106+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:07.577389+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/simulator_log_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/simulator_log.log"
+    },
+    {
+      "name": "stop_simulator",
+      "command": [
+        "docker",
+        "compose",
+        "stop",
+        "simulator"
+      ],
+      "started_at": "2026-11-07T05:54:07.577969+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:07.887345+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/stop_simulator_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/stop_simulator.log"
+    },
+    {
+      "name": "compose_legacy",
+      "command": [
+        "docker-compose",
+        "up",
+        "-d",
+        "--no-deps",
+        "redis"
+      ],
+      "started_at": "2026-11-07T05:54:07.887946+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:08.039681+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_legacy_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_legacy.log"
+    },
+    {
+      "name": "peer_review",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "verify-peer-review",
+        "--output",
+        "docs/results/integration/20261107_requirements/peer_review.json"
+      ],
+      "started_at": "2026-11-07T05:54:08.040760+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:09.141830+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/peer_review_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/peer_review.log"
+    },
+    {
+      "name": "demo_text",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-text",
+        "검정 오버핏 후드티",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_text.json"
+      ],
+      "started_at": "2026-11-07T05:54:09.142313+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:09.815335+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_text_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_text.log"
+    },
+    {
+      "name": "demo_image",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-image",
+        "data/full-v43/images/P000001.jpg",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_image.json"
+      ],
+      "started_at": "2026-11-07T05:54:09.815753+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:10.386053+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_image_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_image.log"
+    },
+    {
+      "name": "demo_hybrid",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-text",
+        "가방",
+        "--query-image",
+        "data/full-v43/images/P000001.jpg",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_hybrid.json"
+      ],
+      "started_at": "2026-11-07T05:54:10.386507+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:10.778417+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_hybrid_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_hybrid.log"
+    },
+    {
+      "name": "demo_recommend",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "recommend",
+        "--user-id",
+        "U000001",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_recommend.json"
+      ],
+      "started_at": "2026-11-07T05:54:10.778949+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:10.759854+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_recommend_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_recommend.log"
+    },
+    {
+      "name": "demo_session",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "session",
+        "--user-id",
+        "cli-session-v43",
+        "--product-id",
+        "P000001",
+        "--category",
+        "tote bag",
+        "--event-id",
+        "cli-session-v43-click-1",
+        "--output",
+        "docs/results/integration/20261107_requirements/demo_session.json"
+      ],
+      "started_at": "2026-11-07T05:54:10.760326+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:11.114972+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/demo_session_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/demo_session.log"
+    },
+    {
+      "name": "ct_monitor",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "ct",
+        "--output",
+        "docs/results/integration/20261107_requirements/ct_monitor.json"
+      ],
+      "started_at": "2026-11-07T05:54:11.115464+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:11.632623+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_monitor_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_monitor.log"
+    },
+    {
+      "name": "smoke_full",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/smoke_test.py",
+        "--benchmark",
+        "--output",
+        "docs/results/integration/20261107_requirements/smoke_full.json"
+      ],
+      "started_at": "2026-11-07T05:54:11.633119+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:50.925849+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/smoke_full_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/smoke_full.log"
+    },
+    {
+      "name": "compose_auxiliary_logs",
+      "command": [
+        "docker",
+        "compose",
+        "up",
+        "-d",
+        "--build",
+        "api-server",
+        "dashboard"
+      ],
+      "started_at": "2026-11-07T06:05:32.818133+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T06:05:44.301743+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_auxiliary_logs_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_auxiliary_logs.log"
+    },
+    {
+      "name": "quality_valid",
+      "command": [
+        "docker",
+        "compose",
+        "run",
+        "--rm",
+        "--no-deps",
+        "-e",
+        "QUALITY_RESULTS_DIR=docs/results/integration/20261107_requirements",
+        "--entrypoint",
+        "python",
+        "api-server",
+        "scripts/demo.py",
+        "evaluate",
+        "--split",
+        "valid"
+      ],
+      "started_at": "2026-11-07T06:08:00.661393+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T06:17:56.650506+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/quality_valid_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/quality_valid.log"
+    },
+    {
+      "name": "quality_test",
+      "command": [
+        "docker",
+        "compose",
+        "run",
+        "--rm",
+        "--no-deps",
+        "-e",
+        "QUALITY_RESULTS_DIR=docs/results/integration/20261107_requirements",
+        "--entrypoint",
+        "python",
+        "api-server",
+        "scripts/demo.py",
+        "evaluate",
+        "--split",
+        "test"
+      ],
+      "started_at": "2026-11-07T06:17:56.674938+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T06:28:36.987791+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/quality_test_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/quality_test.log"
+    },
+    {
+      "name": "ab_demo",
+      "command": [
+        "docker",
+        "compose",
+        "run",
+        "--rm",
+        "--no-deps",
+        "--entrypoint",
+        "python",
+        "api-server",
+        "scripts/demo.py",
+        "ab",
+        "--users-per-group",
+        "100",
+        "--days",
+        "7",
+        "--output",
+        "docs/results/integration/20261107_requirements/ab_demo.json"
+      ],
+      "started_at": "2026-11-07T06:28:37.009300+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T06:29:40.411459+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ab_demo_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ab_demo.log"
+    },
+    {
+      "name": "ct_drill",
+      "command": [
+        "docker",
+        "compose",
+        "run",
+        "--rm",
+        "--no-deps",
+        "--entrypoint",
+        "python",
+        "api-server",
+        "scripts/demo.py",
+        "ct",
+        "--drill",
+        "--output",
+        "docs/results/integration/20261107_requirements/ct_drill.json"
+      ],
+      "started_at": "2026-11-07T06:29:40.413809+00:00",
+      "exit_code": 1,
+      "ended_at": "2026-11-07T06:30:09.794994+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_drill_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_drill.log"
+    }
+  ],
+  "superseded_valid": {
+    "path": "docs/results/integration/20261107_requirements/before_auxiliary_log_completion",
+    "reason": "Korean diagnostics completed in auxiliary CLI modules; no model/config/threshold tuning; test not opened",
+    "metrics_status": "PASS"
+  },
+  "error": "ct_drill: exit 1; inspect original output",
+  "completed_at": "2026-11-07T06:30:09.797777+00:00"
+}

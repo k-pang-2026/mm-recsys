@@ -1,6 +1,8 @@
 """Consume simulator parquet chunks without editing the shared simulator."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 import time
@@ -55,7 +57,7 @@ def replay_stream(cfg: dict, store: RedisFeatureStore) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Redis 이벤트 반영')
     parser.add_argument("--once", action="store_true")
     parser.add_argument("--interval", type=float, default=5)
     args = parser.parse_args()
@@ -67,7 +69,9 @@ def main() -> None:
         raise ValueError("stream replay requires Redis")
     try:
         while True:
-            print(json.dumps(replay_stream(cfg, store)), flush=True)
+            result = replay_stream(cfg, store)
+            log("Redis", "이벤트 반영", f"결과={result}", status="완료")
+            emit_json(result, jsonl=not args.once)
             if args.once:
                 break
             time.sleep(args.interval)
@@ -76,4 +80,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, 'Redis 이벤트 반영', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

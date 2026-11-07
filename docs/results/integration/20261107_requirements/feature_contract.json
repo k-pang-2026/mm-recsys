@@ -1,0 +1,21 @@
+{
+  "version": "candidate-features-v1",
+  "price_mean": 11.466920976200058,
+  "price_std": 0.6776938611860931,
+  "fit_cutoff": "2025-12-25T09:59:36.851400+00:00",
+  "pad": 0,
+  "unknown": 1,
+  "item_id_residual": false,
+  "user_fields": [
+    "age_group",
+    "gender"
+  ],
+  "item_fields": [
+    "category_l1",
+    "category_l2",
+    "category_l3",
+    "brand",
+    "color",
+    "style"
+  ]
+}

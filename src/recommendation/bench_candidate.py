@@ -1,6 +1,8 @@
 """Serial end-to-end candidate benchmark and B3b-specific measured acceptance."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import Any
 
 import argparse
@@ -121,7 +123,7 @@ def main() -> int:
     bundle = args.bundle or Path(cfg['paths']['model_dir']) / 'v1.0'
     result = benchmark(cfg, bundle, args.split)
     write_json(args.output, result)
-    print(f"candidate: p95={result['p95_ms']:.3f}ms; count={result['candidate_count_min']}; {args.output}")
+    log("후보", "지연", f"p95={result['p95_ms']:.3f}ms / 최소 후보={result['candidate_count_min']}개 / 결과={args.output}", status="측정 완료")
     if args.metrics:
         if not args.evaluation or not args.training or not args.selection:
             parser.error('--metrics requires --evaluation, --training and --selection')
@@ -130,10 +132,12 @@ def main() -> int:
         if args.selection:
             report['sources'][str(args.selection)] = file_hash(args.selection)
         write_json(args.metrics, report)
-        print(f"B3b candidate acceptance: {report['status']}; {args.metrics}")
+        log("후보", "판정", f"B3b={report['status']} / 결과={args.metrics}", status="완료")
+        emit_json(report)
         return 0 if report['status'] == 'PASS' else 1
+    emit_json(result)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '후보 지연 평가', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.'))

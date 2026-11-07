@@ -1,0 +1,75 @@
+{
+  "user_id": "U000001",
+  "recommendations": [
+    {
+      "product_id": "P000580",
+      "score": 0.9996869564056396,
+      "reason": "MAB 탐색",
+      "is_exploration": true
+    },
+    {
+      "product_id": "P029765",
+      "score": 0.9461765289306641,
+      "reason": "MAB 탐색",
+      "is_exploration": true
+    },
+    {
+      "product_id": "P004074",
+      "score": 0.7607172727584839,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P000543",
+      "score": 0.9995056390762329,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P002556",
+      "score": 0.9989811778068542,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P006683",
+      "score": 0.578571617603302,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P001334",
+      "score": 0.9987989664077759,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P000558",
+      "score": 0.9986615180969238,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P010811",
+      "score": 0.37381237745285034,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P000959",
+      "score": 0.9981847405433655,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    }
+  ],
+  "pipeline_latency": {
+    "candidate_ms": 29.558640000004743,
+    "ranking_ms": 35.98267100005614,
+    "reranking_ms": 12.021901000025537,
+    "total_ms": 77.56321200008642
+  },
+  "session_context": {
+    "recent_clicks": [],
+    "session_interest": null
+  }
+}

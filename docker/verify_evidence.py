@@ -1,6 +1,8 @@
 """Recheck B10 raw measurements and artifact hashes without asserting final acceptance."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -30,8 +32,10 @@ def verify(cfg: dict, smoke: dict, preparation: dict, manifest: dict) -> None:
     expected = manifest['generation_fingerprint']
     if smoke.get('data_fingerprint') != expected or preparation.get('data_fingerprint') != expected:
         raise ValueError('data fingerprint mismatch')
-    if any(row.get('exit_code') != 0 for row in preparation['stages']) or len(preparation['stages']) != 5:
-        raise ValueError('all five preparation stages must succeed')
+    if any(row.get('exit_code') != 0 for row in preparation['stages']) or len(preparation['stages']) not in (5, 6):
+        raise ValueError('all preparation stages (including EDA in v4.3) must succeed')
+    if len(preparation['stages']) == 6 and [row.get('stage') for row in preparation['stages']] != ['data', 'audit', 'embeddings', 'indexes', 'recommendation', 'warmup']:
+        raise ValueError('v4.3 preparation stage order mismatch')
     if any(smoke.get('checks', {}).get(k) != 'PASS' for k in
            ('api_schemas', 'multipart', 'invalid_search', 'session_response', 'dashboard_http')):
         raise ValueError('missing smoke contract checks')
@@ -96,9 +100,10 @@ def main() -> int:
         scope='Docker preparation, API/store/candidate latency and smoke only; full-test quality separate')
     output = smoke_path.parent / f"verified_{cfg['scale']}.json"
     write_json(output, result)
-    print(f'B10 measurement evidence PASS: {output}')
+    log('평가', 'Docker 근거 검사', f'기존 측정 근거 검사 통과 / 결과={output}', status='통과(PASS)')
+    emit_json(result)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'Docker 근거 검사', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))

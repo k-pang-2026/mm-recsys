@@ -1,6 +1,8 @@
 """Verify B8 measurement provenance, accounting and real dashboard rendering."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -125,9 +127,10 @@ def main() -> int:
         result['dashboard'] = verify_dashboard(path, args.dashboard_url)
     output = root / 'experiments' / 'C' / f'evaluation_verification_{cfg["scale"]}_{args.split}.json'
     write_json(output, result)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    log('평가 검사', '결과', '기존 근거의 검사 완료 / 세부 판정은 원본 JSON 참조', status='완료')
+    emit_json(result)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '평가 검사', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))

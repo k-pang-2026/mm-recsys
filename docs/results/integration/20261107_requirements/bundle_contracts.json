@@ -1,0 +1,189 @@
+{
+  "models/full-v43/v1.0/meta.json": {
+    "sha256": "bdef4ad6b11c1c35326901993b5d865441b541a027cf0ffdf2f25153e0966ad7",
+    "content": {
+      "contract": {
+        "version": "candidate-bundle-v1",
+        "directory": "models[/full]/v1.0",
+        "files": {
+          "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+          "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+          "item_ids.json": "canonical ordered public IDs, excludes PAD",
+          "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+          "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+          "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+        },
+        "history_inputs": [
+          "observed product IDs before timestamp",
+          "age_group",
+          "gender",
+          "past purchase category/brand distribution and price"
+        ],
+        "item_inputs": [
+          "category_l1",
+          "category_l2",
+          "category_l3",
+          "brand",
+          "color",
+          "style",
+          "price"
+        ],
+        "persona": false,
+        "item_id_residual": false,
+        "normalized": true,
+        "metric": "inner_product"
+      },
+      "scale": "full",
+      "dim": 64,
+      "model_version": "v1.0",
+      "retrieval": "HNSW inner_product; cutoff filtering and adaptive refill",
+      "best_epoch": 4,
+      "best_valid_recall_at_300": 0.7499218051831993,
+      "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+      "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+      "feature_fingerprint": "a49a51823c5e854d1c91f71413ad54c7754a6806d247ba842c9b496300f5f885",
+      "config_fingerprint": "d076a6b312828c687fece88ece9149fc88575efb03c1e54fdbca1e1c4a898c11",
+      "candidate_scope_fingerprint": "ad7020b9d9c427830b1b3378024dc4f60213fa495284b8f1578d8e80bf419241",
+      "training_spec": {
+        "dim": 64,
+        "history_n": 50,
+        "batch_size": 512,
+        "epochs": 20,
+        "patience": 3,
+        "learning_rate": 0.001,
+        "temperature": 0.1,
+        "negatives_per_positive": 4,
+        "loss": "sampled_softmax",
+        "positive_weights": {
+          "view": 0.2,
+          "cart": 0.6,
+          "purchase": 1.0
+        },
+        "faiss": {
+          "type": "HNSW",
+          "metric": "inner_product",
+          "M": 32,
+          "ef_search": 512
+        },
+        "embedding_dim": 16,
+        "hidden_dim": 128,
+        "weight_decay": 0.0001,
+        "threads": 4,
+        "num_workers": 0,
+        "history_pooling": "mean",
+        "item_id_residual": false,
+        "profile_categories": "category_l3",
+        "tiny_fit_steps": 160,
+        "tiny_fit_learning_rate": 0.01
+      },
+      "hashes": {
+        "two_tower.pt": "79405368dcbcb98e8734dea26733cbe853f384fbad0e8d780af84d1b9cdda362",
+        "feature_vocab_scalers.json": "efef2585d2190b577b297c4d0d7d7550cca2c0d886bdbcd08f9b89bd77d284d4",
+        "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+        "item_index.faiss": "56b2c498f77f7869ae35e96c71e915db728ba3a4a114bc53cd2db743b2bfb3c0",
+        "index_manifest.json": "d1e2ca35d919d462df37fdab23684a6d6d29d3b66087436a72a132532cd2089a"
+      }
+    }
+  },
+  "models/full-v43/v1.0/index_manifest.json": {
+    "sha256": "d1e2ca35d919d462df37fdab23684a6d6d29d3b66087436a72a132532cd2089a",
+    "content": {
+      "version": "candidate-index-v1",
+      "type": "HNSWFlat",
+      "metric": "inner_product",
+      "normalized": true,
+      "dim": 64,
+      "ntotal": 50000,
+      "mapping": "FAISS label i -> item_ids.json[i] -> table row i+1",
+      "M": 32,
+      "ef_construction": 200,
+      "ef_search": 512,
+      "build_threads": 1,
+      "faiss_version": "1.9.0",
+      "model_sha256": "79405368dcbcb98e8734dea26733cbe853f384fbad0e8d780af84d1b9cdda362",
+      "feature_fingerprint": "a49a51823c5e854d1c91f71413ad54c7754a6806d247ba842c9b496300f5f885",
+      "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+      "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+      "config_fingerprint": "d076a6b312828c687fece88ece9149fc88575efb03c1e54fdbca1e1c4a898c11",
+      "item_ids_sha256": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+      "vectors_sha256": "7d9e09268b7138d8cc7d716303f1293ababc14bcaf9439f0d4be382ed3ea1a4c",
+      "index_sha256": "56b2c498f77f7869ae35e96c71e915db728ba3a4a114bc53cd2db743b2bfb3c0",
+      "catalog_filter": "created_at <= request cutoff"
+    }
+  },
+  "models/full-v43/v1.0/ranking/meta.json": {
+    "sha256": "7e9ebe4e226d52de06339528f5b8ab41c6b7aded63af2bca2d62382660c84335",
+    "content": {
+      "version": "deepfm-bundle-v1",
+      "scale": "full",
+      "best_epoch": 8,
+      "selection_split": "valid",
+      "config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+      "feature_fingerprint": "4ffe8e4c0e54426c0e2e6b8e4707b149f124a8bcae875b8ab32282238f1aaa80",
+      "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+      "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+      "hashes": {
+        "deepfm.pt": "6467816c0908e3e53490d7ccd8b1e132e1eaab7581a9eedc15b0784df73a0f38",
+        "features.json": "2a41789bc86e32dd643f8ff1fa51f9069a6c8f0dd8802f15c3f841f4bd8754df"
+      },
+      "ranking_score": "P(click)*P(purchase|click)"
+    }
+  },
+  "models/full-v43/v1.0/session/meta.json": {
+    "sha256": "bdd713e77cc490c4e11ef1e5bb3b3afbe2dedbea8ec17e932fc20e74ce07384f",
+    "content": {
+      "version": "gru-session-v1",
+      "best_epoch": 20,
+      "selection_split": "valid",
+      "config_fingerprint": "12d7a11dba82d761489faa26a9e86e7aae20ccbbde9b4ec9cdb8a7e7db759c14",
+      "candidate_sha256": "79405368dcbcb98e8734dea26733cbe853f384fbad0e8d780af84d1b9cdda362",
+      "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+      "hashes": {
+        "session.pt": "fe8694e4a69e2f6671e5ce22a7f21ce951d4cf5a7b53273cd6bf383a7d04e388",
+        "item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+      }
+    }
+  },
+  "models/full-v43/search/indexes/b2a1bbc7ac8d459cf3f4ed43245ef38420f733420da417ae24a45eaf491d99d7/manifest.json": {
+    "sha256": "0886e2b8823b80abcb5d6f178f5998af81189a7fe092fd88eaa3d15ceca5759e",
+    "content": {
+      "status": "COMPLETE",
+      "fingerprint": "b2a1bbc7ac8d459cf3f4ed43245ef38420f733420da417ae24a45eaf491d99d7",
+      "identity": {
+        "version": 1,
+        "embedding_fingerprint": "47fe81b153cbe4a84ec729c3e9a9cd3742ea46f30160443f1a4968999f0a26bb",
+        "ids_fingerprint": "49f6b0a90003a1202e87ef9c94ebacb588931cf4686141f1f3681a09f1cdced6",
+        "faiss": {
+          "type": "HNSW",
+          "metric": "inner_product",
+          "M": 32,
+          "ef_construction": 200,
+          "ef_search": 32,
+          "threads": 4,
+          "nlist": 256,
+          "m": 16,
+          "nbits": 8,
+          "nprobe": 16
+        },
+        "fusion": {
+          "text_weight": 0.5,
+          "image_weight": 0.5
+        },
+        "seed": 42,
+        "faiss_version": "1.9.0",
+        "deduplicate_vectors": true
+      },
+      "count": 50000,
+      "projection_dim": 512,
+      "files": {
+        "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+        "text.faiss": "cbecee83545916383907d71fdaf9922f24bb68d962c7a4fd92163983418d9140",
+        "image.faiss": "2415b4a176b64fb0997e4ab173590767c70f74ad8cd53287a4a731489995ff59",
+        "hybrid.faiss": "5ff2c65330933006e5c378a432fcf15c68dcff9380332251594a1e8a31bb8abf",
+        "text_members.json": "f5174232c786637c669121e441fd7018b1685b7ba3ee06a997982716ca1fbd7e",
+        "image_members.json": "e4e7f33aea6bda6c8eae15b91e1455a6b681788fd72e0aabf754d9888d2dcda8",
+        "hybrid_members.json": "02215faf13ed9f62517cea0d5aa4f982d87bba5a58ae6b381bf3268a1c173f4c"
+      }
+    }
+  }
+}

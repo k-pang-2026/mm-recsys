@@ -1,0 +1,5 @@
+[2026-11-07T05:54:19+00:00] [평가 HTTP 지연] [측정 완료] text: p95=25.768ms
+[2026-11-07T05:54:28+00:00] [평가 HTTP 지연] [측정 완료] image: p95=88.291ms
+[2026-11-07T05:54:37+00:00] [평가 HTTP 지연] [측정 완료] hybrid: p95=86.230ms
+[2026-11-07T05:54:40+00:00] [평가 HTTP 지연] [측정 완료] recommendation: p95=36.094ms
+[2026-11-07T05:54:50+00:00] [평가 Docker 검사] [통과] 결과=docs/results/integration/20261107_requirements/smoke_full.json

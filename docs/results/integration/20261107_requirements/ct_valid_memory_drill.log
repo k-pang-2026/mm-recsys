@@ -1,0 +1,48 @@
+ Container mm-recsys-api-server-run-4a9c0dac4b36 Creating 
+ Container mm-recsys-api-server-run-4a9c0dac4b36 Created 
+[2026-11-07T08:04:17+00:00] [데이터 준비] [성공] 상품 400개·사용자 24명·이벤트 6,000건 준비 완료 / 경로=/app/models/.ct/verification/29acd8f3af/source
+[2026-11-07T08:04:20+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=1.20421 / valid_recall@300=0.973485 / 갱신=6
+[2026-11-07T08:04:21+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.52418 / valid_recall@300=0.988636 / 갱신=6
+[2026-11-07T08:04:21+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.37205 / valid_recall@300=0.988636 / 갱신=6
+[2026-11-07T08:04:21+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=2 / valid_recall@300=0.988636 / 결과=/app/models/.ct/verification/29acd8f3af/initial_training/results/candidate_training_dev.json
+[2026-11-07T08:04:22+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=16.22742 / valid_ctr_auc=0.655488 / cvr_auc=0.5525030525030524
+[2026-11-07T08:04:22+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=5.54029 / valid_ctr_auc=0.872164 / cvr_auc=0.5366300366300366
+[2026-11-07T08:04:22+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=3.65591 / valid_ctr_auc=0.888290 / cvr_auc=0.5306471306471306
+[2026-11-07T08:04:22+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=3.01666 / valid_ctr_auc=0.896949 / cvr_auc=0.4892551892551892
+[2026-11-07T08:04:23+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=2.56468 / valid_ctr_auc=0.899262 / cvr_auc=0.49853479853479854
+[2026-11-07T08:04:23+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=2.21602 / valid_ctr_auc=0.898610 / cvr_auc=0.4841269841269842
+[2026-11-07T08:04:23+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=1.92626 / valid_ctr_auc=0.897516 / cvr_auc=0.4787545787545788
+[2026-11-07T08:04:23+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=1.70750 / valid_ctr_auc=0.896450 / cvr_auc=0.48681318681318686
+[2026-11-07T08:04:24+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=4.22642 / sampled_hit@10=0.25874
+[2026-11-07T08:04:24+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=3.90485 / sampled_hit@10=0.37063
+[2026-11-07T08:04:24+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=3.62568 / sampled_hit@10=0.51748
+[2026-11-07T08:04:24+00:00] [CT 버전 등록] [성공] 모델=v1.0
+[2026-11-07T08:04:24+00:00] [CT 초기화] [성공] 모델=v1.0
+[2026-11-07T08:04:28+00:00] [CT 알림] [경고] CTR=0.0 / 기준=0.01 / HitRate@50=0.0 / 기준=0.2 / 성숙 요청=1 / 노출=50 / 성능 저하 감지. 다음 조치: 표본과 재학습 누적 로그를 확인하세요.
+[2026-11-07T08:04:29+00:00] [CT 재학습] [진행] 신규 로그 704건 누적 / v1.0 → v1.1 / 재학습 시작
+/app/src/ct/retrain_trigger.py:90: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
+[2026-11-07T08:04:30+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=1.13757 / valid_recall@300=0.962319 / 갱신=7
+[2026-11-07T08:04:31+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.50021 / valid_recall@300=0.976812 / 갱신=7
+[2026-11-07T08:04:32+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.36360 / valid_recall@300=0.962319 / 갱신=7
+[2026-11-07T08:04:32+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=2 / valid_recall@300=0.976812 / 결과=/app/models/.ct/verification/29acd8f3af/models/.ct/runs/v1.1-8cd5e31e/results/candidate_training_dev.json
+[2026-11-07T08:04:32+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=15.14086 / valid_ctr_auc=0.610106 / cvr_auc=0.5701146360970408
+[2026-11-07T08:04:32+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=4.95293 / valid_ctr_auc=0.853440 / cvr_auc=0.5661157024793388
+[2026-11-07T08:04:33+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=3.45824 / valid_ctr_auc=0.879320 / cvr_auc=0.5679818715009332
+[2026-11-07T08:04:33+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=2.86841 / valid_ctr_auc=0.882370 / cvr_auc=0.565782458011197
+[2026-11-07T08:04:33+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=2.48948 / valid_ctr_auc=0.885223 / cvr_auc=0.5589842708611037
+[2026-11-07T08:04:33+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=2.11959 / valid_ctr_auc=0.891694 / cvr_auc=0.5740469208211143
+[2026-11-07T08:04:33+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=1.83898 / valid_ctr_auc=0.887049 / cvr_auc=0.5688483071181019
+[2026-11-07T08:04:34+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=1.62635 / valid_ctr_auc=0.881753 / cvr_auc=0.587643295121301
+[2026-11-07T08:04:34+00:00] [모델 학습] [진행] DeepFM epoch=9 / loss=1.42172 / valid_ctr_auc=0.886406 / cvr_auc=0.5959077579312184
+[2026-11-07T08:04:35+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=4.61912 / sampled_hit@10=0.27807
+[2026-11-07T08:04:35+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=4.27380 / sampled_hit@10=0.33155
+[2026-11-07T08:04:35+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=3.96325 / sampled_hit@10=0.46524
+[2026-11-07T08:04:35+00:00] [CT 버전 등록] [성공] 모델=v1.1
+[2026-11-07T08:04:37+00:00] [CT 버전 등록] [성공] 모델=v1.1
+[2026-11-07T08:04:37+00:00] [CT 판정] [승격] 검증 조건을 충족하여 새 모델을 승격합니다. / 후보=v1.1 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': 'f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4', 'baseline': {'ctr_auc': 0.5, 'ctr_logloss': 0.6931471805599453, 'hit_rate_at_50': 0.17391304347826086, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4'}, 'candidate': {'ctr_auc': 0.8916937864224628, 'ctr_logloss': 1.1927783931647562, 'hit_rate_at_50': 0.9565217391304348, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4'}, 'training_reports': {'candidate': '5e83dd4dc6bd471367f8580b6e0a17aaf7f96d2828effc021d796c77010c568a', 'ranking': '61e4115519608c22f2eb7942dd672e062dc9e7b94ed070b435c8cf9ac69f9e69', 'session': 'f237457aa6c9f6fb04a0b0f0fdd275e69e5f6c04ea3c6d9f970be3275becff29'}}
+[2026-11-07T08:04:37+00:00] [CT 서비스 모델 교체] [성공] 모델=v1.1
+[2026-11-07T08:04:37+00:00] [CT 버전 등록] [성공] 모델=v1.2
+[2026-11-07T08:04:37+00:00] [CT 판정] [유지] 검증 개선 조건을 충족하지 못해 기존 모델을 유지합니다. / 후보=v1.2 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': 'f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4', 'baseline': {'ctr_auc': 0.8916937864224628, 'ctr_logloss': 1.1927783931647562, 'hit_rate_at_50': 0.9565217391304348, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4'}, 'candidate': {'ctr_auc': 0.8916937864224628, 'ctr_logloss': 1.1927783931647562, 'hit_rate_at_50': 0.9565217391304348, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4'}, 'training_reports': {'candidate': '5e83dd4dc6bd471367f8580b6e0a17aaf7f96d2828effc021d796c77010c568a', 'ranking': '61e4115519608c22f2eb7942dd672e062dc9e7b94ed070b435c8cf9ac69f9e69', 'session': 'f237457aa6c9f6fb04a0b0f0fdd275e69e5f6c04ea3c6d9f970be3275becff29'}}
+[2026-11-07T08:04:37+00:00] [CT 롤백] [성공] v1.1 → v1.0 / 사유=controlled rollback drill after measured promotion
+[2026-11-07T08:04:37+00:00] [CT 서비스 모델 교체] [성공] 모델=v1.0

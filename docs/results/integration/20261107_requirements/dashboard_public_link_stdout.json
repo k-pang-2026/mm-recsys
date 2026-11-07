@@ -1,0 +1,69 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 557B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.dashboard
+#2 transferring dockerfile: 684B 0.0s done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 ...
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.4s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 292B done
+#5 DONE 0.0s
+
+#6 [ 1/10] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#6 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 65.60kB 0.1s done
+#7 DONE 0.1s
+
+#8 [ 2/10] WORKDIR /app
+#8 CACHED
+
+#9 [ 3/10] COPY requirements-dashboard.txt .
+#9 CACHED
+
+#10 [ 4/10] COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
+#10 CACHED
+
+#11 [ 5/10] RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
+#11 CACHED
+
+#12 [ 6/10] COPY dashboard ./dashboard
+#12 DONE 0.0s
+
+#13 [ 7/10] COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
+#13 DONE 0.1s
+
+#14 [ 8/10] COPY src/__init__.py ./src/
+#14 DONE 0.0s
+
+#15 [ 9/10] COPY src/common/__init__.py src/common/console.py src/common/artifacts.py ./src/common/
+#15 DONE 0.0s
+
+#16 [10/10] COPY config.yaml .env ./
+#16 DONE 0.0s
+
+#17 exporting to image
+#17 exporting layers
+#17 exporting layers 0.2s done
+#17 exporting manifest sha256:1d361420b11b96fc209c2ac06bae335152942749b520ad8d9ccb27e700687b50 0.0s done
+#17 exporting config sha256:11b25b951b0b624e4051b4ae8febd78fd6d648b8bae85a813ce4b78c173cbe9b 0.0s done
+#17 exporting attestation manifest sha256:606525e0628d617b3e628fb2f70914bd16abc9f214626c03961ae992173b087a 0.0s done
+#17 exporting manifest list sha256:2c551a61fbeaf5412f42a0ae2dd761f351b3e377b0711ad8f639576e62ac5945 0.0s done
+#17 naming to docker.io/library/mm-recsys-dashboard:latest done
+#17 unpacking to docker.io/library/mm-recsys-dashboard:latest 0.1s done
+#17 DONE 0.4s
+
+#18 resolving provenance for metadata file
+#18 DONE 0.0s

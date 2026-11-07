@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "message": "한글 출력·저장 확인",
+  "stdout_encoding": "utf-8",
+  "stderr_encoding": "utf-8"
+}

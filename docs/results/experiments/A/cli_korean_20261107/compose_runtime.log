@@ -1,0 +1,114 @@
+api-server-1  | 2026-11-07T05:07:56.616538554Z [2026-11-07T05:07:56+00:00] [서버 준비] [진행] full 환경 / 상품 50,000개 / 최초 생성·학습 시작
+api-server-1  | 2026-11-07T05:07:56.616831726Z [2026-11-07T05:07:56+00:00] [데이터 준비] [진행] 시작
+api-server-1  | 2026-11-07T05:08:08.219319915Z [2026-11-07T05:08:08+00:00] [데이터 준비] [성공] 상품 50,000개·사용자 10,000명·이벤트 1,000,000건 준비 완료 / 경로=data/full
+api-server-1  | 2026-11-07T05:08:08.636945190Z [2026-11-07T05:08:08+00:00] [데이터 준비] [성공] 완료 / 소요 시간=12.0초
+api-server-1  | 2026-11-07T05:08:08.637006885Z [2026-11-07T05:08:08+00:00] [검색 임베딩 준비] [진행] 시작
+api-server-1  | 2026-11-07T05:08:10.191971305Z [2026-11-07T05:08:10+00:00] [모델 준비] [성공] 고정 CLIP 다운로드 캐시 재사용 (오프라인)
+api-server-1  | 2026-11-07T05:08:20.744666967Z [2026-11-07T05:08:20+00:00] [검색 임베딩 준비] [성공] 완료 / 소요 시간=12.8초
+api-server-1  | 2026-11-07T05:08:20.744810491Z [2026-11-07T05:08:20+00:00] [FAISS 인덱스 준비] [진행] 시작
+api-server-1  | 2026-11-07T05:08:22.910452430Z [2026-11-07T05:08:22+00:00] [모델 준비] [성공] FAISS text: 벡터=1,440개 / 차원=512
+api-server-1  | 2026-11-07T05:08:22.910620418Z [2026-11-07T05:08:22+00:00] [모델 준비] [성공] FAISS image: 벡터=256개 / 차원=512
+api-server-1  | 2026-11-07T05:08:22.912940347Z [2026-11-07T05:08:22+00:00] [모델 준비] [성공] FAISS hybrid: 벡터=2,880개 / 차원=512
+api-server-1  | 2026-11-07T05:08:23.337761391Z [2026-11-07T05:08:23+00:00] [FAISS 인덱스 준비] [성공] 완료 / 소요 시간=2.6초
+api-server-1  | 2026-11-07T05:08:23.337800330Z [2026-11-07T05:08:23+00:00] [추천 모델 준비] [진행] 시작
+api-server-1  | 2026-11-07T05:09:05.559091174Z [2026-11-07T05:09:05+00:00] [모델 준비] [성공] 호환되는 추천 모델 재사용 완료
+api-server-1  | 2026-11-07T05:09:06.400755799Z [2026-11-07T05:09:06+00:00] [추천 모델 준비] [성공] 완료 / 소요 시간=43.7초
+api-server-1  | 2026-11-07T05:09:06.400799230Z [2026-11-07T05:09:06+00:00] [Redis 사용자 프로필 준비] [진행] 시작
+api-server-1  | 2026-11-07T05:09:08.554328824Z [2026-11-07T05:09:08+00:00] [Redis 준비] [성공] 사용자 프로필 적재 완료 / 결과={'status': 'PASS', 'scale': 'full', 'profile_count': 10000, 'batch_size': 1000, 'history_loaded': False, 'namespace': 'mm-recsys:full'}
+api-server-1  | 2026-11-07T05:09:49.373153364Z [2026-11-07T05:09:49+00:00] [Redis 사용자 프로필 준비] [성공] 완료 / 소요 시간=43.8초
+api-server-1  | 2026-11-07T05:09:49.374893874Z {
+api-server-1  | 2026-11-07T05:09:49.374906634Z   "status": "PASS",
+api-server-1  | 2026-11-07T05:09:49.374910717Z   "acceptance": "UNMEASURED",
+api-server-1  | 2026-11-07T05:09:49.374913269Z   "scale": "full",
+api-server-1  | 2026-11-07T05:09:49.374915208Z   "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+api-server-1  | 2026-11-07T05:09:49.374917964Z   "manifest_sha256": "e53220bb34637137e4d42b50c6d8a8a8a173e6c24c27ac37658b1e15ffe566e8",
+api-server-1  | 2026-11-07T05:09:49.374920108Z   "config_fingerprint": "aa478dd5eec47f9c28ba815771f773d289d190345aac7d0e56fabf208fea547c",
+api-server-1  | 2026-11-07T05:09:49.374921945Z   "stages": [
+api-server-1  | 2026-11-07T05:09:49.374924191Z     {
+api-server-1  | 2026-11-07T05:09:49.374926232Z       "stage": "data",
+api-server-1  | 2026-11-07T05:09:49.374928172Z       "command": [
+api-server-1  | 2026-11-07T05:09:49.374930009Z         "/usr/local/bin/python",
+api-server-1  | 2026-11-07T05:09:49.374931949Z         "/app/scripts/prepare_all.py",
+api-server-1  | 2026-11-07T05:09:49.374934603Z         "--stage",
+api-server-1  | 2026-11-07T05:09:49.374936440Z         "data"
+api-server-1  | 2026-11-07T05:09:49.374938380Z       ],
+api-server-1  | 2026-11-07T05:09:49.374940421Z       "exit_code": 0,
+api-server-1  | 2026-11-07T05:09:49.374942259Z       "seconds": 12.02016861900006
+api-server-1  | 2026-11-07T05:09:49.374944606Z     },
+api-server-1  | 2026-11-07T05:09:49.374946546Z     {
+api-server-1  | 2026-11-07T05:09:49.374948485Z       "stage": "embeddings",
+api-server-1  | 2026-11-07T05:09:49.374950527Z       "command": [
+api-server-1  | 2026-11-07T05:09:49.374952466Z         "/usr/local/bin/python",
+api-server-1  | 2026-11-07T05:09:49.374954304Z         "/app/scripts/prepare_all.py",
+api-server-1  | 2026-11-07T05:09:49.374956243Z         "--stage",
+api-server-1  | 2026-11-07T05:09:49.374957978Z         "embeddings"
+api-server-1  | 2026-11-07T05:09:49.374959918Z       ],
+api-server-1  | 2026-11-07T05:09:49.374961857Z       "exit_code": 0,
+api-server-1  | 2026-11-07T05:09:49.374963797Z       "seconds": 12.772058042000026
+api-server-1  | 2026-11-07T05:09:49.374965634Z     },
+api-server-1  | 2026-11-07T05:09:49.374967574Z     {
+api-server-1  | 2026-11-07T05:09:49.374969411Z       "stage": "indexes",
+api-server-1  | 2026-11-07T05:09:49.374971350Z       "command": [
+api-server-1  | 2026-11-07T05:09:49.374987172Z         "/usr/local/bin/python",
+api-server-1  | 2026-11-07T05:09:49.375006465Z         "/app/scripts/prepare_all.py",
+api-server-1  | 2026-11-07T05:09:49.375007996Z         "--stage",
+api-server-1  | 2026-11-07T05:09:49.375009425Z         "indexes"
+api-server-1  | 2026-11-07T05:09:49.375010650Z       ],
+api-server-1  | 2026-11-07T05:09:49.375011977Z       "exit_code": 0,
+api-server-1  | 2026-11-07T05:09:49.375013202Z       "seconds": 2.5930052310000065
+api-server-1  | 2026-11-07T05:09:49.375014631Z     },
+api-server-1  | 2026-11-07T05:09:49.375016060Z     {
+api-server-1  | 2026-11-07T05:09:49.375017285Z       "stage": "recommendation",
+api-server-1  | 2026-11-07T05:09:49.375018612Z       "command": [
+api-server-1  | 2026-11-07T05:09:49.375019939Z         "/usr/local/bin/python",
+api-server-1  | 2026-11-07T05:09:49.375021164Z         "/app/scripts/prepare_all.py",
+api-server-1  | 2026-11-07T05:09:49.375022491Z         "--stage",
+api-server-1  | 2026-11-07T05:09:49.375023920Z         "recommendation"
+api-server-1  | 2026-11-07T05:09:49.375025349Z       ],
+api-server-1  | 2026-11-07T05:09:49.375032290Z       "exit_code": 0,
+api-server-1  | 2026-11-07T05:09:49.375033923Z       "seconds": 43.66262923199997
+api-server-1  | 2026-11-07T05:09:49.375035250Z     },
+api-server-1  | 2026-11-07T05:09:49.375036475Z     {
+api-server-1  | 2026-11-07T05:09:49.375037904Z       "stage": "warmup",
+api-server-1  | 2026-11-07T05:09:49.375039129Z       "command": [
+api-server-1  | 2026-11-07T05:09:49.375040456Z         "/usr/local/bin/python",
+api-server-1  | 2026-11-07T05:09:49.375041681Z         "/app/scripts/prepare_all.py",
+api-server-1  | 2026-11-07T05:09:49.375043110Z         "--stage",
+api-server-1  | 2026-11-07T05:09:49.375044437Z         "warmup"
+api-server-1  | 2026-11-07T05:09:49.375045866Z       ],
+api-server-1  | 2026-11-07T05:09:49.375047193Z       "exit_code": 0,
+api-server-1  | 2026-11-07T05:09:49.375048622Z       "seconds": 43.77070578200005
+api-server-1  | 2026-11-07T05:09:49.375049847Z     }
+api-server-1  | 2026-11-07T05:09:49.375051276Z   ],
+api-server-1  | 2026-11-07T05:09:49.375052603Z   "artifact_state_before": {
+api-server-1  | 2026-11-07T05:09:49.375054033Z     "data_manifest": true,
+api-server-1  | 2026-11-07T05:09:49.375055768Z     "search_indexes": true,
+api-server-1  | 2026-11-07T05:09:49.375057197Z     "recommendation": true
+api-server-1  | 2026-11-07T05:09:49.375058626Z   },
+api-server-1  | 2026-11-07T05:09:49.375060055Z   "elapsed_seconds": 114.83191630400006,
+api-server-1  | 2026-11-07T05:09:49.375061484Z   "scope": "artifact readiness; no full-test quality claim"
+api-server-1  | 2026-11-07T05:09:49.375063424Z }
+api-server-1  | 2026-11-07T05:09:49.694097356Z [2026-11-07T05:09:49+00:00] [서버 준비] [성공] 준비 완료; 상품=50,000개; CLIP=openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268; FAISS + Two Tower/DeepFM/session
+api-server-1  | 2026-11-07T05:09:50.461407202Z INFO:     Started server process [7]
+api-server-1  | 2026-11-07T05:09:50.461456097Z INFO:     Waiting for application startup.
+api-server-1  | 2026-11-07T05:10:32.666096805Z /usr/local/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py:243: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+api-server-1  | 2026-11-07T05:10:32.666210424Z   if not interpolate_pos_encoding and (height != self.image_size or width != self.image_size):
+api-server-1  | 2026-11-07T05:10:34.436640473Z [2026-11-07T05:10:34+00:00] [서버 메모리 정리] [완료] {'elapsed_ms': 205.02650799994626, 'at_ns': 1794028234436134748, 'frozen_objects': 0}
+api-server-1  | 2026-11-07T05:10:34.469051183Z [2026-11-07T05:10:34+00:00] [서버 실행 환경] [확인] {'torch_threads': 2, 'faiss_threads': 2, 'inference_worker_budget': True, 'parallel_hybrid': True, 'vision_optimization': {'enabled': True, 'implementation': 'torch.jit.optimize_for_inference', 'dtype': 'float32', 'query_shape': [1, 3, 224, 224], 'startup_max_abs_vector_error': 3.129243850708008e-07, 'process_environment': {'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '2'}, 'scope': 'same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache'}, 'gc_enabled': True, 'gc_freeze_enabled': True, 'gc_frozen_objects': 645704, 'configured_search_threads': 1, 'configured_candidate_training_threads': 4, 'scope': 'one shared serving process; model weights and ranking policy unchanged'}
+api-server-1  | 2026-11-07T05:10:34.469129380Z [2026-11-07T05:10:34+00:00] [서버 준비] [성공] FAISS 인덱스 로딩 완료 / 상품=50,000개
+api-server-1  | 2026-11-07T05:10:34.469139486Z [2026-11-07T05:10:34+00:00] [서버 준비] [성공] Two-Tower 모델 로딩 완료
+api-server-1  | 2026-11-07T05:10:34.469142345Z [2026-11-07T05:10:34+00:00] [서버 준비] [성공] DeepFM Ranking 모델 로딩 완료
+api-server-1  | 2026-11-07T05:10:34.469156432Z [2026-11-07T05:10:34+00:00] [서버 준비] [성공] 검색·추천 모델 로딩 완료. API 요청을 받을 수 있습니다. / URL=http://localhost:8000
+api-server-1  | 2026-11-07T05:10:34.469303638Z INFO:     Application startup complete.
+api-server-1  | 2026-11-07T05:10:34.470461477Z INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+dashboard-1   | 2026-11-07T05:08:02.319187627Z [2026-11-07T05:08:02+00:00] [대시보드 준비] [진행] 검색·추천 API 준비 완료를 기다립니다.
+dashboard-1   | 2026-11-07T05:10:35.543969092Z [2026-11-07T05:10:35+00:00] [대시보드 준비] [성공] 검색·추천 API 연결 완료
+dashboard-1   | 2026-11-07T05:10:36.068679103Z 
+dashboard-1   | 2026-11-07T05:10:36.068711452Z Collecting usage statistics. To deactivate, set browser.gatherUsageStats to false.
+dashboard-1   | 2026-11-07T05:10:36.068715228Z 
+dashboard-1   | 2026-11-07T05:10:36.128445013Z 
+dashboard-1   | 2026-11-07T05:10:36.128473893Z   You can now view your Streamlit app in your browser.
+dashboard-1   | 2026-11-07T05:10:36.128481444Z 
+dashboard-1   | 2026-11-07T05:10:36.128484404Z   URL: http://0.0.0.0:8501
+dashboard-1   | 2026-11-07T05:10:36.128487261Z 
+dashboard-1   | 2026-11-07T05:10:36.552325302Z [2026-11-07T05:10:36+00:00] [대시보드 시작] [성공] http://localhost:8501 에서 대시보드 시작

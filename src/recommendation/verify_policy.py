@@ -1,6 +1,8 @@
 """Separate implementation, recommendation quality, environment and integration gates."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import Any
 import argparse
 import json
@@ -114,7 +116,8 @@ def main() -> int:
     cfg=load_config();report=verify(cfg);output=Path(cfg['paths']['results_dir'])/'ranking_metrics_v2.json'
     if args.write:write_json(output,report)
     elif json.loads(output.read_text())!=report:raise ValueError('summary differs from measured sources')
-    print(f'implementation={report["implementation"]}; quality={report["recommendation_quality"]}; environment={report["environment"]}; common=UNMEASURED')
+    log('추천 정책', '검사', f'구현={report["implementation"]} / 품질={report["recommendation_quality"]} / 환경={report["environment"]} / 통합=미측정(UNMEASURED)', status='완료')
+    emit_json(report)
     return 1 if report['status']!='PASS' or (args.require_quality and report['recommendation_quality']!='PASS') else 0
 
-if __name__=='__main__':raise SystemExit(main())
+if __name__=='__main__':raise SystemExit(run_cli(main, '추천 평가', '원본 결과·데이터·모델·설정과 동결된 valid 근거를 확인하세요.'))

@@ -5,6 +5,8 @@ validation instead of being silently overwritten. Training reports stay in C sco
 """
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import copy
 import os
 from pathlib import Path
@@ -52,9 +54,9 @@ def prepare(cfg: dict) -> dict:
         test_outcomes_read=False, acceptance='UNMEASURED',
         portability='same config/seed; model bytes and floating-point results may differ across OS/Python')
     write_json(output / 'compatibility.json', report)
-    print(f'Compatible {cfg["scale"]} bundles: {output / "compatibility.json"}', flush=True)
+    log('A/B', '준비', f'호환 {cfg["scale"]} 번들: {output / "compatibility.json"}', status='성공')
     return report
 
 
 if __name__ == '__main__':
-    prepare(load_config())
+    run_cli(lambda: emit_json(prepare(load_config())), 'A/B 준비', '설정·데이터·번들 경로를 확인하세요.')

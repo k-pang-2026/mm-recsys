@@ -1,0 +1,55 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 555B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.api
+#2 transferring dockerfile: 650B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 292B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#5 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 109.14kB 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [4/7] COPY requirements.txt requirements-torch.txt ./
+#8 CACHED
+
+#9 [5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#9 CACHED
+
+#10 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#11 CACHED
+
+#12 [7/7] COPY . .
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.2s done
+#13 exporting manifest sha256:6a93ceec078b0de13978e858ecafd02202ace247c4f5354ed6be68277f6a1141
+#13 exporting manifest sha256:6a93ceec078b0de13978e858ecafd02202ace247c4f5354ed6be68277f6a1141 0.0s done
+#13 exporting config sha256:6f18c4074c0255e52cf8915cf0f1e33c3dfa1d93c58bbdd55cb108d8eaa81616 done
+#13 exporting attestation manifest sha256:67a692432d8b6163606b3e84d8e09c958a65acca99a541290a9bf28938c6422d 0.0s done
+#13 exporting manifest list sha256:d48760f09605ccf239ecbcf86883b1791204e306d2e75b0eba6a7732a60ba97c done
+#13 naming to docker.io/library/mm-recsys-api-server:latest done
+#13 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#13 DONE 0.4s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s

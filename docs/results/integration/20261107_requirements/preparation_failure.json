@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scope": "isolated startup failure with missing config; no volumes or ports shared",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--memory",
+    "512m",
+    "-e",
+    "CONFIG_PATH=/app/config-missing.yaml",
+    "--entrypoint",
+    "python",
+    "mm-recsys-api-server",
+    "-m",
+    "docker.api_entrypoint"
+  ],
+  "actual_exit_code": 1,
+  "korean_action": true,
+  "original_traceback": true,
+  "completed_at": "2026-11-07T05:59:19.687201+00:00"
+}

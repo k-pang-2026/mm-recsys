@@ -1,0 +1,68 @@
+{
+  "status": "PASS",
+  "measured_at": "2026-11-07T05:57:56.300012+00:00",
+  "checks": [
+    {
+      "name": "api_unavailable",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "recommend",
+        "--user-id",
+        "U000001",
+        "--api-url",
+        "http://127.0.0.1:1",
+        "--json"
+      ],
+      "exit_code": 1,
+      "korean_explanation": true,
+      "original_traceback": true,
+      "stdout_empty": true
+    },
+    {
+      "name": "missing_image",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "search",
+        "--query-image",
+        "data/query-does-not-exist.jpg",
+        "--json"
+      ],
+      "exit_code": 1,
+      "korean_explanation": true,
+      "original_traceback": true,
+      "stdout_empty": true
+    },
+    {
+      "name": "invalid_ab_days",
+      "command": [
+        "docker",
+        "compose",
+        "exec",
+        "-T",
+        "api-server",
+        "python",
+        "scripts/demo.py",
+        "ab",
+        "--days",
+        "0",
+        "--json"
+      ],
+      "exit_code": 2,
+      "korean_explanation": true,
+      "original_traceback": false,
+      "stdout_empty": true
+    }
+  ]
+}

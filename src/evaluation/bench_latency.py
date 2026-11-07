@@ -1,6 +1,8 @@
 """Serial Redis feature latency, with execution and dataset evidence."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 import os
@@ -107,7 +109,7 @@ def _ram_bytes() -> int | None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Redis 지연 평가')
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     cfg = load_config()
@@ -118,6 +120,7 @@ def main() -> None:
         result = benchmark(cfg, store)
         destination = args.output or Path(f"docs/results/latency/feature_{cfg['scale']}.json")
         write_json(destination, result)
+        log('Redis 지연 평가', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
         print(json.dumps({key: value for key, value in result.items() if key != "samples_ms"}, indent=2))
         if result["status"] != "PASS":
             raise SystemExit(1)
@@ -126,4 +129,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, 'Redis 지연 평가', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

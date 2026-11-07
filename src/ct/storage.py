@@ -10,6 +10,33 @@ import os
 from pathlib import Path
 import sqlite3
 
+from src.common.console import log, status_ko
+
+
+def describe_event(value: dict) -> None:
+    event = value.get('event')
+    if event == 'monitor':
+        thresholds = value['thresholds']
+        log('CT', '알림' if value['alerts'] else '모니터링',
+            f"CTR={value['ctr']} / 기준={thresholds['ctr_threshold']} / "
+            f"HitRate@50={value['hit_rate_at_50']} / 기준={thresholds['hitrate_threshold']} / "
+            f"성숙 요청={value['mature_requests']} / 노출={value['exposures']} / "
+            + ('성능 저하 감지. 다음 조치: 표본과 재학습 누적 로그를 확인하세요.' if value['alerts']
+               else '관측 완료. null은 관측 표본 부족으로 미측정입니다.'),
+            status='경고' if value['alerts'] else status_ko(value['status']))
+    elif event == 'training_started':
+        log('CT', '재학습', f"신규 로그 {value['new_events']:,}건 누적 / {value['parent']} → {value['version']} / 재학습 시작")
+    elif event in ('promoted', 'retained'):
+        message = '검증 조건을 충족하여 새 모델을 승격합니다.' if event == 'promoted' else '검증 개선 조건을 충족하지 못해 기존 모델을 유지합니다.'
+        log('CT', '판정', f"{message} / 후보={value['version']} / 활성={value['active']} / 검증={value['comparison']}", status='승격' if event == 'promoted' else '유지')
+    elif event in ('training_failed', 'reload_retry'):
+        log('CT', '재학습' if event == 'training_failed' else '모델 재로딩',
+            f"원인: {value['error']} / 다음 조치: 원본 오류와 모델·API 상태를 확인한 뒤 재시도하세요.", status='실패')
+    elif event == 'rollback':
+        log('CT', '롤백', f"{value['version']} → {value['active']} / 사유={value['reason']}", status='성공')
+    elif event in ('registered', 'initialized', 'reloaded'):
+        stage = {'registered': '버전 등록', 'initialized': '초기화', 'reloaded': '서비스 모델 교체'}[event]
+        log('CT', stage, f"모델={value['version']}", status='성공')
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -44,6 +71,7 @@ def append_log(path: Path, value: dict) -> None:
         with path.open('a', encoding='utf-8') as stream:
             stream.write(json.dumps(dict(at=utc_now(), **value), ensure_ascii=False, allow_nan=False) + '\n')
             stream.flush(); os.fsync(stream.fileno())
+    describe_event(value)
 
 
 class Journal:

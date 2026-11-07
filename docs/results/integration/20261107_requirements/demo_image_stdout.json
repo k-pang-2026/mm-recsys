@@ -1,0 +1,67 @@
+{
+  "search_type": "image",
+  "results": [
+    {
+      "product_id": "P000001",
+      "name": "brown regular tote bag",
+      "score": 0.9999999403953552,
+      "price": 137000.0
+    },
+    {
+      "product_id": "P000820",
+      "name": "brown slim crossbody bag",
+      "score": 0.9999999403953552,
+      "price": 55000.0
+    },
+    {
+      "product_id": "P000878",
+      "name": "brown slim crossbody bag",
+      "score": 0.9999999403953552,
+      "price": 111000.0
+    },
+    {
+      "product_id": "P000932",
+      "name": "brown slim tote bag",
+      "score": 0.9999999403953552,
+      "price": 77000.0
+    },
+    {
+      "product_id": "P001107",
+      "name": "brown regular crossbody bag",
+      "score": 0.9999999403953552,
+      "price": 164000.0
+    },
+    {
+      "product_id": "P001329",
+      "name": "brown slim backpack",
+      "score": 0.9999999403953552,
+      "price": 169000.0
+    },
+    {
+      "product_id": "P001347",
+      "name": "brown slim backpack",
+      "score": 0.9999999403953552,
+      "price": 34000.0
+    },
+    {
+      "product_id": "P001761",
+      "name": "brown regular crossbody bag",
+      "score": 0.9999999403953552,
+      "price": 149000.0
+    },
+    {
+      "product_id": "P001911",
+      "name": "brown slim tote bag",
+      "score": 0.9999999403953552,
+      "price": 136000.0
+    },
+    {
+      "product_id": "P002174",
+      "name": "brown regular backpack",
+      "score": 0.9999999403953552,
+      "price": 61000.0
+    }
+  ],
+  "latency_ms": 232.5905809998403,
+  "total_count": 50000
+}

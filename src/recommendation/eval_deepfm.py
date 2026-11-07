@@ -1,6 +1,8 @@
 """Evaluate frozen offline CTR/CVR classification without serving or B5 dependencies."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -68,7 +70,7 @@ def evaluate(cfg: dict, split: str) -> dict:
     )
     path = output / f'ranking_classification_{cfg["scale"]}_{split}.json'
     write_json(path, report)
-    print(f'{path}: CTR AUC={score}; CVR={classification["cvr"]["auc_status"]}; {report["status"]}')
+    log('랭킹', '평가', f'CTR AUC={score} / CVR={classification["cvr"]["auc_status"]} / 판정={report["status"]} / 결과={path}', status='측정 완료')
     return report
 
 
@@ -77,8 +79,9 @@ def main() -> int:
     parser.add_argument('--split', required=True, choices=['valid', 'test'])
     args = parser.parse_args()
     report = evaluate(load_config(), args.split)
+    emit_json(report)
     return 0 if report['status'] == 'PASS' else 1
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '추천 평가', '원본 결과·데이터·모델·설정과 동결된 valid 근거를 확인하세요.'))

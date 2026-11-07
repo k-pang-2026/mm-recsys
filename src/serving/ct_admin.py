@@ -3,13 +3,13 @@ from __future__ import annotations
 
 import ipaddress
 import logging
+from src.common.console import format_log
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict
 
 from src.ct.storage import file_lock, append_log
 from src.serving.model_loader import load_record
 
-LOG = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -56,6 +56,7 @@ def reload_model(payload: ReloadRequest, request: Request) -> dict:
     except HTTPException:
         raise
     except Exception:
-        LOG.exception('Model preload failed; current service retained')
+        logging.getLogger(__name__).exception(format_log('CT', '모델 교체',
+            '모델 사전 로딩 실패로 기존 서비스 유지 / 다음 조치: 아래 원본 오류와 번들 호환성을 확인하세요.', status='실패'))
         raise HTTPException(409, 'model preload/compatibility check failed; current service retained')
     return dict(status='reloaded', version=version)

@@ -1,6 +1,8 @@
 """Chronological CTR/CVR training; select on valid CTR AUC before opening test."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli, emit_json
+
 import argparse
 import copy
 import json
@@ -120,7 +122,7 @@ def train(cfg: dict) -> dict:
         score=metrics['ctr']['auc']
         if score is None: raise ValueError('undefined valid CTR AUC')
         epochs.append(dict(epoch=epoch,loss=total/len(order),valid=metrics,updates=updates,seconds=time.perf_counter()-tick))
-        print(f'epoch={epoch} loss={epochs[-1]["loss"]:.5f} valid_ctr_auc={score:.6f} cvr_auc={metrics["cvr"]["auc"]}',flush=True)
+        log('모델', '학습', f'DeepFM epoch={epoch} / loss={epochs[-1]["loss"]:.5f} / valid_ctr_auc={score:.6f} / cvr_auc={metrics["cvr"]["auc"]}')
         if score>best:
             best=score; best_epoch=epoch; stale=0; state=copy.deepcopy(model.state_dict())
         else: stale+=1
@@ -149,7 +151,7 @@ def train(cfg: dict) -> dict:
 
 
 def main() -> int:
-    parser=argparse.ArgumentParser(); parser.parse_args(); train(load_config()); return 0
+    parser=argparse.ArgumentParser(); parser.parse_args(); emit_json(train(load_config())); return 0
 
 
-if __name__=='__main__': raise SystemExit(main())
+if __name__=='__main__': raise SystemExit(run_cli(main, '모델 학습', '데이터·모델·설정 경로와 원본 오류를 확인하세요. 기존 번들은 보존하세요.'))

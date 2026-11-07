@@ -1,0 +1,46 @@
+[2026-11-07T07:15:31+00:00] [CT 시작] [진행] 모니터링 주기=60초 / 재학습 임계치=10000건 / 재학습 활성=True / 활성 모델=v1.1
+[2026-11-07T07:15:31+00:00] [CT 알림] [경고] CTR=0.0 / 기준=0.01 / HitRate@50=None / 기준=0.2 / 성숙 요청=122 / 노출=1220 / 성능 저하 감지. 다음 조치: 표본과 재학습 누적 로그를 확인하세요.
+[2026-11-07T07:15:31+00:00] [CT 재학습] [진행] 신규 로그 11,218건 누적 / v1.1 → v1.2 / 재학습 시작
+/app/src/ct/retrain_trigger.py:90: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
+[2026-11-07T07:18:24+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=0.30515 / valid_recall@300=0.746849 / 갱신=1375
+[2026-11-07T07:20:21+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.23504 / valid_recall@300=0.749493 / 갱신=1375
+[2026-11-07T07:22:15+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.21851 / valid_recall@300=0.747902 / 갱신=1375
+[2026-11-07T07:24:11+00:00] [모델 학습] [진행] Two-Tower epoch=4 / loss=0.20737 / valid_recall@300=0.750025 / 갱신=1375
+[2026-11-07T07:26:09+00:00] [모델 학습] [진행] Two-Tower epoch=5 / loss=0.19814 / valid_recall@300=0.747394 / 갱신=1375
+[2026-11-07T07:28:04+00:00] [모델 학습] [진행] Two-Tower epoch=6 / loss=0.19080 / valid_recall@300=0.746859 / 갱신=1375
+[2026-11-07T07:30:02+00:00] [모델 학습] [진행] Two-Tower epoch=7 / loss=0.18389 / valid_recall@300=0.747383 / 갱신=1375
+[2026-11-07T07:30:16+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=4 / valid_recall@300=0.750025 / 결과=/app/models/full-v43/.ct/runs/v1.2-8ed26263/results/candidate_training_full.json
+[2026-11-07T07:31:30+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=1.79455 / valid_ctr_auc=0.962216 / cvr_auc=0.48578339918056773
+[2026-11-07T07:31:46+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=0.44634 / valid_ctr_auc=0.965388 / cvr_auc=0.6176156096767066
+[2026-11-07T07:32:02+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=0.41634 / valid_ctr_auc=0.966028 / cvr_auc=0.511742290199662
+[2026-11-07T07:32:19+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=0.40373 / valid_ctr_auc=0.963983 / cvr_auc=0.6187025183207612
+[2026-11-07T07:32:36+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=0.39178 / valid_ctr_auc=0.967019 / cvr_auc=0.4300894798217795
+[2026-11-07T07:32:52+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=0.38355 / valid_ctr_auc=0.966102 / cvr_auc=0.3826168527112338
+[2026-11-07T07:33:08+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=0.37895 / valid_ctr_auc=0.966173 / cvr_auc=0.5751988295318127
+[2026-11-07T07:33:24+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=0.37616 / valid_ctr_auc=0.967548 / cvr_auc=0.5269962462596979
+[2026-11-07T07:33:40+00:00] [모델 학습] [진행] DeepFM epoch=9 / loss=0.37394 / valid_ctr_auc=0.966712 / cvr_auc=0.5293742496998799
+[2026-11-07T07:33:56+00:00] [모델 학습] [진행] DeepFM epoch=10 / loss=0.37216 / valid_ctr_auc=0.967018 / cvr_auc=0.5218069503920971
+[2026-11-07T07:34:12+00:00] [모델 학습] [진행] DeepFM epoch=11 / loss=0.37061 / valid_ctr_auc=0.966514 / cvr_auc=0.5269738492411891
+[2026-11-07T07:37:12+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=0.10873 / sampled_hit@10=1.00000
+[2026-11-07T07:37:31+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=0.09587 / sampled_hit@10=1.00000
+[2026-11-07T07:37:50+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=0.09082 / sampled_hit@10=1.00000
+[2026-11-07T07:38:10+00:00] [모델 학습] [진행] 세션 epoch=4 / valid_loss=0.08771 / sampled_hit@10=1.00000
+[2026-11-07T07:38:30+00:00] [모델 학습] [진행] 세션 epoch=5 / valid_loss=0.08550 / sampled_hit@10=1.00000
+[2026-11-07T07:38:49+00:00] [모델 학습] [진행] 세션 epoch=6 / valid_loss=0.08401 / sampled_hit@10=1.00000
+[2026-11-07T07:39:09+00:00] [모델 학습] [진행] 세션 epoch=7 / valid_loss=0.08270 / sampled_hit@10=1.00000
+[2026-11-07T07:39:29+00:00] [모델 학습] [진행] 세션 epoch=8 / valid_loss=0.08172 / sampled_hit@10=1.00000
+[2026-11-07T07:39:49+00:00] [모델 학습] [진행] 세션 epoch=9 / valid_loss=0.08095 / sampled_hit@10=1.00000
+[2026-11-07T07:40:09+00:00] [모델 학습] [진행] 세션 epoch=10 / valid_loss=0.08065 / sampled_hit@10=1.00000
+[2026-11-07T07:40:28+00:00] [모델 학습] [진행] 세션 epoch=11 / valid_loss=0.07997 / sampled_hit@10=1.00000
+[2026-11-07T07:40:48+00:00] [모델 학습] [진행] 세션 epoch=12 / valid_loss=0.07951 / sampled_hit@10=1.00000
+[2026-11-07T07:41:07+00:00] [모델 학습] [진행] 세션 epoch=13 / valid_loss=0.07957 / sampled_hit@10=1.00000
+[2026-11-07T07:41:27+00:00] [모델 학습] [진행] 세션 epoch=14 / valid_loss=0.07906 / sampled_hit@10=1.00000
+[2026-11-07T07:41:47+00:00] [모델 학습] [진행] 세션 epoch=15 / valid_loss=0.07855 / sampled_hit@10=1.00000
+[2026-11-07T07:42:06+00:00] [모델 학습] [진행] 세션 epoch=16 / valid_loss=0.07824 / sampled_hit@10=1.00000
+[2026-11-07T07:42:26+00:00] [모델 학습] [진행] 세션 epoch=17 / valid_loss=0.07828 / sampled_hit@10=1.00000
+[2026-11-07T07:42:45+00:00] [모델 학습] [진행] 세션 epoch=18 / valid_loss=0.07806 / sampled_hit@10=1.00000
+[2026-11-07T07:43:05+00:00] [모델 학습] [진행] 세션 epoch=19 / valid_loss=0.07768 / sampled_hit@10=1.00000
+[2026-11-07T07:43:25+00:00] [모델 학습] [진행] 세션 epoch=20 / valid_loss=0.07752 / sampled_hit@10=1.00000
+[2026-11-07T07:43:25+00:00] [CT 버전 등록] [성공] 모델=v1.2
+[2026-11-07T07:58:16+00:00] [시연 하위 명령] [실패] 원인: 시그널 9에 의해 종료 / 다음 조치: 위 원본 오류와 컨테이너 상태를 확인하세요. 시그널 9이면 OOM 기록·메모리와 중단된 학습 산출물을 확인한 뒤 복구하세요.

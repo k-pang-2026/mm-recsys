@@ -1,0 +1,49 @@
+...................F
+=================================== FAILURES ===================================
+_________ test_prepare_failure_stops_dependents_and_records_real_exit __________
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-8/test_prepare_failure_stops_dep0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfe5c0b36e5a0>
+
+    def test_prepare_failure_stops_dependents_and_records_real_exit(tmp_path, monkeypatch):
+        cfg = runtime_config()
+        cfg['paths'].update(model_dir=str(tmp_path / 'models'), results_dir=str(tmp_path / 'results'))
+        called = []
+        def child(command, **kwargs):
+            called.append(command[-1])
+            return SimpleNamespace(returncode=9 if command[-1] == 'embeddings' else 0)
+        monkeypatch.setattr(prepare_all.subprocess, 'run', child)
+        with pytest.raises(RuntimeError, match='embeddings: exit 9'):
+            prepare_all.prepare(cfg)
+>       assert called == ['data', 'embeddings']
+E       AssertionError: assert ['data', 'aud... 'embeddings'] == ['data', 'embeddings']
+E         
+E         At index 1 diff: 'audit' != 'embeddings'
+E         Left contains one more item: 'embeddings'
+E         Use -v to get more diff
+
+tests/test_docker.py:219: AssertionError
+----------------------------- Captured stderr call -----------------------------
+[2026-11-07T05:23:35+00:00] [서버 준비] [진행] dev 환경 / 상품 10,000개 / 최초 생성·학습 시작
+[2026-11-07T05:23:35+00:00] [데이터 준비] [진행] 시작
+[2026-11-07T05:23:35+00:00] [데이터 준비] [성공] 완료 / 소요 시간=0.0초
+[2026-11-07T05:23:35+00:00] [데이터 분석 준비] [진행] 시작
+[2026-11-07T05:23:35+00:00] [데이터 분석 준비] [성공] 완료 / 소요 시간=0.0초
+[2026-11-07T05:23:35+00:00] [검색 임베딩 준비] [진행] 시작
+[2026-11-07T05:23:35+00:00] [검색 임베딩 준비] [실패] 자식 프로세스 종료 코드=9 / 다음 조치: 위 원본 오류와 해당 단계의 입력·설정을 확인한 뒤 재실행하세요.
+=============================== warnings summary ===============================
+tests/test_docker.py::test_parallel_hybrid_overlaps_towers_and_preserves_fusion
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning:
+  
+  numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+
+tests/test_docker.py::test_process_budget_applies_after_both_factories
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning:
+  
+  The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_docker.py::test_prepare_failure_stops_dependents_and_records_real_exit
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 19 passed, 2 warnings in 5.02s

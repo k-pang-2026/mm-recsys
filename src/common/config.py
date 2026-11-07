@@ -62,6 +62,8 @@ def load_config(path: str | None = None) -> dict[str, Any]:
     if choice['zipf_alpha'] < 0 or sim['image_size'] < 16 or sim['image_variants'] < 1:
         raise ValueError('invalid demand/image parameters')
     for spec in sim['personas'].values():
+        if not 0 <= spec.get('preferred_brand_probability', choice['preferred_brand_probability']) <= 1:
+            raise ValueError('persona preferred_brand_probability must be in [0,1]')
         if len(spec['category_preferences']) != len(sim['taxonomy']) or abs(sum(spec['category_preferences'])-1)>1e-9:
             raise ValueError('persona category preferences must match taxonomy and sum to 1')
     for transitions in sim["transitions"].values():

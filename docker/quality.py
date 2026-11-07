@@ -1,6 +1,8 @@
 """Use C's fixed evaluation contracts, with A-owned full Docker quality evidence."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, report_metrics, run_cli
+
 import argparse
 import json
 import os
@@ -84,9 +86,8 @@ def run(cfg: dict, split: str) -> dict:
         snapshot = root / 'freezes' / f'{file_hash(output)}.json'
         write_json(snapshot, report)
         write_json(selection, dict(selected_on='valid', identity=inputs, source=str(snapshot), sha256=file_hash(snapshot)))
-    print(f'Docker quality {split}: {quality}; {output}', flush=True)
-    for row in rows:
-        print(f"{row['name']}: {row['value']} / {row['target']} / {row['status']}", flush=True)
+    log('평가', 'Docker 품질', f'{split}: {quality} / 결과={output}', status='완료')
+    report_metrics(rows)
     return report
 
 
@@ -117,11 +118,12 @@ def main() -> int:
             raise ValueError('quality metric mismatch or failure')
         if quality_status(expected, result['recommendation'], cfg['recommend']['candidate_k']) != 'PASS':
             raise ValueError('candidate count/constraint failure')
-        print(f"Verified Docker quality {args.split}: {result['quality_status']}", flush=True)
+        log('평가', '기존 근거 검사', f"Docker {args.split}: {result['quality_status']} / 새 품질 측정 아님", status='완료')
     else:
         result = run(cfg, args.split)
+    emit_json(result)
     return 0 if result['quality_status'] == 'PASS' else 1
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'Docker 평가', 'API 컨테이너 내부에서 실행하고 데이터·모델·소스 fingerprint와 valid 동결 근거를 확인하세요.'))

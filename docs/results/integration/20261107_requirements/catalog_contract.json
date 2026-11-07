@@ -1,0 +1,53 @@
+{
+  "count": 50000,
+  "columns": [
+    "product_id",
+    "name",
+    "category_l1",
+    "category_l2",
+    "category_l3",
+    "brand",
+    "color",
+    "style",
+    "attributes",
+    "price",
+    "created_at",
+    "image_path",
+    "description_en",
+    "image_sha256",
+    "visual_group"
+  ],
+  "hierarchy_counts": {
+    "category_l1": 5,
+    "category_l2": 14,
+    "category_l3": 45
+  },
+  "nulls": {
+    "product_id": 0,
+    "name": 0,
+    "category_l1": 0,
+    "category_l2": 0,
+    "category_l3": 0,
+    "brand": 0,
+    "color": 0,
+    "style": 0,
+    "attributes": 0,
+    "price": 0,
+    "created_at": 0,
+    "image_path": 0,
+    "description_en": 0,
+    "image_sha256": 0,
+    "visual_group": 0
+  },
+  "missing_images": 0,
+  "candidate_files": [
+    "two_tower.pt",
+    "item_ids.json",
+    "ranking",
+    "session",
+    "index_manifest.json",
+    "meta.json",
+    "feature_vocab_scalers.json",
+    "item_index.faiss"
+  ]
+}

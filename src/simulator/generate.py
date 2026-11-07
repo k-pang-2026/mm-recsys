@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from src.common.console import log, run_cli
+
 import argparse
 import json
 import shutil
@@ -13,7 +15,7 @@ from src.simulator.users import make_users
 from src.simulator.events import make_events
 from src.simulator.split import chronological_split
 
-GENERATOR_VERSION='4.2.0'
+GENERATOR_VERSION='4.3.0'
 
 
 def ordered_recipe(value: object) -> object:
@@ -47,6 +49,7 @@ def generate(cfg: dict, data_dir: Path | None = None) -> dict:
         for name,digest in json.loads((data_dir/'image_manifest.json').read_text()).items():
             if file_hash(data_dir/name)!=digest:
                 raise ValueError(f'Incomplete or modified product image: {name}')
+        log('데이터', '준비', f"상품 {manifest['counts']['products']:,}개·사용자 {manifest['counts']['users']:,}명·이벤트 {manifest['counts']['events']:,}건 준비 완료 / 경로={data_dir}", status='성공')
         return manifest
     data_dir.mkdir(parents=True,exist_ok=True)
     temporary=Path(tempfile.mkdtemp(prefix='.generation-',dir=data_dir))
@@ -75,6 +78,7 @@ def generate(cfg: dict, data_dir: Path | None = None) -> dict:
             if target.exists():raise ValueError(f'Unregistered existing data prevents overwrite: {target}')
             source.rename(target)
         write_json(manifest_path,manifest)
+        log('데이터', '준비', f"상품 {manifest['counts']['products']:,}개·사용자 {manifest['counts']['users']:,}명·이벤트 {manifest['counts']['events']:,}건 준비 완료 / 경로={data_dir}", status='성공')
         return manifest
     finally:
         shutil.rmtree(temporary,ignore_errors=True)
@@ -86,4 +90,5 @@ def main() -> None:
     print(json.dumps(generate(load_config(),args.data_dir),ensure_ascii=False,indent=2))
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    run_cli(main, '데이터 준비', '설정·저장 공간·manifest를 확인하세요. 데이터 불일치 시 새 data_dir를 사용하세요.')

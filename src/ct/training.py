@@ -81,23 +81,38 @@ def train_all(cfg: dict, work: Path) -> tuple[dict, Path]:
     return reports, Path(local['paths']['model_dir']) / 'v1.0'
 
 
+def validation_data(cfg: dict) -> tuple[dict, pd.DataFrame]:
+    from src.recommendation.datasets import read_data
+    from src.recommendation.ranking_labels import read_impressions, build_labels
+    data = read_data(cfg['paths']['data_dir'], 'valid')
+    impressions = read_impressions(cfg['paths']['data_dir'], data['manifest'])
+    events = pd.concat([data['train'], data['valid']], ignore_index=True)
+    boundary = data['manifest']['boundaries']['valid']
+    # CT evaluates valid only; constructing unused train labels inflates peak memory.
+    labels, _ = build_labels(impressions, events[events.timestamp <= pd.Timestamp(boundary['end'])],
+                            pd.Timestamp(boundary['start']), pd.Timestamp(boundary['end']),
+                            cfg['recommend']['ranking']['attribution_seconds'])
+    return data, labels
+
+
 def validation(service: Any, cfg: dict) -> dict:
-    from src.recommendation.train_deepfm import prepare, tensors, probabilities, measure
+    from src.recommendation.train_deepfm import tensors, probabilities, measure
     from src.recommendation.ranking_features import HistoryIndex
     from src.recommendation.datasets import cutoff_for
     from src.evaluation.metrics import hit_rate_at_k
     from src.recommendation.recommender import Recommender
     from src.serving.memory_store import MemoryFeatureStore
-    data, labels, _ = prepare(cfg, 'valid')
+    data, labels = validation_data(cfg)
     manifest = data['manifest']
     if set(data['products'].product_id.astype(str)) != set(service.table.ids[1:]):
         raise ValueError('validation catalog differs; explicit catalog migration required')
     at = cutoff_for(data, 'valid')
     history = HistoryIndex(data['train'], service.table)
-    sparse, dense = service.ranking_encoder.transform(labels['valid'], data['users'], service.table,
+    sparse, dense = service.ranking_encoder.transform(labels, data['users'], service.table,
                                                        history, freeze_at=at)
-    values = tensors(labels['valid'], sparse, dense)
+    values = tensors(labels, sparse, dense)
     metrics = measure(values, probabilities(service.ranker, values, cfg['recommend']['ranking']['batch_size']))
+    del labels, sparse, dense, values, history
     evaluation_cfg = copy.deepcopy(service.cfg)
     evaluation_cfg['recommend']['record_exposures'] = False
     evaluation_cfg['recommend']['mab']['epsilon'] = 0.

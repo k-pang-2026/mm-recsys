@@ -1,0 +1,72 @@
+ Image mm-recsys-api-server Building 
+ Image mm-recsys-api-server Built 
+ Container mm-recsys-api-server-run-ac94e04c0358 Creating 
+ Container mm-recsys-api-server-run-ac94e04c0358 Created 
+[2026-11-07T06:29:45+00:00] [데이터 준비] [성공] 상품 400개·사용자 24명·이벤트 6,000건 준비 완료 / 경로=/app/models/.ct/verification/d49bc4eb4b/source
+[2026-11-07T06:29:48+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=1.20421 / valid_recall@300=0.973485 / 갱신=6
+[2026-11-07T06:29:49+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.52418 / valid_recall@300=0.988636 / 갱신=6
+[2026-11-07T06:29:49+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.37205 / valid_recall@300=0.988636 / 갱신=6
+[2026-11-07T06:29:50+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=2 / valid_recall@300=0.988636 / 결과=/app/models/.ct/verification/d49bc4eb4b/initial_training/results/candidate_training_full.json
+[2026-11-07T06:29:50+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=16.22742 / valid_ctr_auc=0.655488 / cvr_auc=0.5525030525030524
+[2026-11-07T06:29:50+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=5.54029 / valid_ctr_auc=0.872164 / cvr_auc=0.5366300366300366
+[2026-11-07T06:29:50+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=3.65591 / valid_ctr_auc=0.888290 / cvr_auc=0.5306471306471306
+[2026-11-07T06:29:51+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=3.01666 / valid_ctr_auc=0.896949 / cvr_auc=0.4892551892551892
+[2026-11-07T06:29:51+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=2.56468 / valid_ctr_auc=0.899262 / cvr_auc=0.49853479853479854
+[2026-11-07T06:29:51+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=2.21602 / valid_ctr_auc=0.898610 / cvr_auc=0.4841269841269842
+[2026-11-07T06:29:51+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=1.92626 / valid_ctr_auc=0.897516 / cvr_auc=0.4787545787545788
+[2026-11-07T06:29:51+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=1.70750 / valid_ctr_auc=0.896450 / cvr_auc=0.48681318681318686
+[2026-11-07T06:29:52+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=4.22642 / sampled_hit@10=0.25874
+[2026-11-07T06:29:52+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=3.90485 / sampled_hit@10=0.37063
+[2026-11-07T06:29:52+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=3.62568 / sampled_hit@10=0.51748
+[2026-11-07T06:29:52+00:00] [CT 버전 등록] [성공] 모델=v1.0
+[2026-11-07T06:29:53+00:00] [CT 초기화] [성공] 모델=v1.0
+[2026-11-07T06:29:58+00:00] [CT 알림] [경고] CTR=0.0 / 기준=0.01 / HitRate@50=0.0 / 기준=0.2 / 성숙 요청=1 / 노출=50 / 성능 저하 감지. 다음 조치: 표본과 재학습 누적 로그를 확인하세요.
+[2026-11-07T06:29:58+00:00] [CT 재학습] [진행] 신규 로그 704건 누적 / v1.0 → v1.1 / 재학습 시작
+/app/src/ct/retrain_trigger.py:89: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
+[2026-11-07T06:30:00+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=1.13757 / valid_recall@300=0.962319 / 갱신=7
+[2026-11-07T06:30:01+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.50021 / valid_recall@300=0.976812 / 갱신=7
+[2026-11-07T06:30:01+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.36360 / valid_recall@300=0.962319 / 갱신=7
+[2026-11-07T06:30:01+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=2 / valid_recall@300=0.976812 / 결과=/app/models/.ct/verification/d49bc4eb4b/models/.ct/runs/v1.1-85c748bf/results/candidate_training_full.json
+[2026-11-07T06:30:02+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=15.14086 / valid_ctr_auc=0.610106 / cvr_auc=0.5701146360970408
+[2026-11-07T06:30:02+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=4.95293 / valid_ctr_auc=0.853440 / cvr_auc=0.5661157024793388
+[2026-11-07T06:30:02+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=3.45824 / valid_ctr_auc=0.879320 / cvr_auc=0.5679818715009332
+[2026-11-07T06:30:03+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=2.86841 / valid_ctr_auc=0.882370 / cvr_auc=0.565782458011197
+[2026-11-07T06:30:03+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=2.48948 / valid_ctr_auc=0.885223 / cvr_auc=0.5589842708611037
+[2026-11-07T06:30:03+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=2.11959 / valid_ctr_auc=0.891694 / cvr_auc=0.5740469208211143
+[2026-11-07T06:30:03+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=1.83898 / valid_ctr_auc=0.887049 / cvr_auc=0.5688483071181019
+[2026-11-07T06:30:04+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=1.62635 / valid_ctr_auc=0.881753 / cvr_auc=0.587643295121301
+[2026-11-07T06:30:04+00:00] [모델 학습] [진행] DeepFM epoch=9 / loss=1.42172 / valid_ctr_auc=0.886406 / cvr_auc=0.5959077579312184
+[2026-11-07T06:30:05+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=4.61912 / sampled_hit@10=0.27807
+[2026-11-07T06:30:05+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=4.27380 / sampled_hit@10=0.33155
+[2026-11-07T06:30:05+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=3.96325 / sampled_hit@10=0.46524
+[2026-11-07T06:30:05+00:00] [CT 버전 등록] [성공] 모델=v1.1
+[2026-11-07T06:30:07+00:00] [CT 버전 등록] [성공] 모델=v1.1
+[2026-11-07T06:30:07+00:00] [CT 판정] [승격] 검증 조건을 충족하여 새 모델을 승격합니다. / 후보=v1.1 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': 'f099cf40d518b44bd342b482e79d7b79c8bcfab4edcc831e4ee1fe0b180f5d18', 'baseline': {'ctr_auc': 0.5, 'ctr_logloss': 0.6931471805599453, 'hit_rate_at_50': 0.17391304347826086, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f099cf40d518b44bd342b482e79d7b79c8bcfab4edcc831e4ee1fe0b180f5d18'}, 'candidate': {'ctr_auc': 0.8916937864224628, 'ctr_logloss': 1.1927783931647562, 'hit_rate_at_50': 0.9565217391304348, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f099cf40d518b44bd342b482e79d7b79c8bcfab4edcc831e4ee1fe0b180f5d18'}, 'training_reports': {'candidate': '781453f40c84dda1dea88bc0540d4ab02e58a8621abcc1efa673bbf7455257ff', 'ranking': '34cda69b3081fb00f77c31b94c3929cae60bd1df473faa461c86fb36f667edfb', 'session': '0051dff0f7d1f8009c9cda07586cd9b313598774d1bf67fc4434c42acc96b2f7'}}
+[2026-11-07T06:30:07+00:00] [CT 서비스 모델 교체] [성공] 모델=v1.1
+[2026-11-07T06:30:08+00:00] [CT 버전 등록] [성공] 모델=v1.2
+[2026-11-07T06:30:08+00:00] [CT 판정] [유지] 검증 개선 조건을 충족하지 못해 기존 모델을 유지합니다. / 후보=v1.2 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': 'f099cf40d518b44bd342b482e79d7b79c8bcfab4edcc831e4ee1fe0b180f5d18', 'baseline': {'ctr_auc': 0.8916937864224628, 'ctr_logloss': 1.1927783931647562, 'hit_rate_at_50': 0.9565217391304348, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f099cf40d518b44bd342b482e79d7b79c8bcfab4edcc831e4ee1fe0b180f5d18'}, 'candidate': {'ctr_auc': 0.8916937864224628, 'ctr_logloss': 1.1927783931647562, 'hit_rate_at_50': 0.9565217391304348, 'truth_users': 23, 'ctr_samples': 1451, 'validation_fingerprint': 'f099cf40d518b44bd342b482e79d7b79c8bcfab4edcc831e4ee1fe0b180f5d18'}, 'training_reports': {'candidate': '781453f40c84dda1dea88bc0540d4ab02e58a8621abcc1efa673bbf7455257ff', 'ranking': '34cda69b3081fb00f77c31b94c3929cae60bd1df473faa461c86fb36f667edfb', 'session': '0051dff0f7d1f8009c9cda07586cd9b313598774d1bf67fc4434c42acc96b2f7'}}
+[2026-11-07T06:30:08+00:00] [CT 롤백] [성공] v1.1 → v1.0 / 사유=controlled rollback drill after measured promotion
+[2026-11-07T06:30:08+00:00] [CT 서비스 모델 교체] [성공] 모델=v1.0
+[2026-11-07T06:30:08+00:00] [CT 검사 실행] [실패] 원인: FileNotFoundError: [Errno 2] No such file or directory: '/app/models/.ct/verification/d49bc4eb4b/models/.ct/runs/v1.1-85c748bf/results/candidate_training_dev.json' / 다음 조치: 설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/app/src/ct/verify_ct.py", line 242, in <module>
+    raise SystemExit(run_cli(main, 'CT 검사', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "/app/src/ct/verify_ct.py", line 234, in main
+    report = verify(work.resolve(), args.output)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/ct/verify_ct.py", line 162, in verify
+    shutil.copy2(training_results / name, destination)
+  File "/usr/local/lib/python3.11/shutil.py", line 448, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/usr/local/lib/python3.11/shutil.py", line 256, in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/app/models/.ct/verification/d49bc4eb4b/models/.ct/runs/v1.1-85c748bf/results/candidate_training_dev.json'
+

@@ -1,0 +1,218 @@
+.EEE...                                                                  [100%]
+==================================== ERRORS ====================================
+_________ ERROR at setup of test_search_raw_json_and_summary_save_utf8 _________
+
+    @pytest.fixture
+    def api():
+        # Transport contract fixture, not evidence of deployed model quality.
+        calls = []
+        recommendation = dict(user_id='한글사용자', recommendations=[dict(product_id='p', score=.1,
+            reason='인기 상품', is_exploration=False)], pipeline_latency=dict(candidate_ms=1.25,
+            ranking_ms=2.25, reranking_ms=.25, total_ms=3.75),
+            session_context=dict(recent_clicks=[], session_interest=None))
+        search = dict(search_type='text', results=[dict(product_id='p', name='한글 상품', score=.7, price=12300)],
+                      latency_ms=4.25, total_count=1)
+    
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                calls.append((self.path, None))
+                self.respond(recommendation)
+    
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                calls.append((self.path, body))
+                if self.path == '/api/event':
+                    recommendation['session_context'] = dict(recent_clicks=['p'], session_interest=body['category'])
+                    self.respond(dict(applied=True, features=recommendation['session_context']))
+                elif body.get('query_text') == '오류':
+                    self.respond(dict(detail='원본 입력 오류'), 422)
+                else:
+                    self.respond(search)
+    
+            def respond(self, value, status=200):
+                raw = json.dumps(value, ensure_ascii=False).encode('utf-8')
+                self.send_response(status)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
+    
+            def log_message(self, *args):
+                pass
+    
+>       server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+
+tests/test_console.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/usr/lib/python3.12/socket.py:233: PermissionError
+_ ERROR at setup of test_session_sends_actual_event_and_preserves_before_after _
+
+    @pytest.fixture
+    def api():
+        # Transport contract fixture, not evidence of deployed model quality.
+        calls = []
+        recommendation = dict(user_id='한글사용자', recommendations=[dict(product_id='p', score=.1,
+            reason='인기 상품', is_exploration=False)], pipeline_latency=dict(candidate_ms=1.25,
+            ranking_ms=2.25, reranking_ms=.25, total_ms=3.75),
+            session_context=dict(recent_clicks=[], session_interest=None))
+        search = dict(search_type='text', results=[dict(product_id='p', name='한글 상품', score=.7, price=12300)],
+                      latency_ms=4.25, total_count=1)
+    
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                calls.append((self.path, None))
+                self.respond(recommendation)
+    
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                calls.append((self.path, body))
+                if self.path == '/api/event':
+                    recommendation['session_context'] = dict(recent_clicks=['p'], session_interest=body['category'])
+                    self.respond(dict(applied=True, features=recommendation['session_context']))
+                elif body.get('query_text') == '오류':
+                    self.respond(dict(detail='원본 입력 오류'), 422)
+                else:
+                    self.respond(search)
+    
+            def respond(self, value, status=200):
+                raw = json.dumps(value, ensure_ascii=False).encode('utf-8')
+                self.send_response(status)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
+    
+            def log_message(self, *args):
+                pass
+    
+>       server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+
+tests/test_console.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/usr/lib/python3.12/socket.py:233: PermissionError
+_ ERROR at setup of test_http_failure_keeps_original_body_traceback_and_next_action _
+
+    @pytest.fixture
+    def api():
+        # Transport contract fixture, not evidence of deployed model quality.
+        calls = []
+        recommendation = dict(user_id='한글사용자', recommendations=[dict(product_id='p', score=.1,
+            reason='인기 상품', is_exploration=False)], pipeline_latency=dict(candidate_ms=1.25,
+            ranking_ms=2.25, reranking_ms=.25, total_ms=3.75),
+            session_context=dict(recent_clicks=[], session_interest=None))
+        search = dict(search_type='text', results=[dict(product_id='p', name='한글 상품', score=.7, price=12300)],
+                      latency_ms=4.25, total_count=1)
+    
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                calls.append((self.path, None))
+                self.respond(recommendation)
+    
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers['Content-Length'])))
+                calls.append((self.path, body))
+                if self.path == '/api/event':
+                    recommendation['session_context'] = dict(recent_clicks=['p'], session_interest=body['category'])
+                    self.respond(dict(applied=True, features=recommendation['session_context']))
+                elif body.get('query_text') == '오류':
+                    self.respond(dict(detail='원본 입력 오류'), 422)
+                else:
+                    self.respond(search)
+    
+            def respond(self, value, status=200):
+                raw = json.dumps(value, ensure_ascii=False).encode('utf-8')
+                self.send_response(status)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Content-Length', str(len(raw)))
+                self.end_headers()
+                self.wfile.write(raw)
+    
+            def log_message(self, *args):
+                pass
+    
+>       server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+
+tests/test_console.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/socketserver.py:453: in __init__
+    self.socket = socket.socket(self.address_family,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <socket.socket fd=-1, family=0, type=0, proto=0>
+family = <AddressFamily.AF_INET: 2>, type = <SocketKind.SOCK_STREAM: 1>
+proto = 0, fileno = None
+
+    def __init__(self, family=-1, type=-1, proto=-1, fileno=None):
+        # For user code address family and type values are IntEnum members, but
+        # for the underlying _socket.socket they're just integers. The
+        # constructor of _socket.socket converts the given argument to an
+        # integer automatically.
+        if fileno is None:
+            if family == -1:
+                family = AF_INET
+            if type == -1:
+                type = SOCK_STREAM
+            if proto == -1:
+                proto = 0
+>       _socket.socket.__init__(self, family, type, proto, fileno)
+E       PermissionError: [Errno 1] Operation not permitted
+
+/usr/lib/python3.12/socket.py:233: PermissionError
+=============================== warnings summary ===============================
+tests/test_console.py::test_tcp_benchmark_cannot_report_success_when_transport_is_unmeasured
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /home/peachpetal/ecommerce/mm-recsys/docs/results/integration/20261107_requirements/pytest_child_status.xml -
+=========================== short test summary info ============================
+ERROR tests/test_console.py::test_search_raw_json_and_summary_save_utf8 - Per...
+ERROR tests/test_console.py::test_session_sends_actual_event_and_preserves_before_after
+ERROR tests/test_console.py::test_http_failure_keeps_original_body_traceback_and_next_action
+4 passed, 1 warning, 3 errors in 4.64s

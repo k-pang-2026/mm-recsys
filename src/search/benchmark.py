@@ -1,6 +1,8 @@
 """Serial, real localhost HTTP benchmark including encoding and request validation."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import base64
 import json
@@ -93,12 +95,13 @@ def benchmark(cfg: dict) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='검색 지연 평가')
     parser.add_argument('--output', type=Path)
     parser.add_argument('--require-target', action='store_true')
     args = parser.parse_args()
     cfg = load_config(); result = benchmark(cfg)
     write_json(args.output or Path(f'docs/results/search_latency_{cfg["scale"]}.json'), result)
+    log('검색 지연 평가', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps({'scale': result['scale'], 'aggregate_http': result['aggregate_http'],
                       'per_mode': {m: r['http'] for m, r in result['per_mode'].items()}, 'target_pass': result['target_pass']}, indent=2))
     if args.require_target and not result['target_pass']:
@@ -106,4 +109,4 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '검색 지연 평가', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

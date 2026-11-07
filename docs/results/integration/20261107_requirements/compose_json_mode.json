@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "command": [
+    "docker",
+    "compose",
+    "run",
+    "--rm",
+    "--no-deps",
+    "--pull",
+    "never",
+    "--entrypoint",
+    "python",
+    "api-server",
+    "scripts/demo.py",
+    "ct",
+    "--json"
+  ],
+  "exit_code": 0,
+  "measured_at": "2026-11-07T06:42:51.593203+00:00",
+  "single_json_stdout": true,
+  "stderr_utf8": true,
+  "korean_stderr": true,
+  "scope": "prebuilt image --pull never prevents Compose build progress from contaminating CLI JSON stdout"
+}

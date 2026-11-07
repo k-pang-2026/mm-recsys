@@ -1,0 +1,23 @@
+{
+  "measured_at": "2026-11-07T06:17:07.197480+00:00",
+  "http": {
+    "/health": {
+      "status": 200,
+      "body": "{\"status\":\"ok\",\"search_ready\":true,\"recommend_ready\":true,\"scale\":\"full\",\"model_version\":\"v1.0\"}"
+    },
+    "/ready": {
+      "status": 200,
+      "body": "{\"status\":\"ready\"}"
+    },
+    "/docs": {
+      "status": 200,
+      "body": "\n    <!DOCTYPE html>\n    <html>\n    <head>\n    <link type=\"text/css\" rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css\">\n    <link rel=\"shortcut icon\" href=\"https://fastapi.tiangolo.com/img/favicon.png\">\n    <title>"
+    },
+    "/": {
+      "status": 404,
+      "body": "{\"detail\":\"Not Found\"}"
+    }
+  },
+  "windows_exit": 0,
+  "windows_stdout": "200\r\n{\"status\":\"ready\"}\r\n"
+}
