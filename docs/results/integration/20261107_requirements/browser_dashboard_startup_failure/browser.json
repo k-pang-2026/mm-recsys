@@ -1,0 +1,20 @@
+{
+  "started_at": "2026-11-07T06:35:56.075Z",
+  "browser": "143.0.7499.4",
+  "errors": [],
+  "failedRequests": [
+    {
+      "url": "http://localhost:8501/",
+      "error": {
+        "errorText": "net::ERR_CONNECTION_RESET"
+      }
+    }
+  ],
+  "captures": [
+    "docs/results/integration/20261107_requirements/browser_failure.png"
+  ],
+  "checks": {},
+  "status": "FAIL",
+  "error": "Error: page.goto: net::ERR_CONNECTION_RESET at http://localhost:8501/\nCall log:\n\u001b[2m  - navigating to \"http://localhost:8501/\", waiting until \"domcontentloaded\"\u001b[22m\n",
+  "completed_at": "2026-11-07T06:35:56.243Z"
+}

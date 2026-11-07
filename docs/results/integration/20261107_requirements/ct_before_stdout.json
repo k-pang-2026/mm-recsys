@@ -1,0 +1,1789 @@
+{
+  "registry": {
+    "schema": "ct-registry-v1",
+    "active": "v1.1",
+    "versions": {
+      "v1.0": {
+        "version": "v1.0",
+        "date": "2026-11-07T05:49:28.053247+00:00",
+        "parent": null,
+        "status": "SUPERSEDED",
+        "config": {
+          "schema_version": 4,
+          "seed": 42,
+          "scale": "full",
+          "scales": {
+            "dev": {
+              "n_products": 10000,
+              "n_users": 2000,
+              "n_events": 200000
+            },
+            "full": {
+              "n_products": 50000,
+              "n_users": 10000,
+              "n_events": 1000000
+            }
+          },
+          "paths": {
+            "data_dir": "data/full-v43",
+            "model_dir": "models/full-v43",
+            "results_dir": "docs/results/docker/runtime-v43/full",
+            "split_dir": "data/full-v43/split",
+            "by_scale": {
+              "full": {
+                "data_dir": "data/full-v43",
+                "split_dir": "data/full-v43/split",
+                "model_dir": "models/full-v43"
+              }
+            }
+          },
+          "simulator": {
+            "n_products": 50000,
+            "n_users": 10000,
+            "n_events": 1000000,
+            "reference_time": "2026-01-01T00:00:00Z",
+            "image_size": 224,
+            "choice_model": {
+              "uniform_noise": 0.05,
+              "zipf_alpha": 1.2,
+              "preferred_leaf_probability": 0.86,
+              "preferred_brand_probability": 0.88
+            },
+            "event_types": [
+              "search",
+              "view",
+              "cart",
+              "purchase"
+            ],
+            "personas": {
+              "trendsetter": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.3,
+                "cvr": 0.05,
+                "category_preferences": [
+                  0.3,
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.1
+                ]
+              },
+              "pragmatist": {
+                "ratio": 0.2,
+                "price_sensitivity": 0.6,
+                "cvr": 0.04,
+                "category_preferences": [
+                  0.25,
+                  0.25,
+                  0.2,
+                  0.2,
+                  0.1
+                ]
+              },
+              "bargain": {
+                "ratio": 0.2,
+                "price_sensitivity": 0.9,
+                "cvr": 0.03,
+                "category_preferences": [
+                  0.3,
+                  0.25,
+                  0.1,
+                  0.2,
+                  0.15
+                ]
+              },
+              "brand_loyal": {
+                "ratio": 0.15,
+                "preferred_brand_probability": 0.98,
+                "price_sensitivity": 0.2,
+                "cvr": 0.06,
+                "category_preferences": [
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.2
+                ]
+              },
+              "impulsive": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.5,
+                "cvr": 0.08,
+                "category_preferences": [
+                  0.25,
+                  0.15,
+                  0.2,
+                  0.2,
+                  0.2
+                ]
+              },
+              "careful": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.7,
+                "cvr": 0.02,
+                "category_preferences": [
+                  0.2,
+                  0.2,
+                  0.3,
+                  0.2,
+                  0.1
+                ]
+              }
+            },
+            "window_days": 30,
+            "event_interval_seconds": 60,
+            "new_item_ratio": 0.04,
+            "cold_user_ratio": 0.03,
+            "cold_max_events": 3,
+            "impressions_per_view": 4,
+            "image_variants": 8,
+            "transitions": {
+              "search": {
+                "view": 1.0
+              },
+              "view": {
+                "view": 0.46,
+                "cart": 0.2,
+                "exit": 0.34
+              },
+              "cart": {
+                "purchase": 0.45,
+                "view": 0.25,
+                "exit": 0.3
+              },
+              "purchase": {
+                "exit": 1.0
+              },
+              "exit": {
+                "search": 1.0
+              }
+            },
+            "taxonomy": {
+              "tops": {
+                "shirts": [
+                  "shirt",
+                  "blouse",
+                  "polo shirt"
+                ],
+                "knitwear": [
+                  "sweater",
+                  "cardigan",
+                  "knitted vest"
+                ],
+                "casual": [
+                  "hoodie",
+                  "sweatshirt",
+                  "t-shirt"
+                ]
+              },
+              "bottoms": {
+                "trousers": [
+                  "jeans",
+                  "chinos",
+                  "cargo pants"
+                ],
+                "shorts": [
+                  "denim shorts",
+                  "bermuda shorts",
+                  "athletic shorts"
+                ],
+                "skirts": [
+                  "mini skirt",
+                  "pleated skirt",
+                  "long skirt"
+                ]
+              },
+              "outerwear": {
+                "coats": [
+                  "long coat",
+                  "trench coat",
+                  "pea coat"
+                ],
+                "jackets": [
+                  "bomber jacket",
+                  "denim jacket",
+                  "blazer"
+                ],
+                "warm": [
+                  "puffer jacket",
+                  "fleece jacket",
+                  "padded vest"
+                ]
+              },
+              "footwear": {
+                "casual": [
+                  "sneakers",
+                  "slip-on shoes",
+                  "canvas shoes"
+                ],
+                "formal": [
+                  "loafers",
+                  "oxford shoes",
+                  "heels"
+                ],
+                "outdoor": [
+                  "boots",
+                  "sandals",
+                  "hiking shoes"
+                ]
+              },
+              "accessories": {
+                "bags": [
+                  "backpack",
+                  "tote bag",
+                  "crossbody bag"
+                ],
+                "headwear": [
+                  "cap",
+                  "beanie",
+                  "bucket hat"
+                ],
+                "small": [
+                  "scarf",
+                  "belt",
+                  "gloves"
+                ]
+              }
+            },
+            "brands": [
+              "North",
+              "Urban",
+              "Classic",
+              "Field",
+              "Studio",
+              "Value",
+              "Muse",
+              "Daily"
+            ],
+            "colors": {
+              "black": "#222222",
+              "white": "#eeeeee",
+              "red": "#c73c3c",
+              "blue": "#315fa8",
+              "green": "#3e835a",
+              "yellow": "#d2ac3a",
+              "brown": "#8b6244",
+              "pink": "#db8ba0"
+            },
+            "styles": [
+              "regular",
+              "relaxed",
+              "slim",
+              "oversized"
+            ],
+            "category_price_ranges": {
+              "tops": [
+                15000,
+                140000
+              ],
+              "bottoms": [
+                20000,
+                160000
+              ],
+              "outerwear": [
+                50000,
+                350000
+              ],
+              "footwear": [
+                30000,
+                220000
+              ],
+              "accessories": [
+                10000,
+                180000
+              ]
+            }
+          },
+          "search": {
+            "clip_model": "openai/clip-vit-base-patch32",
+            "batch_size": 32,
+            "top_k": 10,
+            "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+            "faiss": {
+              "type": "HNSW",
+              "metric": "inner_product",
+              "M": 32,
+              "ef_construction": 200,
+              "ef_search": 32,
+              "threads": 4,
+              "nlist": 256,
+              "m": 16,
+              "nbits": 8,
+              "nprobe": 16
+            },
+            "fusion": {
+              "text_weight": 0.5,
+              "image_weight": 0.5
+            },
+            "query_fusion": {
+              "text_weight": 0.75,
+              "image_weight": 0.25
+            },
+            "evaluation": {
+              "relevance": "observable_attributes",
+              "queries_per_mode": 200,
+              "ann_recall_k": 10,
+              "version": "observable-query-v1",
+              "valid_seed": 42001,
+              "test_seed": 42002,
+              "text_style_probability": 0.5,
+              "korean_probability": 0.5,
+              "ef_search_sweep": [
+                32,
+                64,
+                128,
+                256
+              ],
+              "fusion_sweep": [
+                0.25,
+                0.5,
+                0.75
+              ]
+            },
+            "device": "cpu",
+            "torch_threads": 1,
+            "local_files_only": true,
+            "embedding_chunk_size": 256,
+            "artifact_subdir": "search",
+            "deduplicate_vectors": true,
+            "modes": {
+              "text": "text",
+              "image": "image",
+              "hybrid": "text"
+            }
+          },
+          "recommend": {
+            "candidate_k": 300,
+            "top_n": 10,
+            "exclude_purchased": false,
+            "candidate": {
+              "dim": 64,
+              "history_n": 50,
+              "batch_size": 512,
+              "epochs": 20,
+              "patience": 3,
+              "learning_rate": 0.001,
+              "temperature": 0.1,
+              "negatives_per_positive": 4,
+              "loss": "sampled_softmax",
+              "positive_weights": {
+                "view": 0.2,
+                "cart": 0.6,
+                "purchase": 1.0
+              },
+              "faiss": {
+                "type": "HNSW",
+                "metric": "inner_product",
+                "M": 32,
+                "ef_search": 512
+              },
+              "embedding_dim": 16,
+              "hidden_dim": 128,
+              "weight_decay": 0.0001,
+              "threads": 4,
+              "num_workers": 0,
+              "history_pooling": "mean",
+              "item_id_residual": false,
+              "profile_categories": "category_l3",
+              "tiny_fit_steps": 160,
+              "tiny_fit_learning_rate": 0.01
+            },
+            "evaluation": {
+              "cutoff_policy": "fixed_origin",
+              "target_events": [
+                "cart",
+                "purchase"
+              ],
+              "aggregation": "macro_user",
+              "k": 300,
+              "coverage_top_n": 50,
+              "coverage_users": 10000,
+              "min_history": 0
+            },
+            "mab": {
+              "algo": "epsilon_greedy",
+              "epsilon": 0.1,
+              "arm": "item",
+              "exploration_slots": 2,
+              "ucb_coefficient": 1.41421356237,
+              "exposure_ttl_seconds": 1800,
+              "click_reward": 0.2,
+              "purchase_reward": 1.0
+            },
+            "new_item_days": 7,
+            "max_consecutive_same_category": 2,
+            "cold_start_min_events": 5,
+            "scoring": {
+              "strategy": "ctr"
+            },
+            "candidate_config_snapshot": "docs/results/candidate_config_original.json",
+            "ranking": {
+              "embedding_dim": 16,
+              "hidden_dims": [
+                128,
+                64
+              ],
+              "learning_rate": 0.001,
+              "weight_decay": 0.0001,
+              "batch_size": 1024,
+              "epochs": 20,
+              "patience": 3,
+              "threads": 1,
+              "attribution_seconds": 1800,
+              "cvr_loss_weight": 1.0,
+              "cross_features": true
+            },
+            "reranking": {
+              "category_field": "category_l3",
+              "pipeline": [
+                "cold_start",
+                "new_item",
+                "exploration",
+                "diversity"
+              ],
+              "cold_sort": "popularity_growth",
+              "trend_days": 3,
+              "growth_weight": 0.5
+            },
+            "session": {
+              "enabled": true,
+              "hidden_dim": 64,
+              "max_length": 20,
+              "learning_rate": 0.001,
+              "weight_decay": 0.0001,
+              "batch_size": 1024,
+              "epochs": 20,
+              "patience": 3,
+              "session_weight": 0.3,
+              "long_term_weight": 0.7,
+              "negatives": 64,
+              "temperature": 0.1
+            },
+            "baselines": {
+              "category_weight": 1.0,
+              "brand_weight": 1.0,
+              "price_weight": 0.25,
+              "popularity_weight": 0.25
+            },
+            "diagnostics": {
+              "rare_max_train_events": 2,
+              "cold_max_history": 4
+            }
+          },
+          "split": {
+            "train": 0.8,
+            "valid": 0.1,
+            "test": 0.1
+          },
+          "ct": {
+            "hitrate_threshold": 0.2,
+            "retrain_log_threshold": 10000
+          },
+          "redis": {
+            "host": "redis",
+            "port": 6379
+          },
+          "benchmark": {
+            "warmup": 10,
+            "requests": 100,
+            "concurrency": 1
+          },
+          "targets": {
+            "mrr": 0.55,
+            "ndcg_at_10": 0.5,
+            "recall_at_300": 0.3,
+            "auc": 0.7,
+            "hit_rate_at_50": 0.2,
+            "ndcg_at_50": 0.08,
+            "coverage": 0.2,
+            "candidate_p95_ms": 100,
+            "search_p95_ms": 200,
+            "recommend_p95_ms": 200,
+            "feature_p95_ms": 10
+          },
+          "serving": {
+            "feature_store": "redis",
+            "history_limit": 50,
+            "session_ttl_seconds": 1800,
+            "feedback_ttl_seconds": 86400,
+            "plugins": {
+              "search": "src.search.service",
+              "recommend": "src.recommendation.service"
+            },
+            "evaluation": {
+              "nprobe_sweep": [
+                1,
+                4,
+                8,
+                16,
+                32
+              ]
+            },
+            "redis": {
+              "timeout_seconds": 0.2,
+              "max_connections": 32,
+              "write_retries": 8,
+              "db": 0,
+              "namespace": "mm-recsys:full:9f8a63437ec5"
+            },
+            "ab_test": {
+              "control": "popularity",
+              "treatment": "full_pipeline",
+              "users_per_group": 5000,
+              "days": 30,
+              "top_n": 10,
+              "dev_population_fraction": 0.2,
+              "outcome": {
+                "click_base": 0.35,
+                "category_weight": 1.0,
+                "price_penalty": 2.0,
+                "position_decay": 0.25,
+                "conversion_multiplier": 1.0
+              }
+            },
+            "ct": {
+              "enabled": true,
+              "poll_seconds": 60,
+              "recent_seconds": 86400,
+              "attribution_seconds": 3600,
+              "min_mature_requests": 20,
+              "ctr_threshold": 0.01,
+              "promotion_metric": "ctr_auc",
+              "min_improvement": 0.001,
+              "promotion_floor": 0.7
+            }
+          }
+        },
+        "config_fingerprint": "8f35c572295a66f4a06ca33dff676a43dc7902c63f00165be85e8470af32b048",
+        "data_path": "/app/data/full-v43",
+        "metrics": {
+          "status": "UNMEASURED",
+          "reason": "initial existing bundle; no invented validation"
+        },
+        "hashes": {
+          "meta.json": "bdef4ad6b11c1c35326901993b5d865441b541a027cf0ffdf2f25153e0966ad7",
+          "two_tower.pt": "79405368dcbcb98e8734dea26733cbe853f384fbad0e8d780af84d1b9cdda362",
+          "feature_vocab_scalers.json": "efef2585d2190b577b297c4d0d7d7550cca2c0d886bdbcd08f9b89bd77d284d4",
+          "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+          "item_index.faiss": "56b2c498f77f7869ae35e96c71e915db728ba3a4a114bc53cd2db743b2bfb3c0",
+          "index_manifest.json": "d1e2ca35d919d462df37fdab23684a6d6d29d3b66087436a72a132532cd2089a",
+          "ranking/meta.json": "7e9ebe4e226d52de06339528f5b8ab41c6b7aded63af2bca2d62382660c84335",
+          "ranking/deepfm.pt": "6467816c0908e3e53490d7ccd8b1e132e1eaab7581a9eedc15b0784df73a0f38",
+          "ranking/features.json": "2a41789bc86e32dd643f8ff1fa51f9069a6c8f0dd8802f15c3f841f4bd8754df",
+          "session/meta.json": "bdd713e77cc490c4e11ef1e5bb3b3afbe2dedbea8ec17e932fc20e74ce07384f",
+          "session/session.pt": "fe8694e4a69e2f6671e5ce22a7f21ce951d4cf5a7b53273cd6bf383a7d04e388",
+          "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+        },
+        "trained_through_seq": 0
+      },
+      "v1.1": {
+        "version": "v1.1",
+        "date": "2026-11-07T07:13:33.933000+00:00",
+        "parent": "v1.0",
+        "status": "ACTIVE",
+        "config": {
+          "schema_version": 4,
+          "seed": 42,
+          "scale": "full",
+          "scales": {
+            "dev": {
+              "n_products": 10000,
+              "n_users": 2000,
+              "n_events": 200000
+            },
+            "full": {
+              "n_products": 50000,
+              "n_users": 10000,
+              "n_events": 1000000
+            }
+          },
+          "paths": {
+            "data_dir": "/app/models/full-v43/.ct/runs/v1.1-3c9c82e6/data",
+            "model_dir": "models/full-v43",
+            "results_dir": "docs/results/docker/runtime-v43/full",
+            "split_dir": "data/full-v43/split",
+            "by_scale": {
+              "full": {
+                "data_dir": "data/full-v43",
+                "split_dir": "data/full-v43/split",
+                "model_dir": "models/full-v43"
+              }
+            }
+          },
+          "simulator": {
+            "n_products": 50000,
+            "n_users": 10000,
+            "n_events": 1000000,
+            "reference_time": "2026-11-07T06:32:50.703485297+00:00",
+            "image_size": 224,
+            "choice_model": {
+              "uniform_noise": 0.05,
+              "zipf_alpha": 1.2,
+              "preferred_leaf_probability": 0.86,
+              "preferred_brand_probability": 0.88
+            },
+            "event_types": [
+              "search",
+              "view",
+              "cart",
+              "purchase"
+            ],
+            "personas": {
+              "trendsetter": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.3,
+                "cvr": 0.05,
+                "category_preferences": [
+                  0.3,
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.1
+                ]
+              },
+              "pragmatist": {
+                "ratio": 0.2,
+                "price_sensitivity": 0.6,
+                "cvr": 0.04,
+                "category_preferences": [
+                  0.25,
+                  0.25,
+                  0.2,
+                  0.2,
+                  0.1
+                ]
+              },
+              "bargain": {
+                "ratio": 0.2,
+                "price_sensitivity": 0.9,
+                "cvr": 0.03,
+                "category_preferences": [
+                  0.3,
+                  0.25,
+                  0.1,
+                  0.2,
+                  0.15
+                ]
+              },
+              "brand_loyal": {
+                "ratio": 0.15,
+                "preferred_brand_probability": 0.98,
+                "price_sensitivity": 0.2,
+                "cvr": 0.06,
+                "category_preferences": [
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.2
+                ]
+              },
+              "impulsive": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.5,
+                "cvr": 0.08,
+                "category_preferences": [
+                  0.25,
+                  0.15,
+                  0.2,
+                  0.2,
+                  0.2
+                ]
+              },
+              "careful": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.7,
+                "cvr": 0.02,
+                "category_preferences": [
+                  0.2,
+                  0.2,
+                  0.3,
+                  0.2,
+                  0.1
+                ]
+              }
+            },
+            "window_days": 30,
+            "event_interval_seconds": 60,
+            "new_item_ratio": 0.04,
+            "cold_user_ratio": 0.03,
+            "cold_max_events": 3,
+            "impressions_per_view": 4,
+            "image_variants": 8,
+            "transitions": {
+              "search": {
+                "view": 1.0
+              },
+              "view": {
+                "view": 0.46,
+                "cart": 0.2,
+                "exit": 0.34
+              },
+              "cart": {
+                "purchase": 0.45,
+                "view": 0.25,
+                "exit": 0.3
+              },
+              "purchase": {
+                "exit": 1.0
+              },
+              "exit": {
+                "search": 1.0
+              }
+            },
+            "taxonomy": {
+              "tops": {
+                "shirts": [
+                  "shirt",
+                  "blouse",
+                  "polo shirt"
+                ],
+                "knitwear": [
+                  "sweater",
+                  "cardigan",
+                  "knitted vest"
+                ],
+                "casual": [
+                  "hoodie",
+                  "sweatshirt",
+                  "t-shirt"
+                ]
+              },
+              "bottoms": {
+                "trousers": [
+                  "jeans",
+                  "chinos",
+                  "cargo pants"
+                ],
+                "shorts": [
+                  "denim shorts",
+                  "bermuda shorts",
+                  "athletic shorts"
+                ],
+                "skirts": [
+                  "mini skirt",
+                  "pleated skirt",
+                  "long skirt"
+                ]
+              },
+              "outerwear": {
+                "coats": [
+                  "long coat",
+                  "trench coat",
+                  "pea coat"
+                ],
+                "jackets": [
+                  "bomber jacket",
+                  "denim jacket",
+                  "blazer"
+                ],
+                "warm": [
+                  "puffer jacket",
+                  "fleece jacket",
+                  "padded vest"
+                ]
+              },
+              "footwear": {
+                "casual": [
+                  "sneakers",
+                  "slip-on shoes",
+                  "canvas shoes"
+                ],
+                "formal": [
+                  "loafers",
+                  "oxford shoes",
+                  "heels"
+                ],
+                "outdoor": [
+                  "boots",
+                  "sandals",
+                  "hiking shoes"
+                ]
+              },
+              "accessories": {
+                "bags": [
+                  "backpack",
+                  "tote bag",
+                  "crossbody bag"
+                ],
+                "headwear": [
+                  "cap",
+                  "beanie",
+                  "bucket hat"
+                ],
+                "small": [
+                  "scarf",
+                  "belt",
+                  "gloves"
+                ]
+              }
+            },
+            "brands": [
+              "North",
+              "Urban",
+              "Classic",
+              "Field",
+              "Studio",
+              "Value",
+              "Muse",
+              "Daily"
+            ],
+            "colors": {
+              "black": "#222222",
+              "white": "#eeeeee",
+              "red": "#c73c3c",
+              "blue": "#315fa8",
+              "green": "#3e835a",
+              "yellow": "#d2ac3a",
+              "brown": "#8b6244",
+              "pink": "#db8ba0"
+            },
+            "styles": [
+              "regular",
+              "relaxed",
+              "slim",
+              "oversized"
+            ],
+            "category_price_ranges": {
+              "tops": [
+                15000,
+                140000
+              ],
+              "bottoms": [
+                20000,
+                160000
+              ],
+              "outerwear": [
+                50000,
+                350000
+              ],
+              "footwear": [
+                30000,
+                220000
+              ],
+              "accessories": [
+                10000,
+                180000
+              ]
+            }
+          },
+          "search": {
+            "clip_model": "openai/clip-vit-base-patch32",
+            "batch_size": 32,
+            "top_k": 10,
+            "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+            "faiss": {
+              "type": "HNSW",
+              "metric": "inner_product",
+              "M": 32,
+              "ef_construction": 200,
+              "ef_search": 32,
+              "threads": 4,
+              "nlist": 256,
+              "m": 16,
+              "nbits": 8,
+              "nprobe": 16
+            },
+            "fusion": {
+              "text_weight": 0.5,
+              "image_weight": 0.5
+            },
+            "query_fusion": {
+              "text_weight": 0.75,
+              "image_weight": 0.25
+            },
+            "evaluation": {
+              "relevance": "observable_attributes",
+              "queries_per_mode": 200,
+              "ann_recall_k": 10,
+              "version": "observable-query-v1",
+              "valid_seed": 42001,
+              "test_seed": 42002,
+              "text_style_probability": 0.5,
+              "korean_probability": 0.5,
+              "ef_search_sweep": [
+                32,
+                64,
+                128,
+                256
+              ],
+              "fusion_sweep": [
+                0.25,
+                0.5,
+                0.75
+              ]
+            },
+            "device": "cpu",
+            "torch_threads": 1,
+            "local_files_only": true,
+            "embedding_chunk_size": 256,
+            "artifact_subdir": "search",
+            "deduplicate_vectors": true,
+            "modes": {
+              "text": "text",
+              "image": "image",
+              "hybrid": "text"
+            }
+          },
+          "recommend": {
+            "candidate_k": 300,
+            "top_n": 10,
+            "exclude_purchased": false,
+            "candidate": {
+              "dim": 64,
+              "history_n": 50,
+              "batch_size": 512,
+              "epochs": 20,
+              "patience": 3,
+              "learning_rate": 0.001,
+              "temperature": 0.1,
+              "negatives_per_positive": 4,
+              "loss": "sampled_softmax",
+              "positive_weights": {
+                "view": 0.2,
+                "cart": 0.6,
+                "purchase": 1.0
+              },
+              "faiss": {
+                "type": "HNSW",
+                "metric": "inner_product",
+                "M": 32,
+                "ef_search": 512
+              },
+              "embedding_dim": 16,
+              "hidden_dim": 128,
+              "weight_decay": 0.0001,
+              "threads": 4,
+              "num_workers": 0,
+              "history_pooling": "mean",
+              "item_id_residual": false,
+              "profile_categories": "category_l3",
+              "tiny_fit_steps": 160,
+              "tiny_fit_learning_rate": 0.01
+            },
+            "evaluation": {
+              "cutoff_policy": "fixed_origin",
+              "target_events": [
+                "cart",
+                "purchase"
+              ],
+              "aggregation": "macro_user",
+              "k": 300,
+              "coverage_top_n": 50,
+              "coverage_users": 10000,
+              "min_history": 0
+            },
+            "mab": {
+              "algo": "epsilon_greedy",
+              "epsilon": 0.1,
+              "arm": "item",
+              "exploration_slots": 2,
+              "ucb_coefficient": 1.41421356237,
+              "exposure_ttl_seconds": 1800,
+              "click_reward": 0.2,
+              "purchase_reward": 1.0
+            },
+            "new_item_days": 7,
+            "max_consecutive_same_category": 2,
+            "cold_start_min_events": 5,
+            "scoring": {
+              "strategy": "ctr"
+            },
+            "candidate_config_snapshot": "docs/results/candidate_config_original.json",
+            "ranking": {
+              "embedding_dim": 16,
+              "hidden_dims": [
+                128,
+                64
+              ],
+              "learning_rate": 0.001,
+              "weight_decay": 0.0001,
+              "batch_size": 1024,
+              "epochs": 20,
+              "patience": 3,
+              "threads": 1,
+              "attribution_seconds": 1800,
+              "cvr_loss_weight": 1.0,
+              "cross_features": true
+            },
+            "reranking": {
+              "category_field": "category_l3",
+              "pipeline": [
+                "cold_start",
+                "new_item",
+                "exploration",
+                "diversity"
+              ],
+              "cold_sort": "popularity_growth",
+              "trend_days": 3,
+              "growth_weight": 0.5
+            },
+            "session": {
+              "enabled": true,
+              "hidden_dim": 64,
+              "max_length": 20,
+              "learning_rate": 0.001,
+              "weight_decay": 0.0001,
+              "batch_size": 1024,
+              "epochs": 20,
+              "patience": 3,
+              "session_weight": 0.3,
+              "long_term_weight": 0.7,
+              "negatives": 64,
+              "temperature": 0.1
+            },
+            "baselines": {
+              "category_weight": 1.0,
+              "brand_weight": 1.0,
+              "price_weight": 0.25,
+              "popularity_weight": 0.25
+            },
+            "diagnostics": {
+              "rare_max_train_events": 2,
+              "cold_max_history": 4
+            }
+          },
+          "split": {
+            "train": 0.8,
+            "valid": 0.1,
+            "test": 0.1
+          },
+          "ct": {
+            "hitrate_threshold": 0.2,
+            "retrain_log_threshold": 10000
+          },
+          "redis": {
+            "host": "redis",
+            "port": 6379
+          },
+          "benchmark": {
+            "warmup": 10,
+            "requests": 100,
+            "concurrency": 1
+          },
+          "targets": {
+            "mrr": 0.55,
+            "ndcg_at_10": 0.5,
+            "recall_at_300": 0.3,
+            "auc": 0.7,
+            "hit_rate_at_50": 0.2,
+            "ndcg_at_50": 0.08,
+            "coverage": 0.2,
+            "candidate_p95_ms": 100,
+            "search_p95_ms": 200,
+            "recommend_p95_ms": 200,
+            "feature_p95_ms": 10
+          },
+          "serving": {
+            "feature_store": "redis",
+            "history_limit": 50,
+            "session_ttl_seconds": 1800,
+            "feedback_ttl_seconds": 86400,
+            "plugins": {
+              "search": "src.search.service",
+              "recommend": "src.recommendation.service"
+            },
+            "evaluation": {
+              "nprobe_sweep": [
+                1,
+                4,
+                8,
+                16,
+                32
+              ]
+            },
+            "redis": {
+              "timeout_seconds": 0.2,
+              "max_connections": 32,
+              "write_retries": 8,
+              "db": 0,
+              "namespace": "mm-recsys:full:9f8a63437ec5"
+            },
+            "ab_test": {
+              "control": "popularity",
+              "treatment": "full_pipeline",
+              "users_per_group": 5000,
+              "days": 30,
+              "top_n": 10,
+              "dev_population_fraction": 0.2,
+              "outcome": {
+                "click_base": 0.35,
+                "category_weight": 1.0,
+                "price_penalty": 2.0,
+                "position_decay": 0.25,
+                "conversion_multiplier": 1.0
+              }
+            },
+            "ct": {
+              "enabled": true,
+              "poll_seconds": 60,
+              "recent_seconds": 86400,
+              "attribution_seconds": 3600,
+              "min_mature_requests": 20,
+              "ctr_threshold": 0.01,
+              "promotion_metric": "ctr_auc",
+              "min_improvement": 0.001,
+              "promotion_floor": 0.7
+            }
+          }
+        },
+        "config_fingerprint": "9e1c590585ad41f79e5db168b853cd153aef0882800390d0c90e2490aa24b263",
+        "data_path": "/app/models/full-v43/.ct/runs/v1.1-3c9c82e6/data",
+        "metrics": {
+          "ctr_auc": 0.9679866077746168,
+          "ctr_logloss": 0.14834468727308792,
+          "hit_rate_at_50": 0.6131836291198841,
+          "truth_users": 2761,
+          "ctr_samples": 76448,
+          "validation_fingerprint": "ff609079d0e5c3180d9badc4ef0eafcd9ca3a03210659f21f59e0b950cbace4f"
+        },
+        "hashes": {
+          "meta.json": "5353062d3b6af19e925db7d8b998f69de0e5cf0a69df3ed23b0ae574ff5707ef",
+          "two_tower.pt": "813d10c34cd8998f08cccde115228f4370742a805ae25d61fd90c18c0c34b5aa",
+          "feature_vocab_scalers.json": "055c2909568177138d7778eacd3dd52bdd86c61be42f2f597c13193007cfda18",
+          "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+          "item_index.faiss": "a6de750974579352c9bc0f60a8c38cab57f285e744fd06df351a40dccd558510",
+          "index_manifest.json": "48268262c5d770f8fe6a18f3cee83d5c2e1c3ecff71cec070fee11309064b1b2",
+          "ranking/meta.json": "0544b50cbc8ef0af87b99b9d79c90e7d9e1913cb3dac075c5e83155872cb46a7",
+          "ranking/deepfm.pt": "68f452ffb067802475e82091c2ca2c4817b6b2ad246cccf13b3e77f13028a0f0",
+          "ranking/features.json": "dc4bfd65b8dbae99d755276ed99325f06e741ee8045b12dbbb46d62cb9bea429",
+          "session/meta.json": "1beffa504e77383be228c859e5423fe9deadc9e0b350e4903cab031ce33461ae",
+          "session/session.pt": "2fd001bdda4fdf92aae4cbabaa9ce0c5c005950b10f218119c4133328ca5b356",
+          "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+        },
+        "trained_through_seq": 206412,
+        "comparison": {
+          "split": "valid",
+          "validation_fingerprint": "ff609079d0e5c3180d9badc4ef0eafcd9ca3a03210659f21f59e0b950cbace4f",
+          "baseline": {
+            "ctr_auc": 0.9666978103284652,
+            "ctr_logloss": 0.13968260071749916,
+            "hit_rate_at_50": 0.6139080043462514,
+            "truth_users": 2761,
+            "ctr_samples": 76448,
+            "validation_fingerprint": "ff609079d0e5c3180d9badc4ef0eafcd9ca3a03210659f21f59e0b950cbace4f"
+          },
+          "candidate": {
+            "ctr_auc": 0.9679866077746168,
+            "ctr_logloss": 0.14834468727308792,
+            "hit_rate_at_50": 0.6131836291198841,
+            "truth_users": 2761,
+            "ctr_samples": 76448,
+            "validation_fingerprint": "ff609079d0e5c3180d9badc4ef0eafcd9ca3a03210659f21f59e0b950cbace4f"
+          },
+          "training_reports": {
+            "candidate": "897adedc03411d7cf698f45ba3dafc3984b3b528980ff1cc1e17f5d89b6e485d",
+            "ranking": "07fa55aa6d999ca47f1a9632e5266673d85209b0a45b04c3f04d89783dc35485",
+            "session": "e91ca0befd6058ada1b4bd84871cb41c21c8d4aedb99e8a0b1125827d0bb7c2e"
+          }
+        }
+      },
+      "v1.2": {
+        "version": "v1.2",
+        "date": "2026-11-07T08:10:58.656606+00:00",
+        "parent": "v1.1",
+        "status": "REJECTED",
+        "config": {
+          "schema_version": 4,
+          "seed": 42,
+          "scale": "full",
+          "scales": {
+            "dev": {
+              "n_products": 10000,
+              "n_users": 2000,
+              "n_events": 200000
+            },
+            "full": {
+              "n_products": 50000,
+              "n_users": 10000,
+              "n_events": 1000000
+            }
+          },
+          "paths": {
+            "data_dir": "/app/models/full-v43/.ct/runs/v1.2-8ed26263/data",
+            "model_dir": "models/full-v43",
+            "results_dir": "docs/results/docker/runtime-v43/full",
+            "split_dir": "data/full-v43/split",
+            "by_scale": {
+              "full": {
+                "data_dir": "data/full-v43",
+                "split_dir": "data/full-v43/split",
+                "model_dir": "models/full-v43"
+              }
+            }
+          },
+          "simulator": {
+            "n_products": 50000,
+            "n_users": 10000,
+            "n_events": 1000000,
+            "reference_time": "2026-11-07T07:15:12.940641926+00:00",
+            "image_size": 224,
+            "choice_model": {
+              "uniform_noise": 0.05,
+              "zipf_alpha": 1.2,
+              "preferred_leaf_probability": 0.86,
+              "preferred_brand_probability": 0.88
+            },
+            "event_types": [
+              "search",
+              "view",
+              "cart",
+              "purchase"
+            ],
+            "personas": {
+              "trendsetter": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.3,
+                "cvr": 0.05,
+                "category_preferences": [
+                  0.3,
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.1
+                ]
+              },
+              "pragmatist": {
+                "ratio": 0.2,
+                "price_sensitivity": 0.6,
+                "cvr": 0.04,
+                "category_preferences": [
+                  0.25,
+                  0.25,
+                  0.2,
+                  0.2,
+                  0.1
+                ]
+              },
+              "bargain": {
+                "ratio": 0.2,
+                "price_sensitivity": 0.9,
+                "cvr": 0.03,
+                "category_preferences": [
+                  0.3,
+                  0.25,
+                  0.1,
+                  0.2,
+                  0.15
+                ]
+              },
+              "brand_loyal": {
+                "ratio": 0.15,
+                "preferred_brand_probability": 0.98,
+                "price_sensitivity": 0.2,
+                "cvr": 0.06,
+                "category_preferences": [
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.2,
+                  0.2
+                ]
+              },
+              "impulsive": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.5,
+                "cvr": 0.08,
+                "category_preferences": [
+                  0.25,
+                  0.15,
+                  0.2,
+                  0.2,
+                  0.2
+                ]
+              },
+              "careful": {
+                "ratio": 0.15,
+                "price_sensitivity": 0.7,
+                "cvr": 0.02,
+                "category_preferences": [
+                  0.2,
+                  0.2,
+                  0.3,
+                  0.2,
+                  0.1
+                ]
+              }
+            },
+            "window_days": 30,
+            "event_interval_seconds": 60,
+            "new_item_ratio": 0.04,
+            "cold_user_ratio": 0.03,
+            "cold_max_events": 3,
+            "impressions_per_view": 4,
+            "image_variants": 8,
+            "transitions": {
+              "search": {
+                "view": 1.0
+              },
+              "view": {
+                "view": 0.46,
+                "cart": 0.2,
+                "exit": 0.34
+              },
+              "cart": {
+                "purchase": 0.45,
+                "view": 0.25,
+                "exit": 0.3
+              },
+              "purchase": {
+                "exit": 1.0
+              },
+              "exit": {
+                "search": 1.0
+              }
+            },
+            "taxonomy": {
+              "tops": {
+                "shirts": [
+                  "shirt",
+                  "blouse",
+                  "polo shirt"
+                ],
+                "knitwear": [
+                  "sweater",
+                  "cardigan",
+                  "knitted vest"
+                ],
+                "casual": [
+                  "hoodie",
+                  "sweatshirt",
+                  "t-shirt"
+                ]
+              },
+              "bottoms": {
+                "trousers": [
+                  "jeans",
+                  "chinos",
+                  "cargo pants"
+                ],
+                "shorts": [
+                  "denim shorts",
+                  "bermuda shorts",
+                  "athletic shorts"
+                ],
+                "skirts": [
+                  "mini skirt",
+                  "pleated skirt",
+                  "long skirt"
+                ]
+              },
+              "outerwear": {
+                "coats": [
+                  "long coat",
+                  "trench coat",
+                  "pea coat"
+                ],
+                "jackets": [
+                  "bomber jacket",
+                  "denim jacket",
+                  "blazer"
+                ],
+                "warm": [
+                  "puffer jacket",
+                  "fleece jacket",
+                  "padded vest"
+                ]
+              },
+              "footwear": {
+                "casual": [
+                  "sneakers",
+                  "slip-on shoes",
+                  "canvas shoes"
+                ],
+                "formal": [
+                  "loafers",
+                  "oxford shoes",
+                  "heels"
+                ],
+                "outdoor": [
+                  "boots",
+                  "sandals",
+                  "hiking shoes"
+                ]
+              },
+              "accessories": {
+                "bags": [
+                  "backpack",
+                  "tote bag",
+                  "crossbody bag"
+                ],
+                "headwear": [
+                  "cap",
+                  "beanie",
+                  "bucket hat"
+                ],
+                "small": [
+                  "scarf",
+                  "belt",
+                  "gloves"
+                ]
+              }
+            },
+            "brands": [
+              "North",
+              "Urban",
+              "Classic",
+              "Field",
+              "Studio",
+              "Value",
+              "Muse",
+              "Daily"
+            ],
+            "colors": {
+              "black": "#222222",
+              "white": "#eeeeee",
+              "red": "#c73c3c",
+              "blue": "#315fa8",
+              "green": "#3e835a",
+              "yellow": "#d2ac3a",
+              "brown": "#8b6244",
+              "pink": "#db8ba0"
+            },
+            "styles": [
+              "regular",
+              "relaxed",
+              "slim",
+              "oversized"
+            ],
+            "category_price_ranges": {
+              "tops": [
+                15000,
+                140000
+              ],
+              "bottoms": [
+                20000,
+                160000
+              ],
+              "outerwear": [
+                50000,
+                350000
+              ],
+              "footwear": [
+                30000,
+                220000
+              ],
+              "accessories": [
+                10000,
+                180000
+              ]
+            }
+          },
+          "search": {
+            "clip_model": "openai/clip-vit-base-patch32",
+            "batch_size": 32,
+            "top_k": 10,
+            "clip_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+            "faiss": {
+              "type": "HNSW",
+              "metric": "inner_product",
+              "M": 32,
+              "ef_construction": 200,
+              "ef_search": 32,
+              "threads": 4,
+              "nlist": 256,
+              "m": 16,
+              "nbits": 8,
+              "nprobe": 16
+            },
+            "fusion": {
+              "text_weight": 0.5,
+              "image_weight": 0.5
+            },
+            "query_fusion": {
+              "text_weight": 0.75,
+              "image_weight": 0.25
+            },
+            "evaluation": {
+              "relevance": "observable_attributes",
+              "queries_per_mode": 200,
+              "ann_recall_k": 10,
+              "version": "observable-query-v1",
+              "valid_seed": 42001,
+              "test_seed": 42002,
+              "text_style_probability": 0.5,
+              "korean_probability": 0.5,
+              "ef_search_sweep": [
+                32,
+                64,
+                128,
+                256
+              ],
+              "fusion_sweep": [
+                0.25,
+                0.5,
+                0.75
+              ]
+            },
+            "device": "cpu",
+            "torch_threads": 1,
+            "local_files_only": true,
+            "embedding_chunk_size": 256,
+            "artifact_subdir": "search",
+            "deduplicate_vectors": true,
+            "modes": {
+              "text": "text",
+              "image": "image",
+              "hybrid": "text"
+            }
+          },
+          "recommend": {
+            "candidate_k": 300,
+            "top_n": 10,
+            "exclude_purchased": false,
+            "candidate": {
+              "dim": 64,
+              "history_n": 50,
+              "batch_size": 512,
+              "epochs": 20,
+              "patience": 3,
+              "learning_rate": 0.001,
+              "temperature": 0.1,
+              "negatives_per_positive": 4,
+              "loss": "sampled_softmax",
+              "positive_weights": {
+                "view": 0.2,
+                "cart": 0.6,
+                "purchase": 1.0
+              },
+              "faiss": {
+                "type": "HNSW",
+                "metric": "inner_product",
+                "M": 32,
+                "ef_search": 512
+              },
+              "embedding_dim": 16,
+              "hidden_dim": 128,
+              "weight_decay": 0.0001,
+              "threads": 4,
+              "num_workers": 0,
+              "history_pooling": "mean",
+              "item_id_residual": false,
+              "profile_categories": "category_l3",
+              "tiny_fit_steps": 160,
+              "tiny_fit_learning_rate": 0.01
+            },
+            "evaluation": {
+              "cutoff_policy": "fixed_origin",
+              "target_events": [
+                "cart",
+                "purchase"
+              ],
+              "aggregation": "macro_user",
+              "k": 300,
+              "coverage_top_n": 50,
+              "coverage_users": 10000,
+              "min_history": 0
+            },
+            "mab": {
+              "algo": "epsilon_greedy",
+              "epsilon": 0.1,
+              "arm": "item",
+              "exploration_slots": 2,
+              "ucb_coefficient": 1.41421356237,
+              "exposure_ttl_seconds": 1800,
+              "click_reward": 0.2,
+              "purchase_reward": 1.0
+            },
+            "new_item_days": 7,
+            "max_consecutive_same_category": 2,
+            "cold_start_min_events": 5,
+            "scoring": {
+              "strategy": "ctr"
+            },
+            "candidate_config_snapshot": "docs/results/candidate_config_original.json",
+            "ranking": {
+              "embedding_dim": 16,
+              "hidden_dims": [
+                128,
+                64
+              ],
+              "learning_rate": 0.001,
+              "weight_decay": 0.0001,
+              "batch_size": 1024,
+              "epochs": 20,
+              "patience": 3,
+              "threads": 1,
+              "attribution_seconds": 1800,
+              "cvr_loss_weight": 1.0,
+              "cross_features": true
+            },
+            "reranking": {
+              "category_field": "category_l3",
+              "pipeline": [
+                "cold_start",
+                "new_item",
+                "exploration",
+                "diversity"
+              ],
+              "cold_sort": "popularity_growth",
+              "trend_days": 3,
+              "growth_weight": 0.5
+            },
+            "session": {
+              "enabled": true,
+              "hidden_dim": 64,
+              "max_length": 20,
+              "learning_rate": 0.001,
+              "weight_decay": 0.0001,
+              "batch_size": 1024,
+              "epochs": 20,
+              "patience": 3,
+              "session_weight": 0.3,
+              "long_term_weight": 0.7,
+              "negatives": 64,
+              "temperature": 0.1
+            },
+            "baselines": {
+              "category_weight": 1.0,
+              "brand_weight": 1.0,
+              "price_weight": 0.25,
+              "popularity_weight": 0.25
+            },
+            "diagnostics": {
+              "rare_max_train_events": 2,
+              "cold_max_history": 4
+            }
+          },
+          "split": {
+            "train": 0.8,
+            "valid": 0.1,
+            "test": 0.1
+          },
+          "ct": {
+            "hitrate_threshold": 0.2,
+            "retrain_log_threshold": 10000
+          },
+          "redis": {
+            "host": "redis",
+            "port": 6379
+          },
+          "benchmark": {
+            "warmup": 10,
+            "requests": 100,
+            "concurrency": 1
+          },
+          "targets": {
+            "mrr": 0.55,
+            "ndcg_at_10": 0.5,
+            "recall_at_300": 0.3,
+            "auc": 0.7,
+            "hit_rate_at_50": 0.2,
+            "ndcg_at_50": 0.08,
+            "coverage": 0.2,
+            "candidate_p95_ms": 100,
+            "search_p95_ms": 200,
+            "recommend_p95_ms": 200,
+            "feature_p95_ms": 10
+          },
+          "serving": {
+            "feature_store": "redis",
+            "history_limit": 50,
+            "session_ttl_seconds": 1800,
+            "feedback_ttl_seconds": 86400,
+            "plugins": {
+              "search": "src.search.service",
+              "recommend": "src.recommendation.service"
+            },
+            "evaluation": {
+              "nprobe_sweep": [
+                1,
+                4,
+                8,
+                16,
+                32
+              ]
+            },
+            "redis": {
+              "timeout_seconds": 0.2,
+              "max_connections": 32,
+              "write_retries": 8,
+              "db": 0,
+              "namespace": "mm-recsys:full:9f8a63437ec5"
+            },
+            "ab_test": {
+              "control": "popularity",
+              "treatment": "full_pipeline",
+              "users_per_group": 5000,
+              "days": 30,
+              "top_n": 10,
+              "dev_population_fraction": 0.2,
+              "outcome": {
+                "click_base": 0.35,
+                "category_weight": 1.0,
+                "price_penalty": 2.0,
+                "position_decay": 0.25,
+                "conversion_multiplier": 1.0
+              }
+            },
+            "ct": {
+              "enabled": true,
+              "poll_seconds": 60,
+              "recent_seconds": 86400,
+              "attribution_seconds": 3600,
+              "min_mature_requests": 20,
+              "ctr_threshold": 0.01,
+              "promotion_metric": "ctr_auc",
+              "min_improvement": 0.001,
+              "promotion_floor": 0.7
+            }
+          }
+        },
+        "config_fingerprint": "0ac77a9dda822895fa56fd27281fbd5ed73d7ff513177b7db76206eb7fceb732",
+        "data_path": "/app/models/full-v43/.ct/runs/v1.2-8ed26263/data",
+        "metrics": {
+          "ctr_auc": 0.9675478584633898,
+          "ctr_logloss": 0.14057870647586088,
+          "hit_rate_at_50": 0.6160337552742616,
+          "truth_users": 1896,
+          "ctr_samples": 56240,
+          "validation_fingerprint": "b04c00f03d06605fdce214f4e8c224d30426b2f1dc84a5b094ef1564bccf722a"
+        },
+        "hashes": {
+          "meta.json": "f67e480c1722e5bce5a05b3804dbadf21f1e6b93184155f2d0b3870282960f00",
+          "two_tower.pt": "1915995ee19b6821ae15437e2fbec26d5d152ce8d08724a657e3f8249db2bb02",
+          "feature_vocab_scalers.json": "7bcc390f76fa65a5f2f7123a65747fe0853b81f7f9f13114c284f67f2b6f3910",
+          "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+          "item_index.faiss": "a2a00064ef3c1fc02134dbe3a8b635384008b2273830060cf1363e415ec72b3d",
+          "index_manifest.json": "937f8f436abf4e9c397a4acbc704d78d1479c8306752348a18a6ce59bd5db5e9",
+          "ranking/meta.json": "f75a18de3cbae0526eb25bc71f23c0a894d848df6a5c95e7ccdc38965d067305",
+          "ranking/deepfm.pt": "ea383996de4098a8de74c507ee72978907a34b6a697c11d32c486653cc9cca5a",
+          "ranking/features.json": "52eda5925a34101eabd9abf73dd02124b2eb1269d976a6059553e28ca3243d07",
+          "session/meta.json": "7b7f9c1c1f823715ffb5907c0da4e53854e139334020955fb51acb89484c6f44",
+          "session/session.pt": "8b95b6504353101895172506a685233ea4728802a6e4251661d3d26ea23ed5de",
+          "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+        },
+        "trained_through_seq": 217630,
+        "comparison": {
+          "split": "valid",
+          "validation_fingerprint": "b04c00f03d06605fdce214f4e8c224d30426b2f1dc84a5b094ef1564bccf722a",
+          "baseline": {
+            "ctr_auc": 0.9670812491948413,
+            "ctr_logloss": 0.14908618283806643,
+            "hit_rate_at_50": 0.6207805907172996,
+            "truth_users": 1896,
+            "ctr_samples": 56240,
+            "validation_fingerprint": "b04c00f03d06605fdce214f4e8c224d30426b2f1dc84a5b094ef1564bccf722a"
+          },
+          "candidate": {
+            "ctr_auc": 0.9675478584633898,
+            "ctr_logloss": 0.14057870647586088,
+            "hit_rate_at_50": 0.6160337552742616,
+            "truth_users": 1896,
+            "ctr_samples": 56240,
+            "validation_fingerprint": "b04c00f03d06605fdce214f4e8c224d30426b2f1dc84a5b094ef1564bccf722a"
+          },
+          "training_reports": {
+            "candidate": "c42af134dd6794da6584de10bd91ec8032fa91f807664e0599cf1e98708f1625",
+            "ranking": "8a0b504e02315722e5368d63149b5c9df9a9c67f702499ec92e30162323cc549",
+            "session": "930886e9eb025c0bbb94cf24803191a41f0b92b2fa683a4dbb55744d48cc333a"
+          }
+        }
+      }
+    },
+    "last_success_seq": 217630
+  },
+  "new_events": 10360,
+  "high_watermark": 231932,
+  "threshold": 10000
+}

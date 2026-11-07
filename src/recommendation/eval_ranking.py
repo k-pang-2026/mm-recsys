@@ -1,6 +1,8 @@
 """Frozen-origin end-to-end ranking comparison and separate CTR/CVR metrics."""
 from __future__ import annotations
 
+from src.common.console import log
+
 import argparse
 import json
 import time
@@ -90,7 +92,7 @@ def evaluate(cfg: dict,split: str,with_session: bool=False,reuse: Path | None=No
         if uid in truth:
             evaluated_truth.append(truth[uid]); baseline.append(baseline_top); ranked.append(rank_top)
             if with_session: final.append(final_top)
-        if (i+1)%1000==0: print(f'{split} evaluated_users={i+1}',flush=True)
+        if (i+1)%1000==0: log('랭킹', '평가', f'{split}: 사용자 {i+1:,}명 평가')
     metrics={name:anchor['metrics'][name] for name in ['two_tower','deepfm']} if anchor else {}
     for name,rows in ([] if anchor else [('two_tower',baseline),('deepfm',ranked)])+([('b5',final)] if with_session else []):
         metrics[name]=dict(hit_rate_at_50=float(np.mean([hit_rate_at_k(r,t,50) for r,t in zip(rows,evaluated_truth)])),
@@ -120,7 +122,7 @@ def evaluate(cfg: dict,split: str,with_session: bool=False,reuse: Path | None=No
     if cfg['scale']=='full' and split=='test':
         report['measured_quality_status']='PASS' if all(report['checks'].values()) else 'FAIL'
     output=output or Path(cfg['paths']['results_dir'])/f'ranking_{cfg["scale"]}_{split}{"_b5" if with_session else ""}.json'
-    write_json(output,report); print(f'result={output}; metrics={metrics}',flush=True); return report
+    write_json(output,report); log('랭킹', '평가', f'결과={output} / 지표={metrics}', status='측정 완료'); return report
 
 
 def main() -> int:

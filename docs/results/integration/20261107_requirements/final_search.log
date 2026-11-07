@@ -1,0 +1,3 @@
+[2026-11-07T08:49:22+00:00] [시연 요청] [진행] 명령=search / API=http://api-server:8000
+[2026-11-07T08:49:23+00:00] [검색 완료] [성공] 검색 유형=텍스트 / 반환 상품=10개 / total_count=50000 / 응답 시간=212.5ms
+[2026-11-07T08:49:23+00:00] [시연 저장] [성공] UTF-8 JSON=docs/results/integration/20261107_requirements/final_search.json

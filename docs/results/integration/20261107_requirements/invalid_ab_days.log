@@ -1,0 +1,4 @@
+usage: demo.py [-h] [--users-per-group USERS_PER_GROUP] [--days DAYS]
+               [--output OUTPUT] [--json]
+demo.py: error: --days는 양수여야 합니다.
+[2026-11-07T05:57:56+00:00] [API 시연 인자 검사] [실패] 명령 인자를 해석하지 못했습니다. / 다음 조치: --help와 위 원본 오류를 확인하세요.

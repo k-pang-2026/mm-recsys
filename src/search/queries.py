@@ -1,6 +1,8 @@
 """Freeze independent queries before evaluation. Labels never enter the searcher."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 from io import BytesIO
 import json
@@ -98,15 +100,16 @@ def freeze_queries(cfg: dict) -> Path:
 
 
 def main() -> None:
-    argparse.ArgumentParser(description=__doc__).parse_args()
+    argparse.ArgumentParser(description='검색 평가 쿼리').parse_args()
     cfg = load_config(); folder = freeze_queries(cfg)
     manifest = json.loads((folder/'manifest.json').read_text())
     summary = {'scope': 'frozen before quality evaluation', 'path': str(folder),
                'manifest_sha256': file_hash(folder/'manifest.json'),
                'fingerprint': manifest['fingerprint'], 'identity': manifest['identity'], 'counts': manifest['counts']}
     write_json(Path(f'docs/results/search_queries_{cfg["scale"]}.json'), summary)
+    log('검색 평가 쿼리', '결과', f"규모={summary.get('scale', '설정 참조')} / 판정={summary.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '검색 평가 쿼리', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

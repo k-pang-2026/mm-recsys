@@ -1,0 +1,173 @@
+{
+  "before": {
+    "user_id": "cli-korean-20261107",
+    "recommendations": [
+      {
+        "product_id": "P000775",
+        "score": 0.6626506024096386,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P000628",
+        "score": 0.0,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P001816",
+        "score": 1.0,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000022",
+        "score": 1.0,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000229",
+        "score": 0.9919678714859438,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000462",
+        "score": 0.9467871485943775,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000301",
+        "score": 0.8920682730923695,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000068",
+        "score": 0.8644578313253012,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000255",
+        "score": 0.8493975903614458,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000104",
+        "score": 0.8473895582329317,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      }
+    ],
+    "pipeline_latency": {
+      "candidate_ms": 2.716715000019576,
+      "ranking_ms": 28.286765999951058,
+      "reranking_ms": 7.6612909999767,
+      "total_ms": 38.664771999947334
+    },
+    "session_context": {
+      "recent_clicks": [],
+      "session_interest": null
+    }
+  },
+  "event": {
+    "event_id": "cli-korean-20261107-click-1",
+    "user_id": "cli-korean-20261107",
+    "product_id": "P000001",
+    "event_type": "view",
+    "session_id": "cli-demo",
+    "category": "tote bag"
+  },
+  "event_response": {
+    "applied": true,
+    "features": {
+      "recent_clicks": [
+        "P000001"
+      ],
+      "session_clicks": 1,
+      "session_interest": "tote bag",
+      "profile": {}
+    }
+  },
+  "after": {
+    "user_id": "cli-korean-20261107",
+    "recommendations": [
+      {
+        "product_id": "P000002",
+        "score": 0.3313253012048193,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P000628",
+        "score": 0.0,
+        "reason": "MAB 탐색",
+        "is_exploration": true
+      },
+      {
+        "product_id": "P001816",
+        "score": 1.0,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000022",
+        "score": 1.0,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000229",
+        "score": 0.9919678714859438,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000462",
+        "score": 0.9467871485943775,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000301",
+        "score": 0.8920682730923695,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000068",
+        "score": 0.8644578313253012,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000255",
+        "score": 0.8493975903614458,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      },
+      {
+        "product_id": "P000104",
+        "score": 0.8473895582329317,
+        "reason": "인기·최근 상승 상품",
+        "is_exploration": false
+      }
+    ],
+    "pipeline_latency": {
+      "candidate_ms": 2.3612400000274647,
+      "ranking_ms": 19.647664999979497,
+      "reranking_ms": 19.32568600000195,
+      "total_ms": 41.33459100000891
+    },
+    "session_context": {
+      "recent_clicks": [
+        "P000001"
+      ],
+      "session_interest": "tote bag"
+    }
+  }
+}

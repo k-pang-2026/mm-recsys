@@ -1,6 +1,8 @@
 """Full shared-API injection benchmark and observable session/reward evidence."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import cast
 from fastapi import FastAPI
 
@@ -96,7 +98,7 @@ def benchmark(cfg: dict,b5: bool=True,output: Path | None=None) -> dict:
                 data_fingerprint=data['manifest']['generation_fingerprint'],
                 source_hashes={name:file_hash(Path(name)) for name in ['src/recommendation/bench_ranking.py','src/recommendation/recommender.py','src/recommendation/scoring.py','src/recommendation/service.py']})
     output=output or Path(cfg['paths']['results_dir'])/f'ranking_latency_{cfg["scale"]}_{"b5" if b5 else "b4"}.json'
-    write_json(output,report); print(f'{report["stage"]} native={report["native"]}; ASGI HTTP={report["asgi_http"]}; result={output}',flush=True)
+    write_json(output,report); log("추천", "지연", f'{report["stage"]} / 내부={report["native"]} / ASGI HTTP={report["asgi_http"]} / 결과={output}', status="측정 완료")
     return report
 
 
@@ -123,8 +125,9 @@ def main() -> int:
     if args.tcp:
         from src.recommendation.bench_tcp import benchmark_tcp
         report=benchmark_tcp(cfg,not args.b4,args.output,args.selection)
-        return 1 if report['status']=='FAIL' else 0
-    report=benchmark(cfg,not args.b4,args.output);return 0 if report['status']=='PASS' else 1
+        emit_json(report)
+        return 0 if report['status']=='PASS' else 1
+    report=benchmark(cfg,not args.b4,args.output);emit_json(report);return 0 if report['status']=='PASS' else 1
 
 
-if __name__=='__main__': raise SystemExit(main())
+if __name__=='__main__': raise SystemExit(run_cli(main, '추천 지연 평가', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.'))

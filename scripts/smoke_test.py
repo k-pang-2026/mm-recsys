@@ -14,6 +14,7 @@ import urllib.request
 import uuid
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from src.common.console import log, emit_json, run_cli, status_ko
 
 from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.schemas import RecommendResponse, SearchResponse
@@ -148,7 +149,7 @@ def run(cfg: dict, api: str, dashboard: str, benchmark: bool) -> dict:
             modes[mode] = dict(http=stats, service=quantiles(native), http_samples_ms=http,
                 service_samples_ms=native, pipeline_samples=pipelines, warmup=warmup, requests=calls,
                 concurrency=1, errors=0, target_p95_ms=target, status='PASS' if stats['p95_ms'] <= target else 'FAIL')
-            print(f'Docker HTTP {mode}: p95={stats["p95_ms"]:.3f}ms', flush=True)
+            log('평가', 'HTTP 지연', f'{mode}: p95={stats["p95_ms"]:.3f}ms', status='측정 완료')
         from src.serving.feature_store import RedisFeatureStore, create_feature_store
         from src.evaluation.bench_latency import benchmark as feature_benchmark
         from src.recommendation.bench_candidate import benchmark as candidate_benchmark
@@ -199,9 +200,10 @@ def main() -> int:
     write_json(output, result)
     if args.benchmark:
         write_json(output.parent / 'latency.json' if args.output else Path('docs/results/latency.json'), result)
-    print(f"Docker smoke: {result['status']} -> {output}")
+    log('평가', 'Docker 검사', f"결과={output}", status=status_ko(result['status']))
+    emit_json(result)
     return 0 if result['status'] == 'PASS' else 1
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'Docker 검사', 'API /ready·Redis 연결과 준비 결과를 확인하세요.'))

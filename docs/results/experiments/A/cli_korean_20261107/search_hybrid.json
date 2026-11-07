@@ -1,0 +1,67 @@
+{
+  "search_type": "hybrid",
+  "results": [
+    {
+      "product_id": "P000422",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 175000.0
+    },
+    {
+      "product_id": "P000675",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 89000.0
+    },
+    {
+      "product_id": "P000817",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 145000.0
+    },
+    {
+      "product_id": "P001276",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 65000.0
+    },
+    {
+      "product_id": "P001461",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 39000.0
+    },
+    {
+      "product_id": "P002199",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 100000.0
+    },
+    {
+      "product_id": "P002423",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 90000.0
+    },
+    {
+      "product_id": "P002797",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 66000.0
+    },
+    {
+      "product_id": "P004794",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 78000.0
+    },
+    {
+      "product_id": "P006760",
+      "name": "white regular cap",
+      "score": 0.6889434456825256,
+      "price": 38000.0
+    }
+  ],
+  "latency_ms": 220.3447420000657,
+  "total_count": 50000
+}

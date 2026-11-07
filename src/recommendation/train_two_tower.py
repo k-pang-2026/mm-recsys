@@ -1,6 +1,8 @@
 """CPU-first reproducible sampled-softmax training, valid-selected checkpoint and bundle."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli, emit_json
+
 from typing import Any
 
 from typing import cast
@@ -207,7 +209,7 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
         recall = metrics['recall_at_300']
         if recall is None:
             raise ValueError('no valid truth users; cannot select checkpoint')
-        print(f'epoch={epoch} loss={diagnostic["weighted_loss"]:.5f} valid_recall@300={recall:.6f} updates={updates}', flush=True)
+        log('모델', '학습', f'Two-Tower epoch={epoch} / loss={diagnostic["weighted_loss"]:.5f} / valid_recall@300={recall:.6f} / 갱신={updates}')
         if recall > best_recall:
             best_recall, best_epoch, stale = recall, epoch, 0
             best_state = copy.deepcopy(model.state_dict())
@@ -238,7 +240,7 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
                   full_test_quality='UNMEASURED', ann=index_manifest, latency='UNMEASURED')
     output = output or Path(cfg['paths']['results_dir']) / f'candidate_training_{cfg["scale"]}.json'
     write_json(output, report)
-    print(f'best_epoch={best_epoch}; valid_recall@300={best_recall:.6f}; result={output}', flush=True)
+    log('모델', '학습', f'Two-Tower 선택 epoch={best_epoch} / valid_recall@300={best_recall:.6f} / 결과={output}', status='성공')
     return report
 
 
@@ -248,9 +250,9 @@ def main() -> int:
     parser.add_argument('--bundle', type=Path)
     args = parser.parse_args()
     cfg = load_config()
-    train(cfg, args.output, args.bundle)
+    emit_json(train(cfg, args.output, args.bundle))
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '모델 학습', '데이터·모델·설정 경로와 원본 오류를 확인하세요. 기존 번들은 보존하세요.'))

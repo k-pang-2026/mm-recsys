@@ -8,6 +8,7 @@ import re
 import base64
 from collections import deque
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import requests
 import yaml
@@ -22,8 +23,13 @@ def settings(root: Path) -> dict:
     cfg = yaml.safe_load(path.read_text(encoding='utf-8'))
     configured = Path(os.getenv('RESULTS_DIR', cfg['paths']['results_dir']))
     defaults = dotenv_values(root / '.env') if (root / '.env').is_file() else {}
+    api_url = (os.getenv('API_URL') or defaults.get('API_URL') or 'http://localhost:8000').rstrip('/')
+    public_api_url = os.getenv('PUBLIC_API_URL') or defaults.get('PUBLIC_API_URL')
+    if not public_api_url:
+        port = os.getenv('API_PORT') or defaults.get('API_PORT') or '8000'
+        public_api_url = f'http://localhost:{port}' if urlsplit(api_url).hostname == 'api-server' else api_url
     return dict(results_dir=configured if configured.is_absolute() else root / configured,
-                api_url=(os.getenv('API_URL') or defaults.get('API_URL') or 'http://localhost:8000').rstrip('/'),
+                api_url=api_url, public_api_url=public_api_url.rstrip('/'),
                 api_timeout=float(os.getenv('DASHBOARD_API_TIMEOUT', '10')),
                 scale=os.getenv('SCALE', cfg.get('scale', 'dev')))
 
@@ -95,7 +101,7 @@ def ct_log(root: Path, limit: int = 100) -> dict:
 
 def api_call(api_url: str, method: str, route: str, *, timeout: float = 10,
              payload: dict | None = None, params: dict | None = None) -> dict:
-    if route not in ('/health', '/ready', '/api/search', '/api/recommend'):
+    if route not in ('/health', '/ready', '/api/search', '/api/recommend', '/api/event'):
         raise ValueError('unsupported dashboard API route')
     try:
         with requests.Session() as session:
@@ -119,6 +125,9 @@ def api_call(api_url: str, method: str, route: str, *, timeout: float = 10,
                         raise ValueError('invalid recommendation schema')
                     float(body['pipeline_latency']['total_ms'])
                     body['session_context']['session_interest']
+                elif route == '/api/event':
+                    if type(body['applied']) is not bool:
+                        raise ValueError('invalid event response')
                 elif body['status'] != ('ok' if route == '/health' else 'ready'):
                     raise ValueError('invalid health/readiness schema')
             except (ValueError, KeyError, TypeError):

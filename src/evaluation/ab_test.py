@@ -5,6 +5,8 @@ Outcome-model persona parameters are simulation hypotheses, not measured lift.
 """
 from __future__ import annotations
 
+from src.common.console import log, run_cli, status_ko
+
 from typing import Any
 
 import argparse
@@ -253,7 +255,7 @@ def simulate(cfg: dict, data: dict, policies: dict, clock: list[float]) -> dict:
                                 session_id=f'ab:{uid}:{day}', category=product['category_l3'])
                             policies[arm].store.append_event(event)
                             policies[arm].store.update_reward(event)
-        print(f'AB day={day + 1}/{spec["days"]} users_per_group={n}', flush=True)
+        log('A/B', '실험', f'진행 일수={day + 1}/{spec["days"]} / 그룹별 사용자={n:,}명 / seed={cfg["seed"]}')
     user_rows = {arm: list(values.values()) for arm, values in rows.items()}
     arms = {arm: summarize(values, policies[arm]) for arm, values in user_rows.items()}
     if any(value['unattributed_feedback'] for value in arms.values()):
@@ -288,10 +290,12 @@ def run(cfg: dict, output: Path) -> dict:
     from src.recommendation.datasets import read_data
     if os.getenv('PYTHONHASHSEED') != str(cfg['seed']):
         raise ValueError('launch with configured PYTHONHASHSEED before Python starts')
+    log('A/B', '준비', f"규모={cfg['scale']} / seed={cfg['seed']} / 데이터·실제 추천 전략 로딩 시작")
     set_seed(cfg['seed'])
     data = read_data(cfg['paths']['data_dir'], 'valid')
     clock = [0.]
     policies, bundles = create_policies(cfg, data, clock)
+    log('A/B', '준비', f"전략={cfg['serving']['ab_test']['control']}·{cfg['serving']['ab_test']['treatment']} / 준비 완료", status='성공')
     with torch.inference_mode():
         report = simulate(cfg, data, policies, clock)
     sources = ['src/evaluation/ab_test.py', 'src/evaluation/ab_statistics.py',
@@ -309,6 +313,14 @@ def run(cfg: dict, output: Path) -> dict:
         pythonhashseed=os.getenv('PYTHONHASHSEED'),
         determinism='seed42 CPU; floating-point/model bytes may differ across OS/Python versions')
     write_json(output, report)
+    for metric, label in [('ctr', '클릭률'), ('cvr', '구매 전환율')]:
+        measured = report['inference'][metric]
+        lift = measured['relative_lift']
+        change = '미측정' if lift is None else f'{lift * 100:+.2f}%'
+        log('A/B', '결과', f"{label} 상대 변화={change} / p-value={measured['z_p_value']} / "
+            f"차이의 95% CI={measured['difference_ci95']} / 분모=노출 수 / "
+            f"통계 단위=사용자 / 합성 실험 / 결과={output}",
+            status=status_ko(measured['status']))
     print(json.dumps(dict(output=str(output), arms={arm: {k: v for k, v in value.items() if k != 'arm_statistics'}
         for arm, value in report['arms'].items()}, inference=report['inference']), ensure_ascii=False, indent=2))
     return report
@@ -324,4 +336,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'A/B 실험', 'PYTHONHASHSEED·설정·데이터와 호환 모델 번들을 확인하세요. 원본 오류에 따라 준비 후 재실행하세요.'))

@@ -1,0 +1,54 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 555B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.api
+#2 transferring dockerfile: 650B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 292B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#5 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 41.79kB 0.0s done
+#6 DONE 0.0s
+
+#7 [5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#7 CACHED
+
+#8 [4/7] COPY requirements.txt requirements-torch.txt ./
+#8 CACHED
+
+#9 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#9 CACHED
+
+#10 [2/7] WORKDIR /app
+#10 CACHED
+
+#11 [6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#11 CACHED
+
+#12 [7/7] COPY . .
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.2s done
+#13 exporting manifest sha256:a5666ce97a24bb056c1e5024bbb78e1d0af5621a44d22e90893cf1636cf41691 0.0s done
+#13 exporting config sha256:99208e457911ccd320c6b5035e3ebcacd1f3dcb745d6647697c03862746d2a7b 0.0s done
+#13 exporting attestation manifest sha256:dfbcd521f51a1fc37b0b10cec089db291ef9bfd5c1edf5de88329f77989a8bc3 0.0s done
+#13 exporting manifest list sha256:ec948a5e6b87652f901cf6d16e857786ce67677d8d7932f9be2fa46348572889 0.0s done
+#13 naming to docker.io/library/mm-recsys-api-server:latest done
+#13 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#13 DONE 0.5s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s

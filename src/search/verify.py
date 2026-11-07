@@ -1,6 +1,8 @@
 """Real checkpoint/vector/index integrity diagnostics; this is not B2b acceptance."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 from dataclasses import asdict
 import json
@@ -94,15 +96,16 @@ def verify(cfg: dict) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='검색 번들 검사')
     parser.add_argument('--output', type=Path); args = parser.parse_args()
     cfg = load_config(); set_seed(cfg['seed'])
     result = verify(cfg)
     output = args.output or Path(f'docs/results/search_b2a_{cfg["scale"]}.json')
     write_json(output, result)
+    log('검색 번들 검사', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps({key: result[key] for key in ('status', 'scale', 'count', 'projection_dim', 'ann_diagnostics',
                                                    'final_search_acceptance')}, ensure_ascii=False, indent=2))
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '검색 번들 검사', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

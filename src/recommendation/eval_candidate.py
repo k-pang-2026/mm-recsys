@@ -1,6 +1,8 @@
 """Fixed-origin, unique future item truth, macro-user Recall over exactly top300."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from typing import Any
 
 import argparse
@@ -165,9 +167,10 @@ def main() -> int:
                                platform=platform.platform(), threads=torch.get_num_threads(), device='cpu')
     output = args.output or Path(cfg['paths']['results_dir']) / f'candidate_{cfg["scale"]}_{args.split}.json'
     write_json(output, report)
-    print(f'{args.split}: exact Recall@300={report["exact_two_tower"]["recall_at_300"]:.6f}; output={output}')
+    log('후보', '평가', f'{args.split}: exact Recall@300={report["exact_two_tower"]["recall_at_300"]:.6f} / 결과={output}', status='측정 완료')
+    emit_json(report)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '추천 평가', '원본 결과·데이터·모델·설정과 동결된 valid 근거를 확인하세요.'))

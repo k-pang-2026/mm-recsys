@@ -1,0 +1,6 @@
+scripts/verify_peer_review.py:61: error: Item "MemoryFeatureStore" of "MemoryFeatureStore | RedisFeatureStore" has no attribute "close"  [union-attr]
+scripts/demo.py:138: error: Incompatible types in assignment (expression has type "CompletedProcess[bytes]", variable has type "dict[Any, Any]")  [assignment]
+scripts/demo.py:140: error: "dict[Any, Any]" has no attribute "stdout"  [attr-defined]
+scripts/demo.py:141: error: "dict[Any, Any]" has no attribute "stdout"  [attr-defined]
+scripts/demo.py:142: error: "dict[Any, Any]" has no attribute "returncode"  [attr-defined]
+Found 5 errors in 2 files (checked 124 source files)

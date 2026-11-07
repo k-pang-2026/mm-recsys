@@ -1,6 +1,8 @@
 """Real localhost HTTP over the shared API and Redis, separate from vector timing."""
 from __future__ import annotations
 
+from src.common.console import log
+
 import base64
 import copy
 import json
@@ -97,7 +99,7 @@ def benchmark(cfg: dict) -> dict:
                     http_samples_ms=samples, service_samples_ms=native, stages=stages,
                     warmup=cfg['benchmark']['warmup'], requests=len(samples),
                     top_n=cfg['recommend']['top_n'] if mode == 'recommendation' else cfg['search']['top_k'], errors=0)
-                print(f'B8 HTTP {mode}: p95={results[mode]["http"]["p95_ms"]:.3f}ms', flush=True)
+                log('평가', 'HTTP 지연', f'{mode}: p95={results[mode]["http"]["p95_ms"]:.3f}ms', status='측정 완료')
             unknown = client.get('/api/recommend', params=dict(user_id='B8-unknown-cold-user', top_n=10))
             if unknown.status_code != 200:
                 raise ValueError('unknown user cold-start fallback must return 200')

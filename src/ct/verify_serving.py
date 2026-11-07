@@ -1,6 +1,8 @@
 """Re-measure native dev HTTP after enabling the durable CT journal."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 from pathlib import Path
 
 from src.common.artifacts import write_json
@@ -24,4 +26,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '서빙 검사', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))

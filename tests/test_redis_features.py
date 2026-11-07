@@ -109,13 +109,13 @@ def test_failure_returns_empty_features_and_warning_and_recovers(store, caplog):
         store.append_event(event("e"))
     with pytest.raises(OSError, match='reward write failed'):
         store.update_reward(FeedbackRequest(**event("e").model_dump()))
-    assert "using empty features" in caplog.text
+    assert "빈 특징값" in caplog.text and "offline" in caplog.text
     store.client = original
     assert store.append_event(event("recovered"))
     assert store.available
 
 
-def test_recommendation_with_supplied_service_remains_200_when_redis_is_down(caplog):
+def test_recommendation_with_supplied_service_remains_200_when_redis_is_down(caplog, tmp_path):
     client = Mock()
     client.pipeline.side_effect = ConnectionError("offline")
     store = RedisFeatureStore(client)
@@ -126,7 +126,9 @@ def test_recommendation_with_supplied_service_remains_200_when_redis_is_down(cap
                                      pipeline_latency={}, session_context={
                                          "recent_clicks": features.recent_clicks,
                                          "session_interest": features.session_interest})
-    with TestClient(create_app(load_config(), recommend_service=ColdStartService(),
+    cfg = load_config()
+    cfg['paths']['model_dir'] = str(tmp_path / 'unprepared-models')
+    with TestClient(create_app(cfg, recommend_service=ColdStartService(),
                                feature_store=store)) as api:
         response = api.get("/api/recommend", params={"user_id": "unknown"})
         assert response.status_code == 200

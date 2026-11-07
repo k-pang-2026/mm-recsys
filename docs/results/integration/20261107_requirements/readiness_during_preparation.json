@@ -1,0 +1,1 @@
+{"health": {"http": 200, "body": {"status": "preparing", "search_ready": false, "recommend_ready": false}}, "ready": {"http": 503, "body": {"status": "preparing", "search_ready": false, "recommend_ready": false}}}

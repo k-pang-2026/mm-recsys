@@ -1,0 +1,55 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 555B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.api
+#2 transferring dockerfile: 650B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 292B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#5 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 58.13kB 0.0s done
+#6 DONE 0.0s
+
+#7 [5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#7 CACHED
+
+#8 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [4/7] COPY requirements.txt requirements-torch.txt ./
+#9 CACHED
+
+#10 [2/7] WORKDIR /app
+#10 CACHED
+
+#11 [6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#11 CACHED
+
+#12 [7/7] COPY . .
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.2s done
+#13 exporting manifest sha256:6b5871a3212e98d35f2784f547772c40140720c7163babebe5a53fba19118ff3 0.0s done
+#13 exporting config sha256:f415d1609e15aecf5e2f3c2866813b6c94c10361c8622159635906df33b8fbd6 0.0s done
+#13 exporting attestation manifest sha256:0094e6a58d8729db078e5b3481345d529e9cbddbfd6230d0a4c31c2cc396be05 0.0s done
+#13 exporting manifest list sha256:b3c5fae795f1808d4397cf851cfec8f9a1a265816372311def32cce6898f09e2 0.0s done
+#13 naming to docker.io/library/mm-recsys-api-server:latest done
+#13 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#13 DONE 0.5s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s
+{"status": "PASS", "new_events": 704, "comparison": {"split": "valid", "validation_fingerprint": "f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4", "baseline": {"ctr_auc": 0.5, "ctr_logloss": 0.6931471805599453, "hit_rate_at_50": 0.17391304347826086, "truth_users": 23, "ctr_samples": 1451, "validation_fingerprint": "f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4"}, "candidate": {"ctr_auc": 0.8916937864224628, "ctr_logloss": 1.1927783931647562, "hit_rate_at_50": 0.9565217391304348, "truth_users": 23, "ctr_samples": 1451, "validation_fingerprint": "f50fdd05696c10b7cd207f43676dcd4c5dc50d78070f67d9f0a9963e9b69ddf4"}, "training_reports": {"candidate": "0f3290341137d077ef84eccf65910b968b28209c2d17d461112885471f1b6cf3", "ranking": "ee5f5583d560bffb5dfd292938ae5d93829e2ee7a31030924d48edc81bd16046", "session": "379d1ff40b13ea7aa4a4555995e9d4b34d23acb46fb900c6072f807b99460c4c"}}, "output": "docs/results/integration/20261107_requirements/ct_drill.json"}

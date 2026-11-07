@@ -1,0 +1,167 @@
+api-server-1  | [2026-11-07T05:19:43+00:00] [서버 준비] [진행] full 환경 / 상품 50,000개 / 최초 생성·학습 시작
+api-server-1  | [2026-11-07T05:19:43+00:00] [데이터 준비] [진행] 시작
+api-server-1  | [2026-11-07T05:20:45+00:00] [데이터 준비] [성공] 상품 50,000개·사용자 10,000명·이벤트 1,000,000건 준비 완료 / 경로=data/full-v43
+api-server-1  | [2026-11-07T05:20:46+00:00] [데이터 준비] [성공] 완료 / 소요 시간=65.0초
+api-server-1  | [2026-11-07T05:20:46+00:00] [데이터 분석 준비] [진행] 시작
+api-server-1  | [2026-11-07T05:20:57+00:00] [데이터 EDA] [완료] 상품=50,000 / 사용자=10,000 / 이벤트=1,000,000 / 판정=PASS / 결과=docs/results/docker/runtime-v43/full/data_audit.json
+api-server-1  | [2026-11-07T05:20:58+00:00] [데이터 분석 준비] [성공] 완료 / 소요 시간=12.1초
+api-server-1  | [2026-11-07T05:20:58+00:00] [검색 임베딩 준비] [진행] 시작
+api-server-1  | [2026-11-07T05:20:59+00:00] [모델 준비] [성공] 고정 CLIP 다운로드 캐시 재사용 (오프라인)
+api-server-1  | [2026-11-07T05:21:11+00:00] [모델 준비] [진행] CLIP text 임베딩 처리 중(중복 제거 콘텐츠): 256/1,440
+api-server-1  | [2026-11-07T05:21:15+00:00] [모델 준비] [진행] CLIP text 임베딩 처리 중(중복 제거 콘텐츠): 512/1,440
+api-server-1  | [2026-11-07T05:21:18+00:00] [모델 준비] [진행] CLIP text 임베딩 처리 중(중복 제거 콘텐츠): 768/1,440
+api-server-1  | [2026-11-07T05:21:22+00:00] [모델 준비] [진행] CLIP text 임베딩 처리 중(중복 제거 콘텐츠): 1,024/1,440
+api-server-1  | [2026-11-07T05:21:25+00:00] [모델 준비] [진행] CLIP text 임베딩 처리 중(중복 제거 콘텐츠): 1,280/1,440
+api-server-1  | [2026-11-07T05:21:27+00:00] [모델 준비] [진행] CLIP text 임베딩 처리 중(중복 제거 콘텐츠): 1,440/1,440
+api-server-1  | [2026-11-07T05:22:05+00:00] [모델 준비] [진행] CLIP image 임베딩 처리 중(중복 제거 콘텐츠): 256/256
+api-server-1  | [2026-11-07T05:22:07+00:00] [검색 임베딩 준비] [성공] 완료 / 소요 시간=70.8초
+api-server-1  | [2026-11-07T05:22:07+00:00] [FAISS 인덱스 준비] [진행] 시작
+api-server-1  | [2026-11-07T05:22:09+00:00] [모델 준비] [성공] FAISS text: 벡터 1,440개 / IP HNSW
+api-server-1  | [2026-11-07T05:22:09+00:00] [모델 준비] [성공] FAISS image: 벡터 256개 / IP HNSW
+api-server-1  | [2026-11-07T05:22:09+00:00] [모델 준비] [성공] FAISS hybrid: 벡터 2,880개 / IP HNSW
+api-server-1  | [2026-11-07T05:22:09+00:00] [모델 준비] [성공] FAISS text: 벡터=1,440개 / 차원=512
+api-server-1  | [2026-11-07T05:22:09+00:00] [모델 준비] [성공] FAISS image: 벡터=256개 / 차원=512
+api-server-1  | [2026-11-07T05:22:09+00:00] [모델 준비] [성공] FAISS hybrid: 벡터=2,880개 / 차원=512
+api-server-1  | [2026-11-07T05:22:09+00:00] [FAISS 인덱스 준비] [성공] 완료 / 소요 시간=2.8초
+api-server-1  | [2026-11-07T05:22:09+00:00] [추천 모델 준비] [진행] 시작
+api-server-1  | [2026-11-07T05:25:37+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=0.31685 / valid_recall@300=0.744828 / 갱신=1133
+api-server-1  | [2026-11-07T05:27:35+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.23565 / valid_recall@300=0.745722 / 갱신=1133
+api-server-1  | [2026-11-07T05:29:33+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.21901 / valid_recall@300=0.749542 / 갱신=1133
+api-server-1  | [2026-11-07T05:31:30+00:00] [모델 학습] [진행] Two-Tower epoch=4 / loss=0.20651 / valid_recall@300=0.749922 / 갱신=1133
+api-server-1  | [2026-11-07T05:33:29+00:00] [모델 학습] [진행] Two-Tower epoch=5 / loss=0.19678 / valid_recall@300=0.748134 / 갱신=1133
+api-server-1  | [2026-11-07T05:35:31+00:00] [모델 학습] [진행] Two-Tower epoch=6 / loss=0.18848 / valid_recall@300=0.749453 / 갱신=1133
+api-server-1  | [2026-11-07T05:37:28+00:00] [모델 학습] [진행] Two-Tower epoch=7 / loss=0.18160 / valid_recall@300=0.748269 / 갱신=1133
+api-server-1  | [2026-11-07T05:38:04+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=4 / valid_recall@300=0.749922 / 결과=models/full-v43/.docker/train-8a014fe9d23b/results/candidate_training_full.json
+api-server-1  | [2026-11-07T05:39:08+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=2.09238 / valid_ctr_auc=0.959790 / cvr_auc=0.5063581065796613
+api-server-1  | [2026-11-07T05:39:21+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=0.46374 / valid_ctr_auc=0.961810 / cvr_auc=0.5024603011692161
+api-server-1  | [2026-11-07T05:39:33+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=0.42475 / valid_ctr_auc=0.964853 / cvr_auc=0.5192310362055444
+api-server-1  | [2026-11-07T05:39:46+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=0.41151 / valid_ctr_auc=0.965040 / cvr_auc=0.517117287132197
+api-server-1  | [2026-11-07T05:39:59+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=0.40383 / valid_ctr_auc=0.964798 / cvr_auc=0.5147487877727767
+api-server-1  | [2026-11-07T05:40:11+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=0.39429 / valid_ctr_auc=0.965488 / cvr_auc=0.5194271376223994
+api-server-1  | [2026-11-07T05:40:24+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=0.38616 / valid_ctr_auc=0.966032 / cvr_auc=0.5148147980979163
+api-server-1  | [2026-11-07T05:40:36+00:00] [모델 학습] [진행] DeepFM epoch=8 / loss=0.37857 / valid_ctr_auc=0.966271 / cvr_auc=0.5302252302356034
+api-server-1  | [2026-11-07T05:40:50+00:00] [모델 학습] [진행] DeepFM epoch=9 / loss=0.37523 / valid_ctr_auc=0.965914 / cvr_auc=0.5218828766733917
+api-server-1  | [2026-11-07T05:41:02+00:00] [모델 학습] [진행] DeepFM epoch=10 / loss=0.37334 / valid_ctr_auc=0.965680 / cvr_auc=0.5225174776628052
+api-server-1  | [2026-11-07T05:41:15+00:00] [모델 학습] [진행] DeepFM epoch=11 / loss=0.37206 / valid_ctr_auc=0.966109 / cvr_auc=0.5191048337865586
+api-server-1  | [2026-11-07T05:43:42+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=0.11586 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:44:00+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=0.09850 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:44:17+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=0.09302 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:44:33+00:00] [모델 학습] [진행] 세션 epoch=4 / valid_loss=0.08970 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:44:49+00:00] [모델 학습] [진행] 세션 epoch=5 / valid_loss=0.08724 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:45:06+00:00] [모델 학습] [진행] 세션 epoch=6 / valid_loss=0.08526 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:45:23+00:00] [모델 학습] [진행] 세션 epoch=7 / valid_loss=0.08390 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:45:39+00:00] [모델 학습] [진행] 세션 epoch=8 / valid_loss=0.08290 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:45:54+00:00] [모델 학습] [진행] 세션 epoch=9 / valid_loss=0.08207 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:46:11+00:00] [모델 학습] [진행] 세션 epoch=10 / valid_loss=0.08134 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:46:27+00:00] [모델 학습] [진행] 세션 epoch=11 / valid_loss=0.08084 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:46:43+00:00] [모델 학습] [진행] 세션 epoch=12 / valid_loss=0.08040 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:46:59+00:00] [모델 학습] [진행] 세션 epoch=13 / valid_loss=0.08003 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:47:16+00:00] [모델 학습] [진행] 세션 epoch=14 / valid_loss=0.07959 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:47:32+00:00] [모델 학습] [진행] 세션 epoch=15 / valid_loss=0.07934 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:47:48+00:00] [모델 학습] [진행] 세션 epoch=16 / valid_loss=0.07906 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:48:04+00:00] [모델 학습] [진행] 세션 epoch=17 / valid_loss=0.07905 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:48:20+00:00] [모델 학습] [진행] 세션 epoch=18 / valid_loss=0.07856 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:48:37+00:00] [모델 학습] [진행] 세션 epoch=19 / valid_loss=0.07846 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:48:54+00:00] [모델 학습] [진행] 세션 epoch=20 / valid_loss=0.07820 / sampled_hit@10=1.00000
+api-server-1  | [2026-11-07T05:49:24+00:00] [추천 모델 준비] [성공] 완료 / 소요 시간=1673.9초
+api-server-1  | [2026-11-07T05:49:24+00:00] [Redis 사용자 프로필 준비] [진행] 시작
+api-server-1  | [2026-11-07T05:49:27+00:00] [Redis 준비] [성공] 사용자 프로필 적재 완료 / 결과={'status': 'PASS', 'scale': 'full', 'profile_count': 10000, 'batch_size': 1000, 'history_loaded': False, 'namespace': 'mm-recsys:full:9f8a63437ec5'}
+api-server-1  | [2026-11-07T05:49:28+00:00] [CT 버전 등록] [성공] 모델=v1.0
+api-server-1  | [2026-11-07T05:49:57+00:00] [CT 초기화] [성공] 모델=v1.0
+api-server-1  | [2026-11-07T05:50:24+00:00] [Redis 사용자 프로필 준비] [성공] 완료 / 소요 시간=61.4초
+api-server-1  | {
+api-server-1  |   "status": "PASS",
+api-server-1  |   "acceptance": "UNMEASURED",
+api-server-1  |   "scale": "full",
+api-server-1  |   "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+api-server-1  |   "manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+api-server-1  |   "config_fingerprint": "8f35c572295a66f4a06ca33dff676a43dc7902c63f00165be85e8470af32b048",
+api-server-1  |   "stages": [
+api-server-1  |     {
+api-server-1  |       "stage": "data",
+api-server-1  |       "command": [
+api-server-1  |         "/usr/local/bin/python",
+api-server-1  |         "/app/scripts/prepare_all.py",
+api-server-1  |         "--stage",
+api-server-1  |         "data"
+api-server-1  |       ],
+api-server-1  |       "exit_code": 0,
+api-server-1  |       "seconds": 64.97684115900006
+api-server-1  |     },
+api-server-1  |     {
+api-server-1  |       "stage": "audit",
+api-server-1  |       "command": [
+api-server-1  |         "/usr/local/bin/python",
+api-server-1  |         "/app/scripts/prepare_all.py",
+api-server-1  |         "--stage",
+api-server-1  |         "audit"
+api-server-1  |       ],
+api-server-1  |       "exit_code": 0,
+api-server-1  |       "seconds": 12.065486194999949
+api-server-1  |     },
+api-server-1  |     {
+api-server-1  |       "stage": "embeddings",
+api-server-1  |       "command": [
+api-server-1  |         "/usr/local/bin/python",
+api-server-1  |         "/app/scripts/prepare_all.py",
+api-server-1  |         "--stage",
+api-server-1  |         "embeddings"
+api-server-1  |       ],
+api-server-1  |       "exit_code": 0,
+api-server-1  |       "seconds": 70.76126452500012
+api-server-1  |     },
+api-server-1  |     {
+api-server-1  |       "stage": "indexes",
+api-server-1  |       "command": [
+api-server-1  |         "/usr/local/bin/python",
+api-server-1  |         "/app/scripts/prepare_all.py",
+api-server-1  |         "--stage",
+api-server-1  |         "indexes"
+api-server-1  |       ],
+api-server-1  |       "exit_code": 0,
+api-server-1  |       "seconds": 2.795165427000029
+api-server-1  |     },
+api-server-1  |     {
+api-server-1  |       "stage": "recommendation",
+api-server-1  |       "command": [
+api-server-1  |         "/usr/local/bin/python",
+api-server-1  |         "/app/scripts/prepare_all.py",
+api-server-1  |         "--stage",
+api-server-1  |         "recommendation"
+api-server-1  |       ],
+api-server-1  |       "exit_code": 0,
+api-server-1  |       "seconds": 1673.906804617
+api-server-1  |     },
+api-server-1  |     {
+api-server-1  |       "stage": "warmup",
+api-server-1  |       "command": [
+api-server-1  |         "/usr/local/bin/python",
+api-server-1  |         "/app/scripts/prepare_all.py",
+api-server-1  |         "--stage",
+api-server-1  |         "warmup"
+api-server-1  |       ],
+api-server-1  |       "exit_code": 0,
+api-server-1  |       "seconds": 61.3597843499997
+api-server-1  |     }
+api-server-1  |   ],
+api-server-1  |   "artifact_state_before": {
+api-server-1  |     "data_manifest": false,
+api-server-1  |     "search_indexes": false,
+api-server-1  |     "recommendation": false
+api-server-1  |   },
+api-server-1  |   "elapsed_seconds": 1885.9566819590002,
+api-server-1  |   "scope": "artifact readiness; no full-test quality claim"
+api-server-1  | }
+api-server-1  | [2026-11-07T05:50:25+00:00] [서버 준비] [성공] 준비 완료; 상품=50,000개; CLIP=openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268; FAISS + Two Tower/DeepFM/session
+api-server-1  | INFO:     Started server process [7]
+api-server-1  | INFO:     Waiting for application startup.
+api-server-1  | /usr/local/lib/python3.11/site-packages/transformers/models/clip/modeling_clip.py:243: TracerWarning: Converting a tensor to a Python boolean might cause the trace to be incorrect. We can't record the data flow of Python values, so this value will be treated as a constant in the future. This means that the trace might not generalize to other inputs!
+api-server-1  |   if not interpolate_pos_encoding and (height != self.image_size or width != self.image_size):
+api-server-1  | [2026-11-07T05:51:05+00:00] [서버 메모리 정리] [완료] {'elapsed_ms': 193.06364000021858, 'at_ns': 1794030665301016378, 'frozen_objects': 0}
+api-server-1  | [2026-11-07T05:51:05+00:00] [서버 실행 환경] [확인] {'torch_threads': 2, 'faiss_threads': 2, 'inference_worker_budget': True, 'parallel_hybrid': True, 'vision_optimization': {'enabled': True, 'implementation': 'torch.jit.optimize_for_inference', 'dtype': 'float32', 'query_shape': [1, 3, 224, 224], 'startup_max_abs_vector_error': 3.129243850708008e-07, 'process_environment': {'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '2'}, 'scope': 'same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache'}, 'gc_enabled': True, 'gc_freeze_enabled': True, 'gc_frozen_objects': 645685, 'configured_search_threads': 1, 'configured_candidate_training_threads': 4, 'scope': 'one shared serving process; model weights and ranking policy unchanged'}
+api-server-1  | [2026-11-07T05:51:05+00:00] [서버 준비] [성공] FAISS 인덱스 로딩 완료 / 상품=50,000개
+api-server-1  | [2026-11-07T05:51:05+00:00] [서버 준비] [성공] Two-Tower 모델 로딩 완료
+api-server-1  | [2026-11-07T05:51:05+00:00] [서버 준비] [성공] DeepFM Ranking 모델 로딩 완료
+api-server-1  | [2026-11-07T05:51:05+00:00] [서버 준비] [성공] 검색·추천 모델 로딩 완료. API 요청을 받을 수 있습니다. / URL=http://localhost:8000
+api-server-1  | INFO:     Application startup complete.
+api-server-1  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)

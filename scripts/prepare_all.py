@@ -11,6 +11,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from src.common.console import log, emit_json, run_cli
 from src.common.artifacts import file_hash, fingerprint, write_json
 from docker.runtime import runtime_config, config_path
 from src.search.locking import writer_lock
@@ -25,10 +26,11 @@ def prefetch(cfg: dict) -> None:
         for name in ('config.json', 'preprocessor_config.json', 'tokenizer_config.json',
                      'vocab.json', 'merges.txt', 'pytorch_model.bin'):
             hf_hub_download(spec['clip_model'], name, revision=spec['clip_revision'], local_files_only=True)
-        print('[api-server] 고정 CLIP 다운로드 캐시 재사용 (오프라인)', flush=True)
+        log('모델', '준비', '고정 CLIP 다운로드 캐시 재사용 (오프라인)', status='성공')
         return
     except LocalEntryNotFoundError:
         pass
+    log('모델', '다운로드', f"CLIP={spec['clip_model']} / revision={spec['clip_revision']}")
     snapshot_download(spec['clip_model'], revision=spec['clip_revision'],
                       allow_patterns=['*.json', '*.txt', 'pytorch_model.bin', '*.safetensors'])
 
@@ -37,6 +39,9 @@ def stage(cfg: dict, name: str) -> None:
     if name == 'data':
         from src.simulator.generate import generate
         generate(cfg)
+    elif name == 'audit':
+        from src.evaluation.data_audit import audit
+        audit(cfg)
     elif name == 'embeddings':
         from src.search.build_embeddings import build_embeddings
         prefetch(cfg)
@@ -47,7 +52,7 @@ def stage(cfg: dict, name: str) -> None:
         folder = build_indexes(cfg)
         for mode in ('text', 'image', 'hybrid'):
             index = faiss.read_index(str(folder / f'{mode}.faiss'))
-            print(f'LOADED FAISS {mode}: vectors={index.ntotal}, dim={index.d}', flush=True)
+            log('모델', '준비', f'FAISS {mode}: 벡터={index.ntotal:,}개 / 차원={index.d}', status='성공')
     elif name == 'recommendation':
         from src.recommendation.service import create_service
         from src.serving.memory_store import MemoryFeatureStore
@@ -61,7 +66,7 @@ def stage(cfg: dict, name: str) -> None:
                 raise ValueError(f'Incomplete recommendation bundle: {missing}; use a new model path')
             if create_service(cfg, MemoryFeatureStore()) is None:
                 raise ValueError('incompatible recommendation bundle')
-            print('[api-server] 호환되는 추천 모델 재사용 완료', flush=True)
+            log('모델', '준비', '호환되는 추천 모델 재사용 완료', status='성공')
         else:
             import uuid
             work = Path(cfg['paths']['model_dir']) / '.docker' / f'train-{uuid.uuid4().hex[:12]}'
@@ -78,7 +83,8 @@ def stage(cfg: dict, name: str) -> None:
         if not isinstance(store, RedisFeatureStore):
             raise ValueError('Docker requires Redis')
         try:
-            print(json.dumps(warmup(cfg, store)), flush=True)
+            result = warmup(cfg, store)
+            log('Redis', '준비', f'사용자 프로필 적재 완료 / 결과={result}', status='성공')
         finally:
             store.close()
         if cfg['serving']['ct']['enabled']:
@@ -117,22 +123,22 @@ def prepare(cfg: dict) -> dict:
             search_indexes=(Path(cfg['paths']['model_dir']) / cfg['search']['artifact_subdir'] / 'indexes_current.json').exists(),
             recommendation=(Path(cfg['paths']['model_dir']) / 'v1.0').exists())
         steps = []
-        labels = dict(data='데이터', embeddings='검색 임베딩', indexes='FAISS 인덱스',
+        labels = dict(data='데이터', audit='데이터 분석', embeddings='검색 임베딩', indexes='FAISS 인덱스',
                       recommendation='추천 모델', warmup='Redis 사용자 프로필')
-        print(f'[api-server] {cfg["scale"]} 환경 준비 시작 '
-              f'(상품 {cfg["simulator"]["n_products"]:,}개); 최초 생성·학습에는 시간이 걸립니다.', flush=True)
-        for name in ('data', 'embeddings', 'indexes', 'recommendation', 'warmup'):
+        log('서버', '준비', f'{cfg["scale"]} 환경 / 상품 {cfg["simulator"]["n_products"]:,}개 / 호환 산출물 검사 후 필요한 생성·학습 시작')
+        for name in ('data', 'audit', 'embeddings', 'indexes', 'recommendation', 'warmup'):
             before = time.perf_counter()
             command = [sys.executable, str(Path(__file__).resolve()), '--stage', name]
-            print(f'[api-server] {labels[name]} 준비 시작', flush=True)
-            result = subprocess.run(command, env=env, timeout=float(os.getenv('PREPARE_TIMEOUT_SECONDS', '21600')))
+            log(labels[name], '준비', '시작')
+            result = subprocess.run(command, env=env, stdout=sys.stderr,
+                                    timeout=float(os.getenv('PREPARE_TIMEOUT_SECONDS', '21600')))
             steps.append(dict(stage=name, command=command, exit_code=result.returncode,
                               seconds=time.perf_counter() - before))
             if result.returncode:
-                print(f'[api-server] {labels[name]} 준비 실패: exit {result.returncode}', flush=True)
+                log(labels[name], '준비', f'자식 프로세스 종료 코드={result.returncode} / 다음 조치: 위 원본 오류와 해당 단계의 입력·설정을 확인한 뒤 재실행하세요.', status='실패')
                 write_json(output, dict(status='FAIL', scale=cfg['scale'], stages=steps))
                 raise RuntimeError(f'preparation failed at {name}: exit {result.returncode}')
-            print(f'[api-server] {labels[name]} 준비 완료 ({steps[-1]["seconds"]:.1f}초)', flush=True)
+            log(labels[name], '준비', f'완료 / 소요 시간={steps[-1]["seconds"]:.1f}초', status='성공')
         manifest = Path(cfg['paths']['data_dir']) / 'split_manifest.json'
         report = dict(status='PASS', acceptance='UNMEASURED', scale=cfg['scale'],
                       data_fingerprint=json.loads(manifest.read_text())['generation_fingerprint'],
@@ -141,12 +147,15 @@ def prepare(cfg: dict) -> dict:
                       scope='artifact readiness; no full-test quality claim')
         write_json(output.with_name(f'preparation_{time.time_ns()}.json'), report)
         write_json(output, report)
+        write_json(output.with_name('deployment.json'), dict(data_dir=cfg['paths']['data_dir'],
+            model_dir=cfg['paths']['model_dir'], search_subdir=cfg['search']['artifact_subdir'],
+            data_fingerprint=report['data_fingerprint']))
         return report
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--stage', choices=['data', 'embeddings', 'indexes', 'recommendation', 'warmup'])
+    parser.add_argument('--stage', choices=['data', 'audit', 'embeddings', 'indexes', 'recommendation', 'warmup'])
     args = parser.parse_args()
     cfg = runtime_config()
     if args.stage:
@@ -154,9 +163,9 @@ def main() -> int:
         set_seed(cfg['seed'])
         stage(cfg, args.stage)
     else:
-        prepare(cfg)
+        emit_json(prepare(cfg))
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '환경 준비', '위 단계의 원본 오류, 저장 공간·데이터 fingerprint·모델 경로·Redis 연결을 확인하세요. 기존 산출물은 보존하세요.'))

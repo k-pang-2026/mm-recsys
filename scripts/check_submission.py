@@ -14,6 +14,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from src.common.console import log, emit_json, run_cli, status_ko
 from src.common.artifacts import file_hash, write_json
 from src.common.config import load_config
 from scripts.check_submission_evidence import (assemble_acceptance, audit_python, check_hashes,
@@ -41,6 +42,7 @@ def git(root: Path, *args: str) -> str:
 def run_check(root: Path, name: str, command: list[str], env: dict | None = None) -> dict:
     path = root / OUTPUT / f'{name}.txt'
     started = time.perf_counter()
+    log('동료 평가', '검사', f'검사={name} / 실행 시작')
     try:
         with path.open('w', encoding='utf-8') as output:
             result = subprocess.run(command, cwd=root, stdout=output, stderr=subprocess.STDOUT,
@@ -48,6 +50,10 @@ def run_check(root: Path, name: str, command: list[str], env: dict | None = None
         code = result.returncode
     except subprocess.TimeoutExpired:
         code = 124
+    message = f'검사={name} / 종료 코드={code} / 소요 시간={time.perf_counter() - started:.1f}초 / 원본 로그={path}'
+    if code:
+        message += ' / 다음 조치: 원본 로그의 실패 원인 또는 제한 시간 초과를 확인하고 다시 검사하세요.'
+    log('동료 평가', '검사', message, status='통과(PASS)' if code == 0 else '실패(FAIL)')
     return dict(status='PASS' if code == 0 else 'FAIL', exit_code=code, command=command,
                 source=str(path.relative_to(root)), sha256=file_hash(path),
                 elapsed_seconds=time.perf_counter() - started)
@@ -254,9 +260,10 @@ def main() -> int:
         write_json(ROOT / 'docs/results/final_acceptance.json',
                    assemble_integration(ROOT, cfg, f'{OUTPUT}/checks.json', args.evidence_dir, args.integration_checks)
                    if args.integration_checks else assemble_acceptance(ROOT, cfg, f'{OUTPUT}/checks.json'))
-    print(f"{report.get('stage', 'B11')} delivery={report['delivery_status']}; final readiness={report['readiness_status']}")
+    log('동료 평가', '요약', f"{report.get('stage', 'B11')} / 제출물={status_ko(report['delivery_status'])}({report['delivery_status']}) / 최종 준비={status_ko(report['readiness_status'])}({report['readiness_status']})", status='완료')
+    emit_json(report)
     for blocker in report['blockers']:
-        print('PENDING: ' + blocker)
+        log('동료 평가', '미충족 항목', f'원인(원문): {blocker} / 다음 조치: 해당 검사 원본 로그와 제출 근거를 확인하고 다시 검사하세요.', status='진행 불가')
     if report['delivery_status'] != 'PASS':
         return 1
     return 2 if args.require_ready and report['readiness_status'] != 'PASS' else 0
@@ -265,7 +272,4 @@ def main() -> int:
 QUALITY_PATH = 'docs/results/docker/quality_full_test.json'
 
 if __name__ == '__main__':
-    try:
-        raise SystemExit(main())
-    except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
-        raise SystemExit(f'BLOCKED: {error}')
+    raise SystemExit(run_cli(main, '동료 평가', '제출 근거·실행 로그와 현재 소스 해시를 확인하세요. 과거 결과를 현재 측정으로 사용하지 마세요.'))

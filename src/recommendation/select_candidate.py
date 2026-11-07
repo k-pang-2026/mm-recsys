@@ -1,6 +1,8 @@
 """Freeze a valid-only selection before opening test; reproducible B3b handoff."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -51,15 +53,16 @@ def main() -> int:
     if args.verify_existing:
         if json.loads(args.output.read_text()) != result:
             raise ValueError('frozen selection differs from valid-only sources')
-        print(f'valid selection verified: epoch{result["best_epoch"]}; {args.output}')
+        log("후보 선택", "검사", f'valid 동결 근거 확인 / epoch={result["best_epoch"]} / 결과={args.output}', status="완료")
     else:
         # A frozen result is immutable unless the caller uses a new output/version path.
         if args.output.exists():
             raise ValueError('selection already exists; use --verify-existing or a new version path')
         write_json(args.output, result)
-        print(f'valid selection frozen before test: epoch{result["best_epoch"]}; {args.output}')
+        log("후보 선택", "동결", f'test 평가 전 valid 선택 동결 / epoch={result["best_epoch"]} / 결과={args.output}', status="완료")
+    emit_json(result)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '후보 모델 선택', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.'))

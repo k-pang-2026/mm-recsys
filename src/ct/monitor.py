@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import json
-import logging
 from pathlib import Path
 
 from src.ct.storage import Journal, append_log
-
-LOG = logging.getLogger(__name__)
 
 
 def measure(journal: Journal, spec: dict, now: float) -> dict:
@@ -52,6 +49,4 @@ def measure(journal: Journal, spec: dict, now: float) -> dict:
 def monitor(journal: Journal, spec: dict, now: float, log: Path) -> dict:
     result = measure(journal, spec, now)
     append_log(log, result)
-    if result['alerts']:
-        LOG.warning('CT quality alert: %s', ', '.join(result['alerts']))
     return result

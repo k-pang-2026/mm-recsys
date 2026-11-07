@@ -1,0 +1,75 @@
+{
+  "measured_at": "2026-11-07T05:27:34.013604+00:00",
+  "os": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.39",
+  "shell": "/usr/bin/zsh",
+  "cpu_count": 8,
+  "ram_bytes": 8103915520,
+  "disk": {
+    "total": 1081101176832,
+    "used": 41644396544,
+    "free": 984464424960
+  },
+  "docker": {
+    "ServerVersion": "29.8.2",
+    "OperatingSystem": "Docker Desktop",
+    "OSType": "linux",
+    "Architecture": "aarch64",
+    "NCPU": 8,
+    "MemTotal": 8103915520
+  },
+  "git_head": {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "8c8ec634b781994be38182f918ee112cd3fa8e7a\n",
+    "stderr": ""
+  },
+  "remote_main": {
+    "command": [
+      "git",
+      "rev-parse",
+      "origin/main"
+    ],
+    "exit_code": 0,
+    "stdout": "8c8ec634b781994be38182f918ee112cd3fa8e7a\n",
+    "stderr": ""
+  },
+  "branch": {
+    "command": [
+      "git",
+      "branch",
+      "--show-current"
+    ],
+    "exit_code": 0,
+    "stdout": "feat/pdf-requirements-completion\n",
+    "stderr": ""
+  },
+  "initial_user_changes": [
+    ".env",
+    "data/.gitkeep",
+    "docker/simulator.py batch max 10000"
+  ],
+  "planned_resources": {
+    "api_memory": "4g",
+    "api_cpus": 4,
+    "training_sequential": true,
+    "latency_without_training": true
+  },
+  "windows": {
+    "OS": "Microsoft Windows 11 Home",
+    "Version": "10.0.26200",
+    "RAMBytes": 16758542336,
+    "CPU": "Snapdragon(R) X - X126100 - Qualcomm(R) Oryon(TM) CPU",
+    "LogicalProcessors": 8,
+    "PowerShell": "5.1.26100.9711",
+    "DockerDesktop": "4.94.0.241994"
+  },
+  "compose": {
+    "docker compose": "v5.5.1",
+    "docker-compose": "v5.5.1",
+    "both_config_validation_exit_code": 0
+  }
+}

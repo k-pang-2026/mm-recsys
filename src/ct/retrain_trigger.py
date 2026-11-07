@@ -9,7 +9,9 @@ import json
 from pathlib import Path
 import time
 import requests
+import traceback
 
+from src.common.console import log, emit_json, run_cli
 from src.common.artifacts import write_json
 from src.common.config import load_config
 from src.ct.model_registry import ModelRegistry
@@ -63,6 +65,7 @@ def trigger(cfg: dict, build: Any) -> dict:
 
 
 def build_from_journal(cfg: dict, version: str, through: int, registry: ModelRegistry) -> dict:
+    import gc
     import pandas as pd
     from src.ct.training import snapshot, train_all, validation
     from src.serving.model_loader import load_record
@@ -97,7 +100,11 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
     manifest = snapshot(source, data_path, events, impressions, cfg)
     local = copy.deepcopy(cfg); local['paths']['data_dir'] = str(data_path)
     local['simulator']['reference_time'] = (pd.Timestamp(manifest['observed_through']) + pd.Timedelta(microseconds=1)).isoformat()
+    # Trainers load the immutable snapshot themselves; retaining these copies exhausts full CT memory.
+    del events, existing, impressions, incoming, rows, requests, exposures
+    gc.collect()
     reports, bundle = train_all(local, work)
+    gc.collect()
     bundle.rename(registry.root / version)
     # Temporary standalone registry uses the same production loaders before registration.
     staged = ModelRegistry(work / 'probe', work / 'probe.jsonl')
@@ -106,6 +113,7 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
     staged.register(version, local, data_path, {}, None, through)
     baseline = validation(load_record(registry, parent['version'], MemoryFeatureStore(),
                                      scoring=local['recommend'].get('scoring')), local)
+    gc.collect()
     candidate = validation(load_record(staged, version, MemoryFeatureStore(),
                                       scoring=local['recommend'].get('scoring')), local)
     if baseline['validation_fingerprint'] != candidate['validation_fingerprint']:
@@ -146,24 +154,25 @@ def reload_api(url: str, version: str) -> dict:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description='Local CT monitor / explicitly enabled retraining worker')
+    parser = argparse.ArgumentParser(description='CT 모니터링 및 명시적으로 활성화하는 재학습 실행기')
     parser.add_argument('--watch', action='store_true')
     parser.add_argument('--rollback', metavar='VERSION')
-    parser.add_argument('--reason', default='explicit operator rollback')
-    parser.add_argument('--reload-url', help='optional direct loopback API URL after promotion/rollback')
-    parser.add_argument('--train', action='store_true', help='train only when event threshold is met')
+    parser.add_argument('--reason', default='explicit operator rollback', help='롤백 사유')
+    parser.add_argument('--reload-url', help='승격·롤백 후 교체할 로컬 루프백 API URL')
+    parser.add_argument('--train', action='store_true', help='신규 이벤트 임계치를 충족할 때만 재학습')
     args = parser.parse_args(); cfg = load_config()
     from src.ct.monitor import monitor
     spec, journal, registry = components(cfg)
     if args.rollback:
         if args.watch or args.train:
-            parser.error('--rollback cannot be combined with --watch or --train')
+            parser.error('--rollback은 --watch 또는 --train과 함께 사용할 수 없습니다.')
         state = registry.read()
         registry.rollback(state['active'], args.rollback, args.reason)
         if args.reload_url:
             reload_api(args.reload_url, args.rollback)
-        print(json.dumps(dict(status='ROLLED_BACK', active=registry.read()['active'])))
+        emit_json(dict(status='ROLLED_BACK', active=registry.read()['active']))
         return 0
+    log('CT', '시작', f"모니터링 주기={spec['poll_seconds']}초 / 재학습 임계치={spec['retrain_log_threshold']}건 / 재학습 활성={args.train} / 활성 모델={registry.read()['active']}")
     while True:
         if args.train and args.reload_url and registry.read()['active']:
             try:
@@ -172,16 +181,25 @@ def main() -> int:
                 if not args.watch:
                     raise
                 append_log(registry.log, dict(event='reload_retry', error=str(error)))
+                traceback.print_exc()
                 time.sleep(float(spec['poll_seconds']))
                 continue
-        monitor(journal, spec, time.time(), registry.log)
+        measured = monitor(journal, spec, time.time(), registry.log)
         if args.train:
             result = trigger(cfg, lambda version, through, reg: build_from_journal(cfg, version, through, reg))
-            print(json.dumps(result), flush=True)
+            if result['status'] == 'WAITING':
+                log('CT', '대기', f"신규 로그={result['new_events']:,}건 / 임계치={result['threshold']:,}건", status='대기')
+            elif result['status'] == 'BUSY':
+                log('CT', '대기', '다른 재학습이 실행 중입니다. 다음 주기에 다시 확인합니다.', status='대기')
+            emit_json(result, jsonl=args.watch)
             if result['status'] == 'PROMOTED' and args.reload_url:
                 if args.watch:
                     continue  # Synchronize the registry active version before any further training.
                 reload_api(args.reload_url, result['active'])
+        else:
+            state = registry.read()
+            log('CT', '누적 로그', f"신규 로그={journal.count_since(state['last_success_seq']):,}건 / 임계치={spec['retrain_log_threshold']:,}건 / 모니터링만 수행", status='확인')
+            emit_json(measured, jsonl=args.watch)
         if not args.watch:
             break
         time.sleep(float(spec['poll_seconds']))
@@ -189,4 +207,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'CT', 'registry·학습 입력·API 상태와 원본 오류를 확인하세요. 기존 모델과 이벤트를 보존한 채 재시도하세요.'))

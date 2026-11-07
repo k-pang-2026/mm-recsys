@@ -19,7 +19,7 @@ x-runtime: &runtime
     PREPARE_TIMEOUT_SECONDS: ${PREPARE_TIMEOUT_SECONDS:-21600}
     READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
     DOCKER_RUNTIME: "1"
-    RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}
+    RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v43}
   volumes:
     - ./data:/app/data
     - ./models:/app/models
@@ -64,11 +64,11 @@ services:
       API_URL: http://api-server:8000
       PUBLIC_DASHBOARD_URL: http://localhost:${DASHBOARD_PORT:-8501}
       READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
-      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}/${SCALE:-full}
+      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v43}/${SCALE:-full}
     ports: ["127.0.0.1:${DASHBOARD_PORT:-8501}:8501"]
     depends_on:
       api-server: {condition: service_healthy}
-    volumes: ["./docs/results:/app/docs/results:ro"]
+    volumes: ["./docs/results:/app/docs/results:ro", "./data:/app/data:ro", "./models:/app/models:ro"]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health', timeout=2)"]
       interval: 5s

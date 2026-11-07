@@ -1,0 +1,21 @@
+{
+  "status": "FAIL",
+  "measured_at": "2026-11-07T07:04:45.779711+00:00",
+  "container": "clever_curie",
+  "memory_limit_bytes": 4294967296,
+  "probe": "docker exec clever_curie cat /sys/fs/cgroup/memory.events memory.current memory.swap.current memory.peak",
+  "memory_events": {
+    "low": 0,
+    "high": 0,
+    "max": 176096,
+    "oom": 2,
+    "oom_kill": 1,
+    "oom_group_kill": 0
+  },
+  "memory_current_bytes": 3858624512,
+  "swap_current_bytes": 168357888,
+  "memory_peak_bytes": 4295233536,
+  "vm_mem_available_kb": 768332,
+  "exit_code": 247,
+  "scope": "observed immediately before auto-removed worker exited; all three trainers completed, paired validation interrupted"
+}

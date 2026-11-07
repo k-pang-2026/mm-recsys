@@ -1,0 +1,526 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "measured_at": "2026-11-07T05:54:09.041674+00:00",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "checks": {
+    "diversity_U000001": true,
+    "exploration_U000001": true,
+    "new_item_U000001": true,
+    "diversity_U000002": true,
+    "exploration_U000002": true,
+    "new_item_U000002": true,
+    "diversity_U000003": true,
+    "exploration_U000003": true,
+    "new_item_U000003": true,
+    "cold_start_0": true,
+    "event_deduplication": true,
+    "session_http": true,
+    "session_redis": true,
+    "cold_start_4": true
+  },
+  "responses": {
+    "U000001": {
+      "user_id": "U000001",
+      "recommendations": [
+        {
+          "product_id": "P000580",
+          "score": 0.9998574256896973,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P029765",
+          "score": 0.985942542552948,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P005727",
+          "score": 0.5490170121192932,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000543",
+          "score": 0.9997171759605408,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002556",
+          "score": 0.9994799494743347,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026345",
+          "score": 0.20426921546459198,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002914",
+          "score": 0.9993835687637329,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005663",
+          "score": 0.9991918206214905,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042495",
+          "score": 0.13195636868476868,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007777",
+          "score": 0.9989976286888123,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 21.03679799984093,
+        "ranking_ms": 20.213643000261072,
+        "reranking_ms": 7.378692999736813,
+        "total_ms": 48.629133999838814
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "U000002": {
+      "user_id": "U000002",
+      "recommendations": [
+        {
+          "product_id": "P000312",
+          "score": 0.999940037727356,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P034931",
+          "score": 0.9815368056297302,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000213",
+          "score": 0.9549477696418762,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000274",
+          "score": 0.9997095465660095,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000943",
+          "score": 0.9996932744979858,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000224",
+          "score": 0.9407758116722107,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000911",
+          "score": 0.9995612502098083,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000385",
+          "score": 0.9994490742683411,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000143",
+          "score": 0.9381021857261658,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P006524",
+          "score": 0.999168872833252,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 6.382792000295012,
+        "ranking_ms": 15.219682999941142,
+        "reranking_ms": 5.94477899994672,
+        "total_ms": 27.547254000182875
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "U000003": {
+      "user_id": "U000003",
+      "recommendations": [
+        {
+          "product_id": "P000423",
+          "score": 0.9993534684181213,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P043229",
+          "score": 0.9464100003242493,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000635",
+          "score": 0.9424260854721069,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001471",
+          "score": 0.9986560344696045,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000817",
+          "score": 0.9975985884666443,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001854",
+          "score": 0.8897842168807983,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000501",
+          "score": 0.9963591694831848,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001772",
+          "score": 0.9949840307235718,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000752",
+          "score": 0.8764117360115051,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P013570",
+          "score": 0.9923253059387207,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 5.1715210001930245,
+        "ranking_ms": 14.961075999963214,
+        "reranking_ms": 5.59877499972572,
+        "total_ms": 25.731371999881958
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "session": {
+      "before": {
+        "user_id": "peer-85649a3c478c41a28bddc0af7cbe9053",
+        "recommendations": [
+          {
+            "product_id": "P000022",
+            "score": 1.0010330578512396,
+            "reason": "MAB 탐색",
+            "is_exploration": true
+          },
+          {
+            "product_id": "P000628",
+            "score": 0.0,
+            "reason": "MAB 탐색",
+            "is_exploration": true
+          },
+          {
+            "product_id": "P000229",
+            "score": 0.9571280991735537,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P001816",
+            "score": 0.9008264462809917,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000068",
+            "score": 0.8894628099173554,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000462",
+            "score": 0.8884297520661157,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000167",
+            "score": 0.8879132231404959,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000031",
+            "score": 0.8538223140495869,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000301",
+            "score": 0.8429752066115702,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000420",
+            "score": 0.8347107438016529,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          }
+        ],
+        "pipeline_latency": {
+          "candidate_ms": 2.4646530000609346,
+          "ranking_ms": 13.840788999914366,
+          "reranking_ms": 6.77234100021451,
+          "total_ms": 23.07778300018981
+        },
+        "session_context": {
+          "recent_clicks": [],
+          "session_interest": null
+        }
+      },
+      "event": {
+        "event_id": "bf5ac3a449d84bf39db58053ac6d3242",
+        "user_id": "peer-85649a3c478c41a28bddc0af7cbe9053",
+        "product_id": "P000022",
+        "category": "sandals",
+        "event_type": "view",
+        "session_id": "peer-review"
+      },
+      "applied": {
+        "applied": true,
+        "features": {
+          "recent_clicks": [
+            "P000022"
+          ],
+          "session_clicks": 1,
+          "session_interest": "sandals",
+          "profile": {}
+        }
+      },
+      "duplicate": {
+        "applied": false,
+        "features": {
+          "recent_clicks": [
+            "P000022"
+          ],
+          "session_clicks": 1,
+          "session_interest": "sandals",
+          "profile": {}
+        }
+      },
+      "after": {
+        "user_id": "peer-85649a3c478c41a28bddc0af7cbe9053",
+        "recommendations": [
+          {
+            "product_id": "P000022",
+            "score": 1.0010330578512396,
+            "reason": "MAB 탐색",
+            "is_exploration": true
+          },
+          {
+            "product_id": "P000628",
+            "score": 0.0,
+            "reason": "MAB 탐색",
+            "is_exploration": true
+          },
+          {
+            "product_id": "P000229",
+            "score": 0.9571280991735537,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P001816",
+            "score": 0.9008264462809917,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000068",
+            "score": 0.8894628099173554,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000462",
+            "score": 0.8884297520661157,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000167",
+            "score": 0.8879132231404959,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000031",
+            "score": 0.8538223140495869,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000301",
+            "score": 0.8429752066115702,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000420",
+            "score": 0.8347107438016529,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          }
+        ],
+        "pipeline_latency": {
+          "candidate_ms": 2.2577889999411127,
+          "ranking_ms": 14.534949000335473,
+          "reranking_ms": 7.081358000050386,
+          "total_ms": 23.874096000326972
+        },
+        "session_context": {
+          "recent_clicks": [
+            "P000022"
+          ],
+          "session_interest": "sandals"
+        }
+      },
+      "four_events": {
+        "user_id": "peer-85649a3c478c41a28bddc0af7cbe9053",
+        "recommendations": [
+          {
+            "product_id": "P000346",
+            "score": 0.5609504132231404,
+            "reason": "MAB 탐색",
+            "is_exploration": true
+          },
+          {
+            "product_id": "P000628",
+            "score": 0.0,
+            "reason": "MAB 탐색",
+            "is_exploration": true
+          },
+          {
+            "product_id": "P000022",
+            "score": 1.0010330578512396,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000229",
+            "score": 0.9571280991735537,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P001816",
+            "score": 0.9008264462809917,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000068",
+            "score": 0.8894628099173554,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000462",
+            "score": 0.8884297520661157,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000167",
+            "score": 0.8879132231404959,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000031",
+            "score": 0.8538223140495869,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          },
+          {
+            "product_id": "P000301",
+            "score": 0.8429752066115702,
+            "reason": "인기·최근 상승 상품",
+            "is_exploration": false
+          }
+        ],
+        "pipeline_latency": {
+          "candidate_ms": 1.5289970001504116,
+          "ranking_ms": 14.262613000028068,
+          "reranking_ms": 20.708417000150803,
+          "total_ms": 36.50002700032928
+        },
+        "session_context": {
+          "recent_clicks": [
+            "P000022",
+            "P000022",
+            "P000022",
+            "P000022"
+          ],
+          "session_interest": "sandals"
+        }
+      },
+      "redis": {
+        "recent_clicks": [
+          "P000022"
+        ],
+        "session_clicks": 1,
+        "session_interest": "sandals",
+        "profile": {}
+      }
+    }
+  },
+  "sources": {
+    "/app/scripts/verify_peer_review.py": "12f2f8ce448b858ed07a1beb139387262c994e58381cebfb39bc42a7f38fed52",
+    "src/recommendation/reranking.py": "2f3732eefe3c7b2ddad02cdfab9e58c8fa6815dd8f11f4cabd0aff4cd86feae2"
+  },
+  "scope": "현재 HTTP·Redis 기능 실행; 품질·지연·A/B·CT·문서 종합 판정은 별도 요구사항 보고서"
+}

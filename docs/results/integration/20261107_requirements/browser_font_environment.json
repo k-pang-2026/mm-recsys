@@ -1,0 +1,7 @@
+{
+  "scope": "local verification browser only; no product or encoding change",
+  "font_source": "existing Windows Malgun Gothic",
+  "fontconfig": "/tmp/mm-fonts.conf",
+  "fonts_committed": false,
+  "previous_captures": "docs/results/integration/20261107_requirements/browser_without_korean_font"
+}

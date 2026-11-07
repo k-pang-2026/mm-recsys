@@ -1,0 +1,65 @@
+{
+  "product_id": "P000001",
+  "item_ids_index": 0,
+  "text": {
+    "product_id": "P000001",
+    "raw": "a photo of a brown regular tote bag",
+    "encoded": "a photo of a brown regular tote bag",
+    "applied_aliases": [],
+    "unknown_terms": []
+  },
+  "encoder": {
+    "model": "openai/clip-vit-base-patch32",
+    "model_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "processor_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "projection_dim": 512,
+    "normalization": "L2",
+    "dtype": "float32",
+    "max_text_length": 77,
+    "preprocess_version": "observable-alias-v1",
+    "alias_fingerprint": "f1ddf126ff623d88c4dde30db83f930230be468b78ea622e01496fb40dd4e7da",
+    "transformers": "4.46.3",
+    "torch": "2.6.0+cpu",
+    "device": "cpu"
+  },
+  "vectors": {
+    "text": {
+      "dimension": 512,
+      "norm": 1.0,
+      "first_12_values": [
+        0.04424010589718819,
+        0.018009144812822342,
+        -0.03746232017874718,
+        0.062063347548246384,
+        -0.025630518794059753,
+        -0.00897316075861454,
+        0.03484394773840904,
+        -0.043083835393190384,
+        0.011931180953979492,
+        0.06029964238405228,
+        -0.027250736951828003,
+        -0.061300478875637054
+      ]
+    },
+    "image": {
+      "dimension": 512,
+      "norm": 0.9999998807907104,
+      "first_12_values": [
+        0.0414549745619297,
+        0.0007852956186980009,
+        0.01742899976670742,
+        0.008737142197787762,
+        0.03673539683222771,
+        -0.05667513236403465,
+        0.016998833045363426,
+        0.05820922926068306,
+        0.008620251901447773,
+        0.025230905041098595,
+        -0.04697291925549507,
+        -0.006064917426556349
+      ]
+    }
+  },
+  "bundle_fingerprint": "47fe81b153cbe4a84ec729c3e9a9cd3742ea46f30160443f1a4968999f0a26bb",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97"
+}

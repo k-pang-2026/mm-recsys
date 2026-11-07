@@ -1,0 +1,16 @@
+[2026-11-07T05:07:09+00:00] [동료 평가 실행] [실패] 원인: ValueError: evidence changed or missing: .env / 다음 조치: 제출 근거·실행 로그와 현재 소스 해시를 확인하세요. 과거 결과를 현재 측정으로 사용하지 마세요.
+Traceback (most recent call last):
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/check_submission.py", line 275, in <module>
+    raise SystemExit(run_cli(main, '동료 평가', '제출 근거·실행 로그와 현재 소스 해시를 확인하세요. 과거 결과를 현재 측정으로 사용하지 마세요.'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/check_submission.py", line 187, in main
+    report = verify_saved(ROOT)
+             ^^^^^^^^^^^^^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/check_submission.py", line 158, in verify_saved
+    check_hashes(root, report['input_hashes'])
+  File "/home/peachpetal/ecommerce/mm-recsys/scripts/check_submission_evidence.py", line 37, in check_hashes
+    raise ValueError(f'evidence changed or missing: {name}')
+ValueError: evidence changed or missing: .env

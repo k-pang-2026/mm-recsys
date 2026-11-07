@@ -1,0 +1,16 @@
+[2026-11-07T08:04:40+00:00] [CT 복구 실행] [실패] 원인: AssertionError:  / 다음 조치: 중단된 학습의 원본 근거·번들 해시·로그 watermark와 API 연결을 확인하세요.
+Traceback (most recent call last):
+  File "<string>", line 2, in <module>
+  File "<frozen runpy>", line 291, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "scripts/resume_integration_ct.py", line 143, in <module>
+    raise SystemExit(run_cli(main, 'CT 복구', '중단된 학습의 원본 근거·번들 해시·로그 watermark와 API 연결을 확인하세요.'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "scripts/resume_integration_ct.py", line 50, in main
+    assert manifest['parent_fingerprint'] == original['generation_fingerprint']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

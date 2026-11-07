@@ -1,6 +1,8 @@
 """Load observable user profiles; replay is an explicit serving-only operation."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -23,7 +25,7 @@ def warmup(cfg: dict, store: RedisFeatureStore) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='Redis 피처 준비')
     parser.add_argument("--replay-stream", action="store_true")
     args = parser.parse_args()
     cfg = load_config()
@@ -35,10 +37,11 @@ def main() -> None:
         if args.replay_stream:
             from src.serving.stream_features import replay_stream
             result["stream"] = replay_stream(cfg, store)
+        log('Redis 피처 준비', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
         print(json.dumps(result, indent=2))
     finally:
         store.close()
 
 
 if __name__ == "__main__":
-    main()
+    run_cli(main, 'Redis 피처 준비', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

@@ -11,15 +11,15 @@ scales:
     n_users: 10000
     n_events: 1000000
 paths:
-  data_dir: data
-  model_dir: models
+  data_dir: data/dev-v43
+  model_dir: models/dev-v43
   results_dir: docs/results
-  split_dir: data/split
+  split_dir: data/dev-v43/split
   by_scale:
     full:
-      data_dir: data/full
-      split_dir: data/full/split
-      model_dir: models/full
+      data_dir: data/full-v43
+      split_dir: data/full-v43/split
+      model_dir: models/full-v43
 simulator:
   n_products: 50000
   n_users: 10000
@@ -69,6 +69,7 @@ simulator:
       - 0.15
     brand_loyal:
       ratio: 0.15
+      preferred_brand_probability: 0.98
       price_sensitivity: 0.2
       cvr: 0.06
       category_preferences:

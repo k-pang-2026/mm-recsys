@@ -1,6 +1,8 @@
 """Apply one process thread budget after both shared factories have loaded."""
 from __future__ import annotations
 
+from src.common.console import log
+
 from typing import Any, AsyncIterator
 import numpy as np
 
@@ -134,8 +136,8 @@ def install_runtime_limits(shared: Any, cfg: dict) -> None:
                 if phase == 'start':
                     gc_starts[generation] = time.perf_counter()
                 elif generation == 2 and generation in gc_starts:
-                    print('GC generation2: ' + str(dict(elapsed_ms=(time.perf_counter()-gc_starts[generation])*1000,
-                        at_ns=time.time_ns(), frozen_objects=gc.get_freeze_count())), flush=True)
+                    log('서버', '메모리 정리', str(dict(elapsed_ms=(time.perf_counter()-gc_starts[generation])*1000,
+                        at_ns=time.time_ns(), frozen_objects=gc.get_freeze_count())), status='완료')
             gc.callbacks.append(gc_timing)
             stabilize_heap(freeze_heap)
             state = dict(torch_threads=torch.get_num_threads(), faiss_threads=faiss.omp_get_max_threads(),
@@ -148,14 +150,14 @@ def install_runtime_limits(shared: Any, cfg: dict) -> None:
                          configured_candidate_training_threads=cfg['recommend']['candidate']['threads'],
                          scope='one shared serving process; model weights and ranking policy unchanged')
             write_json(Path(cfg['paths']['results_dir']) / 'serving_runtime.json', state)
-            print(f'SERVING RUNTIME: {state}', flush=True)
+            log('서버', '실행 환경', f'{state}', status='확인')
             if getattr(application.state, 'search', None) is not None and getattr(application.state, 'recommend', None) is not None:
                 count = len(application.state.search.searcher.products)
-                print(f'[api-server] FAISS 인덱스 로딩 완료 ({count:,} 상품)', flush=True)
-                print('[api-server] Two-Tower 모델 로딩 완료', flush=True)
-                print('[api-server] DeepFM Ranking 모델 로딩 완료', flush=True)
+                log('서버', '준비', f'FAISS 인덱스 로딩 완료 / 상품={count:,}개', status='성공')
+                log('서버', '준비', 'Two-Tower 모델 로딩 완료', status='성공')
+                log('서버', '준비', 'DeepFM Ranking 모델 로딩 완료', status='성공')
                 url = os.getenv('PUBLIC_API_URL', 'http://localhost:8000')
-                print(f'[api-server] {url} 에서 검색·추천 API 서버 시작', flush=True)
+                log('서버', '준비', f'검색·추천 모델 로딩 완료. API 요청을 받을 수 있습니다. / URL={url}', status='성공')
             try:
                 yield
             finally:

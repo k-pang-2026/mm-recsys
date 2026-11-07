@@ -1,6 +1,8 @@
 """B8 search measurement without rewriting A's frozen reports or settings."""
 from __future__ import annotations
 
+from src.common.console import log
+
 from typing import Any, Callable
 
 import json
@@ -40,7 +42,7 @@ def evaluate(cfg: dict, split: str, query_encoder_setup: Callable[[Any], None] |
     all_ranked: list[list[str]] = [[] for _ in queries]
     per_mode, baselines, tradeoff = {}, {}, []
     for mode in ('text', 'image', 'hybrid'):
-        print(f'B8 search {split}: {mode}', flush=True)
+        log('검색', '평가', f'{split} / 검색 유형={mode}')
         active = [i for i, query in enumerate(queries) if query['mode'] == mode]
         labels = [truth[i] for i in active]
         query_vectors = (fuse(vectors['text'][active], vectors['image'][active], cfg['search']['query_fusion'])

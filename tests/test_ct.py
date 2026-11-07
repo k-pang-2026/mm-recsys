@@ -77,6 +77,22 @@ def comparison(before=.5, after=.8, split='valid'):
                 validation_fingerprint='controlled-fixture-cohort')
 
 
+def test_ct_validation_labels_match_training_pipeline_without_train_labels(tmp_path):
+    import pandas as pd
+    from src.simulator.generate import generate
+    from src.ct.training import validation_data
+    from src.recommendation.train_deepfm import prepare
+    cfg = load_config()
+    cfg['simulator'].update(n_products=400, n_users=24, n_events=6000, image_size=32)
+    cfg['paths']['data_dir'] = str(tmp_path / 'data')
+    generate(cfg, Path(cfg['paths']['data_dir']))
+    original_data, original_labels, _ = prepare(cfg, 'valid')
+    data, labels = validation_data(cfg)
+    pd.testing.assert_frame_equal(labels, original_labels['valid'])
+    assert data['manifest'] == original_data['manifest']
+    assert set(data) == set(original_data) and 'test' not in data
+
+
 def copy_version(registry, version):
     shutil.copytree(registry.root / 'v1.0', registry.root / version)
 

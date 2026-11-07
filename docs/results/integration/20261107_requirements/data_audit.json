@@ -1,0 +1,467 @@
+{
+  "status": "PASS",
+  "generated_at": "2026-11-07T05:51:31.457636+00:00",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "seed": 42,
+  "generator_version": "4.3.0",
+  "source_hashes": {
+    "data/full-v43/products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "data/full-v43/users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+    "data/full-v43/events.parquet": "c82c40925a3c2f91199f56d144e711830aee9f7e884ffdf7235f66d89348291d",
+    "data/full-v43/impressions.parquet": "f0e59241f85b1539de6811e3c1cec17b8853662ca7386f5edd0a3e6b31283af7",
+    "data/full-v43/image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+    "data/full-v43/split/train.parquet": "34bb7f5be422945a6c8b9f2868634b6b6eced180fd41bc5948a9b07f149cf1ef",
+    "data/full-v43/split/valid.parquet": "7ac8a9c78feb9a4f0b9f4467edde29325afc007af91a765d8c3035dcf650c349",
+    "data/full-v43/split/test.parquet": "896f27c23d5769e61d65f95d194c47ceb367dbf4e62ae3b8c38834c4db6601ca"
+  },
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2253808
+  },
+  "integrity": {
+    "products": {
+      "rows": 50000,
+      "duplicate_ids": 0,
+      "nulls": {
+        "product_id": 0,
+        "name": 0,
+        "category_l1": 0,
+        "category_l2": 0,
+        "category_l3": 0,
+        "brand": 0,
+        "color": 0,
+        "style": 0,
+        "attributes": 0,
+        "price": 0,
+        "created_at": 0,
+        "image_path": 0,
+        "description_en": 0,
+        "image_sha256": 0,
+        "visual_group": 0
+      },
+      "checksum_matches": true
+    },
+    "users": {
+      "rows": 10000,
+      "duplicate_ids": 0,
+      "nulls": {
+        "user_id": 0,
+        "persona": 0,
+        "age_group": 0,
+        "gender": 0,
+        "signup_at": 0
+      },
+      "checksum_matches": true
+    },
+    "events": {
+      "rows": 1000000,
+      "duplicate_ids": 0,
+      "nulls": {
+        "event_id": 0,
+        "user_id": 0,
+        "product_id": 279959,
+        "event_type": 0,
+        "timestamp": 0,
+        "session_id": 0,
+        "query": 720041,
+        "impression_id": 436548,
+        "position": 436548
+      },
+      "checksum_matches": true
+    },
+    "impressions": {
+      "rows": 2253808,
+      "duplicate_ids": 0,
+      "nulls": {
+        "impression_id": 0,
+        "request_id": 0,
+        "user_id": 0,
+        "product_id": 0,
+        "exposed_at": 0,
+        "position": 0
+      },
+      "checksum_matches": true
+    }
+  },
+  "references": {
+    "event_users": 0,
+    "event_products": 0,
+    "impression_users": 0,
+    "impression_products": 0
+  },
+  "checks": {
+    "six_personas": true,
+    "unique_ids": true,
+    "hashes": true,
+    "references": true,
+    "event_types": true,
+    "category_difference": true,
+    "price_sensitivity": true,
+    "conversion_difference": true,
+    "brand_loyalty": true
+  },
+  "split_counts": {
+    "train": 800000,
+    "valid": 100000,
+    "test": 100000
+  },
+  "boundaries": {
+    "train": {
+      "start": "2025-12-02 00:00:00+00:00",
+      "end": "2025-12-25 09:59:36.851400+00:00"
+    },
+    "valid": {
+      "start": "2025-12-25 09:59:39.966000+00:00",
+      "end": "2025-12-28 10:01:17.605500+00:00"
+    },
+    "test": {
+      "start": "2025-12-28 10:01:18.075600+00:00",
+      "end": "2025-12-31 22:14:44.485800+00:00"
+    }
+  },
+  "split_ratios": {
+    "train": 0.8,
+    "valid": 0.1,
+    "test": 0.1
+  },
+  "daily_events": {
+    "2025-12-02": 51208,
+    "2025-12-03": 33012,
+    "2025-12-04": 33334,
+    "2025-12-05": 33063,
+    "2025-12-06": 33603,
+    "2025-12-07": 33392,
+    "2025-12-08": 33400,
+    "2025-12-09": 33715,
+    "2025-12-10": 33106,
+    "2025-12-11": 33587,
+    "2025-12-12": 33374,
+    "2025-12-13": 33291,
+    "2025-12-14": 33716,
+    "2025-12-15": 33314,
+    "2025-12-16": 33458,
+    "2025-12-17": 33162,
+    "2025-12-18": 33216,
+    "2025-12-19": 33732,
+    "2025-12-20": 33530,
+    "2025-12-21": 33235,
+    "2025-12-22": 33554,
+    "2025-12-23": 33439,
+    "2025-12-24": 33080,
+    "2025-12-25": 33881,
+    "2025-12-26": 32937,
+    "2025-12-27": 33556,
+    "2025-12-28": 33489,
+    "2025-12-29": 32974,
+    "2025-12-30": 30818,
+    "2025-12-31": 16824
+  },
+  "event_counts": {
+    "view": 563452,
+    "search": 279959,
+    "cart": 111807,
+    "purchase": 44782
+  },
+  "category_counts": {
+    "polo shirt": 1112,
+    "cardigan": 1112,
+    "sweater": 1112,
+    "shirt": 1112,
+    "blouse": 1112,
+    "tote bag": 1111,
+    "cap": 1111,
+    "denim shorts": 1111,
+    "blazer": 1111,
+    "heels": 1111,
+    "backpack": 1111,
+    "t-shirt": 1111,
+    "boots": 1111,
+    "denim jacket": 1111,
+    "oxford shoes": 1111,
+    "slip-on shoes": 1111,
+    "padded vest": 1111,
+    "loafers": 1111,
+    "hoodie": 1111,
+    "hiking shoes": 1111,
+    "long coat": 1111,
+    "scarf": 1111,
+    "chinos": 1111,
+    "beanie": 1111,
+    "bomber jacket": 1111,
+    "pleated skirt": 1111,
+    "sweatshirt": 1111,
+    "canvas shoes": 1111,
+    "sandals": 1111,
+    "belt": 1111,
+    "trench coat": 1111,
+    "jeans": 1111,
+    "long skirt": 1111,
+    "bermuda shorts": 1111,
+    "crossbody bag": 1111,
+    "puffer jacket": 1111,
+    "cargo pants": 1111,
+    "fleece jacket": 1111,
+    "sneakers": 1111,
+    "athletic shorts": 1111,
+    "knitted vest": 1111,
+    "pea coat": 1111,
+    "mini skirt": 1111,
+    "bucket hat": 1111,
+    "gloves": 1111
+  },
+  "brand_counts": {
+    "Value": 6390,
+    "Muse": 6331,
+    "Classic": 6299,
+    "Daily": 6288,
+    "North": 6213,
+    "Field": 6190,
+    "Studio": 6165,
+    "Urban": 6124
+  },
+  "price_summary": {
+    "count": 50000.0,
+    "mean": 117044.92,
+    "std": 71921.88788785195,
+    "min": 10000.0,
+    "25%": 63000.0,
+    "50%": 106000.0,
+    "75%": 151000.0,
+    "max": 349000.0
+  },
+  "personas": [
+    {
+      "persona": "bargain",
+      "users": 2000,
+      "events": 200200,
+      "events_per_user": 100.1,
+      "buyers": 1872,
+      "buyer_rate": 0.936,
+      "purchases": 6018,
+      "views": 115408,
+      "impressions": 461632,
+      "purchase_per_view": 0.052145431859143214,
+      "purchase_per_impression": 0.013036357964785803,
+      "purchase_price_percentile_mean": 0.295114193075777,
+      "top_brand_share_mean": 0.8767055860805861,
+      "mean_views_before_purchase": 13.640412097042207,
+      "purchase_category_shares": {
+        "tops": 0.27849783981389165,
+        "bottoms": 0.2470920571618478,
+        "footwear": 0.21784646061814555,
+        "accessories": 0.14007976071784647,
+        "outerwear": 0.11648388168826852
+      },
+      "configured": {
+        "ratio": 0.2,
+        "price_sensitivity": 0.9,
+        "cvr": 0.03,
+        "category_preferences": [
+          0.3,
+          0.25,
+          0.1,
+          0.2,
+          0.15
+        ]
+      }
+    },
+    {
+      "persona": "brand_loyal",
+      "users": 1500,
+      "events": 149800,
+      "events_per_user": 99.86666666666666,
+      "buyers": 1452,
+      "buyer_rate": 0.968,
+      "purchases": 8643,
+      "views": 82748,
+      "impressions": 330992,
+      "purchase_per_view": 0.10444965437231112,
+      "purchase_per_impression": 0.02611241359307778,
+      "purchase_price_percentile_mean": 0.4496092610323563,
+      "top_brand_share_mean": 0.9391977627514818,
+      "mean_views_before_purchase": 8.176096262871688,
+      "purchase_category_shares": {
+        "bottoms": 0.22295499247946315,
+        "tops": 0.19842647228971422,
+        "footwear": 0.19518685641559644,
+        "accessories": 0.19402985074626866,
+        "outerwear": 0.18940182806895753
+      },
+      "configured": {
+        "ratio": 0.15,
+        "preferred_brand_probability": 0.98,
+        "price_sensitivity": 0.2,
+        "cvr": 0.06,
+        "category_preferences": [
+          0.2,
+          0.2,
+          0.2,
+          0.2,
+          0.2
+        ]
+      }
+    },
+    {
+      "persona": "careful",
+      "users": 1500,
+      "events": 150000,
+      "events_per_user": 100.0,
+      "buyers": 1298,
+      "buyer_rate": 0.8653333333333333,
+      "purchases": 3019,
+      "views": 87646,
+      "impressions": 350584,
+      "purchase_per_view": 0.03444538256166853,
+      "purchase_per_impression": 0.008611345640417132,
+      "purchase_price_percentile_mean": 0.341007260119994,
+      "top_brand_share_mean": 0.9025937339496661,
+      "mean_views_before_purchase": 17.114276250414044,
+      "purchase_category_shares": {
+        "outerwear": 0.27625041404438555,
+        "bottoms": 0.20503477972838688,
+        "tops": 0.19774759854256377,
+        "footwear": 0.19708512752567076,
+        "accessories": 0.12388208015899305
+      },
+      "configured": {
+        "ratio": 0.15,
+        "price_sensitivity": 0.7,
+        "cvr": 0.02,
+        "category_preferences": [
+          0.2,
+          0.2,
+          0.3,
+          0.2,
+          0.1
+        ]
+      }
+    },
+    {
+      "persona": "impulsive",
+      "users": 1500,
+      "events": 150800,
+      "events_per_user": 100.53333333333333,
+      "buyers": 1463,
+      "buyer_rate": 0.9753333333333334,
+      "purchases": 11576,
+      "views": 80673,
+      "impressions": 322692,
+      "purchase_per_view": 0.14349286626256616,
+      "purchase_per_impression": 0.03587321656564154,
+      "purchase_price_percentile_mean": 0.37568738056577133,
+      "top_brand_share_mean": 0.860077510778126,
+      "mean_views_before_purchase": 6.214495507947477,
+      "purchase_category_shares": {
+        "tops": 0.248790601243953,
+        "footwear": 0.2033517622667588,
+        "accessories": 0.20171043538355218,
+        "outerwear": 0.19557705597788527,
+        "bottoms": 0.15057014512785072
+      },
+      "configured": {
+        "ratio": 0.15,
+        "price_sensitivity": 0.5,
+        "cvr": 0.08,
+        "category_preferences": [
+          0.25,
+          0.15,
+          0.2,
+          0.2,
+          0.2
+        ]
+      }
+    },
+    {
+      "persona": "pragmatist",
+      "users": 2000,
+      "events": 199800,
+      "events_per_user": 99.9,
+      "buyers": 1916,
+      "buyer_rate": 0.958,
+      "purchases": 8073,
+      "views": 113423,
+      "impressions": 453692,
+      "purchase_per_view": 0.07117604013295363,
+      "purchase_per_impression": 0.017794010033238408,
+      "purchase_price_percentile_mean": 0.35365563571868525,
+      "top_brand_share_mean": 0.8630717968531121,
+      "mean_views_before_purchase": 11.017465626161279,
+      "purchase_category_shares": {
+        "bottoms": 0.24402328750154836,
+        "tops": 0.23014988232379538,
+        "outerwear": 0.20574755357364052,
+        "footwear": 0.20178372352285395,
+        "accessories": 0.11829555307816178
+      },
+      "configured": {
+        "ratio": 0.2,
+        "price_sensitivity": 0.6,
+        "cvr": 0.04,
+        "category_preferences": [
+          0.25,
+          0.25,
+          0.2,
+          0.2,
+          0.1
+        ]
+      }
+    },
+    {
+      "persona": "trendsetter",
+      "users": 1500,
+      "events": 149400,
+      "events_per_user": 99.6,
+      "buyers": 1447,
+      "buyer_rate": 0.9646666666666667,
+      "purchases": 7453,
+      "views": 83554,
+      "impressions": 334216,
+      "purchase_per_view": 0.08919979893242694,
+      "purchase_per_impression": 0.022299949733106735,
+      "purchase_price_percentile_mean": 0.40981216209117904,
+      "top_brand_share_mean": 0.8617577193596543,
+      "mean_views_before_purchase": 9.29934254662552,
+      "purchase_category_shares": {
+        "tops": 0.2814973836039179,
+        "footwear": 0.208640815778881,
+        "outerwear": 0.2022004561921374,
+        "bottoms": 0.19441835502482221,
+        "accessories": 0.11324298940024151
+      },
+      "configured": {
+        "ratio": 0.15,
+        "price_sensitivity": 0.3,
+        "cvr": 0.05,
+        "category_preferences": [
+          0.3,
+          0.2,
+          0.2,
+          0.2,
+          0.1
+        ]
+      }
+    }
+  ],
+  "purchase_ledger": "docs/results/docker/runtime-v43/full/analysis/purchases.parquet",
+  "purchase_ledger_sha256": "cabcad94b9d6d7a47364f78599eaa3a92bcdde779c9a7e353a8957f1ef4b1b91",
+  "denominators": {
+    "activity": "전체 사용자와 전체 이벤트",
+    "buyers": "구매 1회 이상 사용자 / 해당 페르소나 전체 사용자",
+    "price": "구매 이벤트별 소분류 내 전체 상품 가격 백분위 (평균 순위)",
+    "brand": "구매자별 최다 구매 브랜드 건수 / 해당 사용자 구매 건수, 구매자 단순 평균",
+    "views": "사용자별 직전 구매 이후 view 건수; 첫 구매는 관측 시작 이후",
+    "conversion": "구매 이벤트 / view 또는 노출; attribution CVR과 다른 EDA 지표"
+  },
+  "excluded": {
+    "no_purchase_users": 552,
+    "null_product_events": 279959,
+    "ledger_rows_dropped": 0
+  },
+  "limitations": [
+    "가성비는 품질·효용 관측값이 없는 저가격 선호 대리모형입니다.",
+    "페르소나는 생성기 진단에만 사용하며 추천 모델 입력으로 사용하지 않습니다.",
+    "분포 차이는 관측 기술 통계이며 실제 고객에 대한 인과 효과가 아닙니다."
+  ]
+}

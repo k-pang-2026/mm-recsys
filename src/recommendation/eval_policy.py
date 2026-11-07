@@ -1,6 +1,8 @@
 """Compare inference policies on valid; freeze one eligible policy before test."""
 from __future__ import annotations
 
+from src.common.console import log
+
 from typing import Any
 
 import argparse
@@ -141,7 +143,7 @@ def evaluate(cfg: dict, split: str, output: Path, selection_path: Path) -> dict:
                     agg['ndcg']+=ndcg_at_k(ids,truth[uid],50)
                     cohort='cold' if cold else 'warm'; agg[cohort+'_hit']+=hit; agg[cohort+'_truth']+=1
             truth_users += int(uid in truth)
-            if (i+1)%1000==0: print(f'{split} evaluated_users={i+1}',flush=True)
+            if (i+1)%1000==0: log('추천 정책', '평가', f'{split}: 사용자 {i+1:,}명 평가')
     rows: list[dict] = []
     for name in names:
         agg=aggregates[name]
@@ -181,7 +183,7 @@ def evaluate(cfg: dict, split: str, output: Path, selection_path: Path) -> dict:
         report['selection_sha256']=file_hash(selection_path)
         report['quality_status']='PASS' if all(rows[0]['checks'].values()) else 'FAIL'
         write_json(output,report)
-    print(f'result={output}; metrics='+json.dumps([{k:row[k] for k in ['name','metrics','checks']} for row in rows]),flush=True)
+    log('추천 정책', '평가', f'결과={output} / 지표='+json.dumps([{k:row[k] for k in ['name','metrics','checks']} for row in rows]), status='측정 완료')
     return report
 
 

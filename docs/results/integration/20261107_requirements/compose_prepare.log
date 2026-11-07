@@ -1,0 +1,63 @@
+ Image mm-recsys-api-server Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 555B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile.api
+#2 transferring dockerfile: 650B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 0.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 292B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 31.02kB 0.0s done
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#6 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#6 DONE 0.0s
+
+#7 [3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [4/7] COPY requirements.txt requirements-torch.txt ./
+#8 CACHED
+
+#9 [5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#9 CACHED
+
+#10 [2/7] WORKDIR /app
+#10 CACHED
+
+#11 [6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#11 CACHED
+
+#12 [7/7] COPY . .
+#12 DONE 0.2s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 0.3s done
+#13 exporting manifest sha256:5661cc0b2a5c9db81c072162df22454fe8715fd110871925f2ed13ded5adeb5f 0.0s done
+#13 exporting config sha256:9978b55d92dd1fe60acf11d9b413a541f2696b79edb6ffb8ec5f8ece3ab900d2 0.0s done
+#13 exporting attestation manifest sha256:7689dc15b1631881061ca19823def7a0fb2742fd57cfdd46b4a4e7a8a243779b 0.0s done
+#13 exporting manifest list sha256:c606a1c50fb954d207dd33c8f234d1e997df19fd76dcf5969a9dc1c3deed09e3 0.0s done
+#13 naming to docker.io/library/mm-recsys-api-server:latest done
+#13 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#13 DONE 0.5s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s
+ Image mm-recsys-api-server Built 
+ Container mm-recsys-redis-1 Running 
+ Container mm-recsys-api-server-1 Recreate 
+ Container mm-recsys-api-server-1 Recreated 
+ Container mm-recsys-redis-1 Waiting 
+ Container mm-recsys-redis-1 Healthy 
+ Container mm-recsys-api-server-1 Starting 
+ Container mm-recsys-api-server-1 Started 

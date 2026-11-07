@@ -1,0 +1,6 @@
+{
+  "status": "FAIL",
+  "scope": "initial verification used adjustable wall clock instead of a monotonic interval",
+  "observed_wall_seconds": 58.496124029159546,
+  "next_action": "measure actual line arrivals with time.monotonic; preserve original timestamps"
+}

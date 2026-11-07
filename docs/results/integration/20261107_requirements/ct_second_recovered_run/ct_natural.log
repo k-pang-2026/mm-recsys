@@ -1,0 +1,39 @@
+[2026-11-07T06:32:58+00:00] [CT 시작] [진행] 모니터링 주기=60초 / 재학습 임계치=10000건 / 재학습 활성=True / 활성 모델=v1.0
+[2026-11-07T06:32:58+00:00] [CT 모니터링] [미측정] CTR=None / 기준=0.01 / HitRate@50=None / 기준=0.2 / 성숙 요청=0 / 노출=0 / 관측 완료. null은 관측 표본 부족으로 미측정입니다.
+[2026-11-07T06:32:58+00:00] [CT 재학습] [진행] 신규 로그 202,941건 누적 / v1.0 → v1.1 / 재학습 시작
+/app/src/ct/retrain_trigger.py:89: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
+[2026-11-07T06:36:21+00:00] [모델 학습] [진행] Two-Tower epoch=1 / loss=0.30502 / valid_recall@300=0.749925 / 갱신=1363
+[2026-11-07T06:38:22+00:00] [모델 학습] [진행] Two-Tower epoch=2 / loss=0.23484 / valid_recall@300=0.751193 / 갱신=1363
+[2026-11-07T06:40:22+00:00] [모델 학습] [진행] Two-Tower epoch=3 / loss=0.21949 / valid_recall@300=0.746477 / 갱신=1363
+[2026-11-07T06:42:21+00:00] [모델 학습] [진행] Two-Tower epoch=4 / loss=0.20799 / valid_recall@300=0.749743 / 갱신=1363
+[2026-11-07T06:44:20+00:00] [모델 학습] [진행] Two-Tower epoch=5 / loss=0.19884 / valid_recall@300=0.748662 / 갱신=1363
+[2026-11-07T06:44:37+00:00] [모델 학습] [성공] Two-Tower 선택 epoch=2 / valid_recall@300=0.751193 / 결과=/app/models/full-v43/.ct/runs/v1.1-3c9c82e6/results/candidate_training_full.json
+[2026-11-07T06:45:57+00:00] [모델 학습] [진행] DeepFM epoch=1 / loss=1.80698 / valid_ctr_auc=0.961623 / cvr_auc=0.4612133385752524
+[2026-11-07T06:46:13+00:00] [모델 학습] [진행] DeepFM epoch=2 / loss=0.44728 / valid_ctr_auc=0.965723 / cvr_auc=0.5428988189112776
+[2026-11-07T06:46:28+00:00] [모델 학습] [진행] DeepFM epoch=3 / loss=0.41668 / valid_ctr_auc=0.967095 / cvr_auc=0.5418056603688323
+[2026-11-07T06:46:44+00:00] [모델 학습] [진행] DeepFM epoch=4 / loss=0.40302 / valid_ctr_auc=0.967987 / cvr_auc=0.46193767990853757
+[2026-11-07T06:46:59+00:00] [모델 학습] [진행] DeepFM epoch=5 / loss=0.39100 / valid_ctr_auc=0.967883 / cvr_auc=0.47100111616725343
+[2026-11-07T06:47:14+00:00] [모델 학습] [진행] DeepFM epoch=6 / loss=0.38431 / valid_ctr_auc=0.967109 / cvr_auc=0.5042876789294435
+[2026-11-07T06:47:29+00:00] [모델 학습] [진행] DeepFM epoch=7 / loss=0.38079 / valid_ctr_auc=0.966761 / cvr_auc=0.5417971874392773
+[2026-11-07T06:50:23+00:00] [모델 학습] [진행] 세션 epoch=1 / valid_loss=0.12646 / sampled_hit@10=1.00000
+[2026-11-07T06:50:42+00:00] [모델 학습] [진행] 세션 epoch=2 / valid_loss=0.11102 / sampled_hit@10=1.00000
+[2026-11-07T06:51:02+00:00] [모델 학습] [진행] 세션 epoch=3 / valid_loss=0.10532 / sampled_hit@10=1.00000
+[2026-11-07T06:51:20+00:00] [모델 학습] [진행] 세션 epoch=4 / valid_loss=0.10168 / sampled_hit@10=1.00000
+[2026-11-07T06:51:40+00:00] [모델 학습] [진행] 세션 epoch=5 / valid_loss=0.09914 / sampled_hit@10=1.00000
+[2026-11-07T06:51:59+00:00] [모델 학습] [진행] 세션 epoch=6 / valid_loss=0.09726 / sampled_hit@10=1.00000
+[2026-11-07T06:52:18+00:00] [모델 학습] [진행] 세션 epoch=7 / valid_loss=0.09605 / sampled_hit@10=1.00000
+[2026-11-07T06:52:38+00:00] [모델 학습] [진행] 세션 epoch=8 / valid_loss=0.09496 / sampled_hit@10=1.00000
+[2026-11-07T06:52:57+00:00] [모델 학습] [진행] 세션 epoch=9 / valid_loss=0.09437 / sampled_hit@10=1.00000
+[2026-11-07T06:53:15+00:00] [모델 학습] [진행] 세션 epoch=10 / valid_loss=0.09381 / sampled_hit@10=1.00000
+[2026-11-07T06:53:35+00:00] [모델 학습] [진행] 세션 epoch=11 / valid_loss=0.09337 / sampled_hit@10=1.00000
+[2026-11-07T06:53:54+00:00] [모델 학습] [진행] 세션 epoch=12 / valid_loss=0.09309 / sampled_hit@10=1.00000
+[2026-11-07T06:54:13+00:00] [모델 학습] [진행] 세션 epoch=13 / valid_loss=0.09273 / sampled_hit@10=1.00000
+[2026-11-07T06:54:34+00:00] [모델 학습] [진행] 세션 epoch=14 / valid_loss=0.09236 / sampled_hit@10=1.00000
+[2026-11-07T06:54:52+00:00] [모델 학습] [진행] 세션 epoch=15 / valid_loss=0.09217 / sampled_hit@10=1.00000
+[2026-11-07T06:55:11+00:00] [모델 학습] [진행] 세션 epoch=16 / valid_loss=0.09179 / sampled_hit@10=1.00000
+[2026-11-07T06:55:31+00:00] [모델 학습] [진행] 세션 epoch=17 / valid_loss=0.09161 / sampled_hit@10=1.00000
+[2026-11-07T06:55:49+00:00] [모델 학습] [진행] 세션 epoch=18 / valid_loss=0.09145 / sampled_hit@10=1.00000
+[2026-11-07T06:56:09+00:00] [모델 학습] [진행] 세션 epoch=19 / valid_loss=0.09124 / sampled_hit@10=1.00000
+[2026-11-07T06:56:27+00:00] [모델 학습] [진행] 세션 epoch=20 / valid_loss=0.09112 / sampled_hit@10=1.00000
+[2026-11-07T06:56:28+00:00] [CT 버전 등록] [성공] 모델=v1.1

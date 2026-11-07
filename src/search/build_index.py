@@ -1,6 +1,8 @@
 """Publish text/image/hybrid HNSW or IVFPQ indexes as an atomic versioned bundle."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli
+
 
 
 import argparse
@@ -59,7 +61,7 @@ def build_indexes(cfg: dict) -> Path:
                 indexed = values
             index = make_index(indexed, cfg['search']['faiss'], cfg['seed'])
             faiss.write_index(index, str(staging/f'{mode}.faiss'))
-            print(f'{mode}: {index.ntotal} indexed vectors, IP {cfg["search"]["faiss"]["type"]}', flush=True)
+            log('모델', '준비', f'FAISS {mode}: 벡터 {index.ntotal:,}개 / IP {cfg["search"]["faiss"]["type"]}', status='성공')
         write_json(staging/'item_ids.json', bundle['ids'])
         names = ['item_ids.json', *[f'{mode}.faiss' for mode in vectors]]
         if identity['deduplicate_vectors']:
@@ -98,8 +100,8 @@ def current_indexes(cfg: dict) -> tuple[Path, dict]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__); parser.parse_args()
     cfg = load_config(); set_seed(cfg['seed'])
-    print('INDEXES VERIFIED:', build_indexes(cfg))
+    log('모델', '준비', f'인덱스 검증 완료: {build_indexes(cfg)}', status='성공')
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '인덱스 준비', '임베딩 manifest와 설정을 확인하세요. 기존 번들을 덮어쓰지 마세요.')

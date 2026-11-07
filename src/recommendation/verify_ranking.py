@@ -1,6 +1,8 @@
 """Bind final B4/B5 claims to saved measured sources and current model artifacts."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -94,13 +96,15 @@ def main() -> int:
         computed=verify(cfg);output=Path(cfg['paths']['results_dir'])/'ranking_metrics_v2.json'
         if args.write:write_json(output,computed)
         elif json.loads(output.read_text())!=computed:raise ValueError('ranking v2 metrics differ from measured sources')
-        print(f'implementation={computed["implementation"]}; quality={computed["recommendation_quality"]}; environment={computed["environment"]}; common=UNMEASURED')
+        log('랭킹', '검사', f'구현={computed["implementation"]} / 품질={computed["recommendation_quality"]} / 환경={computed["environment"]} / 통합=미측정(UNMEASURED)', status='완료')
+        emit_json(computed)
         return 1 if computed['status']!='PASS' or (args.require_quality and computed['recommendation_quality']!='PASS') else 0
     computed=summarize(cfg); output=Path(cfg['paths']['results_dir'])/'ranking_metrics.json'
     if args.write: write_json(output,computed)
     elif json.loads(output.read_text())!=computed: raise ValueError('ranking metrics differ from measured sources')
-    print(f'B4={computed["B4"]}; B5 memory={computed["B5_implementation_memory"]}; quality={computed["recommendation_quality_status"]}; common integration=UNMEASURED')
+    log('랭킹', '검사', f'B4={computed["B4"]} / B5 메모리 구현={computed["B5_implementation_memory"]} / 품질={computed["recommendation_quality_status"]} / 통합=미측정(UNMEASURED)', status='완료')
+    emit_json(computed)
     return 1 if args.require_quality and computed['recommendation_quality_status']!='PASS' else 0
 
 
-if __name__=='__main__': raise SystemExit(main())
+if __name__=='__main__': raise SystemExit(run_cli(main, '추천 평가', '원본 결과·데이터·모델·설정과 동결된 valid 근거를 확인하세요.'))

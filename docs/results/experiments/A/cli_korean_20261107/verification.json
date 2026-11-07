@@ -1,0 +1,299 @@
+{
+  "scope": "요청 10번: 한국어 CLI·실행 로그와 UTF-8. full 최종 품질 승인 아님",
+  "implementation_status": "PASS",
+  "acceptance": "UNMEASURED",
+  "recorded_at": "2026-11-07T05:12:45.295383+00:00",
+  "branch": "feat/cli-korean-logs",
+  "base_sha": "09fdfd7a20b76ab5bae18aed2a6327662aa689a3",
+  "working_tree": "uncommitted",
+  "source_hashes": {
+    "docker/Dockerfile.api": "de5c58d611b5eb56f52b6a5e982e02ebbda66af0093649c17e10c7c68cea7f8b",
+    "docker/Dockerfile.dashboard": "9a9a7ae2636a53564b11ecfa478cda76546cb02d9540908c4a51c58a4f67e808",
+    "docker/Dockerfile.simulator": "ffa16db70494cbdf195ad509a566d550b3189a61cfa91d5d86045be3d3b0f2dd",
+    "docker/api_entrypoint.py": "c1aad41f06dd6297ddaedb2d05fa3a8bf81804d02e660742db80fde9ff4640e2",
+    "docker/ct_worker.py": "4e05ad8f42d8ce5dea5f2f080f059e4f531c7efba9040818f45f2534ab7cbb03",
+    "docker/dashboard_entrypoint.py": "0caaa5f571dc7c0d395c5fd593f88be62880064199ad45191020fb6326ec2ea1",
+    "docker/inspect_runtime.py": "cac2dd17ed4a48a0151a9f6516bf2e78286573c74d24698f17bdd037834d7972",
+    "docker/quality.py": "043ed2e7ef665f349619a22e4e9f3283ea4ea3203f57c0429514bc96eb87a0a6",
+    "docker/serve.py": "e36c505ebd848499f47311c1fd75260370811fd3d8627be45f23e9d9edf8959c",
+    "docker/simulator.py": "ac77c72a47288dc20b023d06aba581ca0d1ef482f8162fcd668dbfd343e14d6f",
+    "docker/verify_evidence.py": "b32eb7189d6ca0aa29c92060e0699470a59b547a6678cc03215f334671fe85ff",
+    "scripts/check_submission.py": "ad233354505d752b477d30370577d58672a9ed24235dd478b7aad476cda300de",
+    "scripts/demo.py": "6db7a3e1d8d25932a939376d29186f388f749e7fedc8c9c6b7a5d28290c136b9",
+    "scripts/prepare_all.py": "6ea8bbf31a01d1339b296928eb8e993760a2fe7f048e191938a35dde15a1adf6",
+    "scripts/smoke_test.py": "c7f782c70f9ff63cdbdc19fb508e67826c4529eefe32dfd338ba07ddd5a41c74",
+    "scripts/train_all.py": "8bebfbbba64cf590b1642bb4849f0d9e977a8fc550a8f842f34005b19ca71534",
+    "scripts/verify_console_utf8.ps1": "e77936d864376815179043fc46269f8111ce8827f9e208e131ac18211f1292c7",
+    "src/common/console.py": "03418ceb22f84f25aefed1aaadb4fb7ca029d5405a1eefe650db5d8509bde72b",
+    "src/ct/bootstrap.py": "841307aa2f7ae7357856f4ea1db9b17fbe77b5e4cfc006598e7e72bda0497e1e",
+    "src/ct/monitor.py": "399bbe44309543afb1a4dcceea5690cd573682bcaf1617fcac804963412ca1ba",
+    "src/ct/retrain_trigger.py": "a38ad454c8e8aa3bc58beb6fcb4637dac5df3830c8796b43eb5851f329f76edc",
+    "src/ct/storage.py": "447508833d09d6538f9ca97454879d048fcbccac135f6788a5daeae53571537d",
+    "src/ct/verify_ct.py": "a509553aa74cf4548a434491bdf0b71c5991ba00d80706de3a39c30d4d4d2200",
+    "src/ct/verify_serving.py": "af7268ede3da2cebb7c970319430a892761506551ca9db98a4a338276be578f1",
+    "src/evaluation/ab_prepare.py": "693cf98d75cc6ade36bd942e6d8bf2d65d679f17c27a8a863b7578564a7c9460",
+    "src/evaluation/ab_test.py": "7ef0fd98844cec285548c2c399be5230340612a618dd0629835aa293d3ad9e2a",
+    "src/evaluation/api_benchmark.py": "07134e57978190a7a052f62818c3aeb4de4129899e579ee7ccdd981fcea0bbb3",
+    "src/evaluation/recommendation.py": "b12ef3e0ba49d9627cbdba2d2e25bef155acc9f386abfbf613e48e34a552ddec",
+    "src/evaluation/run_all.py": "4c53240e9f3c2cfb81ba5c5b2dfb55698c213bef45b520f5e034b8af745f42b5",
+    "src/evaluation/search.py": "a349463467696204da8ec8a0eaf2706a850e85caa08ecfaafb6ec97c71fe4b61",
+    "src/evaluation/verify_ab.py": "cf8563676accd40072f59945c63b14d05b3823e0aafae4b35362b6ad60e6d3ba",
+    "src/evaluation/verify_evaluation.py": "b5ad6026cc87476e235ef11d5f4585c3aef2623145070f8bbb713a8af5370cca",
+    "src/recommendation/eval_candidate.py": "7ce5208f4bf0796635d8647acd06ac4e61350656a465575439bd289ca52cfc72",
+    "src/recommendation/eval_deepfm.py": "c8b2ae891751daf72cb89fb263541acccc3c50a65ec93379ab1b09a9766efd61",
+    "src/recommendation/eval_policy.py": "6207e7023652c4b00eda817c0d2970ba2aa74880bac88a7977f92b389da9cf81",
+    "src/recommendation/eval_ranking.py": "906f11f8c13abd0d1e51fb34d3d6fd30884e707123e5a091c0c77bb646d84e03",
+    "src/recommendation/train_deepfm.py": "af36529051887ee63ae1732991d3c1150383587001baab373a80ec028a8e7fc3",
+    "src/recommendation/train_session.py": "ed84e08dee9c4ced9451f374f101b444e0d099664318f4edd19742057ee41b36",
+    "src/recommendation/train_two_tower.py": "ba2366ab50f56bd119f6431bcb631159d50621e627a8d9200377f3a2cb09837a",
+    "src/recommendation/verify_candidate.py": "b3328ff75673c2e6377843da92578289d39e02f7115d2d6dd6e50b461fcd4d95",
+    "src/recommendation/verify_deepfm.py": "07121d04c1521a3563ced099336a68192de2fc1fa6fa8e8f36341da32ed7b5ee",
+    "src/recommendation/verify_policy.py": "03f630301b2af75f229ede3c53b75b92105593af465f11f0197a54c5df92125f",
+    "src/recommendation/verify_ranking.py": "78a0e471e9bbb7f4a3b6da91017f76ba29f1b523efd35523c427513c5ed8a0b8",
+    "src/search/build_embeddings.py": "366599e4633331789a7dc37a8c2ec2501c2886b62c164c787277e15741029aae",
+    "src/search/build_index.py": "fbd860122c9c035b1de2524ff7aa376d4f75fde0edc42da1802f8f7b07084dfc",
+    "src/serving/ct_admin.py": "cfff4f3693d95e17101143417487677e7b39a774d89437e6efb285f55073e95f",
+    "src/serving/feature_store.py": "4898133c2f382f17da4a982fe5a1926ab4e809683f56731d9f66fba3c71a382f",
+    "src/simulator/generate.py": "bffedbe8fb795d52db9c7d0d32638bb54326b2adda0c9fb16a99a6d8efa1e0dd",
+    "src/simulator/run.py": "e00abd5c0afc18367cd376a630150441802d615e62c9fe08025fec7388b10e9f",
+    "tests/test_console.py": "be8d2b1b8020850c7652b724a54816dca8d9385f65298da8a78080f6d478c039",
+    "tests/test_docker.py": "3024cd00ec0a3652fdda68dbfe4a3fd557be706aad1bae2761328a600678e9b6",
+    "tests/test_ponytail_refactor.py": "b80a26ac4ad3140ff35d264962a9a91c8649d2417f20a687334869f7bdedb873",
+    "tests/test_redis_features.py": "6aac76a6987e8116dcbf0122fb517027d6cff015ad9a5a1e88f4df4ee4c8e787"
+  },
+  "tests": {
+    "status": "PASS",
+    "tests": 391,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "command": "OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 PYTHONHASHSEED=42 REDIS_HOST=127.0.0.1 RUN_REDIS_TESTS=1 .venv/bin/python -m pytest -q -p src.serving.pytest_support tests"
+  },
+  "typing": {
+    "status": "PASS",
+    "source_files": 123
+  },
+  "utf8": {
+    "status": "PASS",
+    "host_shell": "Windows PowerShell 5.1",
+    "container": "Python 3.11",
+    "scope": "한국어 stdout/stderr 디코딩 및 파일 저장/재읽기"
+  },
+  "runtime": {
+    "ready": {
+      "status": "ready"
+    },
+    "health": {
+      "status": "ok",
+      "search_ready": true,
+      "recommend_ready": true,
+      "scale": "full",
+      "model_version": "v1.0"
+    },
+    "dashboard": "ok"
+  },
+  "data": {
+    "fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+    "counts": {
+      "products": 50000,
+      "users": 10000,
+      "events": 1000000,
+      "impressions": 2252916
+    }
+  },
+  "ab": {
+    "scope": "실제 full 모델을 사용하는 그룹별 8명·1일 출력 검증",
+    "seed": 42,
+    "source": "ab_small_final.json",
+    "inference": {
+      "experimental_unit": "randomized user; repeated exposures clustered within user",
+      "independent_user_risks": {
+        "any_click": {
+          "control": 0.75,
+          "treatment": 0.75,
+          "difference": 0.0,
+          "relative_lift": 0.0,
+          "z_statistic": 0.0,
+          "z_p_value": 1.0,
+          "chi_square": 0.0,
+          "chi_square_p_value": 1.0,
+          "difference_ci95": [
+            -0.4243446502785644,
+            0.4243446502785644
+          ],
+          "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+          "low_expected_counts": true,
+          "asymptotic_reliable": false,
+          "fisher_p_value": 1.0,
+          "experimental_unit": "one independent randomized user"
+        },
+        "any_purchase": {
+          "control": 0.0,
+          "treatment": 0.0,
+          "difference": 0.0,
+          "relative_lift": null,
+          "z_statistic": 0.0,
+          "z_p_value": 1.0,
+          "chi_square": 0.0,
+          "chi_square_p_value": 1.0,
+          "difference_ci95": [
+            0.0,
+            0.0
+          ],
+          "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+          "low_expected_counts": true,
+          "asymptotic_reliable": false,
+          "fisher_p_value": 1.0,
+          "experimental_unit": "one independent randomized user"
+        }
+      },
+      "ctr": {
+        "status": "PASS",
+        "control": 0.2,
+        "treatment": 0.1875,
+        "difference": -0.012500000000000011,
+        "relative_lift": -0.0625,
+        "difference_ci95": [
+          -0.17580116330969822,
+          0.1508011633096982
+        ],
+        "z_p_value": 0.8807434768184333,
+        "method": "independent-user cluster delta variance; descriptive simulated effect"
+      },
+      "cvr": {
+        "status": "DEGENERATE",
+        "control": 0.0,
+        "treatment": 0.0,
+        "difference": 0.0,
+        "relative_lift": null,
+        "difference_ci95": [
+          0.0,
+          0.0
+        ],
+        "z_p_value": null,
+        "method": "independent-user cluster delta variance; descriptive simulated effect"
+      }
+    }
+  },
+  "ct": {
+    "fixture_status": "PASS",
+    "fixture_new_events": 711,
+    "production_monitor": "UNMEASURED",
+    "production_retraining": "NOT_RUN"
+  },
+  "historical_submission_check": {
+    "status": "FAIL",
+    "exit_code": 1,
+    "reason": "evidence changed or missing: .env",
+    "source": "peer_existing.log"
+  },
+  "original_changes_preserved": [
+    ".env",
+    "data/.gitkeep deletion",
+    "docker/simulator.py batch limit 10000"
+  ],
+  "unmeasured": [
+    "full quality re-evaluation",
+    "formal warmup-10/request-100 latency benchmark",
+    "production full CT retraining",
+    "continuous simulator load",
+    "browser UI"
+  ],
+  "environment": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.39",
+    "test_threads": 1,
+    "serving": {
+      "torch_threads": 2,
+      "faiss_threads": 2,
+      "inference_worker_budget": true,
+      "parallel_hybrid": true,
+      "vision_optimization": {
+        "enabled": true,
+        "implementation": "torch.jit.optimize_for_inference",
+        "dtype": "float32",
+        "query_shape": [
+          1,
+          3,
+          224,
+          224
+        ],
+        "startup_max_abs_vector_error": 3.129243850708008e-07,
+        "process_environment": {
+          "OMP_NUM_THREADS": "2",
+          "MKL_NUM_THREADS": "2",
+          "OPENBLAS_NUM_THREADS": "2"
+        },
+        "scope": "same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache"
+      },
+      "gc_enabled": true,
+      "gc_freeze_enabled": true,
+      "gc_frozen_objects": 645704,
+      "configured_search_threads": 1,
+      "configured_candidate_training_threads": 4,
+      "scope": "one shared serving process; model weights and ranking policy unchanged"
+    }
+  },
+  "artifact_sha256": {
+    "ab.log": "0ff1cd2d5f99b50ff67570062f4339a0741ee994599bd57dca2660aba1aa2d34",
+    "ab_final.log": "09cb59ad2b3241158489fcf8270fc3a506a7adf5d827995679593ab0f0c29c16",
+    "ab_final_stdout.json": "3352a2b7cf06af1063dc384f1de020b626f2f51f02a4fbf616a008ac0bc46868",
+    "ab_small.json": "37706ea3eb46a07f33042a05605db681e5f5e5d7f5c5195d8dd35366dd5894d7",
+    "ab_small_final.json": "d78e5f967e22e046c7ae91df350b6b0bd849ca3d873bc959ff65f312ac63f1eb",
+    "ab_stdout.json": "dc60068d5376e6a4bd00cb1c4d1b5ff614af6937defab1fce27eb354561b0fcb",
+    "compose_runtime.log": "2ceb109afe58f106fd317d9945ca39bc18625aad35dedc6b10fe8aa790bfb07f",
+    "compose_up.log": "8a015566cc6be87fa6fdc9800ff8795b675f9f03f7db387648a1dfc851cd0a5f",
+    "compose_up_final.log": "3e3f75cc2b32881e49204f678da4feb34ab0117feb78893daf2be57e4076544e",
+    "container_search.json": "05012048ffb6577bd59332db28288273420349d2123e51a8a1b26ee3a319537e",
+    "container_search.log": "cf8a60efe25b473ba93274534ec9fafbb48c3f83146ce52892f7497741fce4e7",
+    "ct_fixture.json": "53f7fbcff242a35b4b5a299b50b29c6ca90887fd12d56e37ceed8653e3edc530",
+    "ct_fixture.log": "46639b3817ce48fc00c3530836159a00d3b560f2ce896ce5d8fe66d8f82f2714",
+    "ct_fixture_stdout.json": "7d13af81afcd64149f39820c5623fcdeec5527b396dc2b6aec41cc8c99ef9080",
+    "ct_log.jsonl": "f23dbf37edde6a3bfe97fbe52550b9d21eb03497040df62a1fa7411d4427ee2c",
+    "ct_monitor.json": "467ffe93258adf5d5f5d2a66ae6c3947d9cbbf70ac529988a6b5dc2dfcf2f45f",
+    "ct_monitor.log": "ea50f65ea0d51e1a617903d997a5acacd48a65beb50deeaf11c479d92ab23491",
+    "ct_monitor_default_path.jsonl": "0f5316523b34de45253784547ac43960ee659bf351907a2fc6571cfdc8e59bcc",
+    "ct_monitor_final.json": "35b45446cb1b95d9e845bdd7f73a799834182b2507c7328f46cf48b20fc9861b",
+    "ct_monitor_final.log": "1f998ee006a15568e3e2d1803ba702e509fdda40342306e7655cf5be944ec456",
+    "docker_build.log": "e7e028fd71e44dfd541fa1bcd587b859ca3430c088924d85dd9eb43e9e3a1377",
+    "docker_build_final.log": "8e9bdb5c369e032d3556f00f93da89ca6137fbf77141e0e8324ea159476d9053",
+    "docker_images.txt": "124b62c9b5d21a286d7d504d8e71ff6495f2595a394ea5f444c4d8d08edca9a6",
+    "docker_server.json": "ae177d22dfc208decb8ae08cf3139512cc9c36fca37f6512ee4d37dcb902123a",
+    "experiments/C/ct_fixture_log.jsonl": "f23dbf37edde6a3bfe97fbe52550b9d21eb03497040df62a1fa7411d4427ee2c",
+    "experiments/C/ct_training_candidate_fixture.json": "2f2e2b5bbdb831b78ab450484061a7fafc8f7afa413fd5425febfdd141cac24d",
+    "experiments/C/ct_training_ranking_fixture.json": "d5daa79e53af0df7f0c20973469551ea4345e11ca212e0363c8cc10ca5d7fa38",
+    "experiments/C/ct_training_session_fixture.json": "4fe426b8c33dca6148cacc25366b8b7a758b913f42d3dea32287fa0ebee884c3",
+    "mypy.log": "62f7c4c63dd61757257e3e6457752556858069091c5f9afd703f3e2aaee660f7",
+    "mypy_final.log": "62f7c4c63dd61757257e3e6457752556858069091c5f9afd703f3e2aaee660f7",
+    "mypy_release.log": "62f7c4c63dd61757257e3e6457752556858069091c5f9afd703f3e2aaee660f7",
+    "peer_existing.json": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "peer_existing.log": "afc36bd7220e8694746867bb6df0222fdcb2cb26470a0ec037ae579b192b7ea6",
+    "powershell/result.json": "ce76de92910c4c0178f302d2060ceec9e9b5df6518c5d0bfc5773f85a88b8144",
+    "powershell/run.log": "c0fb122db7dd0425fd0aecbcb35a6cdf122776cbba551d5ad77c882b5b204414",
+    "powershell_final/result.json": "ce76de92910c4c0178f302d2060ceec9e9b5df6518c5d0bfc5773f85a88b8144",
+    "powershell_final/run.log": "38e17423e8dbf746b6d59ef14fdb2617b2f362072996287119e5589a68df6877",
+    "powershell_final_stderr.log": "38e17423e8dbf746b6d59ef14fdb2617b2f362072996287119e5589a68df6877",
+    "powershell_final_stdout.json": "ce76de92910c4c0178f302d2060ceec9e9b5df6518c5d0bfc5773f85a88b8144",
+    "powershell_stderr.log": "c0fb122db7dd0425fd0aecbcb35a6cdf122776cbba551d5ad77c882b5b204414",
+    "powershell_stdout.json": "ce76de92910c4c0178f302d2060ceec9e9b5df6518c5d0bfc5773f85a88b8144",
+    "preparation.json": "b6818257ed41a9fd2edf9b103865ecda3e04ef239bd2204039eec5f8edc73aa7",
+    "pytest.log": "4ee960ae9383c464199c60219f649efd78f7191905a18a65233718df3e26ea07",
+    "pytest.xml": "940c3904d1ea6b359beaf625351a1c3a1d036cdec4ba4c046d93265446316cf3",
+    "pytest_final.log": "23d5e61dd842c5fc6db00f3dbdc7d73acce097577ed84ceb818ff36218c8b2e2",
+    "pytest_final.xml": "dab4d352c2bee17631a847a124eeb365c3c2250ccc0b3b3e0281a3e6dad7f7e0",
+    "pytest_release.log": "b6a4fedc2fa2a6c36f893a89b6adcf97e7df4c20b10bebf082520eda188506c3",
+    "pytest_release.xml": "df26a5a0f71779082deb23c008d1fa6d13fc64194ab4c671142707ccd8d0f07f",
+    "ready.json": "834c94d981998e1550c33c4f056705157a6ba669cda41e1fba9def33b36600ed",
+    "recommend.json": "813c822cc0cb726764afc256a30b90d90cbcd55478ee8cadd45946d5266dba8e",
+    "recommend.log": "3dc2616b2e1b95b3ec327c5adff00f7d51128e925ac1fe4f749bf639ba412632",
+    "search_hybrid.json": "3cdf105423e22588e3fb309b1d63ae4cb461f72840abc318c99922f4d199635b",
+    "search_hybrid.log": "6b1120022f7fc0beb15580908aa7500346df8d1b8c11035e4c757cc8422873ab",
+    "search_image.json": "74df5b79ce912bbdb913080dd62eea8192c02fba6b75cff5f8ef2fcb242feadc",
+    "search_image.log": "8be61e32e84d92d1e53a6898b779297e53e77e9087fbd427a9f788239d992ebb",
+    "search_text.json": "85925d1e719e1307ef42be573e08f609c36970e52c98e249d699bdb1bb0ca820",
+    "search_text.log": "4cf586d1ac0852187b9c8289c7500e8bb447cabd93c3449d3c26d17126b74fb7",
+    "serving_runtime.json": "bbe780e1c3526082d8eca48952c72d4f3abe2208188f427784f7c6c07dd97b67",
+    "session.json": "7751dae01e30f892be5691ce3320eddce73282f9a384a1a153c5185f7c00e3fb",
+    "session.log": "cda9fa20e9edbbd356e977ea1ab3d1d044d4734e4ed2df56bf798439de862a19"
+  }
+}

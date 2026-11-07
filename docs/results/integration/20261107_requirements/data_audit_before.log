@@ -1,0 +1,19 @@
+[2026-11-07T05:18:27+00:00] [데이터 분석 실행] [실패] 원인: PermissionError: [Errno 13] Permission denied: 'data/full/analysis' / 다음 조치: 데이터 manifest와 관측 분모·검사 결과를 확인하세요. 기존 버전은 보존하세요.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/peachpetal/ecommerce/mm-recsys/src/evaluation/data_audit.py", line 114, in <module>
+    raise SystemExit(run_cli(main, '데이터 분석', '데이터 manifest와 관측 분모·검사 결과를 확인하세요. 기존 버전은 보존하세요.'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/src/evaluation/data_audit.py", line 108, in main
+    result = audit(load_config(), args.output)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/peachpetal/ecommerce/mm-recsys/src/evaluation/data_audit.py", line 75, in audit
+    folder = root / 'analysis'; folder.mkdir(exist_ok=True)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1313, in mkdir
+    os.mkdir(self, mode)
+PermissionError: [Errno 13] Permission denied: 'data/full/analysis'

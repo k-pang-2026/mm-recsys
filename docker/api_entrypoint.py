@@ -1,6 +1,8 @@
 """Liveness during single-owner preparation, then the shared JSON/multipart API."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli
+
 from typing import Any
 
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -55,12 +57,12 @@ def main() -> None:
     configure_process_environment()
     from pathlib import Path
     manifest = json.loads((Path(cfg['paths']['data_dir']) / 'split_manifest.json').read_text())
-    print(f"PREPARATION COMPLETE; catalog={manifest['counts']['products']}; "
+    log('서버', '준비', f"준비 완료; 상품={manifest['counts']['products']:,}개; "
           f"CLIP={cfg['search']['clip_model']}@{cfg['search']['clip_revision']}; "
-          'FAISS + Two Tower/DeepFM/session', flush=True)
+          'FAISS + Two Tower/DeepFM/session', status='성공')
     os.execvp('uvicorn', ['uvicorn', 'docker.serve:app', '--host', '0.0.0.0', '--port', '8000',
                           '--workers', '1', '--no-access-log'])
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '서버 준비', '직전 준비 단계의 원본 오류와 데이터·모델 경로, Redis 상태를 확인하세요.')

@@ -1,0 +1,35 @@
+[2026-11-07T05:59:19+00:00] [환경 준비 실행] [실패] 원인: FileNotFoundError: [Errno 2] No such file or directory: '/app/config-missing.yaml' / 다음 조치: 위 단계의 원본 오류, 저장 공간·데이터 fingerprint·모델 경로·Redis 연결을 확인하세요. 기존 산출물은 보존하세요.
+Traceback (most recent call last):
+  File "/app/scripts/prepare_all.py", line 171, in <module>
+    raise SystemExit(run_cli(main, '환경 준비', '위 단계의 원본 오류, 저장 공간·데이터 fingerprint·모델 경로·Redis 연결을 확인하세요. 기존 산출물은 보존하세요.'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "/app/scripts/prepare_all.py", line 160, in main
+    cfg = runtime_config()
+          ^^^^^^^^^^^^^^^^
+  File "/app/docker/runtime.py", line 26, in runtime_config
+    value = copy.deepcopy(cfg if cfg is not None else load_config())
+                                                      ^^^^^^^^^^^^^
+  File "/app/src/common/config.py", line 10, in load_config
+    with p.open(encoding="utf-8") as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/app/config-missing.yaml'
+[2026-11-07T05:59:19+00:00] [서버 준비 실행] [실패] 원인: CalledProcessError: Command '['/usr/local/bin/python', 'scripts/prepare_all.py']' returned non-zero exit status 1. / 다음 조치: 직전 준비 단계의 원본 오류와 데이터·모델 경로, Redis 상태를 확인하세요.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/app/docker/api_entrypoint.py", line 68, in <module>
+    run_cli(main, '서버 준비', '직전 준비 단계의 원본 오류와 데이터·모델 경로, Redis 상태를 확인하세요.')
+  File "/app/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "/app/docker/api_entrypoint.py", line 46, in main
+    subprocess.run([sys.executable, 'scripts/prepare_all.py'], check=True,
+  File "/usr/local/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/local/bin/python', 'scripts/prepare_all.py']' returned non-zero exit status 1.

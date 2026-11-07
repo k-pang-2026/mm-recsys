@@ -1,6 +1,8 @@
 """Verify a scoped classification result and its frozen model/data/source evidence."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 from pathlib import Path
@@ -41,8 +43,7 @@ def verify(path: Path, cfg: dict) -> dict:
             or ctr['auc'] < cfg['targets']['auc']):
         raise ValueError('CTR AUC criterion not satisfied')
     verify_preservation()
-    print(f'Offline DeepFM verified: test CTR AUC={ctr["auc"]:.6f}; '
-          'CVR limitation retained; overall acceptance UNMEASURED; B3b originals preserved')
+    log('랭킹', '근거 검사', f'test CTR AUC={ctr["auc"]:.6f} / CVR 한계 유지 / 최종 판정=미측정(UNMEASURED) / B3b 원본 보존', status='통과(PASS)')
     return report
 
 
@@ -50,9 +51,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--metrics', type=Path, required=True)
     args = parser.parse_args()
-    verify(args.metrics, load_config())
+    emit_json(verify(args.metrics, load_config()))
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '추천 평가', '원본 결과·데이터·모델·설정과 동결된 valid 근거를 확인하세요.'))

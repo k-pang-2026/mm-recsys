@@ -41,6 +41,22 @@ def offline(*args, **kwargs):
     return dict(ok=False, status_code=None, data=None, error='fixture: API unavailable')
 
 
+@pytest.mark.parametrize('api_url,public_url,expected', [
+    ('http://api-server:8000', '', 'http://localhost:19000'),
+    ('http://api-server:8000', 'https://demo.example/api/', 'https://demo.example/api'),
+    ('http://localhost:18000', '', 'http://localhost:18000'),
+])
+def test_browser_link_uses_public_address_without_changing_http_transport(tmp_path, monkeypatch, api_url, public_url, expected):
+    (tmp_path / 'config.yaml').write_text('paths: {results_dir: results}\n')
+    monkeypatch.setenv('CONFIG_PATH', str(tmp_path / 'config.yaml'))
+    monkeypatch.setenv('API_URL', api_url)
+    monkeypatch.setenv('PUBLIC_API_URL', public_url)
+    monkeypatch.setenv('API_PORT', '19000')
+    config = data.settings(tmp_path)
+    assert config['api_url'] == api_url
+    assert config['public_api_url'] == expected
+
+
 def test_test_report_is_preferred_and_integration_receipt_is_visible(tmp_path, monkeypatch, report):
     (tmp_path / 'evaluation_dev_valid.json').write_text(json.dumps(report))
     report.update(split='test', integration=dict(stage='INTEGRATE', status='UNMEASURED'))
@@ -72,7 +88,7 @@ def test_four_tabs_charts_and_metric_tables_match_json(tmp_path, monkeypatch, re
     monkeypatch.setattr(data, 'api_call', offline)
     app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
     assert not app.exception
-    assert [tab.label for tab in app.tabs] == ['검색', '추천', 'A/B 실험', '시스템']
+    assert [tab.label for tab in app.tabs] == ['검색', '추천', 'A/B 실험', '시스템', 'EDA·구매 이력', '상품·CLIP']
     assert len(app.get('plotly_chart')) == 5
     metrics = {m.label: m.value for m in app.metric}
     assert metrics['측정 기준 판정'] == 'FAIL' and metrics['최종 종합 품질'] == 'UNMEASURED'
@@ -98,7 +114,7 @@ def test_absent_and_malformed_results_render_without_fake_values(tmp_path, monke
         if content is not None:
             (tmp_path / 'evaluation_dev_valid.json').write_text(content)
         app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
-        assert not app.exception and len(app.tabs) == 4
+        assert not app.exception and len(app.tabs) == 6
         assert not app.get('plotly_chart')
         assert all(m.label not in ('측정 기준 판정', 'Control CVR') for m in app.metric)
 

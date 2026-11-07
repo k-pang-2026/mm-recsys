@@ -1,0 +1,205 @@
+{
+  "environment": {
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.39",
+    "python": "3.12.3",
+    "cpu": "aarch64",
+    "logical_cpus": 8,
+    "ram_bytes": 8103915520,
+    "docker_allocation": {
+      "status": "MEASURED",
+      "memory_bytes": 8103915520,
+      "cpus": 8,
+      "version": "29.8.2"
+    },
+    "benchmark_scope": "native controlled CT training and HTTP reload; memory FeatureStore; Docker info is descriptive only",
+    "torch": "2.6.0+cpu",
+    "numpy": "2.1.3",
+    "faiss": "1.9.0",
+    "torch_threads": 1,
+    "faiss_threads": 1,
+    "device": "cpu",
+    "gpu_used": false,
+    "pythonhashseed": "42",
+    "nondeterminism": "seeded CPU inference; cross-platform floating point may differ"
+  },
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "controlled_fixture",
+  "seed": 42,
+  "scope": "400 items/24 users/6000 source events; 5000 initial; additional observed view/cart/purchase only; initial ranker deliberately constant; real candidate training and measured paired valid improvement; not production dev/full quality or Docker reproduction",
+  "source_fingerprint": "e4b64e270d44dec676307be3fd40cbee49d447701060bf8e6a0b7f9d881dc16c",
+  "source_counts": {
+    "products": 400,
+    "users": 24,
+    "events": 6000,
+    "impressions": 13480
+  },
+  "new_events": 711,
+  "threshold": 200,
+  "default_threshold": 10000,
+  "monitor": {
+    "event": "monitor",
+    "status": "ALERT",
+    "ctr": 0.0,
+    "hit_rate_at_50": 0.0,
+    "clicks": 0,
+    "exposures": 50,
+    "mature_requests": 1,
+    "top50_requests": 1,
+    "hit_requests": 0,
+    "alerts": [
+      "ctr_below_threshold",
+      "hitrate_below_threshold"
+    ],
+    "window_start": -70.0,
+    "observed_through": 30.0,
+    "attribution_seconds": 10,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 1
+    }
+  },
+  "concurrent_trigger": {
+    "status": "BUSY"
+  },
+  "training": {
+    "status": "PROMOTED",
+    "version": "v1.1",
+    "active": "v1.1",
+    "new_events": 711,
+    "through_seq": 711,
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "917b1ce4b2ee3c0b4372ac245155ccde5766334aaa8bb54e3e57dd0d9c11a6ef",
+      "baseline": {
+        "ctr_auc": 0.5,
+        "ctr_logloss": 0.6931471805599453,
+        "hit_rate_at_50": 0.21739130434782608,
+        "truth_users": 23,
+        "ctr_samples": 1358,
+        "validation_fingerprint": "917b1ce4b2ee3c0b4372ac245155ccde5766334aaa8bb54e3e57dd0d9c11a6ef"
+      },
+      "candidate": {
+        "ctr_auc": 0.8981623255103129,
+        "ctr_logloss": 1.0646849087614008,
+        "hit_rate_at_50": 0.9565217391304348,
+        "truth_users": 23,
+        "ctr_samples": 1358,
+        "validation_fingerprint": "917b1ce4b2ee3c0b4372ac245155ccde5766334aaa8bb54e3e57dd0d9c11a6ef"
+      },
+      "training_reports": {
+        "candidate": "2f2e2b5bbdb831b78ab450484061a7fafc8f7afa413fd5425febfdd141cac24d",
+        "ranking": "d5daa79e53af0df7f0c20973469551ea4345e11ca212e0363c8cc10ca5d7fa38",
+        "session": "4fe426b8c33dca6148cacc25366b8b7a758b913f42d3dea32287fa0ebee884c3"
+      }
+    }
+  },
+  "checks": {
+    "alert": true,
+    "threshold": true,
+    "duplicate_trigger_blocked": true,
+    "real_three_model_retraining": true,
+    "fresh_chronological_split": true,
+    "increment": true,
+    "paired_valid_improvement": true,
+    "no_improvement_retained": true,
+    "atomic_http_reload": true,
+    "rollback": true,
+    "corrupt_bundle_rejected": true,
+    "new_events_consumed_once": true
+  },
+  "api": {
+    "before": 200,
+    "after": 200,
+    "reloaded": {
+      "status": "reloaded",
+      "version": "v1.1"
+    },
+    "rollback": {
+      "status": "reloaded",
+      "version": "v1.0"
+    },
+    "concurrent_requests": 40,
+    "all_concurrent_http_200": true
+  },
+  "versions": {
+    "v1.0": {
+      "status": "ACTIVE",
+      "parent": null,
+      "hashes": {
+        "meta.json": "02a0700d3b2fdb957900950ea16b96b423e97cd0e8628deaa664c70f7c82bf86",
+        "two_tower.pt": "6ce3f3b5e67d8b96333dba91e4c26809e1d870ac1247ea1476064123aeed7f81",
+        "feature_vocab_scalers.json": "c1866f0eac9184ddaf9583a0c1f8b795fe4e3c7be6ae57f8cd4644d937308549",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "c5ea18c0bc8d3b2b361ca583d247e36b0521593f8225890af735e82e2ab38b40",
+        "index_manifest.json": "13816fc3c80ca9ea2d0091198b49592a6acefe78ffe0b9748ab5dfb0e52f3656",
+        "ranking/meta.json": "964c2139956e615d2b2d40c6ffa209a7115eb8d1b584327c31d2305a3a36e923",
+        "ranking/deepfm.pt": "64cbd9908be79f42f8e7d9630878911de62980328c80ac409981035a0b6a653d",
+        "ranking/features.json": "702cb95864e63c91299d03435342455eaac197120035186076f3d4b8ad01ac1c",
+        "session/meta.json": "9cba9382b066d8e66c1ed3a95912548e81f7818fa8132700abc7818e72b1f891",
+        "session/session.pt": "a4b7c2c592b4d8f93819853e8b1a26d62a264ad3559ef057a7d5be279f276d73",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    },
+    "v1.1": {
+      "status": "ROLLED_BACK",
+      "parent": "v1.0",
+      "hashes": {
+        "meta.json": "8d65df68c6c549afed5036a7b6f3fc388209dbf367de64892e2c36bbd3ef6ef4",
+        "two_tower.pt": "0b0e4eb7fd2c22f0adcb87a54cab843558a1af84fdbb02b863101adc3344388e",
+        "feature_vocab_scalers.json": "bfe1f39c4d62d82a6b96af20ccc2a309838becdae7114acadb5cce56df6212db",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "a80917a98d73f023867eaedeed92afedacbd8af8edc262faac9378536afef354",
+        "index_manifest.json": "b8865be8ac084dd8602572bce1255fabaa703b535c85e2814932322268518a46",
+        "ranking/meta.json": "466f02f58dbe972ae98d5bb45d0f66b97366ff5dbf0825864308251bfabf2ada",
+        "ranking/deepfm.pt": "e988baaa15b4d1cd0b026d1cb242735f8fe45bb6fa59fb47ef76c0a9817b5810",
+        "ranking/features.json": "99e087a1146916fdb9ead60717c63effec4d8521ba6c56cc5afffe853a64ef91",
+        "session/meta.json": "d26d2e20ebb4e2942a67b6a0c9d9496f24b510671f457fdbc9cbf80124988fc0",
+        "session/session.pt": "7dfec979400cef5100b815698de5a2fb55ab55d2be3a13c2d3ddfd4d15db59ac",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    },
+    "v1.2": {
+      "status": "REJECTED",
+      "parent": "v1.1",
+      "hashes": {
+        "meta.json": "8d65df68c6c549afed5036a7b6f3fc388209dbf367de64892e2c36bbd3ef6ef4",
+        "two_tower.pt": "0b0e4eb7fd2c22f0adcb87a54cab843558a1af84fdbb02b863101adc3344388e",
+        "feature_vocab_scalers.json": "bfe1f39c4d62d82a6b96af20ccc2a309838becdae7114acadb5cce56df6212db",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "a80917a98d73f023867eaedeed92afedacbd8af8edc262faac9378536afef354",
+        "index_manifest.json": "b8865be8ac084dd8602572bce1255fabaa703b535c85e2814932322268518a46",
+        "ranking/meta.json": "466f02f58dbe972ae98d5bb45d0f66b97366ff5dbf0825864308251bfabf2ada",
+        "ranking/deepfm.pt": "e988baaa15b4d1cd0b026d1cb242735f8fe45bb6fa59fb47ef76c0a9817b5810",
+        "ranking/features.json": "99e087a1146916fdb9ead60717c63effec4d8521ba6c56cc5afffe853a64ef91",
+        "session/meta.json": "d26d2e20ebb4e2942a67b6a0c9d9496f24b510671f457fdbc9cbf80124988fc0",
+        "session/session.pt": "7dfec979400cef5100b815698de5a2fb55ab55d2be3a13c2d3ddfd4d15db59ac",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    }
+  },
+  "artifacts": {
+    "registry": "/tmp/mm-korean-ct-fixture-20261107/models/registry.json",
+    "registry_sha256": "1e46fdf928fbccd528cd92c9ac427158c6f0e1b494399157fe94138165ad5e00",
+    "log": "docs/results/experiments/A/cli_korean_20261107/experiments/C/ct_fixture_log.jsonl",
+    "log_sha256": "f23dbf37edde6a3bfe97fbe52550b9d21eb03497040df62a1fa7411d4427ee2c",
+    "training": {
+      "candidate": {
+        "source": "docs/results/experiments/A/cli_korean_20261107/experiments/C/ct_training_candidate_fixture.json",
+        "sha256": "2f2e2b5bbdb831b78ab450484061a7fafc8f7afa413fd5425febfdd141cac24d"
+      },
+      "ranking": {
+        "source": "docs/results/experiments/A/cli_korean_20261107/experiments/C/ct_training_ranking_fixture.json",
+        "sha256": "d5daa79e53af0df7f0c20973469551ea4345e11ca212e0363c8cc10ca5d7fa38"
+      },
+      "session": {
+        "source": "docs/results/experiments/A/cli_korean_20261107/experiments/C/ct_training_session_fixture.json",
+        "sha256": "4fe426b8c33dca6148cacc25366b8b7a758b913f42d3dea32287fa0ebee884c3"
+      }
+    }
+  },
+  "full_test_quality": "UNMEASURED",
+  "docker_reproduction": "UNMEASURED"
+}

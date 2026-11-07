@@ -82,8 +82,10 @@ FeatureStore는 src/common/schemas.py에 정의되어 있다. C가 Redis를 추�
 `/health`는 liveness, `/ready`는 두 모델 readiness다. 모델이 없으면 해당 API는 503이다.
 속성 변경은 역할별 config overlay로 적용하고 data generator fingerprint에는 search/추천 설정을 넣지 않는다.
 
-dev 데이터는 `data/`, full은 `data/full/`에 분리한다. `SCALE=full`이면 load_config가
-data/split/model 경로까지 전환한다. dev 데이터에 full을 덮어쓰지 않는다.
+현재 생성기 v4.3의 dev 데이터는 `data/dev-v43/`, full은 `data/full-v43/`에 분리한다.
+모델은 각각 `models/dev-v43/`, `models/full-v43/`를 사용한다. `SCALE=full`이면
+load_config가 data/split/model 경로까지 전환한다. 과거 `data/`, `data/full/`의 산출물은
+보존하며 새 데이터로 덮어쓰지 않는다. v4.3 변경 근거는 [통합 검증](requirements_completion.md)을 따른다.
 
 ## Docker 준비와 파일 소유권
 
@@ -107,3 +109,10 @@ checks에는 `docker_reproduction`, `api_schemas`, `ab_statistics`, `session_res
 `src/evaluation/acceptance.py`가 모든 수치, full 최소 개수, 데이터/결과 해시와 실행 근거를
 검사한다. record_gate의 acceptance PASS와 INTEGRATE publish에서 각각 재검사한다.
 결과 파일 존재/해시 검사는 결과의 진위를 대신하지 않는다. C checker는 실제 실행·산출물을 대조한다.
+
+## Ranking AUC 판정 해석 (2026-11-07 사용자 확인)
+
+PDF의 `Ranking AUC >= 0.70`은 **CTR AUC**에 적용한다. CVR AUC, 클릭 노출 표본 수,
+구매 양성 수는 별도로 보고한다. CVR의 낮은 값이나 단일 클래스 상태를 숨기지 않으며,
+CTR 합격을 CVR 품질 개선으로 표시하지 않는다. 이 해석은 첨부 요구사항 1~9 통합 작업 중
+사용자가 “기존 계약: CTR 기준, CVR 별도 보고”로 명시 확인했다.

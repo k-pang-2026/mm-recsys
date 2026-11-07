@@ -1,0 +1,133 @@
+{
+  "status": "PASS",
+  "initial_seconds": 1885.9566819590002,
+  "reused_seconds": 91.07431609000014,
+  "startup_failure": {
+    "status": "PASS",
+    "scope": "isolated startup failure with missing config; no volumes or ports shared",
+    "command": [
+      "docker",
+      "run",
+      "--rm",
+      "--memory",
+      "512m",
+      "-e",
+      "CONFIG_PATH=/app/config-missing.yaml",
+      "--entrypoint",
+      "python",
+      "mm-recsys-api-server",
+      "-m",
+      "docker.api_entrypoint"
+    ],
+    "actual_exit_code": 1,
+    "korean_action": true,
+    "original_traceback": true,
+    "completed_at": "2026-11-07T05:59:19.687201+00:00"
+  },
+  "commands": [
+    {
+      "name": "compose_release",
+      "command": [
+        "docker",
+        "compose",
+        "up",
+        "-d",
+        "--build"
+      ],
+      "started_at": "2026-11-07T05:51:08.470792+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:53:19.191877+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_release_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_release.log"
+    },
+    {
+      "name": "compose_four_services",
+      "command": [
+        "docker",
+        "compose",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "started_at": "2026-11-07T05:54:07.337147+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:07.469614+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_four_services_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_four_services.log"
+    },
+    {
+      "name": "compose_legacy",
+      "command": [
+        "docker-compose",
+        "up",
+        "-d",
+        "--no-deps",
+        "redis"
+      ],
+      "started_at": "2026-11-07T05:54:07.887946+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T05:54:08.039681+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_legacy_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_legacy.log"
+    },
+    {
+      "name": "compose_auxiliary_logs",
+      "command": [
+        "docker",
+        "compose",
+        "up",
+        "-d",
+        "--build",
+        "api-server",
+        "dashboard"
+      ],
+      "started_at": "2026-11-07T06:05:32.818133+00:00",
+      "exit_code": 0,
+      "ended_at": "2026-11-07T06:05:44.301743+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/compose_auxiliary_logs_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/compose_auxiliary_logs.log"
+    },
+    {
+      "name": "legacy_full",
+      "command": [
+        "docker-compose",
+        "up",
+        "-d",
+        "--no-build",
+        "--no-recreate"
+      ],
+      "started_at": "2026-11-07T06:32:54.830443+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:56.575187+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_second_recovered_run/legacy_full_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_second_recovered_run/legacy_full.log"
+    },
+    {
+      "name": "legacy_full_services",
+      "command": [
+        "docker-compose",
+        "ps",
+        "--format",
+        "json"
+      ],
+      "started_at": "2026-11-07T06:32:56.575672+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:56.666334+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_second_recovered_run/legacy_full_services_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_second_recovered_run/legacy_full_services.log"
+    },
+    {
+      "name": "legacy_stop_simulator",
+      "command": [
+        "docker-compose",
+        "stop",
+        "simulator"
+      ],
+      "started_at": "2026-11-07T06:32:56.666840+00:00",
+      "exit_code": 0,
+      "completed_at": "2026-11-07T06:32:56.974690+00:00",
+      "stdout": "docs/results/integration/20261107_requirements/ct_second_recovered_run/legacy_stop_simulator_stdout.json",
+      "stderr": "docs/results/integration/20261107_requirements/ct_second_recovered_run/legacy_stop_simulator.log"
+    }
+  ]
+}

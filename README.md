@@ -1,27 +1,12 @@
 # 멀티모달 검색 및 Multi-Stage 추천 시스템
 
-2026-10-20 현재 full 통합은 [실행 기록](docs/results/integration/20261020_full/report.md)을 따른다.
-기존 full 평가를 보존하고 빈 경로의 네 서비스 기동·재현, 새 A/B와 실제 CT 학습·비교를
-확인했다. 자연 CT는 기존 모델을 유지했으며 별도 full 환경에서 실제 교체·복구를 검증했다.
-현재 데이터의 최종 판정은 [이번 제출 검사](docs/results/integration/20261020_full/submission/checks.json)와
-[최종 집계](docs/results/final_acceptance.json)를 따른다. 아래의 이전 검증 수치와 새 실행을 구분한다.
-기존 100만 건의 API 전량 재전송을 제거한 Docker 동작 변경과 검증은
-[후속 기록](docs/results/experiments/A/docker_remove_replay_20261020.json)을 따른다.
-
-Ponytail 감사 후 생성기는 4.2로 버전이 변경되었다. 기존 4.1 이하 데이터와 모델은
-덮어쓰지 않으며, 새 실행은 빈 데이터·모델 경로 또는 새 클론에서 준비한다.
-기존 full 결과의 PASS는 해당 데이터·소스의 과거 실측이며 현재 버전의 새 품질 판정을 대신하지 않는다.
-이번 수정의 검증 범위와 한계는 [감사 후속 보고서](docs/results/experiments/A/workflow_ponytail_refactor_20261017.json)를 따른다.
-생성기 4.2 full에서 세 모델을 재학습하고 valid 동결 후 test의 수치 조건 11개와 추천 제약을
-통과했다. 전체 회귀 351개·타입 검사 133파일도 통과했다. 새 A/B·자연 CT 효과를 포함한
-최종 종합 판정은 `UNMEASURED`이며, [동일 입력 효율 비교](docs/results/experiments/A/workflow_ponytail_efficiency_20261017.json)는
-부분 전처리·로딩 시간의 3회 중앙값이다.
-이후 GitHub 병합 완료 재조회 호환성을 보완했으며, 당시 전체 회귀 **354개**와 실제 PR 재조회는
-[후속 검증](docs/results/experiments/A/workflow_ponytail_merge_retry_20261017.json)에 별도 기록했다.
-체크리스트 후속 수정에서는 빈 Docker 데이터 생성·신상품 노출·최신순 설정과 다크모드 카드를 보완했다.
-최신 전체 회귀 **368개**, 기본 ctr 정책의 full valid/test 수치 조건 11개·추천 제약 및 실제 API 검증은
-[체크리스트 수정 보고서](docs/results/experiments/A/workflow_checklist_fix_20261017.md)에 기록했다.
-초기 중복 배포의 이미지 지연 실패도 보존했으며, 단일 스택 재측정과 종합 `UNMEASURED`를 구분한다.
+현재 v4.3 실행과 판정은 [PDF·동료 평가 통합 검증](docs/requirements_completion.md)과
+[요구사항별 근거](docs/results/integration/20261107_requirements/requirements.json)를 따른다.
+표준 실행은 `docker compose up --build`이며 full 데이터와 모델을 컨테이너에서 준비한다.
+기존 생성기 v4.2의 [2026-10-20 통합 기록](docs/results/integration/20261020_full/report.md),
+[후속 Docker 기록](docs/results/experiments/A/docker_remove_replay_20261020.json),
+그 이전 [체크리스트 기록](docs/results/experiments/A/workflow_checklist_fix_20261017.md)은 보존한다.
+과거 PASS와 현재 데이터·소스의 새 측정을 구분한다.
 
 팀장이 공통 개발 기반을 구현·검증해 `chore/shared-foundation` → main PR로 먼저 병합한 뒤,
 세 사람이 독립 클론에서
@@ -58,6 +43,14 @@ flowchart LR
   Search --> API[C: FastAPI]
   Rerank --> API
   API --> Dashboard[C: Evaluation / A-B / Streamlit]
+  Dataset --> EDA[관측 EDA / 페르소나 / 구매 원장]
+  EDA --> Dashboard
+  Search --> CLIPData[실제 CLIP 입력 / ID 매핑 / 벡터]
+  CLIPData --> Dashboard
+  Live[실시간 생성 배치] --> Store
+  Live --> Journal[중복 방지 CT journal]
+  API --> Journal
+  Journal --> CT
   Dataset --> CT[C: Continuous Training]
   API --> Docker[A B10: Docker / 컨테이너 성능 검증]
   Dashboard --> Docker
@@ -164,13 +157,13 @@ FAISS 인덱스 → Two Tower·DeepFM·세션 학습 → Redis 프로필 warmup 
 실제 이벤트에 따른 세션 응답, 대시보드 HTTP를 확인한다.
 
 ```bash
-docker compose exec api-server python scripts/smoke_test.py --benchmark
+docker compose exec api-server python scripts/smoke_test.py --benchmark --output docs/results/docker/runtime-v43/full/quality/smoke_full.json
 ```
 
 지연 검사는 각 모드 10회 warmup·100회 순차 HTTP, 후보 검색, 실제 Redis 조회의
 p50/p95/p99와 원시 샘플을 기록한다. 검색/추천 200ms, 후보 100ms·300개, Redis 10ms 기준을
-그대로 사용하며 미달 시 명령이 실패한다. 결과는 기본 full에서 `docs/results/docker/smoke_full.json`,
-`docs/results/latency.json`에 남는다. HTTP 확인은 실제 브라우저 화면 검증과 구별한다.
+그대로 사용하며 미달 시 명령이 실패한다. 위 명령의 새 결과는 `docs/results/docker/runtime-v43/full/quality/smoke_full.json`과 같은 폴더의
+`latency.json`에 남는다. 과거 결과 경로는 덮어쓰지 않는다. HTTP 확인은 실제 브라우저 화면 검증과 구별한다.
 고정 벤치마크는 초기 v1.0과 CT 재학습이 동시에 실행되지 않는 조건을 대상으로 한다.
 승격된 release나 측정 중 버전 변경은 거부하며 해당 release는 별도로 평가한다.
 full A/B와 CT 전체 재학습은 순서대로 실행하고, 지연 측정 전에는 검증용 중복 배포와
@@ -178,7 +171,7 @@ full A/B와 CT 전체 재학습은 순서대로 실행하고, 지연 측정 전�
 검증용 API가 OOM/137로 종료된 기록은
 [병렬 실행 근거](docs/results/integration/20261020_full/parallel_load_failure.json)에 보존했다.
 
-학습·CT 로그와 새 평가는 `docs/results/docker/runtime/<scale>/`에 분리한다.
+학습·CT 로그와 새 평가는 `docs/results/docker/runtime-v43/<scale>/`에 분리한다.
 Streamlit도 이 경로를 읽으며 새 통합 평가가 없으면 미측정으로 표시하고 데모는 제공한다.
 저장소의 다른 머신 평가를 새 컨테이너의 측정으로 표시하지 않는다.
 대시보드는 test 결과를 우선 선택한다. valid/test 품질 평가만 실행하면 종합 판정은
@@ -193,7 +186,7 @@ SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/check_submission.py \
   --output-dir docs/results/integration/20261020_full/submission
 SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/publish_integration_dashboard.py \
   --submission docs/results/integration/20261020_full/submission/checks.json \
-  --output docs/results/docker/runtime/full/evaluation_full_test.json
+  --output docs/results/docker/runtime-v43/full/evaluation_full_test.json
 ```
 
 발행 명령은 동결한 품질·지연 파일을 덮어쓰지 않는다. 소스, 데이터, 모델 또는 통합 근거가
@@ -205,16 +198,16 @@ SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/publish_integration_dashbo
 기존 C 평가 CLI로 기본 full/valid 결과를 생성할 때는 다음과 같이 실행한다.
 
 ```bash
-docker compose exec -e CONFIG_PATH=models/full/.docker/config.yaml api-server \
+docker compose exec -e CONFIG_PATH=models/full-v43/.docker/config.yaml api-server \
   python -m src.evaluation.run_all --split valid
 ```
 
-Docker 기본 규모 full은 dev와 별도 경로 `data/full`, `models/full`을 사용한다.
+Docker 기본 규모 full은 dev와 별도 경로 `data/full-v43`, `models/full-v43`을 사용한다.
 로컬 Python의 `config.yaml` 기본값은 dev로 유지한다. 작은 데이터로 실행하려면 명시한다.
 
 ```bash
 SCALE=dev docker compose up -d
-SCALE=dev docker compose exec api-server python scripts/smoke_test.py --benchmark
+SCALE=dev docker compose exec api-server python scripts/smoke_test.py --benchmark --output docs/results/docker/runtime-v43/full/quality/smoke_full.json
 ```
 
 dev와 full을 함께 검증할 때는 별도 프로젝트·포트를 사용한다. B10 gate의
@@ -224,20 +217,20 @@ dev와 full을 함께 검증할 때는 별도 프로젝트·포트를 사용한�
 SCALE=full API_PORT=18000 DASHBOARD_PORT=18501 REDIS_PORT=16379 \
   docker compose -p mm-recsys-b10-full up --build -d
 SCALE=full docker compose -p mm-recsys-b10-full exec api-server \
-  python scripts/smoke_test.py --benchmark
+  python scripts/smoke_test.py --benchmark --output docs/results/docker/runtime-v43/full/quality/smoke_full.json
 ```
 
 이 경우 API·Streamlit은 각각 localhost:18000·localhost:18501이다.
 
-full 평가 CLI의 `CONFIG_PATH`는 `models/full/.docker/config.yaml`이다.
+full 평가 CLI의 `CONFIG_PATH`는 `models/full-v43/.docker/config.yaml`이다.
 모델 품질의 test 평가는 valid에서 선택·동결한 후 수행하며, smoke 성공만으로
 full 품질이나 최종 제출 acceptance가 통과한 것으로 간주하지 않는다.
 Docker 산출물에 C의 고정 평가 함수를 적용하고 Streamlit용 결과를 생성하는 B10 명령은 다음과 같다.
 먼저 같은 규모의 `smoke_test.py --benchmark`가 통과해야 한다.
 
 ```bash
-SCALE=full docker compose exec api-server python -m docker.quality --split valid
-SCALE=full docker compose exec api-server python -m docker.quality --split test
+SCALE=full docker compose exec api-server python scripts/demo.py evaluate --split valid
+SCALE=full docker compose exec api-server python scripts/demo.py evaluate --split test
 SCALE=full docker compose exec api-server python -m docker.quality --split test --verify-existing
 ```
 
@@ -310,7 +303,7 @@ CT 동시 학습이 없는 조건의 결과이고 부하·머신별 보장은 �
 [검증 결과](docs/results/docker/verified_full.json)를 참고한다.
 
 최초 준비 시간은 CPU·캐시·산출물 존재 여부에 따라 달라진다. 실제 실행별 시간과 재사용 여부는
-`docs/results/docker/runtime/<scale>/preparation*.json`에 남는다. INTEGRATE는 별도 clone의 빈 data/models에서
+`docs/results/docker/runtime-v43/<scale>/preparation*.json`에 남는다. INTEGRATE는 별도 clone의 빈 data/models에서
 full 데이터·임베딩·인덱스·세 모델 준비를 2,725.892초에 완료했다. 사전 학습 CLIP 다운로드 캐시와
 의존성 레이어는 재사용했으며 이미지 빌드·API 최종 로딩·최초 네트워크 다운로드 시간과 구분한다.
 [실제 cold 준비](docs/results/integration/preparation_first_full.json),
@@ -370,7 +363,7 @@ SCALE=full PYTHONHASHSEED=42 .venv/bin/python scripts/check_submission.py \
 최종 결과가 생성되기 전에는 미완료/누락으로 실패한다. 최종 판정은 `final_acceptance.json`을 따르며
 구조 검증과 구분한다. 과거 B11 검사는 `final_submission/` 원본으로 보존했다.
 이전 생성기 4.1 통합의 full valid/test 품질·A/B 통계 재검산·CT 기능 검증 기록은 보존한다.
-현재 생성기 4.2의 종합 판정은 위 Docker 절차의 `20261020_full/submission` 검사 원본을 따른다.
+이전 생성기 4.2의 종합 판정은 위 Docker 절차의 `20261020_full/submission` 검사 원본을 따른다.
 P0는 사용자 전달 강사 결정에 따라 RESOLVED_OPTIONAL이며, 실제 데이터셋은 개발 후 추가 검증용이다.
 [결정 원본](docs/submission/dataset_scope.json)과 [데이터 출처](docs/data_sources.md)를 확인한다.
 원격 접근은 [확인 시각의 read-only snapshot](docs/results/final_submission/repository.json)이며,
@@ -407,9 +400,9 @@ generator 4.1.0은 생성에 영향을 주는 YAML mapping 순서를 fingerprint
 SCALE=full RUNTIME_RESULTS_DIR=docs/results/integration/runtime docker compose exec api-server \
   python scripts/smoke_test.py --benchmark --output docs/results/integration/smoke_full.json
 SCALE=full RUNTIME_RESULTS_DIR=docs/results/integration/runtime docker compose exec \
-  -e QUALITY_RESULTS_DIR=docs/results/integration api-server python -m docker.quality --split valid
+  -e QUALITY_RESULTS_DIR=docs/results/integration api-server python scripts/demo.py evaluate --split valid
 SCALE=full RUNTIME_RESULTS_DIR=docs/results/integration/runtime docker compose exec \
-  -e QUALITY_RESULTS_DIR=docs/results/integration api-server python -m docker.quality --split test
+  -e QUALITY_RESULTS_DIR=docs/results/integration api-server python scripts/demo.py evaluate --split test
 ```
 
 실제 새 제출 검사는 `--output-dir docs/results/integration/submission`과
@@ -424,3 +417,73 @@ full A/B는 5,000명/arm·30일이며 CTR 상대 lift −23.73%, CVR −37.18%�
 CT 자연 재학습은 valid CTR AUC 0.971602→0.971574로 RETAINED다.
 별도 full 크기의 초기 상수 ranker 기능 시나리오에서 실제 승격·재로딩·롤백을 검증했다.
 운영 v1.0과 재학습 후보 가중치는 보존했고, 두 결과는 [분리된 집계](docs/results/integration/ct_acceptance_full.json)에 있다.
+
+## 한국어 CLI·실행 로그
+
+프로젝트 진행 로그는 `시각(UTC) / 구성 요소·단계 / 상태 / 실제 수치` 형식으로 **stderr**에
+출력한다. 준비·학습·검색·추천·A/B·CT·평가 CLI의 JSON 결과는 **stdout**에 출력하며,
+API 키·옵션·파일명·모델 ID·지표명은 기존 표기를 유지한다. 오류는 한국어 원인·다음 조치와
+원본 traceback을 함께 남긴다. Docker·PyTorch·transformers 등의 원본 진단 로그는 보존한다.
+CT `--watch`는 각 회차 결과를 한 줄 JSON(JSONL)로 출력하고, 1회 실행은 JSON 객체 하나를 출력한다.
+
+서비스 준비 후 Bash에서 다음 명령을 실행한다. `--json`은 검색·추천·세션 CLI의 기본 출력
+계약을 명시하며 한국어 설명은 계속 stderr로 나온다. `-T`는 두 스트림이 TTY에서 합쳐지지 않게 한다.
+
+```bash
+docker compose up --build
+# 다른 터미널에서 실행. 아래 명령의 표준 출력은 원본 JSON, 표준 오류는 한국어 로그다.
+docker compose exec -T api-server python scripts/demo.py search --query-text '검정 오버핏 후드티' --json > search.json 2> search.log
+docker compose exec -T api-server python scripts/demo.py search --query-image data/full-v43/images/P000001.jpg --json > image.json 2> image.log
+docker compose exec -T api-server python scripts/demo.py search --query-text '가방' --query-image data/full-v43/images/P000001.jpg --json > hybrid.json 2> hybrid.log
+docker compose exec -T api-server python scripts/demo.py recommend --user-id U000001 --json > recommend.json 2> recommend.log
+docker compose exec -T api-server python scripts/demo.py session --user-id cli-demo --product-id P000001 --category 'tote bag' --event-id cli-demo-click-1 --json > session.json 2> session.log
+```
+
+상품·사용자 ID와 카테고리는 현재 카탈로그에 맞춰 지정한다. 세션은 실제 `/api/event` 쓰기를
+수행한다. 같은 클릭을 재시도할 때 `--event-id`를 유지하고, 새로운 클릭에는 새 ID를 지정한다.
+새 추천 순서가 반드시 달라진다고 가정하지 않으며 `before`, `event_response`, `after`를 함께 반환한다.
+호스트 실행은 `.venv/bin/python scripts/demo.py ... --api-url http://127.0.0.1:8000`을 사용한다.
+추가 이미지 파일은 호스트 `data/demo/query.jpg`에 두면 컨테이너 `data/demo/query.jpg`로 접근할 수 있다.
+`--output 경로.json`은 해당 CLI를 실행하는 호스트 또는 컨테이너에서 UTF-8 원본 결과를 저장한다.
+
+A/B·평가·CT는 기존 명령을 사용한다. 아래는 full 기준이며 dev에서는 CONFIG_PATH의 `models/full-v43`을 `models/dev-v43`으로 바꾼다. 아래 A/B와 평가는 실제 계산을 실행하므로 메모리 여유를
+확인하고 학습·지연 벤치마크와 동시에 실행하지 않는다. A/B 음의 변화와 유의하지 않은 결과도
+그대로 출력하며, `null`은 수치를 계산할 근거가 부족함을 뜻한다.
+
+```bash
+docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m src.evaluation.ab_test --output docs/results/ab_console.json > ab.json 2> ab.log
+docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m src.ct.retrain_trigger > ct.json 2> ct.log
+# 재학습을 활성화할 때만 사용: 실제 누적 이벤트 임계치 충족 시 학습·검증·승격/유지 판정 실행
+docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m src.ct.retrain_trigger --watch --train --reload-url http://127.0.0.1:8000 > ct.jsonl 2> ct-watch.log
+# 기존 valid 선택/동결 계약 유지. test를 튜닝에 사용하지 않는다.
+docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m docker.quality --split valid > evaluation.json 2> evaluation.log
+# 저장된 제출 근거 검사이며 새 full 품질 측정은 아니다. 현재 소스와 불일치하면 실패한다.
+.venv/bin/python scripts/check_submission.py --verify-existing > peer.json 2> peer.log
+```
+
+Windows PowerShell에서는 먼저 터미널 입출력을 UTF-8로 지정한다. Windows PowerShell 5.1의
+일반 `>`는 파일을 UTF-16로 저장할 수 있으므로, 아래처럼 `cmd`의 바이트 리디렉션을 사용한다
+(Windows의 로컬 클론 디렉터리에서 실행). Python이 직접 저장하는 `--output` 파일은 UTF-8이다.
+
+```powershell
+$OutputEncoding = [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+cmd /d /c 'docker compose exec -T api-server python scripts/demo.py search --query-text "검정 후드티" --json 1>search.json 2>search.log'
+Get-Content -Encoding UTF8 search.json | ConvertFrom-Json
+Get-Content -Encoding UTF8 search.log
+# 이미지 빌드 후 PowerShell·컨테이너·저장 파일의 UTF-8 왕복 검사
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/verify_console_utf8.ps1
+```
+
+마지막 명령의 실행 정책은 해당 검사 프로세스에만 적용하며 시스템 정책을 변경하지 않는다.
+검사 스크립트는 두 스트림을 UTF-8로 읽어 `.team/console-utf8/result.json`, `run.log`에 저장하고,
+다시 읽은 한글과 인코딩을 비교한다. 실제 검증 범위와 명령은
+[한국어 로그 검증 보고서](docs/cli_logging_validation.md)에 기록한다.
+
+### PDF·동료 평가 통합 시연 (v4.3)
+
+[실행·검증 안내](docs/requirements_completion.md)에 Bash·PowerShell 공통 명령과
+검색·추천·세션·A/B·CT·평가·동료 평가 CLI를 정리했다. `scripts/demo.py --help`로 진입점을 확인한다.
+Streamlit의 **EDA·구매 이력**, **상품·CLIP** 탭에서 실제 배포 데이터와 벡터를 확인할 수 있다.
+브랜드충성형 생성 규칙을 수정하여 새 full 산출물은 `data/full-v43`, `models/full-v43`에 저장한다.
+기존 v4.2 산출물은 보존한다. AUC 합격은 사용자 확인에 따라 CTR 기준이며 CVR은 별도로 보고한다.
+이번 실행의 판정은 [요구사항별 근거](docs/results/integration/20261107_requirements/requirements.json)를 따른다.

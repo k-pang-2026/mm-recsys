@@ -1,6 +1,8 @@
 """Wait for the model API, then announce the dashboard only after HTTP readiness."""
 from __future__ import annotations
 
+from src.common.console import log, run_cli
+
 import os
 import signal
 import subprocess
@@ -29,16 +31,16 @@ def wait_dashboard(process: subprocess.Popen, timeout: float) -> None:
 
 def main() -> int:
     api = os.getenv('API_URL', 'http://api-server:8000')
-    print('[dashboard] 검색·추천 API 준비 완료를 기다립니다...', flush=True)
+    log('대시보드', '준비', '검색·추천 API 준비 완료를 기다립니다.')
     wait_ready(api, float(os.getenv('READY_TIMEOUT_SECONDS', '21600')))
-    print('[dashboard] 검색·추천 API 연결 완료', flush=True)
+    log('대시보드', '준비', '검색·추천 API 연결 완료', status='성공')
     process = subprocess.Popen([sys.executable, '-m', 'streamlit', 'run', 'dashboard/app.py',
                                 '--server.port=8501', '--server.address=0.0.0.0'])
     previous = signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
     try:
         wait_dashboard(process, 60)
         url = os.getenv('PUBLIC_DASHBOARD_URL', 'http://localhost:8501')
-        print(f'[dashboard] {url} 에서 대시보드 시작', flush=True)
+        log('대시보드', '시작', f'{url} 에서 대시보드 시작', status='성공')
         return process.wait()
     finally:
         signal.signal(signal.SIGTERM, previous)
@@ -52,4 +54,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, '대시보드', 'API /ready와 Streamlit 원본 로그, 포트 설정을 확인하세요.'))

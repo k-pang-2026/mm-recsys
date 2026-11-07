@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "command": [
+    "docker",
+    "compose",
+    "exec",
+    "-T",
+    "api-server",
+    "timeout",
+    "65",
+    "python",
+    "scripts/demo.py",
+    "ct",
+    "--watch"
+  ],
+  "exit_code": 124,
+  "termination": "intentional timeout after observing two periodic cycles",
+  "poll_interval_seconds": 60.018699856999774,
+  "clock": "host time.monotonic on flushed stdout JSONL arrivals",
+  "wall_clock_interval": 58.42438316345215,
+  "observations": [
+    {
+      "event": "monitor",
+      "status": "UNMEASURED",
+      "ctr": null,
+      "hit_rate_at_50": null,
+      "clicks": 0,
+      "exposures": 0,
+      "mature_requests": 0,
+      "top50_requests": 0,
+      "hit_requests": 0,
+      "alerts": [],
+      "window_start": 1793945519.986634,
+      "observed_through": 1794031919.986634,
+      "attribution_seconds": 3600,
+      "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+      "thresholds": {
+        "ctr_threshold": 0.01,
+        "hitrate_threshold": 0.2,
+        "min_mature_requests": 20
+      }
+    },
+    {
+      "event": "monitor",
+      "status": "UNMEASURED",
+      "ctr": null,
+      "hit_rate_at_50": null,
+      "clicks": 0,
+      "exposures": 0,
+      "mature_requests": 0,
+      "top50_requests": 0,
+      "hit_requests": 0,
+      "alerts": [],
+      "window_start": 1793945578.4110172,
+      "observed_through": 1794031978.4110172,
+      "attribution_seconds": 3600,
+      "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+      "thresholds": {
+        "ctr_threshold": 0.01,
+        "hitrate_threshold": 0.2,
+        "min_mature_requests": 20
+      }
+    }
+  ],
+  "completed_at": "2026-11-07T06:13:03.157704+00:00"
+}

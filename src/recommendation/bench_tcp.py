@@ -1,6 +1,8 @@
 """Actual serial localhost HTTP requests, separately judged from ASGI injection."""
 from __future__ import annotations
 
+from src.common.console import log as console_log
+
 from typing import Any
 import json
 import os
@@ -28,7 +30,7 @@ def benchmark_tcp(cfg: dict,b5: Any,output: Any=None,selection: Any=None) -> dic
             listener.bind(('127.0.0.1',0));port=listener.getsockname()[1]
     except OSError as error:
         report['reason']=f'localhost bind unavailable: {type(error).__name__}: {error}'
-        write_json(output,report);print(report['reason']);return report
+        write_json(output,report);console_log('추천 TCP', '연결', report['reason'] + ' / 다음 조치: 로컬 포트 바인딩 권한을 확인하세요.', status='미측정');return report
     data=read_data(cfg['paths']['data_dir']);users=sorted(data['train'].user_id.unique())
     env=dict(os.environ,B_BENCH_SCORING=json.dumps(report['scoring']),B_BENCH_B5='1' if b5 else '0')
     log=Path('.team/tcp')/f'{report["stage"]}.log';log.parent.mkdir(parents=True,exist_ok=True)
@@ -68,4 +70,4 @@ def benchmark_tcp(cfg: dict,b5: Any,output: Any=None,selection: Any=None) -> dic
                 process.terminate()
                 try:process.wait(timeout=10)
                 except subprocess.TimeoutExpired:process.kill();process.wait()
-    write_json(output,report);print(f'TCP={report["status"]}; output={output}');return report
+    write_json(output,report);console_log("추천 TCP", "결과", f'판정={report["status"]} / 결과={output}', status="완료");return report

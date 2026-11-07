@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "exit_code": 247,
+  "stdout_empty": true,
+  "scope": "isolated disposable Python child terminated with SIGKILL; verifies nonzero propagation and Korean diagnostic, not another model OOM"
+}

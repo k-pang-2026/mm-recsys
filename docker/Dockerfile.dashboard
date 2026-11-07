@@ -1,10 +1,12 @@
 FROM python:3.11-slim
 WORKDIR /app
-ENV PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV PYTHONUTF8=1 PYTHONIOENCODING=utf-8 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 COPY requirements-dashboard.txt .
 COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
 RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
 COPY dashboard ./dashboard
 COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
+COPY src/__init__.py ./src/
+COPY src/common/__init__.py src/common/console.py src/common/artifacts.py ./src/common/
 COPY config.yaml .env ./
 CMD ["python", "-m", "docker.dashboard_entrypoint"]

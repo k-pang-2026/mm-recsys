@@ -1,0 +1,105 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.02kB done
+#1 DONE 0.0s
+
+#2 [dashboard internal] load build definition from Dockerfile.dashboard
+#2 transferring dockerfile: 684B done
+#2 DONE 0.0s
+
+#3 [api-server internal] load build definition from Dockerfile.api
+#3 transferring dockerfile: 650B done
+#3 DONE 0.0s
+
+#4 [dashboard internal] load metadata for docker.io/library/python:3.11-slim
+#4 ...
+
+#5 [auth] library/python:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#4 [dashboard internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 2.0s
+
+#6 [api-server internal] load .dockerignore
+#6 transferring context: 292B done
+#6 DONE 0.0s
+
+#7 [dashboard internal] load build context
+#7 transferring context: 65.60kB 0.0s done
+#7 DONE 0.0s
+
+#8 [dashboard 1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#8 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.0s done
+#8 DONE 0.0s
+
+#9 [dashboard  5/10] RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
+#9 CACHED
+
+#10 [dashboard  6/10] COPY dashboard ./dashboard
+#10 CACHED
+
+#11 [dashboard  9/10] COPY src/common/__init__.py src/common/console.py src/common/artifacts.py ./src/common/
+#11 CACHED
+
+#12 [dashboard  3/10] COPY requirements-dashboard.txt .
+#12 CACHED
+
+#13 [dashboard  4/10] COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
+#13 CACHED
+
+#14 [dashboard  7/10] COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
+#14 CACHED
+
+#15 [dashboard  8/10] COPY src/__init__.py ./src/
+#15 CACHED
+
+#16 [dashboard 10/10] COPY config.yaml .env ./
+#16 CACHED
+
+#17 [api-server internal] load build context
+#17 transferring context: 95.10kB 0.1s done
+#17 DONE 0.1s
+
+#18 [api-server 4/7] COPY requirements.txt requirements-torch.txt ./
+#18 CACHED
+
+#19 [api-server 5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#19 CACHED
+
+#20 [api-server 2/7] WORKDIR /app
+#20 CACHED
+
+#21 [api-server 3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#21 CACHED
+
+#22 [api-server 6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#22 CACHED
+
+#23 [dashboard] exporting to image
+#23 exporting layers done
+#23 exporting manifest sha256:1d361420b11b96fc209c2ac06bae335152942749b520ad8d9ccb27e700687b50 done
+#23 exporting config sha256:11b25b951b0b624e4051b4ae8febd78fd6d648b8bae85a813ce4b78c173cbe9b done
+#23 exporting attestation manifest sha256:0cd4fb49308a908d293059c663c699ca90f38bedcb30eb11ffc0516aee49d362
+#23 exporting attestation manifest sha256:0cd4fb49308a908d293059c663c699ca90f38bedcb30eb11ffc0516aee49d362 0.0s done
+#23 exporting manifest list sha256:1f77fbaf8a912c40889d211258a2df9ffdcde64d80a1e60097fad2d11d0b8013 0.0s done
+#23 naming to docker.io/library/mm-recsys-dashboard:latest done
+#23 unpacking to docker.io/library/mm-recsys-dashboard:latest 0.0s done
+#23 DONE 0.1s
+
+#24 [dashboard] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#25 [api-server 7/7] COPY . .
+#25 DONE 0.3s
+
+#26 [api-server] exporting to image
+#26 exporting layers 0.3s done
+#26 exporting manifest sha256:4d8b061ee59abf4132b17843be4f50e4bed7671ceebc8c33a229517e3456772c 0.0s done
+#26 exporting config sha256:dbd596396752abdcccaf5cbf89bea5dbdcfad1ac951602fe3d1c645281eaf78c 0.0s done
+#26 exporting attestation manifest sha256:7282b5e43290dbdf8b10b532fc641ee4b6c41aaacd3542055c2f5aaf0df24796 0.0s done
+#26 exporting manifest list sha256:2ef30c3bd6407da4b8e497dba628740fec7453c086c8ac1a38e387df4063a98b 0.0s done
+#26 naming to docker.io/library/mm-recsys-api-server:latest done
+#26 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#26 DONE 0.5s
+
+#27 [api-server] resolving provenance for metadata file
+#27 DONE 0.0s

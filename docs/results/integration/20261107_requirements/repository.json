@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "measured_at": "2026-11-07T05:30:07.735366+00:00",
+  "url": "https://github.com/k-pang-2026/mm-recsys",
+  "public": true,
+  "anonymous_http_status": 200,
+  "scope": "anonymous read-only repository metadata; no push or permission changes"
+}

@@ -61,7 +61,9 @@ def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
             leaf=preferred_leaf[fresh_ids].copy();brand=preferred_brand[fresh_ids].copy()
             discover=rng.random(len(fresh_ids))>choice['preferred_leaf_probability']
             leaf[discover]=rng.integers(len(taxonomy),size=discover.sum())
-            diverse=rng.random(len(fresh_ids))>choice['preferred_brand_probability']
+            loyalty=np.array([sim['personas'][personas[u]].get('preferred_brand_probability',
+                choice['preferred_brand_probability']) for u in fresh_ids])
+            diverse=rng.random(len(fresh_ids))>loyalty
             brand[diverse]=rng.integers(len(brands),size=diverse.sum())
             keys=(leaf*len(brands)+brand)*len(persona_names)+persona_ids[fresh_ids]
             for key in np.unique(keys):

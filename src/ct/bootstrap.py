@@ -1,6 +1,8 @@
 """Register an existing B v1.0 without changing its weights, data or configuration."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 from pathlib import Path
 
@@ -43,9 +45,10 @@ def main() -> int:
             data_counts=manifest['counts'], manifest_sha256=file_hash(manifest_path),
             config_fingerprint=record['config_fingerprint'], model_hashes=record['hashes'],
             scope='existing bundle fully loaded and warmed; no production retraining/promotion'))
-    print(f"Registered active model: {state['active']}")
+    log('CT', '초기화', f"활성 모델={state['active']}", status='성공')
+    emit_json(state)
     return 0
 
 
 if __name__ == '__main__':
-    raise SystemExit(main())
+    raise SystemExit(run_cli(main, 'CT 초기화', '설정·입력 경로·모델 호환성과 원본 오류를 확인하고 해당 검사를 다시 실행하세요.'))

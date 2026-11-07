@@ -1,6 +1,8 @@
 """Combine measured search evidence without claiming global recommendation acceptance."""
 from __future__ import annotations
 
+from src.common.console import log, emit_json, run_cli
+
 import argparse
 import json
 import math
@@ -101,9 +103,10 @@ def finalize(cfg: dict) -> dict:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description='검색 최종 검사')
     parser.add_argument('--require-pass', action='store_true'); args = parser.parse_args()
     result = finalize(load_config())
+    log('검색 최종 검사', '결과', f"규모={result.get('scale', '설정 참조')} / 판정={result.get('status', '원본 JSON 참조')}", status='완료')
     print(json.dumps({'status': result['status'], 'scale': result['scale'], 'metrics': result['metrics'],
                       'global_system_acceptance': result['global_system_acceptance']}, indent=2))
     if args.require_pass and result['status'] != 'PASS':
@@ -111,4 +114,4 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    run_cli(main, '검색 최종 검사', '설정·데이터·모델·Redis 상태와 위 원본 오류를 확인한 뒤 같은 명령을 다시 실행하세요.')

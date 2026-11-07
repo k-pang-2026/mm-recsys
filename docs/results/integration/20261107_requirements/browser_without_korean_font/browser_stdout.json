@@ -1,0 +1,1 @@
+{"status":"PASS","checks":{"tab_검색":true,"tab_추천":true,"tab_A/B 실험":true,"tab_시스템":true,"tab_EDA·구매 이력":true,"tab_상품·CLIP":true,"search_images":true,"actual_click_comparison":true},"errors":[],"failedRequests":[]}

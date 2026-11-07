@@ -1,0 +1,1072 @@
+{
+  "version": "user-randomized-ab-v1",
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "seed": 42,
+  "simulated_start": "2026-01-01T00:00:00+00:00",
+  "days": 1,
+  "top_n": 10,
+  "strategies": {
+    "control": "popularity",
+    "treatment": "full_pipeline"
+  },
+  "assignment": {
+    "control": [
+      "U001665",
+      "U005173",
+      "U009815",
+      "U009368",
+      "U008454",
+      "U001128",
+      "U003147",
+      "U004672"
+    ],
+    "treatment": [
+      "U005863",
+      "U008713",
+      "U002776",
+      "U000727",
+      "U003271",
+      "U004186",
+      "U001502",
+      "U009041"
+    ]
+  },
+  "assignment_sha256": "dd8667629a91abe1b318c0f95347193a7d494c7fe08e3d5dff938e4f980ae73f",
+  "arms": {
+    "control": {
+      "users": 8,
+      "impressions": 80,
+      "clicks": 16,
+      "purchases": 0,
+      "explorations": 0,
+      "ctr": 0.2,
+      "cvr": 0.0,
+      "purchase_given_click": 0.0,
+      "exploration_rate": 0.0,
+      "users_clicked": 6,
+      "users_purchased": 0,
+      "arm_statistics": {
+        "U001665:P001816": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U001665:P000022": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U001665:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001665:P000462": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001665:P000301": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U001665:P000068": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U001665:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001665:P000167": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U001665:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001665:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P001816": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000462": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000301": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000068": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000167": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005173:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P001816": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P000462": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009815:P000301": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P000068": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009815:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P000167": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009815:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009815:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P001816": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000462": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009368:P000301": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009368:P000068": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000167": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009368:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P001816": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000462": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000301": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U008454:P000068": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000167": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U008454:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008454:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P001816": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000462": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000301": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000068": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000167": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001128:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P001816": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000229": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000462": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000301": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U003147:P000068": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000167": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003147:P000084": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U004672:P001816": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U004672:P000022": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000229": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U004672:P000462": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000301": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000068": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000255": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000167": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000104": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004672:P000084": {
+          "exposures": 1,
+          "reward": 0.0
+        }
+      },
+      "unattributed_feedback": 0
+    },
+    "treatment": {
+      "users": 8,
+      "impressions": 80,
+      "clicks": 15,
+      "purchases": 0,
+      "explorations": 16,
+      "ctr": 0.1875,
+      "cvr": 0.0,
+      "purchase_given_click": 0.0,
+      "exploration_rate": 0.2,
+      "users_clicked": 6,
+      "users_purchased": 0,
+      "arm_statistics": {
+        "U005863:P000141": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P012457": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P000018": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P001283": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P002216": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P001230": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U005863:P000651": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P003402": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P000359": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005863:P005853": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P000893": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U008713:P042473": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P000517": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P001257": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P003015": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U008713:P004122": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P002884": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P003124": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008713:P005935": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U008713:P001139": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002776:P000295": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U002776:P008849": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002776:P001210": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002776:P000464": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U002776:P000545": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U002776:P000895": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002776:P001115": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U002776:P001027": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002776:P002528": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U002776:P001285": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P000496": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U000727:P016083": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U000727:P000445": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P000451": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P000516": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P000232": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P001253": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P000907": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P005282": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U000727:P002092": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P000056": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P020478": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P015111": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P000792": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P001855": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U003271:P010712": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P001574": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P002336": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003271:P038523": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U003271:P000949": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U004186:P000975": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P038446": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P000137": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P001256": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P000011": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P000456": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P001882": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P006393": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P000212": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004186:P002853": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P000340": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P040023": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P000648": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P001302": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P000407": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P000401": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P001393": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P001361": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P001406": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U001502:P005713": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P000790": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P024775": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P000367": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P001639": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P001925": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P031675": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P002357": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P002570": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009041:P018859": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009041:P004208": {
+          "exposures": 1,
+          "reward": 0.0
+        }
+      },
+      "unattributed_feedback": 0
+    }
+  },
+  "user_outcomes": {
+    "control": [
+      {
+        "user_id": "U001665",
+        "impressions": 10,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U005173",
+        "impressions": 10,
+        "clicks": 0,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U009815",
+        "impressions": 10,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U009368",
+        "impressions": 10,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U008454",
+        "impressions": 10,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U001128",
+        "impressions": 10,
+        "clicks": 0,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U003147",
+        "impressions": 10,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U004672",
+        "impressions": 10,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 0
+      }
+    ],
+    "treatment": [
+      {
+        "user_id": "U005863",
+        "impressions": 10,
+        "clicks": 1,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U008713",
+        "impressions": 10,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U002776",
+        "impressions": 10,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U000727",
+        "impressions": 10,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U003271",
+        "impressions": 10,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U004186",
+        "impressions": 10,
+        "clicks": 0,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U001502",
+        "impressions": 10,
+        "clicks": 0,
+        "purchases": 0,
+        "explorations": 2
+      },
+      {
+        "user_id": "U009041",
+        "impressions": 10,
+        "clicks": 1,
+        "purchases": 0,
+        "explorations": 2
+      }
+    ]
+  },
+  "inference": {
+    "experimental_unit": "randomized user; repeated exposures clustered within user",
+    "independent_user_risks": {
+      "any_click": {
+        "control": 0.75,
+        "treatment": 0.75,
+        "difference": 0.0,
+        "relative_lift": 0.0,
+        "z_statistic": 0.0,
+        "z_p_value": 1.0,
+        "chi_square": 0.0,
+        "chi_square_p_value": 1.0,
+        "difference_ci95": [
+          -0.4243446502785644,
+          0.4243446502785644
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      },
+      "any_purchase": {
+        "control": 0.0,
+        "treatment": 0.0,
+        "difference": 0.0,
+        "relative_lift": null,
+        "z_statistic": 0.0,
+        "z_p_value": 1.0,
+        "chi_square": 0.0,
+        "chi_square_p_value": 1.0,
+        "difference_ci95": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      }
+    },
+    "ctr": {
+      "status": "PASS",
+      "control": 0.2,
+      "treatment": 0.1875,
+      "difference": -0.012500000000000011,
+      "relative_lift": -0.0625,
+      "difference_ci95": [
+        -0.17580116330969822,
+        0.1508011633096982
+      ],
+      "z_p_value": 0.8807434768184333,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    },
+    "cvr": {
+      "status": "DEGENERATE",
+      "control": 0.0,
+      "treatment": 0.0,
+      "difference": 0.0,
+      "relative_lift": null,
+      "difference_ci95": [
+        0.0,
+        0.0
+      ],
+      "z_p_value": null,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    }
+  },
+  "denominators": {
+    "ctr": "clicks / impressions",
+    "cvr": "purchases / impressions",
+    "purchase_given_click": "purchases / clicks",
+    "exploration_rate": "marked exploration slots / impressions",
+    "independent_user_risks": "users with >=1 outcome / randomized users"
+  },
+  "outcome_model": {
+    "parameters": {
+      "click_base": 0.35,
+      "category_weight": 1.0,
+      "price_penalty": 2.0,
+      "position_decay": 0.25,
+      "conversion_multiplier": 1.0
+    },
+    "semantics": "persona L1 affinity, normalized price sensitivity, position decay; identical formula in both arms; purchase conditional on click",
+    "latent_preferences_used": false
+  },
+  "isolation": "immutable loaded models shared; separate arm and per-user adaptive stores/config/RNG/locks; common virtual clock; hash-keyed user/day outcome streams",
+  "limitations": [
+    "synthetic randomized simulation; no guarantee of positive or significant lift",
+    "static catalog and train+valid history; no test outcomes read",
+    "MAB exposure/feedback uses B5 in-memory adapter; live Redis attribution is verified separately",
+    "per-user adaptive bandits preserve independent user clusters; this is not a shared cross-user live-bandit experiment",
+    "dev result is not full acceptance"
+  ],
+  "identity": {
+    "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+    "data_hashes": {
+      "products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+      "users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+      "events.parquet": "cdef1f5525ade6c692a217df705dde9d8a1fb4780c99e6fdc51cd732a50a1256",
+      "impressions.parquet": "27bcf02392ccb75b8f67ac3f890b9195268038f0019361a4302785b25efad4c9",
+      "image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+      "split/train.parquet": "0111ecb5068267402a85ff4f94cdeb345483745aa980c9d9c4af84f68e8c5654",
+      "split/valid.parquet": "2139d4130d8f10e2732c1bb248c00cef26dd3827ee591cc2fb1201baeb45a345",
+      "split/test.parquet": "e3533625f687a0be5eb9d64100ef92da92f9950d5ddf4af29c6f51a3ec94b252"
+    },
+    "config_fingerprint": "28277c10b42bfb8baf66f656c704fe6d65449bfa6e945bbffb4be4e9fd0c97d4",
+    "bundle_metadata": {
+      "candidate": {
+        "contract": {
+          "version": "candidate-bundle-v1",
+          "directory": "models[/full]/v1.0",
+          "files": {
+            "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+            "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+            "item_ids.json": "canonical ordered public IDs, excludes PAD",
+            "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+            "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+            "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+          },
+          "history_inputs": [
+            "observed product IDs before timestamp",
+            "age_group",
+            "gender",
+            "past purchase category/brand distribution and price"
+          ],
+          "item_inputs": [
+            "category_l1",
+            "category_l2",
+            "category_l3",
+            "brand",
+            "color",
+            "style",
+            "price"
+          ],
+          "persona": false,
+          "item_id_residual": false,
+          "normalized": true,
+          "metric": "inner_product"
+        },
+        "scale": "full",
+        "dim": 64,
+        "model_version": "v1.0",
+        "retrieval": "HNSW inner_product; cutoff filtering and adaptive refill",
+        "best_epoch": 3,
+        "best_valid_recall_at_300": 0.7424282855236825,
+        "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+        "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+        "feature_fingerprint": "fe034fa6b6583d307ebd0830dbc0742e5a43aaa70d6411fb8a0f85c189a21560",
+        "config_fingerprint": "d076a6b312828c687fece88ece9149fc88575efb03c1e54fdbca1e1c4a898c11",
+        "candidate_scope_fingerprint": "ad7020b9d9c427830b1b3378024dc4f60213fa495284b8f1578d8e80bf419241",
+        "training_spec": {
+          "dim": 64,
+          "history_n": 50,
+          "batch_size": 512,
+          "epochs": 20,
+          "patience": 3,
+          "learning_rate": 0.001,
+          "temperature": 0.1,
+          "negatives_per_positive": 4,
+          "loss": "sampled_softmax",
+          "positive_weights": {
+            "view": 0.2,
+            "cart": 0.6,
+            "purchase": 1.0
+          },
+          "faiss": {
+            "type": "HNSW",
+            "metric": "inner_product",
+            "M": 32,
+            "ef_search": 512
+          },
+          "embedding_dim": 16,
+          "hidden_dim": 128,
+          "weight_decay": 0.0001,
+          "threads": 4,
+          "num_workers": 0,
+          "history_pooling": "mean",
+          "item_id_residual": false,
+          "profile_categories": "category_l3",
+          "tiny_fit_steps": 160,
+          "tiny_fit_learning_rate": 0.01
+        },
+        "hashes": {
+          "two_tower.pt": "dcc5daf7a486befb37986e69d4c7b8fd80139260ff0466c0ddfcc70352a89627",
+          "feature_vocab_scalers.json": "dc87f27413b8038ad281cb22fbb25c2cc4507b1e124f6e40fd97ebd6549987e1",
+          "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+          "item_index.faiss": "5a7a03d259d6d87c9b2984c138b2c06fefc3844da6567d8755d1893c9f8b08df",
+          "index_manifest.json": "b37a5c22e1b1ba058ab10d93c41cf87d09d99108bbb1074a98db63e3753eea57"
+        }
+      },
+      "ranking": {
+        "version": "deepfm-bundle-v1",
+        "scale": "full",
+        "best_epoch": 8,
+        "selection_split": "valid",
+        "config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+        "feature_fingerprint": "bb2df151f82e36dd81348b21b51a6b20d309f6b89d0d23d42c25262138c6ff51",
+        "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+        "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+        "hashes": {
+          "deepfm.pt": "60a57a24c0aab76a7989c18c87490c053c43037d7cf0db04502b5d5e20070573",
+          "features.json": "08a4a823e05d3d9d0e905597ed40f7a24108f67a86e779af4b8acac488eadf4c"
+        },
+        "ranking_score": "P(click)*P(purchase|click)"
+      },
+      "session": {
+        "version": "gru-session-v1",
+        "best_epoch": 20,
+        "selection_split": "valid",
+        "config_fingerprint": "12d7a11dba82d761489faa26a9e86e7aae20ccbbde9b4ec9cdb8a7e7db759c14",
+        "candidate_sha256": "dcc5daf7a486befb37986e69d4c7b8fd80139260ff0466c0ddfcc70352a89627",
+        "data_fingerprint": "8b578e5cf32d1074fabbabf8fff9db3135c23e34ea65424a0376f54570d9fb40",
+        "hashes": {
+          "session.pt": "9e49c5bf5b1713d22bcaa2c4f616f3467c3a2efd452b91b266fbdce6f9bcfc9c",
+          "item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+        }
+      }
+    },
+    "source_hashes": {
+      "src/evaluation/ab_test.py": "57d009bc4e68f2ded4414ccd30f85bebf5a8778d1108c1555e2077b6665ec896",
+      "src/evaluation/ab_statistics.py": "e3a07e3ad1f5ce2989f25f93ab9d4b289987a88754acf5dfe7a8b9723dbf427a",
+      "src/recommendation/service.py": "8c6c3034e440b2ab508a943b7e0179666bd9964f602ca31d9ec5c8255348e034",
+      "src/recommendation/recommender.py": "d2f189cab87eff8230d31f790a20428dedf84e3ec00866e884d29446ca203f93",
+      "src/recommendation/reranking.py": "2f3732eefe3c7b2ddad02cdfab9e58c8fa6815dd8f11f4cabd0aff4cd86feae2",
+      "src/recommendation/mab.py": "a6e1cb1c65e121f8dacb9e0eb68dc3a56de44b63a3a9ed1fdd760af9e2d5d8b3",
+      "src/recommendation/feature_store.py": "04a88f19de2d73547b0ffe4eeaa6153edde09f2f3ff2a4658986e0c318425d79",
+      "src/recommendation/scoring.py": "b2cd350b1f6b255553ffea3b3db4495939895ecc86e2e3dbb227c976243188f9",
+      "src/recommendation/session.py": "3a9014eb898084f6bffdb54de10fb103dcaa3b02c3565a01315641a6a86c6cbb"
+    }
+  },
+  "run_id": "9347f99da1d14f2d3c9515992167ba932a7db05a2237ce6d2c23189e6f42a9e9",
+  "environment": {
+    "python": "3.11.18",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.41",
+    "torch": "2.6.0+cpu",
+    "numpy": "2.1.3",
+    "device": "cpu",
+    "threads": 4,
+    "pythonhashseed": "42",
+    "determinism": "seed42 CPU; floating-point/model bytes may differ across OS/Python versions"
+  }
+}

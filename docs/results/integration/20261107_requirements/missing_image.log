@@ -1,0 +1,19 @@
+[2026-11-07T05:57:54+00:00] [시연 요청] [진행] 명령=search / API=http://api-server:8000
+[2026-11-07T05:57:54+00:00] [API 시연 실행] [실패] 원인: FileNotFoundError: [Errno 2] No such file or directory: 'data/query-does-not-exist.jpg' / 다음 조치: API /ready, 요청 ID·이미지 경로를 확인하세요. 세션 재시도는 로그의 동일 --event-id를 사용하세요.
+Traceback (most recent call last):
+  File "/app/scripts/demo.py", line 161, in <module>
+    raise SystemExit(run_cli(main, 'API 시연', 'API /ready, 요청 ID·이미지 경로를 확인하세요. 세션 재시도는 로그의 동일 --event-id를 사용하세요.'))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/common/console.py", line 49, in run_cli
+    return main()
+           ^^^^^^
+  File "/app/scripts/demo.py", line 69, in main
+    query_image=base64.b64encode(args.query_image.read_bytes()).decode('ascii') if args.query_image else None)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/pathlib.py", line 1050, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/pathlib.py", line 1044, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/query-does-not-exist.jpg'

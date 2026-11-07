@@ -1,0 +1,9 @@
+.......                                                                  [100%]
+=============================== warnings summary ===============================
+tests/test_console.py::test_tcp_benchmark_cannot_report_success_when_transport_is_unmeasured
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /home/peachpetal/ecommerce/mm-recsys/docs/results/integration/20261107_requirements/pytest_child_status.xml -
+7 passed, 1 warning in 3.93s

@@ -1,0 +1,144 @@
+ Image mm-recsys-api-server Building 
+ Image mm-recsys-dashboard Building 
+ Image mm-recsys-simulator Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.50kB done
+#1 DONE 0.0s
+
+#2 [simulator internal] load build definition from Dockerfile.simulator
+#2 transferring dockerfile: 651B done
+#2 DONE 0.0s
+
+#3 [api-server internal] load build definition from Dockerfile.api
+#3 transferring dockerfile: 650B done
+#3 DONE 0.0s
+
+#4 [dashboard internal] load build definition from Dockerfile.dashboard
+#4 transferring dockerfile: 660B done
+#4 DONE 0.0s
+
+#5 [dashboard internal] load metadata for docker.io/library/python:3.11-slim
+#5 ...
+
+#6 [auth] library/python:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#5 [dashboard internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 1.6s
+
+#7 [simulator internal] load .dockerignore
+#7 transferring context: 292B 0.0s done
+#7 DONE 0.0s
+
+#8 [simulator 1/7] FROM docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79
+#8 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.1s done
+#8 resolve docker.io/library/python:3.11-slim@sha256:65bd3d9f1d7fa268dd1909973ba7eb4bdf41f6dcf2cfbe76ba9528b170f3fd79 0.1s done
+#8 DONE 0.1s
+
+#9 [dashboard internal] load build context
+#9 transferring context: 3.22kB 0.1s done
+#9 DONE 0.1s
+
+#10 [dashboard  5/10] RUN pip install --no-cache-dir -r requirements-dashboard.txt -c /tmp/constraints.txt && pip check
+#10 CACHED
+
+#11 [dashboard  6/10] COPY dashboard ./dashboard
+#11 CACHED
+
+#12 [dashboard  4/10] COPY docker/constraints-dashboard-py311-linux-arm64.txt /tmp/constraints.txt
+#12 CACHED
+
+#13 [dashboard  7/10] COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
+#13 CACHED
+
+#14 [dashboard  3/10] COPY requirements-dashboard.txt .
+#14 CACHED
+
+#15 [dashboard 2/7] WORKDIR /app
+#15 CACHED
+
+#16 [dashboard  8/10] COPY src/__init__.py ./src/
+#16 CACHED
+
+#17 [api-server internal] load build context
+#17 transferring context: 4.64MB 0.2s done
+#17 transferring context: 4.64MB 0.2s done
+#17 DONE 0.2s
+
+#15 [simulator 2/7] WORKDIR /app
+#15 CACHED
+
+#18 [simulator 3/7] RUN apt-get update && apt-get install -y --no-install-recommends libgomp1  && rm -rf /var/lib/apt/lists/*
+#18 CACHED
+
+#19 [simulator 4/7] COPY requirements.txt requirements-torch.txt ./
+#19 CACHED
+
+#20 [simulator 5/7] COPY docker/constraints-api-py311-linux-arm64.txt /tmp/constraints.txt
+#20 CACHED
+
+#21 [simulator 6/7] RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://download.pytorch.org/whl/cpu  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt  && pip check
+#21 CACHED
+
+#22 [dashboard  9/10] COPY src/common/__init__.py src/common/console.py ./src/common/
+#22 DONE 0.1s
+
+#23 [dashboard 10/10] COPY config.yaml .env ./
+#23 DONE 0.1s
+
+#24 [simulator 7/7] COPY . .
+#24 DONE 0.2s
+
+#25 [simulator] exporting to image
+#25 exporting layers
+#25 ...
+
+#26 [dashboard] exporting to image
+#26 exporting layers 0.2s done
+#26 exporting manifest sha256:26f3d85a37779a26f35e7637caab8231fbde6c8faad26481b0f850337058d157 0.0s done
+#26 exporting config sha256:25c7b7ba53c40b8e125d6288341607093c43fbe39b93d63a94fcfa7ebfdb6398 0.0s done
+#26 exporting attestation manifest sha256:b9fff88386619dd6eeaec127da9f10a88cd61aa63526dbccece2d1bdb3ec01f0 0.0s done
+#26 exporting manifest list sha256:2d72d6f6100cd7760945797daced1ea62b1a085129188c07b853c2739876c467 0.1s done
+#26 naming to docker.io/library/mm-recsys-dashboard:latest done
+#26 unpacking to docker.io/library/mm-recsys-dashboard:latest 0.1s done
+#26 DONE 0.4s
+
+#25 [simulator] exporting to image
+#25 exporting layers 0.4s done
+#25 exporting manifest sha256:e072040746a3e66af1b7f71902483ac39814fdd41f54c48f056069e3d8b24ded 0.0s done
+#25 exporting config sha256:6140460c6ab50553eb71029219857c752be2f70015a30e3a417917d3d479b10e 0.0s done
+#25 exporting attestation manifest sha256:a0dec325403a9738d5b8537e8be8167f285012628517c0d39cf61d901bbf9c7a
+#25 ...
+
+#27 [dashboard] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#25 [simulator] exporting to image
+#25 exporting attestation manifest sha256:a0dec325403a9738d5b8537e8be8167f285012628517c0d39cf61d901bbf9c7a 0.1s done
+#25 exporting manifest list sha256:ce8d1dc9357c7fda8023be8447bdd58d50cad8686372826dc65a1eeba72a7ae3 0.0s done
+#25 naming to docker.io/library/mm-recsys-simulator:latest done
+#25 unpacking to docker.io/library/mm-recsys-simulator:latest
+#25 ...
+
+#28 [api-server] exporting to image
+#28 exporting layers 0.4s done
+#28 exporting manifest sha256:d3845e21b6757a2ce3d1d53e5cb5a524617e2ead04eb71df184e71f59bd7f477 0.0s done
+#28 exporting config sha256:9e5d906db40dba0ef79cdc00a162923c99a49f9707016563db549de11bf17174 0.1s done
+#28 exporting attestation manifest sha256:48da7c2456978c6850eb3421734e6bb042895ce2bd8391ac011061afe1b14fc3 0.1s done
+#28 exporting manifest list sha256:d5f5504969ae442da224603213c96b7fa1701be9ae02576bab51de2c353a98c1 0.0s done
+#28 naming to docker.io/library/mm-recsys-api-server:latest 0.0s done
+#28 unpacking to docker.io/library/mm-recsys-api-server:latest 0.1s done
+#28 DONE 0.8s
+
+#25 [simulator] exporting to image
+#25 unpacking to docker.io/library/mm-recsys-simulator:latest 0.2s done
+#25 DONE 0.9s
+
+#29 [api-server] resolving provenance for metadata file
+#29 DONE 0.1s
+
+#30 [simulator] resolving provenance for metadata file
+#30 DONE 0.0s
+ Image mm-recsys-api-server Built 
+ Image mm-recsys-dashboard Built 
+ Image mm-recsys-simulator Built 

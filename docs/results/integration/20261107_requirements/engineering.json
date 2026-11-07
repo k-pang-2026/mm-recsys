@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "tests": {
+    "tests": 400,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "mypy": "Success: no issues found in 130 source files",
+  "packages": {
+    "torch": "2.6.0+cpu",
+    "torchvision": "0.21.0",
+    "transformers": "4.46.3",
+    "faiss-cpu": "1.9.0",
+    "redis": "5.2.1"
+  },
+  "documentation": {
+    "README.md": "9bad9f598baca78762b712f40e4d71453c1d311cf57d67602bd76b97bb78fde4",
+    "docs/contracts.md": "cf0e8c9c25c41a5accaf156e5b51c3990c810f3523bcb4fa43e46433e7a5b3c9",
+    "docs/submission/contributions.json": "72f46a9fdd26498efa55329f7f428d61a212c2740e88cc7bd79c726ee2871248",
+    "docs/requirements_completion.md": "38aa14d68a16b2daedd3d21eb387ef519ce0bee13888244b27862fafb9945243"
+  },
+  "repository": {
+    "status": "PASS",
+    "measured_at": "2026-11-07T05:30:07.735366+00:00",
+    "url": "https://github.com/k-pang-2026/mm-recsys",
+    "public": true,
+    "anonymous_http_status": 200,
+    "scope": "anonymous read-only repository metadata; no push or permission changes"
+  },
+  "scope": "new tests and container measurements; contribution document inspected, not a new attribution claim"
+}
