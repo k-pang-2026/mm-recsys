@@ -1,0 +1,67 @@
+{
+  "search_type": "hybrid",
+  "results": [
+    {
+      "product_id": "P000695",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 102000.0
+    },
+    {
+      "product_id": "P001942",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 22000.0
+    },
+    {
+      "product_id": "P002680",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 37000.0
+    },
+    {
+      "product_id": "P004668",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 34000.0
+    },
+    {
+      "product_id": "P004921",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 114000.0
+    },
+    {
+      "product_id": "P005112",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 37000.0
+    },
+    {
+      "product_id": "P007105",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 32000.0
+    },
+    {
+      "product_id": "P007586",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 179000.0
+    },
+    {
+      "product_id": "P008056",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 65000.0
+    },
+    {
+      "product_id": "P010751",
+      "name": "black regular tote bag",
+      "score": 0.8235944509506226,
+      "price": 101000.0
+    }
+  ],
+  "latency_ms": 256.63247400007094,
+  "total_count": 50000
+}

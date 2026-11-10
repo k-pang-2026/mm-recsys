@@ -25,7 +25,7 @@ ALIASES = {
     '스니커즈': 'sneakers', '운동화': 'sneakers', '슬립온': 'slip-on shoes',
     '캔버스화': 'canvas shoes', '로퍼': 'loafers', '옥스퍼드화': 'oxford shoes',
     '구두': 'formal shoes', '하이힐': 'heels', '부츠': 'boots', '샌들': 'sandals',
-    '등산화': 'hiking shoes', '백팩': 'backpack', '배낭': 'backpack',
+    '등산화': 'hiking shoes', '가방': 'bag', '백팩': 'backpack', '배낭': 'backpack',
     '토트백': 'tote bag', '크로스백': 'crossbody bag', '모자': 'hat',
     '볼캡': 'cap', '비니': 'beanie', '버킷햇': 'bucket hat',
     '스카프': 'scarf', '목도리': 'scarf', '벨트': 'belt', '장갑': 'gloves',

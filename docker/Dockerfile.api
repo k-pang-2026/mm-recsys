@@ -9,4 +9,5 @@ RUN pip install --no-cache-dir -r requirements-torch.txt --index-url https://dow
  && pip install --no-cache-dir -r requirements.txt -c /tmp/constraints.txt \
  && pip check
 COPY . .
+RUN chmod +x scripts/demo.py && ln -s /app/scripts/demo.py /usr/local/bin/demo
 CMD ["python", "-m", "docker.api_entrypoint"]

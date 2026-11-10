@@ -1,0 +1,21 @@
+api-server-1  | [서버 준비] full 환경 / 상품 50,000개 / 호환 산출물 검사 후 필요한 생성·학습 시작
+api-server-1  | [데이터 준비] 시작
+api-server-1  | [데이터 준비] 완료 / 소요 시간=2.5초
+api-server-1  | [데이터 분석 준비] 시작
+api-server-1  | [데이터 분석 준비] 완료 / 소요 시간=9.7초
+api-server-1  | [검색 임베딩 준비] 시작
+api-server-1  | [검색 임베딩 준비] 완료 / 소요 시간=7.9초
+api-server-1  | [FAISS 인덱스 준비] 시작
+api-server-1  | [FAISS 인덱스 준비] 완료 / 소요 시간=1.9초
+api-server-1  | [추천 모델 준비] 시작
+api-server-1  | [추천 모델 준비] 완료 / 소요 시간=34.3초
+api-server-1  | [Redis 사용자 프로필 준비] 시작
+api-server-1  | [Redis 사용자 프로필 준비] 완료 / 소요 시간=32.9초
+api-server-1  | [서버 준비] 준비 완료; 상품=50,000개; CLIP=openai/clip-vit-base-patch32@3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268; FAISS + Two Tower/DeepFM/session
+api-server-1  | [서버 준비] FAISS 인덱스 로딩 완료 / 상품=50,000개
+api-server-1  | [서버 준비] Two-Tower 모델 로딩 완료
+api-server-1  | [서버 준비] DeepFM Ranking 모델 로딩 완료
+api-server-1  | [서버 준비] 검색·추천 모델 로딩 완료. API 요청을 받을 수 있습니다. / URL=http://localhost:8000
+dashboard-1   | [대시보드 준비] 검색·추천 API 준비 완료를 기다립니다.
+dashboard-1   | [대시보드 준비] 검색·추천 API 연결 완료
+dashboard-1   | [대시보드 시작] http://localhost:8501 에서 대시보드 시작

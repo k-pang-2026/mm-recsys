@@ -1,0 +1,72 @@
+...F..........................                                           [100%]
+=================================== FAILURES ===================================
+_______________ test_ct_watch_flushes_output_before_process_exit _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-6/test_ct_watch_flushes_output_b0')
+
+    def test_ct_watch_flushes_output_before_process_exit(tmp_path):
+        import os
+        import signal
+        import subprocess
+        import sys
+        import time
+        import yaml
+        from src.common.config import load_config
+        cfg = load_config()
+        cfg['paths'].update(model_dir=str(tmp_path / 'models'), by_scale={})
+        cfg['serving']['ct']['poll_seconds'] = .1
+        config = tmp_path / 'config.yaml'
+        config.write_text(yaml.safe_dump(cfg), encoding='utf-8')
+        output = tmp_path / 'watch.jsonl'
+        process = subprocess.Popen([sys.executable, 'scripts/demo.py', 'ct', '--watch', '--json',
+                                    '--output', str(output)], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            env={**os.environ, 'CONFIG_PATH': str(config), 'RUNTIME_RESULTS_DIR': str(tmp_path / 'results')})
+        try:
+            deadline = time.monotonic() + 15
+            while time.monotonic() < deadline and (not output.exists() or not output.stat().st_size):
+                if process.poll() is not None:
+>                   pytest.fail(process.communicate()[1].decode())
+E                   Failed: [2026-11-10T11:21:06+00:00] [CT 시작] [진행] 모니터링 주기=0.1초 / 재학습 임계치=10000건 / 재학습 활성=False / 활성 모델=None
+E                   [2026-11-10T11:21:06+00:00] [CT 실행] [실패] 원인: PermissionError: [Errno 13] Permission denied: 'docs/results/.cache/ct-locks/ct_log.jsonl.lock' / 다음 조치: registry·학습 입력·API 상태와 원본 오류를 확인하세요. 기존 모델과 이벤트를 보존한 채 재시도하세요.
+E                   Traceback (most recent call last):
+E                     File "<frozen runpy>", line 198, in _run_module_as_main
+E                     File "<frozen runpy>", line 88, in _run_code
+E                     File "/home/peachpetal/ecommerce/mm-recsys/src/ct/retrain_trigger.py", line 210, in <module>
+E                       raise SystemExit(run_cli(main, 'CT', 'registry·학습 입력·API 상태와 원본 오류를 확인하세요. 기존 모델과 이벤트를 보존한 채 재시도하세요.'))
+E                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                     File "/home/peachpetal/ecommerce/mm-recsys/src/common/console.py", line 52, in run_cli
+E                       return main()
+E                              ^^^^^^
+E                     File "/home/peachpetal/ecommerce/mm-recsys/src/ct/retrain_trigger.py", line 187, in main
+E                       measured = monitor(journal, spec, time.time(), registry.log)
+E                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                     File "/home/peachpetal/ecommerce/mm-recsys/src/ct/monitor.py", line 51, in monitor
+E                       append_log(log, result)
+E                     File "/home/peachpetal/ecommerce/mm-recsys/src/ct/storage.py", line 87, in append_log
+E                       with file_lock(path.parent / '.cache' / 'ct-locks' / f'{path.name}.lock'):
+E                     File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+E                       return next(self.gen)
+E                              ^^^^^^^^^^^^^^
+E                     File "/home/peachpetal/ecommerce/mm-recsys/src/ct/storage.py", line 65, in file_lock
+E                       with path.open('a+b') as stream:
+E                            ^^^^^^^^^^^^^^^^
+E                     File "/usr/lib/python3.12/pathlib.py", line 1015, in open
+E                       return io.open(self, mode, buffering, encoding, errors, newline)
+E                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                   PermissionError: [Errno 13] Permission denied: 'docs/results/.cache/ct-locks/ct_log.jsonl.lock'
+E                   [2026-11-10T11:21:06+00:00] [시연 하위 명령] [실패] 원인: 종료 코드 1 / 다음 조치: 위 원본 오류와 컨테이너 상태를 확인하세요. 시그널 9이면 OOM 기록·메모리와 중단된 학습 산출물을 확인한 뒤 복구하세요.
+
+tests/test_terminal_demo.py:73: Failed
+=============================== warnings summary ===============================
+tests/test_console.py::test_tcp_benchmark_cannot_report_success_when_transport_is_unmeasured
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_docker.py::test_parallel_hybrid_overlaps_towers_and_preserves_fusion
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_terminal_demo.py::test_ct_watch_flushes_output_before_process_exit
+1 failed, 29 passed, 2 warnings in 6.23s

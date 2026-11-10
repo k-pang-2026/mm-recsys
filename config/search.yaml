@@ -13,8 +13,8 @@ search:
   faiss:
     ef_search: 32
   query_fusion:
-    text_weight: 0.75
-    image_weight: 0.25
+    text_weight: 0.5
+    image_weight: 0.5
   evaluation:
     version: observable-query-v1
     valid_seed: 42001

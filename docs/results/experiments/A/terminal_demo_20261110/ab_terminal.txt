@@ -1,0 +1,12 @@
+========== A/B 테스트 결과 ==========
+실험 기간: 시뮬레이션 7일 (합성 실험)
+샘플 수: Control 100명, Treatment 100명
+전략: popularity → full_pipeline
+Metric            | Control    | Treatment  | Lift
+CTR               | 24.4571%   | 20.4857%   | -16.24%
+CVR               | 1.2714%    | 0.9714%    | -23.60%
+MAB Exploration   | 0.0000%    | 20.0000%   | -
+통계적 유의성 (사용자 단위, 반복 노출 보정):
+  CTR p-value: 3.3887058094531377e-06 (유의함) / 차이의 95% CI: [-5.6469, -2.2959] %p
+  CVR p-value: 0.10229079677559945 (유의하지 않음) / 차이의 95% CI: [-0.6599, +0.0599] %p
+원본 결과: docs/results/experiments/A/terminal_demo_20261110/ab.json

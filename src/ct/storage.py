@@ -1,9 +1,9 @@
 """Small durable CT journal and cross-process locks (local filesystem only)."""
 from __future__ import annotations
 
-from typing import Iterator
+from typing import Iterator, Iterable
 
-from contextlib import contextmanager
+from contextlib import contextmanager, closing
 from datetime import datetime, timezone
 import json
 import os
@@ -15,6 +15,28 @@ from src.common.console import log, status_ko
 
 def describe_event(value: dict) -> None:
     event = value.get('event')
+    if event == 'training_deferred':
+        log('CT', '학습 대기', '신규 로그 수는 충분하지만 train/valid의 실제 노출·클릭·구매 라벨이 부족합니다. '
+            '추천 request_id에 연결된 후속 행동을 수집하세요. 기존 모델과 미처리 로그는 유지합니다. '
+            f"/ 상세={value['data_path']}", status='경고')
+        return
+    if os.getenv('CT_OUTPUT') == 'human':
+        if event == 'monitor':
+            thresholds = value['thresholds']
+            measured = lambda v: '미측정 (성숙한 관측 표본 부족)' if v is None else f'{v:.4f}'
+            log('CT Monitor', '', f"현재 HitRate@50: {measured(value['hit_rate_at_50'])} "
+                f"(임계값: {thresholds['hitrate_threshold']}) / CTR: {measured(value['ctr'])}")
+            if value['alerts']:
+                log('CT Monitor', '알림', '성능 저하 감지! 재학습을 권장합니다.', status='경고')
+            return
+        if event == 'training_started':
+            log('CT Trigger', '', f"신규 로그 {value['new_events']:,}건 축적 / "
+                f"모델 {value['parent']} → {value['version']} / 모델 재학습 트리거됨...")
+            return
+        if event in ('promoted', 'retained'):
+            decision = '승격' if event == 'promoted' else '기존 모델 유지'
+            log('CT Trigger', '', f"재학습 완료. 후보 모델: {value['version']} / 활성 모델: {value['active']} / {decision}")
+            return
     if event == 'monitor':
         thresholds = value['thresholds']
         log('CT', '알림' if value['alerts'] else '모니터링',
@@ -105,19 +127,26 @@ class Journal:
 
     def event(self, payload: dict, at: float, request_id: str | None = None,
               window_seconds: int = 3600) -> bool:
-        if payload['event_type'] not in ('view', 'cart', 'purchase'):
-            raise ValueError('unsupported CT event')
-        with self.connect() as db:
-            if request_id:
-                row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
-                if (row is None or row['user_id'] != payload['user_id']
-                        or payload['product_id'] not in json.loads(row['items'])
-                        or not row['at'] <= at <= row['at'] + window_seconds):
-                    raise ValueError('unattributable recommendation outcome')
-            return db.execute('INSERT OR IGNORE INTO events(id,user_id,product_id,kind,at,request_id,payload) '
-                              'VALUES (?,?,?,?,?,?,?)', (payload['event_id'], payload['user_id'],
-                              payload['product_id'], payload['event_type'], at, request_id,
-                              json.dumps(payload))).rowcount == 1
+        return self.events([(payload, at)], request_id, window_seconds) == 1
+
+    def events(self, entries: Iterable[tuple[dict, float]], request_id: str | None = None,
+               window_seconds: int = 3600) -> int:
+        """One durable transaction per batch; any invalid entry rolls back the batch."""
+        with closing(self.connect()) as db, db:
+            before = db.total_changes
+            for payload, at in entries:
+                if payload['event_type'] not in ('view', 'cart', 'purchase'):
+                    raise ValueError('unsupported CT event')
+                if request_id:
+                    row = db.execute('SELECT * FROM requests WHERE id=?', (request_id,)).fetchone()
+                    if (row is None or row['user_id'] != payload['user_id']
+                            or payload['product_id'] not in json.loads(row['items'])
+                            or not row['at'] <= at <= row['at'] + window_seconds):
+                        raise ValueError('unattributable recommendation outcome')
+                db.execute('INSERT OR IGNORE INTO events(id,user_id,product_id,kind,at,request_id,payload) '
+                           'VALUES (?,?,?,?,?,?,?)', (payload['event_id'], payload['user_id'],
+                           payload['product_id'], payload['event_type'], at, request_id, json.dumps(payload)))
+            return db.total_changes - before
 
     def high_watermark(self) -> int:
         with self.connect() as db:

@@ -1,0 +1,16 @@
+{
+  "manifests": [
+    {
+      "fingerprint": "d855309be755a851e334c230eebb3f8f9df2afe68b9aad49f30bd9d7bc63ccdb",
+      "valid_sha256": "71cd099d67f011b1a3188cc05c4c367eb56807013a7dc28735112e113004d5f9",
+      "test_sha256": "e34dff85a608bfd949a4aa196171eef8e981a1e986a54e4687a8dd3e58b2daa1"
+    },
+    {
+      "fingerprint": "2e49c009b97efbe819ff01bf7b016c53fdb3c8934c7e9f9b48404eefe9927b72",
+      "valid_sha256": "71cd099d67f011b1a3188cc05c4c367eb56807013a7dc28735112e113004d5f9",
+      "test_sha256": "e34dff85a608bfd949a4aa196171eef8e981a1e986a54e4687a8dd3e58b2daa1"
+    }
+  ],
+  "all_query_files_identical": true,
+  "scope": "SHA256 only; test labels and scores not inspected for selection"
+}

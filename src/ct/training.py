@@ -6,61 +6,11 @@ from typing import Any
 import copy
 import json
 from pathlib import Path
-import shutil
-import tempfile
 
 import pandas as pd
 
 from src.common.artifacts import file_hash, fingerprint, write_json
-from src.simulator.split import chronological_split
-
-
-def snapshot(source: Path, target: Path, events: pd.DataFrame, impressions: pd.DataFrame,
-             cfg: dict) -> dict:
-    """Caller supplies observed events only; original dataset and held-out test stay untouched."""
-    original = json.loads((source / 'split_manifest.json').read_text())
-    for name in ('products.parquet', 'users.parquet'):
-        if file_hash(source / name) != original['file_hashes'][name]:
-            raise ValueError(f'source checksum mismatch: {name}')
-    if target.exists():
-        raise ValueError('snapshot destination already exists')
-    for frame, field in ((events, 'event_id'), (impressions, 'impression_id')):
-        if frame[field].duplicated().any():
-            raise ValueError(f'duplicate {field}')
-    if events.empty or events.timestamp.isna().any() or impressions.exposed_at.isna().any():
-        raise ValueError('missing observation time')
-    ordered = events.sort_values(['timestamp', 'event_id'], kind='stable')
-    through = ordered.timestamp.max()
-    impressions = impressions[impressions.exposed_at <= through].copy()
-    splits = chronological_split(ordered, cfg['split'])
-    if any(part.empty for part in splits.values()):
-        raise ValueError('not enough distinct times for fresh train/valid/test splits')
-    target.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(dir=target.parent, prefix='.ct-snapshot-') as temporary:
-        root = Path(temporary) / 'snapshot'; (root / 'split').mkdir(parents=True)
-        for name in ('products.parquet', 'users.parquet'):
-            shutil.copy2(source / name, root / name)
-        ordered.to_parquet(root / 'events.parquet', index=False)
-        impressions.to_parquet(root / 'impressions.parquet', index=False)
-        for name, frame in splits.items():
-            frame.to_parquet(root / 'split' / f'{name}.parquet', index=False)
-        files = ['products.parquet', 'users.parquet', 'events.parquet', 'impressions.parquet',
-                 'split/train.parquet', 'split/valid.parquet', 'split/test.parquet']
-        hashes = {name: file_hash(root / name) for name in files}
-        manifest = dict(generator_version='ct-observed-snapshot-v1', scale=cfg['scale'], seed=cfg['seed'],
-                        generation_fingerprint=fingerprint(dict(files=hashes, seed=cfg['seed'], split=cfg['split'])),
-                        parent_fingerprint=original['generation_fingerprint'], file_hashes=hashes,
-                        counts=dict(products=len(pd.read_parquet(root / 'products.parquet')),
-                                    users=len(pd.read_parquet(root / 'users.parquet')),
-                                    events=len(ordered), impressions=len(impressions)),
-                        split_counts={name: len(frame) for name, frame in splits.items()},
-                        boundaries={name: dict(start=frame.timestamp.min().isoformat(),
-                                               end=frame.timestamp.max().isoformat()) for name, frame in splits.items()},
-                        observed_through=through.isoformat(),
-                        scope='new chronological snapshot; train/valid only for fitting/selection; test unopened')
-        write_json(root / 'split_manifest.json', manifest)
-        root.rename(target)
-    return manifest
+from src.ct.snapshot import snapshot as snapshot
 
 
 def train_all(cfg: dict, work: Path) -> tuple[dict, Path]:

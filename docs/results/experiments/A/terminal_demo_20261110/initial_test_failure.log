@@ -1,0 +1,45 @@
+............F.......................................                     [100%]
+=================================== FAILURES ===================================
+________________ test_dashboard_failure_never_announces_success ________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf6a1a4b48350>
+capsys = <_pytest.capture.CaptureFixture object at 0xf6a1a4b4b4a0>
+
+    def test_dashboard_failure_never_announces_success(monkeypatch, capsys):
+        from docker import dashboard_entrypoint as entry
+        process = SimpleNamespace(returncode=1, stdout=None, poll=lambda: 1)
+        monkeypatch.setattr(entry, 'wait_ready', lambda *args: None)
+        monkeypatch.setattr(entry.subprocess, 'Popen', lambda *args: process)
+        with pytest.raises(RuntimeError, match='준비 전에 종료'):
+>           entry.main()
+
+tests/test_docker.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def main() -> int:
+        api = os.getenv('API_URL', 'http://api-server:8000')
+        log('대시보드', '준비', '검색·추천 API 준비 완료를 기다립니다.')
+        wait_ready(api, float(os.getenv('READY_TIMEOUT_SECONDS', '21600')))
+        log('대시보드', '준비', '검색·추천 API 연결 완료', status='성공')
+>       process = subprocess.Popen([sys.executable, '-m', 'streamlit', 'run', 'dashboard/app.py',
+                                    '--server.port=8501', '--server.address=0.0.0.0',
+                                    '--browser.gatherUsageStats=false'], stdout=subprocess.PIPE)
+E       TypeError: test_dashboard_failure_never_announces_success.<locals>.<lambda>() got an unexpected keyword argument 'stdout'
+
+docker/dashboard_entrypoint.py:38: TypeError
+----------------------------- Captured stderr call -----------------------------
+[2026-11-10T11:19:19+00:00] [대시보드 준비] [진행] 검색·추천 API 준비 완료를 기다립니다.
+[2026-11-10T11:19:19+00:00] [대시보드 준비] [성공] 검색·추천 API 연결 완료
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_docker.py::test_parallel_hybrid_overlaps_towers_and_preserves_fusion
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_docker.py::test_dashboard_failure_never_announces_success
+1 failed, 51 passed, 2 warnings in 11.91s

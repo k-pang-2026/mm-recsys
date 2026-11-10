@@ -1,0 +1,41 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+........................................................................ [ 53%]
+........................................................................ [ 70%]
+.....F.................................................................. [ 88%]
+...............................................                          [100%]
+=================================== FAILURES ===================================
+________ test_hybrid_really_uses_both_modalities_with_selected_weights _________
+
+    def test_hybrid_really_uses_both_modalities_with_selected_weights():
+        class Encoder:
+            def encode_texts(self, values):
+                return np.array([[1, 0]], np.float32)
+            def encode_images(self, values):
+                return np.array([[0, 1]], np.float32)
+        searcher = Searcher.__new__(Searcher); searcher.cfg = load_config(); searcher.encoder = Encoder()
+        searcher._lock = threading.RLock()
+        mode, query = searcher.encode('shirt', object())
+        assert mode == 'hybrid' and query[0, 1] > 0
+>       assert query[0, 0]/query[0, 1] == pytest.approx(3)
+E       assert np.float32(1.0) == 3 ± 3.0e-06
+E         
+E         comparison failed
+E         Obtained: 1.0
+E         Expected: 3 ± 3.0e-06
+
+tests/test_search_queries.py:50: AssertionError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+-------------- generated xml file: /tmp/mm-fixes-frozen-tests.xml --------------
+=========================== short test summary info ============================
+FAILED tests/test_search_queries.py::test_hybrid_really_uses_both_modalities_with_selected_weights
+1 failed, 406 passed, 2 warnings in 31.90s

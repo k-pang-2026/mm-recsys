@@ -1,0 +1,4 @@
+time="2026-11-10T21:43:41+09:00" level=warning msg="Found orphan containers (mm-recsys-ct-memory-fix-20261110, mm-recsys-ct-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container mm-recsys-api-server-run-8544d58306a4 Creating 
+ Container mm-recsys-api-server-run-8544d58306a4 Created 
+[평가 기존 근거 검사] Docker test: PASS / 새 품질 측정 아님

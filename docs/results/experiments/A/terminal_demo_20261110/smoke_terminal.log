@@ -1,0 +1,5 @@
+[평가 HTTP 지연] text: p95=22.652ms
+[평가 HTTP 지연] image: p95=84.980ms
+[평가 HTTP 지연] hybrid: p95=88.253ms
+[평가 HTTP 지연] recommendation: p95=37.017ms
+[평가 Docker 검사] 결과=docs/results/experiments/A/terminal_demo_20261110/smoke.json

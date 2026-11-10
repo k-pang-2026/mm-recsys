@@ -130,11 +130,15 @@ def prepare(cfg: dict) -> dict:
             before = time.perf_counter()
             command = [sys.executable, str(Path(__file__).resolve()), '--stage', name]
             log(labels[name], '준비', '시작')
-            result = subprocess.run(command, env=env, stdout=sys.stderr,
-                                    timeout=float(os.getenv('PREPARE_TIMEOUT_SECONDS', '21600')))
+            detail = output.parent / 'logs' / f'prepare-{name}-{time.time_ns()}.log'
+            detail.parent.mkdir(parents=True, exist_ok=True)
+            with detail.open('w', encoding='utf-8') as stream:
+                result = subprocess.run(command, env=env, stdout=stream, stderr=subprocess.STDOUT,
+                                        timeout=float(os.getenv('PREPARE_TIMEOUT_SECONDS', '21600')))
             steps.append(dict(stage=name, command=command, exit_code=result.returncode,
-                              seconds=time.perf_counter() - before))
+                              seconds=time.perf_counter() - before, log=str(detail)))
             if result.returncode:
+                sys.stderr.write(detail.read_text(encoding='utf-8'))
                 log(labels[name], '준비', f'자식 프로세스 종료 코드={result.returncode} / 다음 조치: 위 원본 오류와 해당 단계의 입력·설정을 확인한 뒤 재실행하세요.', status='실패')
                 write_json(output, dict(status='FAIL', scale=cfg['scale'], stages=steps))
                 raise RuntimeError(f'preparation failed at {name}: exit {result.returncode}')
@@ -163,7 +167,9 @@ def main() -> int:
         set_seed(cfg['seed'])
         stage(cfg, args.stage)
     else:
-        emit_json(prepare(cfg))
+        report = prepare(cfg)
+        if os.getenv('MM_LOG_FORMAT') != 'compact':
+            emit_json(report)
     return 0
 
 

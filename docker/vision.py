@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import warnings
 from typing import Any
 
 
@@ -33,7 +34,11 @@ def install_query_vision(encoder: Any) -> dict:
     with torch.inference_mode():
         module = QueryVision(model).eval()
         reference = original(pixel_values=example)
-        traced = torch.jit.trace(module, example, check_trace=True)
+        with warnings.catch_warnings():
+            # Fixed batch-one shape is checked below; other inputs use the eager path.
+            warnings.filterwarnings('ignore', message='Converting a tensor to a Python boolean.*',
+                                    category=torch.jit.TracerWarning)
+            traced = torch.jit.trace(module, example, check_trace=True)
         optimized = torch.jit.optimize_for_inference(traced)
         actual = optimized(example)
         difference = abs(unit_vectors(reference.numpy()) - unit_vectors(actual.numpy())).max().item()

@@ -50,6 +50,10 @@ def trigger(cfg: dict, build: Any) -> dict:
             try:
                 # build must only include journal events through this captured watermark.
                 result = build(version, through, registry)
+                if result.get('status') == 'WAITING_FOR_LABELS':
+                    append_log(registry.log, dict(event='training_deferred', new_events=count,
+                                                 through_seq=through, **result))
+                    return dict(new_events=count, through_seq=through, **result)
                 registry.register(version, result['config'], Path(result['data_path']),
                                   result['comparison']['candidate'], parent, through)
                 promoted = registry.decide(version, result['comparison'], spec)
@@ -68,31 +72,15 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
     import gc
     import pandas as pd
     from src.ct.training import snapshot, train_all, validation
+    from src.ct.snapshot import journal_tables, training_eligibility
     from src.serving.model_loader import load_record
     from src.serving.memory_store import MemoryFeatureStore
     from src.common.artifacts import file_hash
     spec, journal, _ = components(cfg)
     parent = registry.record(registry.read()['active'])
     source = Path(parent['data_path'])
-    with journal.connect() as db:
-        rows = db.execute('SELECT * FROM events WHERE seq>? AND seq<=? ORDER BY seq',
-                           (parent['trained_through_seq'], through)).fetchall()
-        requests = db.execute('SELECT * FROM requests').fetchall()
-    events = pd.read_parquet(source / 'events.parquet')
-    incoming = []
-    for row in rows:
-        payload = json.loads(row['payload'])
-        incoming.append(dict(event_id=row['id'], user_id=row['user_id'], product_id=row['product_id'],
-                             event_type=row['kind'], timestamp=pd.Timestamp(row['at'], unit='s', tz='UTC'),
-                             session_id=payload.get('session_id', 'default'), query=None,
-                             impression_id=f"{row['request_id']}:{row['product_id']}" if row['request_id'] else None,
-                             position=None))
-    events = pd.concat([events, pd.DataFrame(incoming)], ignore_index=True).drop_duplicates('event_id')
-    existing = pd.read_parquet(source / 'impressions.parquet')
-    exposures = [dict(impression_id=f"{r['id']}:{pid}", request_id=r['id'], user_id=r['user_id'],
-                      product_id=pid, exposed_at=pd.Timestamp(r['at'], unit='s', tz='UTC'), position=i + 1)
-                 for r in requests for i, pid in enumerate(json.loads(r['items']))]
-    impressions = pd.concat([existing, pd.DataFrame(exposures)], ignore_index=True).drop_duplicates('impression_id')
+    log('CT', '스냅샷', '관측 로그를 묶음 단위로 읽고 시간순 학습 스냅샷을 생성합니다.')
+    events, impressions = journal_tables(source, journal, parent['trained_through_seq'], through)
     # A failed attempt is kept for diagnosis; select a fresh unique workspace on retry.
     import uuid
     work = registry.root / '.ct' / 'runs' / f'{version}-{uuid.uuid4().hex[:8]}'
@@ -101,8 +89,13 @@ def build_from_journal(cfg: dict, version: str, through: int, registry: ModelReg
     local = copy.deepcopy(cfg); local['paths']['data_dir'] = str(data_path)
     local['simulator']['reference_time'] = (pd.Timestamp(manifest['observed_through']) + pd.Timedelta(microseconds=1)).isoformat()
     # Trainers load the immutable snapshot themselves; retaining these copies exhausts full CT memory.
-    del events, existing, impressions, incoming, rows, requests, exposures
+    del events, impressions
     gc.collect()
+    eligibility = training_eligibility(data_path, local)
+    write_json(work / 'eligibility.json', eligibility)
+    if not eligibility['ready']:
+        return dict(status='WAITING_FOR_LABELS', eligibility=eligibility, data_path=str(data_path))
+    log('CT', '학습 준비', '스냅샷·관측 라벨 검사 통과; 세 모델 학습을 시작합니다.')
     reports, bundle = train_all(local, work)
     gc.collect()
     bundle.rename(registry.root / version)
@@ -173,6 +166,8 @@ def main() -> int:
         emit_json(dict(status='ROLLED_BACK', active=registry.read()['active']))
         return 0
     log('CT', '시작', f"모니터링 주기={spec['poll_seconds']}초 / 재학습 임계치={spec['retrain_log_threshold']}건 / 재학습 활성={args.train} / 활성 모델={registry.read()['active']}")
+    deferred = None
+    deferred_input = None
     while True:
         if args.train and args.reload_url and registry.read()['active']:
             try:
@@ -186,7 +181,16 @@ def main() -> int:
                 continue
         measured = monitor(journal, spec, time.time(), registry.log)
         if args.train:
-            result = trigger(cfg, lambda version, through, reg: build_from_journal(cfg, version, through, reg))
+            with journal.connect() as db:
+                request_count = db.execute('SELECT COUNT(*) FROM requests').fetchone()[0]
+            observed = (journal.high_watermark(), request_count, registry.read()['active'])
+            if deferred is not None and observed == deferred_input:
+                result = deferred
+                log('CT', '학습 대기', '관측 데이터가 그대로여서 스냅샷을 다시 생성하지 않습니다. 노출·후속 행동 수집을 기다립니다.')
+            else:
+                result = trigger(cfg, lambda version, through, reg: build_from_journal(cfg, version, through, reg))
+                deferred = result if result['status'] == 'WAITING_FOR_LABELS' else None
+                deferred_input = observed
             if result['status'] == 'WAITING':
                 log('CT', '대기', f"신규 로그={result['new_events']:,}건 / 임계치={result['threshold']:,}건", status='대기')
             elif result['status'] == 'BUSY':

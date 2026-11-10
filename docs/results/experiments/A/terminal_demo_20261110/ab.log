@@ -1,0 +1,102 @@
+{
+  "output": "docs/results/experiments/A/terminal_demo_20261110/ab.json",
+  "arms": {
+    "control": {
+      "users": 100,
+      "impressions": 7000,
+      "clicks": 1712,
+      "purchases": 89,
+      "explorations": 0,
+      "ctr": 0.24457142857142858,
+      "cvr": 0.012714285714285714,
+      "purchase_given_click": 0.051985981308411214,
+      "exploration_rate": 0.0,
+      "users_clicked": 100,
+      "users_purchased": 56,
+      "unattributed_feedback": 0
+    },
+    "treatment": {
+      "users": 100,
+      "impressions": 7000,
+      "clicks": 1434,
+      "purchases": 68,
+      "explorations": 1400,
+      "ctr": 0.20485714285714285,
+      "cvr": 0.009714285714285713,
+      "purchase_given_click": 0.04741980474198047,
+      "exploration_rate": 0.2,
+      "users_clicked": 100,
+      "users_purchased": 49,
+      "unattributed_feedback": 0
+    }
+  },
+  "inference": {
+    "experimental_unit": "randomized user; repeated exposures clustered within user",
+    "independent_user_risks": {
+      "any_click": {
+        "control": 1.0,
+        "treatment": 1.0,
+        "difference": 0.0,
+        "relative_lift": 0.0,
+        "z_statistic": 0.0,
+        "z_p_value": 1.0,
+        "chi_square": 0.0,
+        "chi_square_p_value": 1.0,
+        "difference_ci95": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      },
+      "any_purchase": {
+        "control": 0.56,
+        "treatment": 0.49,
+        "difference": -0.07000000000000006,
+        "relative_lift": -0.1250000000000001,
+        "z_statistic": -0.991189255566705,
+        "z_p_value": 0.3215931760456061,
+        "chi_square": 0.9824561403508772,
+        "chi_square_p_value": 0.32159317604560367,
+        "difference_ci95": [
+          -0.20807664584246302,
+          0.0680766458424629
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": false,
+        "asymptotic_reliable": true,
+        "fisher_p_value": null,
+        "experimental_unit": "one independent randomized user"
+      }
+    },
+    "ctr": {
+      "status": "PASS",
+      "control": 0.24457142857142858,
+      "treatment": 0.20485714285714285,
+      "difference": -0.03971428571428573,
+      "relative_lift": -0.16238317757009346,
+      "difference_ci95": [
+        -0.05646913684684263,
+        -0.022959434581728836
+      ],
+      "z_p_value": 3.3887058094531377e-06,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    },
+    "cvr": {
+      "status": "PASS",
+      "control": 0.012714285714285714,
+      "treatment": 0.009714285714285713,
+      "difference": -0.003000000000000001,
+      "relative_lift": -0.2359550561797753,
+      "difference_ci95": [
+        -0.0065988001336656985,
+        0.0005988001336656962
+      ],
+      "z_p_value": 0.10229079677559945,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    }
+  }
+}

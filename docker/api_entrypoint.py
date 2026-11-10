@@ -61,7 +61,7 @@ def main() -> None:
           f"CLIP={cfg['search']['clip_model']}@{cfg['search']['clip_revision']}; "
           'FAISS + Two Tower/DeepFM/session', status='성공')
     os.execvp('uvicorn', ['uvicorn', 'docker.serve:app', '--host', '0.0.0.0', '--port', '8000',
-                          '--workers', '1', '--no-access-log'])
+                          '--workers', '1', '--no-access-log', '--log-level', 'warning'])
 
 
 if __name__ == '__main__':

@@ -1,0 +1,13 @@
+ Container mm-recsys-api-server-run-446e92009aa7 Creating 
+ Container mm-recsys-api-server-run-446e92009aa7 Created 
+[A/B 준비] 규모=full / seed=42 / 데이터·실제 추천 전략 로딩 시작
+[A/B 준비] 전략=popularity·full_pipeline / 준비 완료
+[A/B 실험] 진행 일수=1/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=2/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=3/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=4/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=5/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=6/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=7/7 / 그룹별 사용자=100명 / seed=42
+[A/B 결과] 클릭률 상대 변화=-16.24% / p-value=3.3887058094531377e-06 / 차이의 95% CI=[-0.05646913684684263, -0.022959434581728836] / 분모=노출 수 / 통계 단위=사용자 / 합성 실험 / 결과=docs/results/experiments/A/terminal_demo_20261110/ab.json
+[A/B 결과] 구매 전환율 상대 변화=-23.60% / p-value=0.10229079677559945 / 차이의 95% CI=[-0.0065988001336656985, 0.0005988001336656962] / 분모=노출 수 / 통계 단위=사용자 / 합성 실험 / 결과=docs/results/experiments/A/terminal_demo_20261110/ab.json

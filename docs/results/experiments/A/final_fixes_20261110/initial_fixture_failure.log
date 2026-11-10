@@ -1,0 +1,272 @@
+......................................F                                  [100%]
+=================================== FAILURES ===================================
+____________ test_ct_compares_models_under_the_same_runtime_policy _____________
+
+self = <DatetimeArray>
+[]
+Length: 0, dtype: datetime64[ns, UTC]
+other = array([], dtype=float64)
+
+    def _validate_comparison_value(self, other):
+        if isinstance(other, str):
+            try:
+                # GH#18435 strings get a pass from tzawareness compat
+                other = self._scalar_from_string(other)
+            except (ValueError, IncompatibleFrequency):
+                # failed to parse as Timestamp/Timedelta/Period
+                raise InvalidComparison(other)
+    
+        if isinstance(other, self._recognized_scalars) or other is NaT:
+            other = self._scalar_type(other)
+            try:
+                self._check_compatible_with(other)
+            except (TypeError, IncompatibleFrequency) as err:
+                # e.g. tzawareness mismatch
+                raise InvalidComparison(other) from err
+    
+        elif not is_list_like(other):
+            raise InvalidComparison(other)
+    
+        elif len(other) != len(self):
+            raise ValueError("Lengths must match")
+    
+        else:
+            try:
+>               other = self._validate_listlike(other, allow_object=True)
+
+.venv/lib/python3.12/site-packages/pandas/core/arrays/datetimelike.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <DatetimeArray>
+[]
+Length: 0, dtype: datetime64[ns, UTC]
+value = <FloatingArray>
+[]
+Length: 0, dtype: Float64, allow_object = True
+
+    def _validate_listlike(self, value, allow_object: bool = False):
+        if isinstance(value, type(self)):
+            if self.dtype.kind in "mM" and not allow_object:
+                # error: "DatetimeLikeArrayMixin" has no attribute "as_unit"
+                value = value.as_unit(self.unit, round_ok=False)  # type: ignore[attr-defined]
+            return value
+    
+        if isinstance(value, list) and len(value) == 0:
+            # We treat empty list as our own dtype.
+            return type(self)._from_sequence([], dtype=self.dtype)
+    
+        if hasattr(value, "dtype") and value.dtype == object:
+            # `array` below won't do inference if value is an Index or Series.
+            #  so do so here.  in the Index case, inferred_type may be cached.
+            if lib.infer_dtype(value) in self._infer_matches:
+                try:
+                    value = type(self)._from_sequence(value)
+                except (ValueError, TypeError):
+                    if allow_object:
+                        return value
+                    msg = self._validation_error_message(value, True)
+                    raise TypeError(msg)
+    
+        # Do type inference if necessary up front (after unpacking
+        # NumpyExtensionArray)
+        # e.g. we passed PeriodIndex.values and got an ndarray of Periods
+        value = extract_array(value, extract_numpy=True)
+        value = pd_array(value)
+        value = extract_array(value, extract_numpy=True)
+    
+        if is_all_strings(value):
+            # We got a StringArray
+            try:
+                # TODO: Could use from_sequence_of_strings if implemented
+                # Note: passing dtype is necessary for PeriodArray tests
+                value = type(self)._from_sequence(value, dtype=self.dtype)
+            except ValueError:
+                pass
+    
+        if isinstance(value.dtype, CategoricalDtype):
+            # e.g. we have a Categorical holding self.dtype
+            if value.categories.dtype == self.dtype:
+                # TODO: do we need equal dtype or just comparable?
+                value = value._internal_get_values()
+                value = extract_array(value, extract_numpy=True)
+    
+        if allow_object and is_object_dtype(value.dtype):
+            pass
+    
+        elif not type(self)._is_recognized_dtype(value.dtype):
+            msg = self._validation_error_message(value, True)
+>           raise TypeError(msg)
+E           TypeError: value should be a 'Timestamp', 'NaT', or array of those. Got Float64 array instead.
+
+.venv/lib/python3.12/site-packages/pandas/core/arrays/datetimelike.py:703: TypeError
+
+The above exception was the direct cause of the following exception:
+
+self = <DatetimeArray>
+[]
+Length: 0, dtype: datetime64[ns, UTC]
+other = array([], dtype=float64), op = <built-in function le>
+
+    def _cmp_method(self, other, op):
+        if self.ndim > 1 and getattr(other, "shape", None) == self.shape:
+            # TODO: handle 2D-like listlikes
+            return op(self.ravel(), other.ravel()).reshape(self.shape)
+    
+        try:
+>           other = self._validate_comparison_value(other)
+
+.venv/lib/python3.12/site-packages/pandas/core/arrays/datetimelike.py:983: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <DatetimeArray>
+[]
+Length: 0, dtype: datetime64[ns, UTC]
+other = array([], dtype=float64)
+
+    def _validate_comparison_value(self, other):
+        if isinstance(other, str):
+            try:
+                # GH#18435 strings get a pass from tzawareness compat
+                other = self._scalar_from_string(other)
+            except (ValueError, IncompatibleFrequency):
+                # failed to parse as Timestamp/Timedelta/Period
+                raise InvalidComparison(other)
+    
+        if isinstance(other, self._recognized_scalars) or other is NaT:
+            other = self._scalar_type(other)
+            try:
+                self._check_compatible_with(other)
+            except (TypeError, IncompatibleFrequency) as err:
+                # e.g. tzawareness mismatch
+                raise InvalidComparison(other) from err
+    
+        elif not is_list_like(other):
+            raise InvalidComparison(other)
+    
+        elif len(other) != len(self):
+            raise ValueError("Lengths must match")
+    
+        else:
+            try:
+                other = self._validate_listlike(other, allow_object=True)
+                self._check_compatible_with(other)
+            except (TypeError, IncompatibleFrequency) as err:
+                if is_object_dtype(getattr(other, "dtype", None)):
+                    # We will have to operate element-wise
+                    pass
+                else:
+>                   raise InvalidComparison(other) from err
+E                   pandas.errors.InvalidComparison: []
+
+.venv/lib/python3.12/site-packages/pandas/core/arrays/datetimelike.py:556: InvalidComparison
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-10/test_ct_compares_models_under_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf2943c309610>
+
+    def test_ct_compares_models_under_the_same_runtime_policy(tmp_path,monkeypatch):
+        import copy,shutil
+        from pathlib import Path
+        from src.ct import training
+        from src.ct.bootstrap import bootstrap
+        from src.ct.retrain_trigger import build_from_journal,components
+        cfg,data=service_fixture(tmp_path);cfg['paths']['results_dir']=str(tmp_path/'results')
+        source=Path(cfg['paths']['data_dir'])
+        pd.concat([data['train'],data['valid']]).to_parquet(source/'events.parquet',index=False)
+        pd.DataFrame(columns=['impression_id','request_id','user_id','product_id','exposed_at','position']).to_parquet(source/'impressions.parquet',index=False)
+        bootstrap(cfg);registry=components(cfg)[2]
+        runtime=copy.deepcopy(cfg);runtime['recommend']['scoring']={'strategy':'newest'}
+        def snapshot(src,target,*args):
+            shutil.copytree(src,target)
+            return {'observed_through':cfg['simulator']['reference_time']}
+        def train(local,work):
+            bundle=work/'bundle';shutil.copytree(registry.root/'v1.0',bundle)
+            (work/'results').mkdir()
+            for name in ['candidate_training','ranking_training','session_training']:
+                (work/'results'/f'{name}_{cfg["scale"]}.json').write_text('{}')
+            return {},bundle
+        seen=[]
+        def validate(service,local):
+            seen.append(service.scoring)
+            return {'validation_fingerprint':'same-observed-cohort','ctr_auc':.8}
+        monkeypatch.setattr(training,'snapshot',snapshot)
+        monkeypatch.setattr(training,'train_all',train)
+        monkeypatch.setattr(training,'validation',validate)
+>       build_from_journal(runtime,'v1.1',0,registry)
+
+tests/test_checklist_fixes.py:203: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/ct/retrain_trigger.py:94: in build_from_journal
+    eligibility = training_eligibility(data_path, local)
+src/ct/snapshot.py:122: in training_eligibility
+    labels, counts = build_labels(impressions, observed[observed.timestamp <= end], start, end,
+src/recommendation/ranking_labels.py:34: in build_labels
+    valid_views = linked[linked.timestamp <= linked.exposed_at + pd.Timedelta(seconds=window_seconds)]
+.venv/lib/python3.12/site-packages/pandas/core/ops/common.py:76: in new_method
+    return method(self, other)
+.venv/lib/python3.12/site-packages/pandas/core/arraylike.py:52: in __le__
+    return self._cmp_method(other, operator.le)
+.venv/lib/python3.12/site-packages/pandas/core/series.py:6119: in _cmp_method
+    res_values = ops.comparison_op(lvalues, rvalues, op)
+.venv/lib/python3.12/site-packages/pandas/core/ops/array_ops.py:330: in comparison_op
+    res_values = op(lvalues, rvalues)
+.venv/lib/python3.12/site-packages/pandas/core/ops/common.py:76: in new_method
+    return method(self, other)
+.venv/lib/python3.12/site-packages/pandas/core/arraylike.py:52: in __le__
+    return self._cmp_method(other, operator.le)
+.venv/lib/python3.12/site-packages/pandas/core/arrays/datetimelike.py:985: in _cmp_method
+    return invalid_comparison(self, other, op)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+left = <DatetimeArray>
+[]
+Length: 0, dtype: datetime64[ns, UTC]
+right = array([], dtype=float64), op = <built-in function le>
+
+    def invalid_comparison(left, right, op) -> npt.NDArray[np.bool_]:
+        """
+        If a comparison has mismatched types and is not necessarily meaningful,
+        follow python3 conventions by:
+    
+            - returning all-False for equality
+            - returning all-True for inequality
+            - raising TypeError otherwise
+    
+        Parameters
+        ----------
+        left : array-like
+        right : scalar, array-like
+        op : operator.{eq, ne, lt, le, gt}
+    
+        Raises
+        ------
+        TypeError : on inequality comparisons
+        """
+        if op is operator.eq:
+            res_values = np.zeros(left.shape, dtype=bool)
+        elif op is operator.ne:
+            res_values = np.ones(left.shape, dtype=bool)
+        else:
+            typ = type(right).__name__
+>           raise TypeError(f"Invalid comparison between dtype={left.dtype} and {typ}")
+E           TypeError: Invalid comparison between dtype=datetime64[ns, UTC] and ndarray
+
+.venv/lib/python3.12/site-packages/pandas/core/ops/invalid.py:40: TypeError
+----------------------------- Captured stderr call -----------------------------
+[2026-11-10T12:08:11+00:00] [CT 버전 등록] [성공] 모델=v1.0
+[2026-11-10T12:08:12+00:00] [CT 초기화] [성공] 모델=v1.0
+[2026-11-10T12:08:12+00:00] [CT 스냅샷] [진행] 관측 로그를 묶음 단위로 읽고 시간순 학습 스냅샷을 생성합니다.
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_ct.py::test_registry_increment_reject_rollback_and_tamper
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_checklist_fixes.py::test_ct_compares_models_under_the_same_runtime_policy
+1 failed, 38 passed, 2 warnings in 6.47s

@@ -58,6 +58,7 @@ def run_batch(cfg: dict, store: RedisFeatureStore, products: pd.DataFrame, users
     journal = (Journal(Path(cfg['paths']['model_dir']) / '.ct' / 'journal.sqlite3')
                if cfg.get('serving', {}).get('ct', {}).get('enabled', False) else None)
     processed = accepted = 0
+    journal_entries = []
     for row in events.itertuples(index=False):
         if row.event_type not in ('view', 'cart', 'purchase') or pd.isna(row.product_id):
             continue
@@ -67,8 +68,10 @@ def run_batch(cfg: dict, store: RedisFeatureStore, products: pd.DataFrame, users
         store.append_event(event)
         store.update_reward(event)
         if journal is not None:
-            accepted += journal.event(event.model_dump(), pd.Timestamp(row.generated_at).timestamp())
+            journal_entries.append((event.model_dump(), pd.Timestamp(row.generated_at).timestamp()))
         processed += 1
+    if journal is not None:
+        accepted = journal.events(journal_entries)
     archive = folder / f'events-{file_hash(pending)}.parquet'
     if archive.exists():
         raise ValueError('duplicate live log archive; preserve the pending batch for diagnosis')
@@ -96,14 +99,19 @@ def main() -> None:
     log('시뮬레이터', '시작', f'API·대시보드 준비 완료; 배치={size}건 / 주기={interval}초 / 모의 로그 생성·Redis 피처 갱신')
     try:
         while True:
+            started = time.monotonic()
             try:
                 result = run_batch(cfg, store, products, users, rng, size)
             except (OSError, RedisError) as error:
                 log('시뮬레이터', '재시도', f'원인: {type(error).__name__}: {error} / 다음 조치: Redis 연결과 저장 공간을 확인하세요. {interval}초 뒤 같은 배치를 재시도합니다.', status='실패')
                 traceback.print_exc()
+                delay = interval
             else:
-                log('시뮬레이터', '생성', f"행동 로그 {result['generated']}건 생성 / Redis 피처 {result['features_processed']}건 처리 / CT 신규 로그={result['ct_new_events']}건 / 유형={result['event_types']}", status='성공')
-            time.sleep(interval)
+                elapsed = time.monotonic() - started
+                log('시뮬레이터', '생성', f"행동 로그 {result['generated']:,}건 생성 / {elapsed:.1f}초 / "
+                    f"{result['generated']/max(elapsed, .001):,.0f}건/초 / CT 신규 로그={result['ct_new_events']:,}건", status='성공')
+                delay = max(.01, interval - elapsed)
+            time.sleep(delay)
     finally:
         store.close()
 

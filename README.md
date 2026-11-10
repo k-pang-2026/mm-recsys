@@ -1,8 +1,69 @@
 # 멀티모달 검색 및 Multi-Stage 추천 시스템
 
-현재 v4.3 실행과 판정은 [PDF·동료 평가 통합 검증](docs/requirements_completion.md)과
-[요구사항별 근거](docs/results/integration/20261107_requirements/requirements.json)를 따른다.
-표준 실행은 `docker compose up --build`이며 full 데이터와 모델을 컨테이너에서 준비한다.
+터미널 시연은 아래 명령을 사용한다. **터미널 1**에서 `docker compose up`으로 실행 로그를
+보고, **같은 저장소 폴더의 터미널 2**에서 검색·추천·실험 명령을 입력한다.
+`POST http://...`는 API 설명 표기이므로 쉘 명령처럼 입력하지 않는다.
+
+```bash
+# 최초 실행. 이미지가 없으면 빌드하고 full 데이터·모델을 준비한다.
+docker compose up
+# 소스를 수정하거나 새 버전을 pull한 직후에는 한 번 다시 빌드한다.
+docker compose up --build
+```
+
+```bash
+# 터미널 2: 실제 API JSON (PowerShell에서도 같은 명령)
+docker compose exec api-server demo search --query-text "검정 오버핏 후드티"
+docker compose exec api-server demo search --query-image data/full-v43/images/P000001.jpg
+docker compose exec api-server demo search --query-text "가방" --query-image data/full-v43/images/P000001.jpg
+docker compose exec api-server demo recommend --user-id U000001
+# 실제 CT 모니터: 관측 표본이 없으면 미측정, 저하가 관측되면 알림
+docker compose exec api-server demo ct
+docker compose exec api-server demo ct --watch
+```
+
+A/B와 재학습은 별도 작업 컨테이너에서 순서대로 실행한다. API의 4GB 메모리에 모델을
+추가 적재하지 않는다. 아래 A/B는 빠른 시연용 **100명/군·7일**이고 옵션 생략 시
+config의 **5,000명/군·30일**을 실제 계산한다. 예시의 +28%나 p-value를 고정 출력하지 않는다.
+
+```bash
+docker compose run --rm --no-deps --pull never api-server demo ab --users-per-group 100 --days 7
+# 별도 소규모 데이터에서 실제 학습·승격·롤백과 저하 알림을 확인
+docker compose run --rm --no-deps --pull never api-server demo ct --drill --output docs/results/docker/ct_terminal_drill.json
+```
+
+운영 데이터의 지속 감시·임계치 재학습·API 모델 교체는 선택 CT worker로 실행한다.
+API·대시보드를 포함해 Docker RAM 8GB 이상이 필요하며 A/B와 동시에 실행하지 않는다.
+실제 신규 로그가 10,000건 이상이어야 학습하며, valid 개선이 부족하면 기존 모델을 유지한다.
+신규 로그 수만으로 학습 가능 여부가 결정되지는 않는다. 새 시간순 train/valid 구간에
+실제 노출·클릭·구매의 양성/음성 라벨이 없으면 `WAITING_FOR_LABELS`로 대기한다.
+이때 기존 모델과 미처리 로그를 유지하며, 관측 데이터가 그대로이면 같은 스냅샷을 반복 생성하지 않는다.
+일반 시뮬레이터의 미귀속 로그를 CTR/CVR 정답으로 바꾸지 않는다. 학습 전에는
+`docker compose stop simulator`로 추가 생성을 멈추고 A/B와 순차 실행한다.
+
+```bash
+docker compose -f docker-compose.yml -f docker/compose.ct.yml --profile ct up --build ct
+```
+
+검색·추천은 JSON, A/B는 통계 표, CT는 알림이 기본 출력이다. `demo ab --json`,
+`demo ct --json`은 기존 원본 JSON을 출력한다. `demo ct --watch --json --output <경로>`는
+각 주기 결과를 즉시 출력·저장한다. A/B 원본은 현재 runtime 폴더의 `ab_test.json`,
+CT CLI 원본은 `ct_cli.jsonl`이며, 준비 단계 상세 로그는 `logs/prepare-*.log`에 보존된다.
+`docker compose exec api-server demo --help`로 명령을 확인한다.
+
+기본 Compose 출력은 단계별 진행·완료·실패 위주다. 재시작 때 이미지를 자동으로 다시
+빌드하지 않으며 Redis 정기 저장 메시지와 Streamlit 안내문은 기본 화면에서 제외한다.
+Redis의 경고·오류와 API 오류는 계속 표시한다. Streamlit stdout은 컨테이너의
+`/tmp/streamlit-stdout.log`, 서버 스레드·최적화 정보는 runtime의 `serving_runtime.json`에 남긴다.
+첫 다운로드·데이터 생성·학습 시간과 Docker 자체의 진행 표시는 기기와 Compose 버전에 따라 다르다.
+
+2026-11-10 수정본의 실행·품질·CT 확인 범위는
+[수정 검증 기록](docs/results/experiments/A/final_fixes_20261110/report.md)을 따른다.
+[PDF·동료 평가 통합 검증](docs/requirements_completion.md)과
+[요구사항별 근거](docs/results/integration/20261107_requirements/requirements.json)는
+2026-11-07 소스의 기록이며 현재 수정본의 전체 합격 판정으로 대체하지 않는다.
+일상 실행은 `docker compose up`, 소스 변경 반영은 `docker compose up --build`이며
+full 데이터와 모델을 컨테이너에서 준비한다.
 기존 생성기 v4.2의 [2026-10-20 통합 기록](docs/results/integration/20261020_full/report.md),
 [후속 Docker 기록](docs/results/experiments/A/docker_remove_replay_20261020.json),
 그 이전 [체크리스트 기록](docs/results/experiments/A/workflow_checklist_fix_20261017.md)은 보존한다.
@@ -113,8 +174,8 @@ docker compose logs -f api-server
 ```
 
 기본 실행은 **full(상품 50,000·사용자 10,000·이벤트 1,000,000)** 이다.
-`pull_policy: build`로 현재 소스를 이미지에 반영하므로 별도 `--build` 없이 시작한다.
-의존성 레이어와 호환 산출물은 재사용한다. [Compose build 정책](https://docs.docker.com/reference/compose-file/services/#pull_policy)을 사용한다.
+기존 이미지는 재사용하며 소스 변경 후에는 `docker compose up --build`로 반영한다.
+의존성 레이어와 호환 산출물은 재사용한다. 첫 이미지 빌드 진행은 Docker 자체 출력이다.
 
 API만 준비 작업을 소유한다. 데이터 생성·검증 → 고정 revision의 CLIP 다운로드와 임베딩 →
 FAISS 인덱스 → Two Tower·DeepFM·세션 학습 → Redis 프로필 warmup 순서다.
@@ -420,11 +481,12 @@ CT 자연 재학습은 valid CTR AUC 0.971602→0.971574로 RETAINED다.
 
 ## 한국어 CLI·실행 로그
 
-프로젝트 진행 로그는 `시각(UTC) / 구성 요소·단계 / 상태 / 실제 수치` 형식으로 **stderr**에
-출력한다. 준비·학습·검색·추천·A/B·CT·평가 CLI의 JSON 결과는 **stdout**에 출력하며,
-API 키·옵션·파일명·모델 ID·지표명은 기존 표기를 유지한다. 오류는 한국어 원인·다음 조치와
-원본 traceback을 함께 남긴다. Docker·PyTorch·transformers 등의 원본 진단 로그는 보존한다.
-CT `--watch`는 각 회차 결과를 한 줄 JSON(JSONL)로 출력하고, 1회 실행은 JSON 객체 하나를 출력한다.
+Docker의 기본 진행 로그는 구성 요소·단계와 실제 수치 위주로 **stderr**에 출력한다.
+`MM_LOG_FORMAT=detailed docker compose up`은 UTC 시각·상태를 포함한다(PowerShell은 환경 변수를 먼저 설정).
+검색·추천 JSON은 **stdout**, `demo ab`는 통계 표, `demo ct`는 사람이 읽는 알림이 기본이다.
+`demo ab --json`, `demo ct --json` 또는 원래 Python 모듈 실행은 원본 JSON을 사용한다.
+API 키·옵션·파일명·모델 ID·지표명은 유지한다. 오류 원인·다음 조치와 원본 traceback을 보존한다.
+`demo ct --watch --json`은 회차별 JSONL을 즉시 출력·저장한다.
 
 서비스 준비 후 Bash에서 다음 명령을 실행한다. `--json`은 검색·추천·세션 CLI의 기본 출력
 계약을 명시하며 한국어 설명은 계속 stderr로 나온다. `-T`는 두 스트림이 TTY에서 합쳐지지 않게 한다.
@@ -451,12 +513,12 @@ A/B·평가·CT는 기존 명령을 사용한다. 아래는 full 기준이며 de
 그대로 출력하며, `null`은 수치를 계산할 근거가 부족함을 뜻한다.
 
 ```bash
-docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m src.evaluation.ab_test --output docs/results/ab_console.json > ab.json 2> ab.log
+docker compose run --rm --no-deps --pull never -T api-server demo ab --json --output docs/results/ab_console.json > ab.json 2> ab.log
 docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m src.ct.retrain_trigger > ct.json 2> ct.log
 # 재학습을 활성화할 때만 사용: 실제 누적 이벤트 임계치 충족 시 학습·검증·승격/유지 판정 실행
-docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m src.ct.retrain_trigger --watch --train --reload-url http://127.0.0.1:8000 > ct.jsonl 2> ct-watch.log
+docker compose -f docker-compose.yml -f docker/compose.ct.yml --profile ct up --build ct
 # 기존 valid 선택/동결 계약 유지. test를 튜닝에 사용하지 않는다.
-docker compose exec -T -e CONFIG_PATH=/app/models/full-v43/.docker/config.yaml api-server python -m docker.quality --split valid > evaluation.json 2> evaluation.log
+docker compose run --rm --no-deps --pull never -T api-server demo evaluate --split valid > evaluation.json 2> evaluation.log
 # 저장된 제출 근거 검사이며 새 full 품질 측정은 아니다. 현재 소스와 불일치하면 실패한다.
 .venv/bin/python scripts/check_submission.py --verify-existing > peer.json 2> peer.log
 ```

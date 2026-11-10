@@ -17,6 +17,9 @@ def configure_utf8() -> None:
 
 
 def format_log(component: str, stage: str, message: str, *, status: str = '진행') -> str:
+    if os.getenv('MM_LOG_FORMAT') == 'compact':
+        prefix = f'[{status}] ' if status in ('실패', '경고') else ''
+        return f'[{component} {stage}] {prefix}{message}'
     at = datetime.now(timezone.utc).isoformat(timespec='seconds')
     return f'[{at}] [{component} {stage}] [{status}] {message}'
 

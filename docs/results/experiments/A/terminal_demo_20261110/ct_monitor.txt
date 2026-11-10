@@ -1,0 +1,4 @@
+[CT 기록] 원본 JSON: docs/results/docker/runtime-v43/full/ct_cli.jsonl
+[CT 시작] 모니터링 주기=60초 / 재학습 임계치=10000건 / 재학습 활성=False / 활성 모델=v1.0
+[CT Monitor ] 현재 HitRate@50: 미측정 (성숙한 관측 표본 부족) (임계값: 0.2) / CTR: 0.0000
+[CT 누적 로그] 신규 로그=1,536,847건 / 임계치=10,000건 / 모니터링만 수행

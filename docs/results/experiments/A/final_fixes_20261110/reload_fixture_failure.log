@@ -1,0 +1,94 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+................F....................................................... [ 53%]
+........................................................................ [ 70%]
+........................................................................ [ 88%]
+..............................................                           [100%]
+=================================== FAILURES ===================================
+______________ test_watch_recovers_pending_reload_before_training ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xf32973124380>
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-12/test_watch_recovers_pending_re0')
+
+    def test_watch_recovers_pending_reload_before_training(monkeypatch, tmp_path):
+        cfg = load_config(); active = ['v1.0']; calls = []
+        registry = SimpleNamespace(read=lambda: {'active': active[0]}, log=tmp_path/'ct.jsonl')
+        monkeypatch.setattr('sys.argv', ['ct', '--watch', '--train', '--reload-url', 'http://127.0.0.1:8000'])
+        monkeypatch.setattr(retrain_trigger, 'load_config', lambda: cfg)
+        monkeypatch.setattr(retrain_trigger, 'components', lambda cfg: (
+            {'poll_seconds': 1, 'retrain_log_threshold': cfg['ct']['retrain_log_threshold']}, object(), registry))
+        monkeypatch.setattr('src.ct.monitor.monitor', lambda *args: None)
+        def train(*args):
+            calls.append('train')
+            if active[0] == 'v1.1':
+                raise StopIteration('test finished after recovered reload')
+            active[0] = 'v1.1'
+            return dict(status='PROMOTED', active='v1.1')
+        def reload(url, version):
+            calls.append('reload:'+version)
+            if calls.count('reload:v1.1') == 1:
+                raise RuntimeError('temporary HTTP 503')
+        monkeypatch.setattr(retrain_trigger, 'trigger', train)
+        monkeypatch.setattr(retrain_trigger, 'reload_api', reload)
+        monkeypatch.setattr(retrain_trigger.time, 'sleep', lambda seconds: calls.append('sleep'))
+        with pytest.raises(StopIteration):
+>           retrain_trigger.main()
+
+tests/test_ponytail_refactor.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def main() -> int:
+        parser = argparse.ArgumentParser(description='CT 모니터링 및 명시적으로 활성화하는 재학습 실행기')
+        parser.add_argument('--watch', action='store_true')
+        parser.add_argument('--rollback', metavar='VERSION')
+        parser.add_argument('--reason', default='explicit operator rollback', help='롤백 사유')
+        parser.add_argument('--reload-url', help='승격·롤백 후 교체할 로컬 루프백 API URL')
+        parser.add_argument('--train', action='store_true', help='신규 이벤트 임계치를 충족할 때만 재학습')
+        args = parser.parse_args(); cfg = load_config()
+        from src.ct.monitor import monitor
+        spec, journal, registry = components(cfg)
+        if args.rollback:
+            if args.watch or args.train:
+                parser.error('--rollback은 --watch 또는 --train과 함께 사용할 수 없습니다.')
+            state = registry.read()
+            registry.rollback(state['active'], args.rollback, args.reason)
+            if args.reload_url:
+                reload_api(args.reload_url, args.rollback)
+            emit_json(dict(status='ROLLED_BACK', active=registry.read()['active']))
+            return 0
+        log('CT', '시작', f"모니터링 주기={spec['poll_seconds']}초 / 재학습 임계치={spec['retrain_log_threshold']}건 / 재학습 활성={args.train} / 활성 모델={registry.read()['active']}")
+        deferred = None
+        deferred_input = None
+        while True:
+            if args.train and args.reload_url and registry.read()['active']:
+                try:
+                    reload_api(args.reload_url, registry.read()['active'])
+                except (requests.RequestException, RuntimeError) as error:
+                    if not args.watch:
+                        raise
+                    append_log(registry.log, dict(event='reload_retry', error=str(error)))
+                    traceback.print_exc()
+                    time.sleep(float(spec['poll_seconds']))
+                    continue
+            measured = monitor(journal, spec, time.time(), registry.log)
+            if args.train:
+>               with journal.connect() as db:
+E               AttributeError: 'object' object has no attribute 'connect'
+
+src/ct/retrain_trigger.py:184: AttributeError
+----------------------------- Captured stderr call -----------------------------
+[2026-11-10T12:11:54+00:00] [CT 시작] [진행] 모니터링 주기=1초 / 재학습 임계치=10000건 / 재학습 활성=True / 활성 모델=v1.0
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--------------- generated xml file: /tmp/mm-fixes-full-tests.xml ---------------
+=========================== short test summary info ============================
+FAILED tests/test_ponytail_refactor.py::test_watch_recovers_pending_reload_before_training
+1 failed, 405 passed, 2 warnings in 30.67s

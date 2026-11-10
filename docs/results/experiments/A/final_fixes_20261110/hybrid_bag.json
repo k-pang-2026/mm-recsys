@@ -1,0 +1,67 @@
+{
+  "search_type": "hybrid",
+  "results": [
+    {
+      "product_id": "P000001",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 137000.0
+    },
+    {
+      "product_id": "P001682",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 54000.0
+    },
+    {
+      "product_id": "P002751",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 86000.0
+    },
+    {
+      "product_id": "P004424",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 142000.0
+    },
+    {
+      "product_id": "P004967",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 30000.0
+    },
+    {
+      "product_id": "P006806",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 105000.0
+    },
+    {
+      "product_id": "P008292",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 32000.0
+    },
+    {
+      "product_id": "P011062",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 18000.0
+    },
+    {
+      "product_id": "P011675",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 137000.0
+    },
+    {
+      "product_id": "P013435",
+      "name": "brown regular tote bag",
+      "score": 0.7190512418746948,
+      "price": 24000.0
+    }
+  ],
+  "latency_ms": 155.42648200062104,
+  "total_count": 50000
+}
