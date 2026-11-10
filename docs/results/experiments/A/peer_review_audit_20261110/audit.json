@@ -1,0 +1,238 @@
+{
+  "reviewed_at": "2026-11-10T12:02:02.322827+00:00",
+  "scope": "PDF pages 12-14: functional operation and code structure/design; observed CT failure is reported separately as an adjacent operational issue.",
+  "remote_main": "aa2a8ae807b1d829bd52a115665684d5c28b25a3",
+  "local_changes": "terminal demo fixes remain uncommitted and unpublished",
+  "verdict": {
+    "design": "PASS for reviewed checklist",
+    "functional": "prior evidence PASS; current full acceptance not re-established",
+    "whole_project": "not a complete acceptance verdict"
+  },
+  "current_compose": "api-server/dashboard/redis/simulator/ct all exited at inspection; no restart performed; service stop itself is not classified as a code defect",
+  "fresh_tests": {
+    "passed": 18,
+    "warnings": 2,
+    "seconds": 6.91,
+    "scope": "config newest/similarity, candidate eligibility, new item/diversity preservation, persona ratios/taxonomy, simulator reproducibility/time splits"
+  },
+  "same_session_integration": {
+    "source": "docs/results/experiments/A/terminal_demo_20261110/verification.json",
+    "source_hashes_match": true,
+    "measured_at": "2026-11-10T11:33:07.460558+00:00",
+    "latency": {
+      "source": "smoke.json",
+      "conditions": "One stack; simulator paused; 10 warmups + 100 serial calls per mode; real HTTP; CPU only; resident models.",
+      "p95_ms": {
+        "text": 22.652479500015943,
+        "image": 84.97956174996943,
+        "hybrid": 88.25256969983002,
+        "recommendation": 37.01654525006006
+      },
+      "feature_p95_ms": 0.29673389993831734,
+      "candidate_p95_ms": 4.2516959499948825,
+      "simulator_running": "Separate smoke_live_simulator.json verifies functional integration; latency benchmark was not repeated under continuous simulator load."
+    },
+    "full_tests": "404 passed earlier in this session; not rerun in this audit"
+  },
+  "historical_quality": {
+    "source": "docs/results/integration/20261107_requirements/requirements.json",
+    "measured_at": "2026-11-07T08:50:29.910314+00:00",
+    "metrics": [
+      {
+        "name": "mrr",
+        "value": 0.9316666666666666,
+        "target": 0.55,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "search.primary",
+        "reason": null
+      },
+      {
+        "name": "ndcg_at_10",
+        "value": 0.9316666666666666,
+        "target": 0.5,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "search.primary",
+        "reason": null
+      },
+      {
+        "name": "recall_at_300",
+        "value": 0.7550559124434927,
+        "target": 0.3,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.candidate.ann_two_tower",
+        "reason": null
+      },
+      {
+        "name": "auc",
+        "value": 0.9663220591039295,
+        "target": 0.7,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.classification.ctr",
+        "reason": null
+      },
+      {
+        "name": "hit_rate_at_50",
+        "value": 0.678372591006424,
+        "target": 0.2,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.metrics.full_pipeline",
+        "reason": null
+      },
+      {
+        "name": "ndcg_at_50",
+        "value": 0.33278106544930586,
+        "target": 0.08,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.metrics.full_pipeline",
+        "reason": null
+      },
+      {
+        "name": "coverage",
+        "value": 0.3641,
+        "target": 0.2,
+        "direction": "min",
+        "status": "PASS",
+        "split": "test",
+        "source": "recommendation.metrics.full_pipeline",
+        "reason": null
+      },
+      {
+        "name": "search_p95_ms",
+        "value": 88.29097269979229,
+        "target": 200,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "api.modes; worst-mode HTTP p95",
+        "reason": null
+      },
+      {
+        "name": "recommend_p95_ms",
+        "value": 36.09394485042685,
+        "target": 200,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "api.modes.recommendation.http",
+        "reason": null
+      },
+      {
+        "name": "candidate_p95_ms",
+        "value": 4.503044100010811,
+        "target": 100,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "candidate_latency",
+        "reason": null
+      },
+      {
+        "name": "feature_p95_ms",
+        "value": 0.3226858003927191,
+        "target": 10,
+        "direction": "max",
+        "status": "PASS",
+        "split": "benchmark",
+        "source": "feature_store",
+        "reason": null
+      }
+    ],
+    "current_source_mismatches": [
+      "src/common/console.py",
+      "docker/serve.py",
+      "docker/vision.py",
+      "docker-compose.yml"
+    ],
+    "interpretation": "Stored metric values are passing measurements, not a new full-quality measurement for the changed deployment."
+  },
+  "historical_peer": {
+    "source": "docs/results/integration/20261107_requirements/peer_review.json",
+    "measured_at": "2026-11-07T05:54:09.041674+00:00",
+    "checks": {
+      "diversity_U000001": true,
+      "exploration_U000001": true,
+      "new_item_U000001": true,
+      "diversity_U000002": true,
+      "exploration_U000002": true,
+      "new_item_U000002": true,
+      "diversity_U000003": true,
+      "exploration_U000003": true,
+      "new_item_U000003": true,
+      "cold_start_0": true,
+      "event_deduplication": true,
+      "session_http": true,
+      "session_redis": true,
+      "cold_start_4": true
+    },
+    "new_item_clock": "configured simulator reference_time, not wall-clock today"
+  },
+  "design_evidence": {
+    "strategy": "src/recommendation/scoring.py; tests/test_checklist_fixes.py",
+    "assets": "tests/test_data_exploration.py::test_yaml_persona_ratios_and_taxonomy_change_generated_assets; configuration changes require regenerated separate data/model outputs",
+    "modules": [
+      "src/simulator",
+      "src/search",
+      "src/recommendation",
+      "src/serving"
+    ],
+    "docs": "README.md",
+    "roles": "README.md role and contribution tables; docs/submission/contributions.json"
+  },
+  "findings": [
+    {
+      "id": 1,
+      "priority": "must fix before complete CT acceptance",
+      "scope": "adjacent CT topic, not one of requested two checklist sections",
+      "files": [
+        "src/ct/retrain_trigger.py:78",
+        "docker/compose.ct.yml:30"
+      ],
+      "observed": "Production CT started v1.0 -> v1.4 with 2413767 new events, exited 247; Docker OOMKilled=true; SIGKILL child diagnostic.",
+      "cause_boundary": "OOM confirmed; exact allocation causing peak not profiled. build_from_journal materializes all rows, dicts and concatenated frames concurrently.",
+      "minimal_fix": "Bound peak ingestion memory with chunked persisted snapshot construction; rerun the same accumulated-data case under documented limits. Preserve events and validation criteria.",
+      "impact": "Actual accumulated-data retraining cannot currently be presented as successful; isolated fixture PASS does not cover this case."
+    },
+    {
+      "id": 2,
+      "priority": "must verify/fix before claiming example search correctness",
+      "files": [
+        "src/search/text.py:13",
+        "src/search/searcher.py:42"
+      ],
+      "observed": "Archived documented hybrid command uses text 가방 and brown tote-bag image P000001.jpg, yet all 10 results are white regular cap.",
+      "evidence": "docs/results/integration/20261107_requirements/demo_hybrid.json",
+      "scope": "Historical actual HTTP response; not reissued because deployment is now stopped. Relevant search sources unchanged.",
+      "minimal_fix": "First reproduce the documented query; add the missing generic Korean bag alias and verify fusion/retrieval against independent queries. Rebuild affected artifacts after preprocessing change; do not force example IDs.",
+      "impact": "Typed HTTP success alone does not establish semantically correct results for the documented example."
+    },
+    {
+      "id": 3,
+      "priority": "must refresh before current composite acceptance",
+      "files": [
+        "scripts/verify_requirements.py:61"
+      ],
+      "observed": "Four source entries in archived full quality identity differ from current code.",
+      "minimal_fix": "Preserve archived PASS and rerun current verification in a new result directory with valid selection frozen before test.",
+      "impact": "Cannot relabel archived full-quality metrics as newly measured current full acceptance."
+    }
+  ],
+  "not_checked": [
+    "New full offline quality run",
+    "New runtime recommendation samples after latest service stop",
+    "Fresh browser interaction",
+    "CT recovery or training retry",
+    "All PDF sections outside requested checklist scope"
+  ]
+}

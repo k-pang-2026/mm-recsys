@@ -7,7 +7,7 @@ services:
     network_mode: service:api-server
     env_file: .env
     environment:
-      SCALE: ${SCALE:-dev}
+      SCALE: ${SCALE:-full}
       API_URL: http://127.0.0.1:8000
       REDIS_HOST: redis
       REDIS_PORT: "6379"
@@ -17,7 +17,8 @@ services:
       OMP_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
       OPENBLAS_NUM_THREADS: "1"
-      RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime}
+      RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v43}
+      MM_LOG_FORMAT: ${MM_LOG_FORMAT:-compact}
       READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
     volumes:
       - ./data:/app/data

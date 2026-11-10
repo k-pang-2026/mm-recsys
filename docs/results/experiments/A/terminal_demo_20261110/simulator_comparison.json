@@ -1,0 +1,30 @@
+{
+  "before": {
+    "elapsed_seconds": 37.00757829500003,
+    "events_per_second": 270.2149251779349,
+    "generated": 10000,
+    "ct_new_events": 7273,
+    "behavior_sha256": "68c518c7ab4ae37f04d82587d3f1f145386c2ffd0d9a73c29191463d31f4560d",
+    "event_types": {
+      "view": 5827,
+      "search": 2727,
+      "cart": 1127,
+      "purchase": 319
+    }
+  },
+  "after": {
+    "elapsed_seconds": 11.090349063000076,
+    "events_per_second": 901.6848742265717,
+    "generated": 10000,
+    "ct_new_events": 7273,
+    "behavior_sha256": "68c518c7ab4ae37f04d82587d3f1f145386c2ffd0d9a73c29191463d31f4560d",
+    "event_types": {
+      "view": 5827,
+      "search": 2727,
+      "cart": 1127,
+      "purchase": 319
+    }
+  },
+  "speedup": 3.3369173580357105,
+  "identical_generated_behavior": true
+}

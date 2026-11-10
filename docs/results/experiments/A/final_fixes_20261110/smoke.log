@@ -1,0 +1,5 @@
+[평가 HTTP 지연] text: p95=23.941ms
+[평가 HTTP 지연] image: p95=85.209ms
+[평가 HTTP 지연] hybrid: p95=87.339ms
+[평가 HTTP 지연] recommendation: p95=37.585ms
+[평가 Docker 검사] 결과=docs/results/experiments/A/final_fixes_20261110/smoke_full.json

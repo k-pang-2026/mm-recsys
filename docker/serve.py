@@ -135,7 +135,7 @@ def install_runtime_limits(shared: Any, cfg: dict) -> None:
                 generation = info['generation']
                 if phase == 'start':
                     gc_starts[generation] = time.perf_counter()
-                elif generation == 2 and generation in gc_starts:
+                elif generation == 2 and generation in gc_starts and os.getenv('MM_LOG_FORMAT') != 'compact':
                     log('서버', '메모리 정리', str(dict(elapsed_ms=(time.perf_counter()-gc_starts[generation])*1000,
                         at_ns=time.time_ns(), frozen_objects=gc.get_freeze_count())), status='완료')
             gc.callbacks.append(gc_timing)
@@ -150,7 +150,8 @@ def install_runtime_limits(shared: Any, cfg: dict) -> None:
                          configured_candidate_training_threads=cfg['recommend']['candidate']['threads'],
                          scope='one shared serving process; model weights and ranking policy unchanged')
             write_json(Path(cfg['paths']['results_dir']) / 'serving_runtime.json', state)
-            log('서버', '실행 환경', f'{state}', status='확인')
+            if os.getenv('MM_LOG_FORMAT') != 'compact':
+                log('서버', '실행 환경', f'{state}', status='확인')
             if getattr(application.state, 'search', None) is not None and getattr(application.state, 'recommend', None) is not None:
                 count = len(application.state.search.searcher.products)
                 log('서버', '준비', f'FAISS 인덱스 로딩 완료 / 상품={count:,}개', status='성공')

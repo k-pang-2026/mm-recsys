@@ -16,6 +16,8 @@ def test_aliases_are_shared_and_unknown_terms_are_reported():
     assert result.unknown_terms == ('특이한소재',)
     assert ('티셔츠', 't-shirt') in result.applied_aliases
     assert normalize_text('a BLACK shirt').encoded == 'a black shirt'
+    assert normalize_text('갈색 가방').encoded == 'brown bag'
+    assert normalize_text('가방').unknown_terms == ()
     with pytest.raises(ValueError):
         normalize_text(' ')
 

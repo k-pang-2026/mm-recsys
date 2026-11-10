@@ -7,6 +7,7 @@ import os
 import signal
 import subprocess
 import sys
+import threading
 import time
 import urllib.request
 
@@ -35,7 +36,17 @@ def main() -> int:
     wait_ready(api, float(os.getenv('READY_TIMEOUT_SECONDS', '21600')))
     log('대시보드', '준비', '검색·추천 API 연결 완료', status='성공')
     process = subprocess.Popen([sys.executable, '-m', 'streamlit', 'run', 'dashboard/app.py',
-                                '--server.port=8501', '--server.address=0.0.0.0'])
+                                '--server.port=8501', '--server.address=0.0.0.0',
+                                '--browser.gatherUsageStats=false'], stdout=subprocess.PIPE)
+    # Preserve stdout diagnostics without repeating Streamlit's startup banner.
+    def save_stdout() -> None:
+        if process.stdout is not None:
+            with open('/tmp/streamlit-stdout.log', 'ab') as output:
+                for line in process.stdout:
+                    output.write(line)
+                    output.flush()
+    reader = threading.Thread(target=save_stdout, daemon=True)
+    reader.start()
     previous = signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
     try:
         wait_dashboard(process, 60)
@@ -51,6 +62,7 @@ def main() -> int:
             except subprocess.TimeoutExpired:
                 process.kill()
                 process.wait()
+        reader.join(timeout=5)
 
 
 if __name__ == '__main__':

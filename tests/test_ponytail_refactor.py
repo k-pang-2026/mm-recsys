@@ -136,7 +136,7 @@ def test_watch_recovers_pending_reload_before_training(monkeypatch, tmp_path):
     monkeypatch.setattr('sys.argv', ['ct', '--watch', '--train', '--reload-url', 'http://127.0.0.1:8000'])
     monkeypatch.setattr(retrain_trigger, 'load_config', lambda: cfg)
     monkeypatch.setattr(retrain_trigger, 'components', lambda cfg: (
-        {'poll_seconds': 1, 'retrain_log_threshold': cfg['ct']['retrain_log_threshold']}, object(), registry))
+        {'poll_seconds': 1, 'retrain_log_threshold': cfg['ct']['retrain_log_threshold']}, Journal(tmp_path/'journal.db'), registry))
     monkeypatch.setattr('src.ct.monitor.monitor', lambda *args: None)
     def train(*args):
         calls.append('train')

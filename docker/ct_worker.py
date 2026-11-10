@@ -15,7 +15,7 @@ def main() -> None:
     wait_ready(api, float(os.getenv('READY_TIMEOUT_SECONDS', '21600')))
     os.environ['CONFIG_PATH'] = str(config_path(runtime_config()))
     log('CT', '시작', 'API 준비 완료 / 모니터링 및 임계치 기반 재학습 작업자를 시작합니다.', status='성공')
-    os.execv(sys.executable, [sys.executable, '-m', 'src.ct.retrain_trigger', '--watch', '--train',
+    os.execv(sys.executable, [sys.executable, 'scripts/demo.py', 'ct', '--watch', '--train',
                              '--reload-url', api])
 
 

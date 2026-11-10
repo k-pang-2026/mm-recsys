@@ -1,0 +1,355 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "generated_at": "2026-11-10T12:43:48.754161+00:00",
+  "scope": "Three reported defects and terminal-demo fixes; not a fresh complete PDF acceptance bundle",
+  "git_base_sha": "aa2a8ae807b1d829bd52a115665684d5c28b25a3",
+  "branch": "fix/terminal-demo",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "source_sha256": {
+    "README.md": "84d4dabe662e33109372b6a3823224c8c73ec12da0d635e019db6c51dd38598d",
+    "config/search.yaml": "49ac7ce80935191f2eaadd3d013479f05b98084fe1d69c6917a6471c5b5935b6",
+    "docker-compose.yml": "af468dd1b964794c557b8b7340d85297b9c635b5f13ca0d19823464a1e3542c4",
+    "docker/Dockerfile.api": "1b0f7833f3f354ea04a5f314feaeb5dde87dd52d8ad8283b4ea3a5edab265ad8",
+    "docker/api_entrypoint.py": "5c015800131da92e2234f3efb5c7cd7aca8c94522e907250930c48144ef9535b",
+    "docker/compose.ct.yml": "ad8daa9fd7ac04af03c078e998f61d98b16b4064075e0064419778e927bcff3b",
+    "docker/ct_worker.py": "d45d4ed4bec5b5a3cd4ae33708924a5bc652e338d91a412309170ced3929c468",
+    "docker/dashboard_entrypoint.py": "c1ee5568fdd61f2dfb20c929ce90fbdb3303edf4bacef8ebfcfbd0fec989550b",
+    "docker/serve.py": "4278cf2a971c4f0aeba6d6a7c527e3f592967742b9d5641510d57d642b1615eb",
+    "docker/simulator.py": "5e4ee4aa5c5bf994263a031b3b33013d2c4ca4508fb94e2bc5bf1e3a4fcf4929",
+    "docker/vision.py": "5f4a1769d02a3ec794ca0559e0f5a06a71419f07753ed5cc08600a167eb97374",
+    "scripts/demo.py": "fe6be11d3e62a59b8384348f452fc4aaa9f22c89ca55300a9128daf844e98b30",
+    "scripts/prepare_all.py": "e806943f26c868e379ba00de0e241565c83018929dfc59a257a5d34b94338689",
+    "src/common/console.py": "87a2b227ff5baa52af645336ad8200a89bde5cc3eb20a0222e2ea9860223e00c",
+    "src/ct/retrain_trigger.py": "cd8374a47cc60812518aff5ae520ee0042e2af81cb437a6da354ff809830677f",
+    "src/ct/snapshot.py": "1e7f2e954f5350fd5187f8cf6f46e0d68dc5f9d5ab323c96a8734dc2c03ebbc2",
+    "src/ct/storage.py": "61504de79e5808a6886f073349fa478cb62142e1d443a89cfaf3b26c214abb80",
+    "src/ct/training.py": "4a87105d998caedd85aebcf02de66f0862b59c204ace886ea96934be0915dc95",
+    "src/search/text.py": "4b2fbcc0073f5acd3366c8f03cbbf45a8692f4e04301cfd471929c3143c0e449",
+    "tests/test_checklist_fixes.py": "f69a2c0c46db4fef5e45095811bb66779a39fdb16bc8af0071510a275267f797",
+    "tests/test_ct_snapshot.py": "63e5c532415904117b44e46e55576a25ab494c62a3363722950826880b4bb285",
+    "tests/test_docker.py": "88366862f99c8a522c620cf02a0ebe0977f6f530214fa9d174d2145b37cf05bc",
+    "tests/test_encoder.py": "682b8415f29650b37cfe14a026c80bb53adb4fc11baef13b3fdd0b8b1dab02cc",
+    "tests/test_ponytail_refactor.py": "a5ff0c959844d3bfc47447fe17271eea5adb0366f4a169564d0c77665cc475bf",
+    "tests/test_search_queries.py": "39761df8a0fdd89ee580a46206da451a51dfcb907f899fd9162f428dcef93e55",
+    "tests/test_terminal_demo.py": "cf62d7f3516a4871bea02da91b06417bf3204014945e8bc1c0c6d08a42701b00"
+  },
+  "checks": {
+    "pytest": {
+      "passed": 408,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mypy": "119 files PASS",
+    "quality_valid": "PASS",
+    "quality_test": "PASS",
+    "source_model_hashes": "PASS",
+    "frozen_valid_before_test": "PASS",
+    "query_truth_unchanged": "PASS",
+    "hybrid_brown_bag": "10 of 10",
+    "http": "PASS",
+    "peer_review": {
+      "diversity_U000001": true,
+      "exploration_U000001": true,
+      "new_item_U000001": true,
+      "diversity_U000002": true,
+      "exploration_U000002": true,
+      "new_item_U000002": true,
+      "diversity_U000003": true,
+      "exploration_U000003": true,
+      "new_item_U000003": true,
+      "cold_start_0": true,
+      "event_deduplication": true,
+      "session_http": true,
+      "session_redis": true,
+      "cold_start_4": true
+    },
+    "controlled_ct": {
+      "alert": true,
+      "threshold": true,
+      "duplicate_trigger_blocked": true,
+      "real_three_model_retraining": true,
+      "fresh_chronological_split": true,
+      "increment": true,
+      "paired_valid_improvement": true,
+      "no_improvement_retained": true,
+      "atomic_http_reload": true,
+      "rollback": true,
+      "corrupt_bundle_rejected": true,
+      "new_events_consumed_once": true
+    }
+  },
+  "metrics": [
+    {
+      "name": "mrr",
+      "value": 0.925,
+      "target": 0.55,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "search.primary",
+      "reason": null
+    },
+    {
+      "name": "ndcg_at_10",
+      "value": 0.925,
+      "target": 0.5,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "search.primary",
+      "reason": null
+    },
+    {
+      "name": "recall_at_300",
+      "value": 0.7550559124434927,
+      "target": 0.3,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.candidate.ann_two_tower",
+      "reason": null
+    },
+    {
+      "name": "auc",
+      "value": 0.9663220591039295,
+      "target": 0.7,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.classification.ctr",
+      "reason": null
+    },
+    {
+      "name": "hit_rate_at_50",
+      "value": 0.678372591006424,
+      "target": 0.2,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.metrics.full_pipeline",
+      "reason": null
+    },
+    {
+      "name": "ndcg_at_50",
+      "value": 0.33278106544930586,
+      "target": 0.08,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.metrics.full_pipeline",
+      "reason": null
+    },
+    {
+      "name": "coverage",
+      "value": 0.3641,
+      "target": 0.2,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.metrics.full_pipeline",
+      "reason": null
+    },
+    {
+      "name": "search_p95_ms",
+      "value": 87.33883589970901,
+      "target": 200,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "api.modes; worst-mode HTTP p95",
+      "reason": null
+    },
+    {
+      "name": "recommend_p95_ms",
+      "value": 37.58493690011164,
+      "target": 200,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "api.modes.recommendation.http",
+      "reason": null
+    },
+    {
+      "name": "candidate_p95_ms",
+      "value": 4.374307650004994,
+      "target": 100,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "candidate_latency",
+      "reason": null
+    },
+    {
+      "name": "feature_p95_ms",
+      "value": 0.3055129504446086,
+      "target": 10,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "feature_store",
+      "reason": null
+    }
+  ],
+  "latency": {
+    "p95_ms": {
+      "text": 23.940520700034533,
+      "image": 85.20936849927239,
+      "hybrid": 87.33883589970901,
+      "recommendation": 37.58493690011164
+    },
+    "conditions": "One deployed CPU stack; simulator/CT/A-B stopped; 10 warmups + 100 serial requests; resident models",
+    "environment": {
+      "python": "3.11.18",
+      "machine": "aarch64",
+      "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.41",
+      "cpu_count": 8,
+      "gpu_used": false,
+      "docker": true,
+      "packages": {
+        "torch": "2.6.0+cpu",
+        "torchvision": "0.21.0",
+        "transformers": "4.46.3",
+        "faiss-cpu": "1.9.0",
+        "redis": "5.2.1"
+      },
+      "cgroup": {
+        "memory.max": "4294967296",
+        "cpu.max": "400000 100000"
+      }
+    },
+    "serving_runtime": {
+      "torch_threads": 2,
+      "faiss_threads": 2,
+      "inference_worker_budget": true,
+      "parallel_hybrid": true,
+      "vision_optimization": {
+        "enabled": true,
+        "implementation": "torch.jit.optimize_for_inference",
+        "dtype": "float32",
+        "query_shape": [
+          1,
+          3,
+          224,
+          224
+        ],
+        "startup_max_abs_vector_error": 3.129243850708008e-07,
+        "process_environment": {
+          "OMP_NUM_THREADS": "2",
+          "MKL_NUM_THREADS": "2",
+          "OPENBLAS_NUM_THREADS": "2"
+        },
+        "scope": "same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache"
+      },
+      "gc_enabled": true,
+      "gc_freeze_enabled": true,
+      "gc_frozen_objects": 645686,
+      "configured_search_threads": 1,
+      "configured_candidate_training_threads": 4,
+      "scope": "one shared serving process; model weights and ranking policy unchanged"
+    }
+  },
+  "ct_backlog": {
+    "result": {
+      "new_events": 2493556,
+      "through_seq": 2738326,
+      "status": "WAITING_FOR_LABELS",
+      "eligibility": {
+        "ready": false,
+        "splits": {
+          "train": {
+            "version": "linked-view-last-view-v2",
+            "rows": 2256408,
+            "clicks": 563452,
+            "conversions": 44782,
+            "ctr_observed": 2255228,
+            "cvr_observed": 563452,
+            "censored": 1180,
+            "censored_cvr_negatives": 0,
+            "unassigned_purchases": 125501,
+            "window_seconds": 1800,
+            "start": "2025-12-02T00:00:00+00:00",
+            "end": "2026-11-10T11:36:42.182079077+00:00",
+            "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+            "cvr_denominator": "observed linked clicked exposures only",
+            "same_timestamp_view_exposure": 563452,
+            "excluded_inputs": [
+              "position",
+              "impression_id",
+              "request_id",
+              "event_type",
+              "persona"
+            ],
+            "ctr_classes": 2,
+            "cvr_classes": 2
+          },
+          "valid": {
+            "rows": 0,
+            "ctr_observed": 0,
+            "cvr_observed": 0,
+            "ctr_classes": 0,
+            "cvr_classes": 0
+          }
+        },
+        "reason": "train/valid require observed positive and negative CTR/CVR labels"
+      },
+      "data_path": "/app/models/full-v43/.ct/runs/v1.4-31eb594a/data"
+    },
+    "new_events_before": 2493556,
+    "elapsed_seconds": 43.314524164999966,
+    "memory_peak_bytes": 3381923840,
+    "memory_limit_bytes": 4294967296,
+    "registry_unchanged": true,
+    "events_retained": true,
+    "scope": "Full accumulated production journal, 4 GiB worker; no labels fabricated; no CT quality improvement claim"
+  },
+  "limitations": [
+    "Production CT training is WAITING_FOR_LABELS: current valid snapshot has no exposure labels; large-scale model fitting and natural improvement were not measured.",
+    "Controlled CT uses separate small real-training fixtures, not the production backlog.",
+    "Full valid/test model quality is new; browser clicks, external datasets, new A/B improvement, and complete PDF acceptance are not re-established.",
+    "Generic hybrid valid MRR/NDCG at 50:50 is .96 versus .97 at 75:25; selected before test for better image contribution; query/gold bytes unchanged.",
+    "Peak memory is measured for this 2493556-event backlog, not an arbitrary log-size guarantee."
+  ],
+  "sources": {
+    "before_fusion/hybrid_bag.json": "6323d5694f45aeddf63d91e5bda3c935c30b9dd373502f279c2ce969fc9576f7",
+    "before_fusion/latency.json": "543451dbf97dd5288befcd4210dc3c6b02c6ca7a3026edc5fcdded3d50d7b8f6",
+    "before_fusion/smoke_full.json": "543451dbf97dd5288befcd4210dc3c6b02c6ca7a3026edc5fcdded3d50d7b8f6",
+    "ct_backlog.json": "98cfa378c2f2f27fe7bef0d913140c0384432cb84d4fe77516a6483ee4a9cac6",
+    "ct_backlog.log": "cb1cdc3127401610f9fbeaee22d114579cc65cfafa8dc5812cef3f1be2a72764",
+    "ct_backlog_container.json": "755050c5fee733aee5df1047a272cee4b53688ecae3defcfd4e18c0c50c40b65",
+    "ct_drill.json": "4098e8adccfaf6f5614ebb41ddab379dba74c90252e6d21ea3969990242b7d75",
+    "ct_drill.log": "001970fa3908688273d4b613fa7366ed02ccc7098e010b9499a9ab7f09d621d7",
+    "ct_log.jsonl": "2d62bae00078c1695540b28253b0fa7ee6f7c5079375c430dce929420bb52c43",
+    "experiments/C/ct_fixture_log.jsonl": "2d62bae00078c1695540b28253b0fa7ee6f7c5079375c430dce929420bb52c43",
+    "experiments/C/ct_training_candidate_fixture.json": "266b59858abf5b4060c800f77f4d926e3e2f3333429053744e53456f887af919",
+    "experiments/C/ct_training_ranking_fixture.json": "56dfd2aedc25b3a222391d4af7c6fc2136a496d41f2ab0a2e47892da399544ca",
+    "experiments/C/ct_training_session_fixture.json": "0d29170832e622e15f6a978f70067a695985881842b863f713a752b70cff607c",
+    "freezes/02f4eb2de67ee79721a3d792e6cc5adff9162da5e9b8edec562d652894438174.json": "02f4eb2de67ee79721a3d792e6cc5adff9162da5e9b8edec562d652894438174",
+    "fusion_selection.json": "9c31ffede0073f23f638cbedfea6892036ca1c1df6f8b3bf173223fe58abeffc",
+    "fusion_valid.json": "244f56bde3b98aaac468fd53a17682a5d7f172257c288e1374fd8e874a5f2f4a",
+    "hybrid_bag.json": "b20e4c412102bc4aad3ed5a48629fa5a58d44ae97c35628f507a6cf18bb63318",
+    "hybrid_before_ready.log": "3056c45f796be4b8a809878c3ae7c9a869c31438ada3ab786377010e441e1e1b",
+    "initial_fixture_failure.log": "927b82b7f519ea75ff59794de2a72fa0cf3f42263d95fc07387112bce841c076",
+    "latency.json": "89ae8f6e52d9079836b0ebdda1a3e7a85b98a32b41c6942e32a3f4bf274ecc73",
+    "mypy.log": "d144f4b429956a53bf5c6beb1fc2bbd224cf5a2307ff13c3ca35f06e02685c53",
+    "peer_review.json": "e2a52c4df6c8861faf0c6fef360d0dd0a1e0508165cdc639c8c0a9962c06e5fc",
+    "peer_review.log": "13b60a6fbf2a9695614f76a5c1082d7bb9d6117b206a01c4810cd5784a5d0486",
+    "preparation_full.json": "4256825866fbb4fab4e19afd516e9b192eb58076077516a0a7dde5191a936ee2",
+    "pytest.log": "dbcb230ff39b3e2c8554c719e0246c14799cec677d7072a88c647f91498198c5",
+    "pytest.xml": "f56ea5a0a7b3917e05d0b6d984026d22e694c636fbd9dc483b59d20aeeab09c0",
+    "pytest_before_fixture_update.log": "622c1bc3841805c5efa7adfb06ce566198cd99942a5269f544bcd9cce9d24251",
+    "pytest_before_fixture_update.xml": "a2ead8193bcb29e412e19fdb56630c9c11fba7da240493d9749f7f3ebdb65b17",
+    "quality_full_test.json": "d35f1ce5ce73bdd47498f818a0e4a81789754caf70b7f20425af649e12e4b60f",
+    "quality_full_valid.json": "02f4eb2de67ee79721a3d792e6cc5adff9162da5e9b8edec562d652894438174",
+    "quality_selection_full.json": "84caef9b04bb03b38c3d8b21384ed0dd783a9d68264fa5e3b5610d9a6030755d",
+    "quality_test.log": "0b12350badd000ae65e41c7963da45d1701003955cfeb4b8461a03a82f6c84e0",
+    "quality_valid.log": "3992b43965834c316e5ff56feb8790f9f657a3f346013b6f22428258af5b1156",
+    "quality_verify.log": "d1b6d89e866fc24eead906d4c3e2cad5ccd50104978b31596c2d3d331b3af556",
+    "query_integrity.json": "867c20e6208fc45352bb2f1b5c328e27294b5ca1329c30639a6c404680b3eb1f",
+    "reload_fixture_failure.log": "3347ece69aee748fc5ac94c23d15d0148f2cab108c26cb461daa63d9a867393e",
+    "report.md": "8171bca1fbc7d29fb8e40be51d5a54b7ece59ffa9554468ab715dfb1aa835020",
+    "smoke.log": "b69d55d2e0eafbbac3b3cfe320b230de2922e6fc24d7a86bc9d3ae49dd3ba52e",
+    "smoke_full.json": "89ae8f6e52d9079836b0ebdda1a3e7a85b98a32b41c6942e32a3f4bf274ecc73"
+  }
+}

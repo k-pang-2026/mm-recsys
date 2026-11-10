@@ -1,0 +1,12 @@
+{
+  "selected_text_weight": 0.5,
+  "split": "valid",
+  "test_used": false,
+  "source": "fusion_valid.json",
+  "selection_reason": "Equal text/image contribution fixes the generic Korean bag + brown image reproduction; independent valid hybrid MRR/NDCG .96 versus .97 at .75, both above fixed .55/.50 targets. Tradeoff chosen before test; labels and K unchanged.",
+  "example_probe": {
+    ".25": "brown regular tote bag",
+    ".5": "brown regular tote bag",
+    ".75": "black regular tote bag"
+  }
+}

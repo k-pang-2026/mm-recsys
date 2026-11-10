@@ -37,17 +37,19 @@ def test_frozen_queries_are_independent_augmented_and_immutable(tmp_path):
         freeze_queries(cfg)
 
 
-def test_hybrid_really_uses_both_modalities_with_selected_weights():
+@pytest.mark.parametrize('text_weight', [.5, .75])
+def test_hybrid_really_uses_both_modalities_with_selected_weights(text_weight):
     class Encoder:
         def encode_texts(self, values):
             return np.array([[1, 0]], np.float32)
         def encode_images(self, values):
             return np.array([[0, 1]], np.float32)
     searcher = Searcher.__new__(Searcher); searcher.cfg = load_config(); searcher.encoder = Encoder()
+    searcher.cfg['search']['query_fusion'] = dict(text_weight=text_weight, image_weight=1-text_weight)
     searcher._lock = threading.RLock()
     mode, query = searcher.encode('shirt', object())
     assert mode == 'hybrid' and query[0, 1] > 0
-    assert query[0, 0]/query[0, 1] == pytest.approx(3)
+    assert query[0, 0]/query[0, 1] == pytest.approx(text_weight/(1-text_weight))
     assert searcher.encode('  ', object())[0] == 'image'
 
 

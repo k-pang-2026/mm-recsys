@@ -27,7 +27,7 @@ def test_compose_defaults_to_full_and_simulator_waits_for_dashboard():
     for name in ('api-server', 'dashboard', 'simulator'):
         service = cfg['services'][name]
         assert service['environment']['SCALE'] == '${SCALE:-full}'
-        assert service['pull_policy'] == 'build'
+        assert service.get('pull_policy') != 'build'  # Rebuild explicitly after a source change.
     dashboard = cfg['services']['dashboard']
     assert dashboard['healthcheck']['start_period'] == '${READY_TIMEOUT_SECONDS:-21600}s'
     assert cfg['services']['simulator']['depends_on']['dashboard']['condition'] == 'service_healthy'
@@ -36,14 +36,14 @@ def test_compose_defaults_to_full_and_simulator_waits_for_dashboard():
 def test_dashboard_connects_to_api_before_launch_and_announces_after_http(monkeypatch, capsys):
     from docker import dashboard_entrypoint as entry
     events = []
-    process = SimpleNamespace(returncode=None, poll=lambda: process.returncode)
+    process = SimpleNamespace(returncode=None, stdout=None, poll=lambda: process.returncode)
     def finished(*args, **kwargs):
         process.returncode = 0
         return 0
     process.wait = finished
     def connected(*args):
         events.append('api_ready')
-    def launched(argv):
+    def launched(argv, **kwargs):
         assert events == ['api_ready']
         events.append('launch')
         return process
@@ -64,9 +64,9 @@ def test_dashboard_connects_to_api_before_launch_and_announces_after_http(monkey
 
 def test_dashboard_failure_never_announces_success(monkeypatch, capsys):
     from docker import dashboard_entrypoint as entry
-    process = SimpleNamespace(returncode=1, poll=lambda: 1)
+    process = SimpleNamespace(returncode=1, stdout=None, poll=lambda: 1)
     monkeypatch.setattr(entry, 'wait_ready', lambda *args: None)
-    monkeypatch.setattr(entry.subprocess, 'Popen', lambda *args: process)
+    monkeypatch.setattr(entry.subprocess, 'Popen', lambda *args, **kwargs: process)
     with pytest.raises(RuntimeError, match='준비 전에 종료'):
         entry.main()
     assert '에서 대시보드 시작' not in capsys.readouterr().err
@@ -206,12 +206,13 @@ def test_process_budget_applies_after_both_factories(tmp_path):
         torch.set_num_threads(old_torch); faiss.omp_set_num_threads(old_faiss)
 
 
-def test_prepare_failure_stops_dependents_and_records_real_exit(tmp_path, monkeypatch):
+def test_prepare_failure_stops_dependents_and_records_real_exit(tmp_path, monkeypatch, capsys):
     cfg = runtime_config()
     cfg['paths'].update(model_dir=str(tmp_path / 'models'), results_dir=str(tmp_path / 'results'))
     called = []
     def child(command, **kwargs):
         called.append(command[-1])
+        kwargs['stdout'].write('original stage diagnostic\n')
         return SimpleNamespace(returncode=9 if command[-1] == 'embeddings' else 0)
     monkeypatch.setattr(prepare_all.subprocess, 'run', child)
     with pytest.raises(RuntimeError, match='embeddings: exit 9'):
@@ -219,6 +220,8 @@ def test_prepare_failure_stops_dependents_and_records_real_exit(tmp_path, monkey
     assert called == ['data', 'audit', 'embeddings']
     result = json.loads((tmp_path / 'results/preparation.json').read_text())
     assert result['status'] == 'FAIL' and result['stages'][-1]['exit_code'] == 9
+    assert 'original stage diagnostic' in capsys.readouterr().err
+    assert Path(result['stages'][-1]['log']).read_text() == 'original stage diagnostic\n'
 
 
 def test_prepare_lock_prevents_two_initial_writers(tmp_path):

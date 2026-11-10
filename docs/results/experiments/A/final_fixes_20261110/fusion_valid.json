@@ -1,0 +1,27 @@
+{
+  "split": "valid",
+  "experiments": [
+    {
+      "text_weight": 0.25,
+      "queries": 200,
+      "mrr": 0.72,
+      "ndcg_at_10": 0.72,
+      "mean_relevant_items": 88.05
+    },
+    {
+      "text_weight": 0.5,
+      "queries": 200,
+      "mrr": 0.96,
+      "ndcg_at_10": 0.96,
+      "mean_relevant_items": 88.05
+    },
+    {
+      "text_weight": 0.75,
+      "queries": 200,
+      "mrr": 0.97,
+      "ndcg_at_10": 0.97,
+      "mean_relevant_items": 88.05
+    }
+  ],
+  "test_used": false
+}

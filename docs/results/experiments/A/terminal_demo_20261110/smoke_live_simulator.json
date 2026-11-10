@@ -1,0 +1,537 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+  "config_fingerprint": "8f35c572295a66f4a06ca33dff676a43dc7902c63f00165be85e8470af32b048",
+  "models": {
+    "models/full-v43/v1.0/meta.json": "bdef4ad6b11c1c35326901993b5d865441b541a027cf0ffdf2f25153e0966ad7",
+    "models/full-v43/v1.0/index_manifest.json": "d1e2ca35d919d462df37fdab23684a6d6d29d3b66087436a72a132532cd2089a",
+    "models/full-v43/v1.0/ranking/meta.json": "7e9ebe4e226d52de06339528f5b8ab41c6b7aded63af2bca2d62382660c84335",
+    "models/full-v43/v1.0/session/meta.json": "bdd713e77cc490c4e11ef1e5bb3b3afbe2dedbea8ec17e932fc20e74ce07384f",
+    "models/full-v43/search/embeddings_current.json": "652ecd4a62ebd9e08f809e0a95a34d6ea286a032f7e4aad37e34ab6760f6c815",
+    "models/full-v43/search/embeddings/47fe81b153cbe4a84ec729c3e9a9cd3742ea46f30160443f1a4968999f0a26bb/manifest.json": "0eca586062a23645f073702a1e43ffb4a53de62959886f0e556700c5c94c9a5b",
+    "models/full-v43/search/indexes_current.json": "9856647c7b8d8ea24e94442694eb5aa85dc5d8527bba68df598762523fcd5e45",
+    "models/full-v43/search/indexes/b2a1bbc7ac8d459cf3f4ed43245ef38420f733420da417ae24a45eaf491d99d7/manifest.json": "0886e2b8823b80abcb5d6f178f5998af81189a7fe092fd88eaa3d15ceca5759e"
+  },
+  "source_hashes": {
+    "/app/scripts/smoke_test.py": "c7f782c70f9ff63cdbdc19fb508e67826c4529eefe32dfd338ba07ddd5a41c74",
+    "docker/runtime.py": "2481da1c0fab4f1c91816c753e24931c515988d500aaddbd3be128d49d2d7099",
+    "docker/http.py": "e2e78703e0724044cfd10219166a1c75975f72ba9aa6f96fd3c478b5d899e52e",
+    "docker/serve.py": "4278cf2a971c4f0aeba6d6a7c527e3f592967742b9d5641510d57d642b1615eb",
+    "docker/vision.py": "5f4a1769d02a3ec794ca0559e0f5a06a71419f07753ed5cc08600a167eb97374"
+  },
+  "health": {
+    "status": "ok",
+    "search_ready": true,
+    "recommend_ready": true,
+    "scale": "full",
+    "model_version": "v1.0"
+  },
+  "responses": {
+    "text": {
+      "search_type": "text",
+      "results": [
+        {
+          "product_id": "P000125",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 142000.0
+        },
+        {
+          "product_id": "P000562",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 103000.0
+        },
+        {
+          "product_id": "P000643",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 103000.0
+        },
+        {
+          "product_id": "P000985",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 58000.0
+        },
+        {
+          "product_id": "P000997",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 208000.0
+        },
+        {
+          "product_id": "P002528",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 32000.0
+        },
+        {
+          "product_id": "P002781",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 160000.0
+        },
+        {
+          "product_id": "P003159",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 114000.0
+        },
+        {
+          "product_id": "P003316",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 64000.0
+        },
+        {
+          "product_id": "P006290",
+          "name": "red slim oxford shoes",
+          "score": 0.9030251502990723,
+          "price": 158000.0
+        }
+      ],
+      "latency_ms": 33.74609999991662,
+      "total_count": 50000
+    },
+    "image": {
+      "search_type": "image",
+      "results": [
+        {
+          "product_id": "P000501",
+          "name": "brown relaxed cap",
+          "score": 0.9276891946792603,
+          "price": 136000.0
+        },
+        {
+          "product_id": "P001098",
+          "name": "brown relaxed bucket hat",
+          "score": 0.9276891946792603,
+          "price": 165000.0
+        },
+        {
+          "product_id": "P001666",
+          "name": "brown slim bucket hat",
+          "score": 0.9276891946792603,
+          "price": 150000.0
+        },
+        {
+          "product_id": "P002085",
+          "name": "brown slim beanie",
+          "score": 0.9276891946792603,
+          "price": 126000.0
+        },
+        {
+          "product_id": "P002792",
+          "name": "brown regular cap",
+          "score": 0.9276891946792603,
+          "price": 102000.0
+        },
+        {
+          "product_id": "P003029",
+          "name": "brown relaxed bucket hat",
+          "score": 0.9276891946792603,
+          "price": 135000.0
+        },
+        {
+          "product_id": "P004309",
+          "name": "brown relaxed beanie",
+          "score": 0.9276891946792603,
+          "price": 115000.0
+        },
+        {
+          "product_id": "P004650",
+          "name": "brown regular bucket hat",
+          "score": 0.9276891946792603,
+          "price": 42000.0
+        },
+        {
+          "product_id": "P004733",
+          "name": "brown relaxed cap",
+          "score": 0.9276891946792603,
+          "price": 54000.0
+        },
+        {
+          "product_id": "P004992",
+          "name": "brown regular bucket hat",
+          "score": 0.9276891946792603,
+          "price": 67000.0
+        }
+      ],
+      "latency_ms": 115.81011599992053,
+      "total_count": 50000
+    },
+    "hybrid": {
+      "search_type": "hybrid",
+      "results": [
+        {
+          "product_id": "P001181",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 123000.0
+        },
+        {
+          "product_id": "P001846",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 116000.0
+        },
+        {
+          "product_id": "P002253",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 125000.0
+        },
+        {
+          "product_id": "P002256",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 44000.0
+        },
+        {
+          "product_id": "P003367",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 170000.0
+        },
+        {
+          "product_id": "P004153",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 31000.0
+        },
+        {
+          "product_id": "P004682",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 50000.0
+        },
+        {
+          "product_id": "P005069",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 27000.0
+        },
+        {
+          "product_id": "P007913",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 129000.0
+        },
+        {
+          "product_id": "P009345",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 115000.0
+        }
+      ],
+      "latency_ms": 82.3315669999829,
+      "total_count": 50000
+    },
+    "multipart": {
+      "search_type": "hybrid",
+      "results": [
+        {
+          "product_id": "P001181",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 123000.0
+        },
+        {
+          "product_id": "P001846",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 116000.0
+        },
+        {
+          "product_id": "P002253",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 125000.0
+        },
+        {
+          "product_id": "P002256",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 44000.0
+        },
+        {
+          "product_id": "P003367",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 170000.0
+        },
+        {
+          "product_id": "P004153",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 31000.0
+        },
+        {
+          "product_id": "P004682",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 50000.0
+        },
+        {
+          "product_id": "P005069",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 27000.0
+        },
+        {
+          "product_id": "P007913",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 129000.0
+        },
+        {
+          "product_id": "P009345",
+          "name": "black regular belt",
+          "score": 0.8211716413497925,
+          "price": 115000.0
+        }
+      ],
+      "latency_ms": 87.75902000002134,
+      "total_count": 50000
+    },
+    "known_user": {
+      "user_id": "U000001",
+      "recommendations": [
+        {
+          "product_id": "P000580",
+          "score": 0.9998574256896973,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P029765",
+          "score": 0.985942542552948,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P005727",
+          "score": 0.5490170121192932,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000543",
+          "score": 0.9997171759605408,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002556",
+          "score": 0.9994799494743347,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P026345",
+          "score": 0.20426921546459198,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P002914",
+          "score": 0.9993835687637329,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P005663",
+          "score": 0.9991918206214905,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P042495",
+          "score": 0.13195636868476868,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P007777",
+          "score": 0.9989976286888123,
+          "reason": "DeepFM 클릭 가능성",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 9.153090999916458,
+        "ranking_ms": 16.03556200007006,
+        "reranking_ms": 5.989023999973142,
+        "total_ms": 31.177676999959658
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "new_user": {
+      "user_id": "__docker_new_b3271f358c52437f9d9b1a4959b27bfc",
+      "recommendations": [
+        {
+          "product_id": "P000022",
+          "score": 1.0010330578512396,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000628",
+          "score": 0.0,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000229",
+          "score": 0.9571280991735537,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001816",
+          "score": 0.9008264462809917,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000068",
+          "score": 0.8894628099173554,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000462",
+          "score": 0.8884297520661157,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000167",
+          "score": 0.8879132231404959,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000031",
+          "score": 0.8538223140495869,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000301",
+          "score": 0.8429752066115702,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000420",
+          "score": 0.8347107438016529,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.9156860000748566,
+        "ranking_ms": 14.437953999959063,
+        "reranking_ms": 6.145759999981237,
+        "total_ms": 22.499400000015157
+      },
+      "session_context": {
+        "recent_clicks": [],
+        "session_interest": null
+      }
+    },
+    "session": {
+      "user_id": "__docker_session_73c156170bb14a2e84b6d8764d168df7",
+      "recommendations": [
+        {
+          "product_id": "P000022",
+          "score": 1.0010330578512396,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000628",
+          "score": 0.0,
+          "reason": "MAB 탐색",
+          "is_exploration": true
+        },
+        {
+          "product_id": "P000229",
+          "score": 0.9571280991735537,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P001816",
+          "score": 0.9008264462809917,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000068",
+          "score": 0.8894628099173554,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000462",
+          "score": 0.8884297520661157,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000167",
+          "score": 0.8879132231404959,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000031",
+          "score": 0.8538223140495869,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000301",
+          "score": 0.8429752066115702,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        },
+        {
+          "product_id": "P000420",
+          "score": 0.8347107438016529,
+          "reason": "인기·최근 상승 상품",
+          "is_exploration": false
+        }
+      ],
+      "pipeline_latency": {
+        "candidate_ms": 1.7471329999807494,
+        "ranking_ms": 14.111762000084127,
+        "reranking_ms": 6.259231000058207,
+        "total_ms": 22.118126000123084
+      },
+      "session_context": {
+        "recent_clicks": [
+          "P000125"
+        ],
+        "session_interest": "oxford shoes"
+      }
+    }
+  },
+  "checks": {
+    "api_schemas": "PASS",
+    "multipart": "PASS",
+    "invalid_search": "PASS",
+    "session_response": "PASS",
+    "dashboard_http": "PASS"
+  },
+  "scope": "actual HTTP smoke; Streamlit HTTP health does not establish browser rendering"
+}

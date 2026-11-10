@@ -1,0 +1,152 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "measured_at": "2026-11-10T11:33:07.460558+00:00",
+  "scope": "Terminal operation, simulator batching, real Docker API integration and controlled CT lifecycle. Not complete PDF acceptance or new full offline-quality evaluation.",
+  "base_sha": "aa2a8ae807b1d829bd52a115665684d5c28b25a3",
+  "branch": "fix/terminal-demo",
+  "source_sha256": {
+    "README.md": "238e99d0b5957905349310943ba5ae6f256dd849f69deeb93de91d6d3dc350b1",
+    "docker-compose.yml": "af468dd1b964794c557b8b7340d85297b9c635b5f13ca0d19823464a1e3542c4",
+    "docker/Dockerfile.api": "1b0f7833f3f354ea04a5f314feaeb5dde87dd52d8ad8283b4ea3a5edab265ad8",
+    "docker/api_entrypoint.py": "5c015800131da92e2234f3efb5c7cd7aca8c94522e907250930c48144ef9535b",
+    "docker/compose.ct.yml": "ad8daa9fd7ac04af03c078e998f61d98b16b4064075e0064419778e927bcff3b",
+    "docker/ct_worker.py": "d45d4ed4bec5b5a3cd4ae33708924a5bc652e338d91a412309170ced3929c468",
+    "docker/dashboard_entrypoint.py": "c1ee5568fdd61f2dfb20c929ce90fbdb3303edf4bacef8ebfcfbd0fec989550b",
+    "docker/serve.py": "4278cf2a971c4f0aeba6d6a7c527e3f592967742b9d5641510d57d642b1615eb",
+    "docker/simulator.py": "5e4ee4aa5c5bf994263a031b3b33013d2c4ca4508fb94e2bc5bf1e3a4fcf4929",
+    "docker/vision.py": "5f4a1769d02a3ec794ca0559e0f5a06a71419f07753ed5cc08600a167eb97374",
+    "scripts/demo.py": "fe6be11d3e62a59b8384348f452fc4aaa9f22c89ca55300a9128daf844e98b30",
+    "scripts/prepare_all.py": "e806943f26c868e379ba00de0e241565c83018929dfc59a257a5d34b94338689",
+    "src/common/console.py": "87a2b227ff5baa52af645336ad8200a89bde5cc3eb20a0222e2ea9860223e00c",
+    "src/ct/storage.py": "8546f47584c6b3b8826296c9b285c6f5b20284590fd1e839e98c163e3ecb98ca",
+    "tests/test_docker.py": "88366862f99c8a522c620cf02a0ebe0977f6f530214fa9d174d2145b37cf05bc",
+    "tests/test_terminal_demo.py": "cf62d7f3516a4871bea02da91b06417bf3204014945e8bc1c0c6d08a42701b00"
+  },
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "environment": {
+    "docker_engine": "29.8.2",
+    "docker_desktop": "4.94.0",
+    "machine": "aarch64",
+    "docker_ram_gib": 7.547,
+    "stacks": 1,
+    "api_memory_limit_gib": 4,
+    "api_cpus": 4,
+    "omp_threads": 1,
+    "mkl_threads": 1,
+    "serving_threads": 2,
+    "full_details": "smoke.json: benchmark.environment and benchmark.serving_runtime"
+  },
+  "checks": {
+    "pytest": "404 passed, 2 dependency deprecation warnings; real isolated local Redis",
+    "mypy": "118 source files passed",
+    "diff_check": "PASS",
+    "compose_up": "Actual interactive docker compose up succeeded without rebuilding. Detached with Compose menu d, keeping services running.",
+    "api": "Text/image/hybrid, multipart, recommendations, new user, live session, invalid input, dashboard HTTP PASS",
+    "simulator_running_smoke": {
+      "api_schemas": "PASS",
+      "multipart": "PASS",
+      "invalid_search": "PASS",
+      "session_response": "PASS",
+      "dashboard_http": "PASS"
+    },
+    "services": [
+      {
+        "Service": "api-server",
+        "State": "running",
+        "Health": "healthy",
+        "Image": "mm-recsys-api-server"
+      },
+      {
+        "Service": "dashboard",
+        "State": "running",
+        "Health": "healthy",
+        "Image": "sha256:efbbc4aa68e6d412f503f7b28fa4d107c9805fa8fae662324bb6107dd680ca32"
+      },
+      {
+        "Service": "redis",
+        "State": "running",
+        "Health": "healthy",
+        "Image": "redis:7"
+      },
+      {
+        "Service": "simulator",
+        "State": "running",
+        "Health": "",
+        "Image": "mm-recsys-simulator"
+      }
+    ]
+  },
+  "simulator": {
+    "comparison": "simulator_comparison.json",
+    "method": "One 10000-event batch for origin/main and patched simulator in the same built worker, same full products/users and seed 42; isolated SQLite directories and Redis namespaces; simulator service paused. Cleanup excluded from timing.",
+    "baseline_sources": "git show aa2a8ae807b1d829bd52a115665684d5c28b25a3:docker/simulator.py and src/ct/storage.py",
+    "speedup": 3.3369173580357105,
+    "live_log": "simulator_live.log",
+    "interval_semantics": "Batch-start interval; a batch taking longer than 1 second is followed immediately, not one extra second later."
+  },
+  "latency": {
+    "source": "smoke.json",
+    "conditions": "One stack; simulator paused; 10 warmups + 100 serial calls per mode; real HTTP; CPU only; resident models.",
+    "p95_ms": {
+      "text": 22.652479500015943,
+      "image": 84.97956174996943,
+      "hybrid": 88.25256969983002,
+      "recommendation": 37.01654525006006
+    },
+    "feature_p95_ms": 0.29673389993831734,
+    "candidate_p95_ms": 4.2516959499948825,
+    "simulator_running": "Separate smoke_live_simulator.json verifies functional integration; latency benchmark was not repeated under continuous simulator load."
+  },
+  "ab": {
+    "source": "ab.json",
+    "terminal": "ab_terminal.txt",
+    "users_per_group": 100,
+    "simulated_days": 7,
+    "verified": "ab_verification.json",
+    "ctr_relative_lift": -0.16238317757009346,
+    "cvr_relative_lift": -0.2359550561797753,
+    "interpretation": "Synthetic negative lift, preserved as measured; output verification PASS does not mean recommendation effectiveness improved."
+  },
+  "ct": {
+    "source": "ct_drill.json",
+    "terminal": "ct_drill_terminal.log",
+    "checks": {
+      "alert": true,
+      "threshold": true,
+      "duplicate_trigger_blocked": true,
+      "real_three_model_retraining": true,
+      "fresh_chronological_split": true,
+      "increment": true,
+      "paired_valid_improvement": true,
+      "no_improvement_retained": true,
+      "atomic_http_reload": true,
+      "rollback": true,
+      "corrupt_bundle_rejected": true,
+      "new_events_consumed_once": true
+    },
+    "scope": "Controlled 400-product/24-user fixture inside Docker worker, actual three-model retraining and local HTTP reload/rollback; 704 new events with fixture threshold 200. Production default threshold 10000 unchanged.",
+    "production_monitor": "ct_monitor.txt; insufficient mature Top-50 exposure yields unmeasured HitRate, not a fabricated alert or PDF example value."
+  },
+  "earlier_failures": {
+    "dashboard_mock": "initial_test_failure.log; updated Popen mock for stdout pipe",
+    "watch_fixture": "watch_fixture_path_failure.log; isolated results_dir in test fixture; subprocess streaming verified",
+    "host_docker_redis": "Host-to-Docker Redis port was inaccessible from test runner; initial test attempt interrupted and full suite rerun with real local Redis on isolated port 16391."
+  },
+  "unmeasured": [
+    "Fresh clean-cache full image/data/model generation",
+    "New full offline Recall/AUC/MRR/NDCG quality acceptance",
+    "5000 users/arm, 30-day A/B rerun",
+    "Natural production CT effectiveness and full-data training in this turn",
+    "Browser interaction revalidation",
+    "Concurrent-load latency acceptance"
+  ],
+  "git": {
+    "commit_created": false,
+    "remote_push": false,
+    "preserved_existing_changes": [
+      ".env",
+      "data/.gitkeep"
+    ]
+  }
+}

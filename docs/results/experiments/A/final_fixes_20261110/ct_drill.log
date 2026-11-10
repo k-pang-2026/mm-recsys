@@ -1,0 +1,51 @@
+time="2026-11-10T21:14:51+09:00" level=warning msg="Found orphan containers (mm-recsys-ct-memory-fix-20261110, mm-recsys-ct-1) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+ Container mm-recsys-api-server-run-1da3eed33c35 Creating 
+ Container mm-recsys-api-server-run-1da3eed33c35 Created 
+[CT 격리 시연] 작은 별도 데이터로 실제 학습·승격·롤백을 검사합니다. 운영 모델 개선 측정과 구분합니다.
+[데이터 준비] 상품 400개·사용자 24명·이벤트 6,000건 준비 완료 / 경로=/app/models/.ct/verification/737e182a7d/source
+[모델 학습] Two-Tower epoch=1 / loss=1.20421 / valid_recall@300=0.973485 / 갱신=6
+[모델 학습] Two-Tower epoch=2 / loss=0.52418 / valid_recall@300=0.988636 / 갱신=6
+[모델 학습] Two-Tower epoch=3 / loss=0.37205 / valid_recall@300=0.988636 / 갱신=6
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.988636 / 결과=/app/models/.ct/verification/737e182a7d/initial_training/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=16.22742 / valid_ctr_auc=0.655488 / cvr_auc=0.5525030525030524
+[모델 학습] DeepFM epoch=2 / loss=5.54029 / valid_ctr_auc=0.872164 / cvr_auc=0.5366300366300366
+[모델 학습] DeepFM epoch=3 / loss=3.65591 / valid_ctr_auc=0.888290 / cvr_auc=0.5306471306471306
+[모델 학습] DeepFM epoch=4 / loss=3.01666 / valid_ctr_auc=0.896949 / cvr_auc=0.4892551892551892
+[모델 학습] DeepFM epoch=5 / loss=2.56468 / valid_ctr_auc=0.899262 / cvr_auc=0.49853479853479854
+[모델 학습] DeepFM epoch=6 / loss=2.21602 / valid_ctr_auc=0.898610 / cvr_auc=0.4841269841269842
+[모델 학습] DeepFM epoch=7 / loss=1.92626 / valid_ctr_auc=0.897516 / cvr_auc=0.4787545787545788
+[모델 학습] DeepFM epoch=8 / loss=1.70750 / valid_ctr_auc=0.896450 / cvr_auc=0.48681318681318686
+[모델 학습] 세션 epoch=1 / valid_loss=4.22642 / sampled_hit@10=0.25874
+[모델 학습] 세션 epoch=2 / valid_loss=3.90485 / sampled_hit@10=0.37063
+[모델 학습] 세션 epoch=3 / valid_loss=3.62568 / sampled_hit@10=0.51748
+[CT 버전 등록] 모델=v1.0
+[CT 초기화] 모델=v1.0
+[CT Monitor ] 현재 HitRate@50: 0.0000 (임계값: 0.2) / CTR: 0.0000
+[CT Monitor 알림] [경고] 성능 저하 감지! 재학습을 권장합니다.
+[CT Trigger ] 신규 로그 704건 축적 / 모델 v1.0 → v1.1 / 모델 재학습 트리거됨...
+[CT 스냅샷] 관측 로그를 묶음 단위로 읽고 시간순 학습 스냅샷을 생성합니다.
+[CT 학습 준비] 스냅샷·관측 라벨 검사 통과; 세 모델 학습을 시작합니다.
+[모델 학습] Two-Tower epoch=1 / loss=1.13757 / valid_recall@300=0.962319 / 갱신=7
+[모델 학습] Two-Tower epoch=2 / loss=0.50021 / valid_recall@300=0.976812 / 갱신=7
+[모델 학습] Two-Tower epoch=3 / loss=0.36360 / valid_recall@300=0.962319 / 갱신=7
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.976812 / 결과=/app/models/.ct/verification/737e182a7d/models/.ct/runs/v1.1-e2d68730/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=15.14086 / valid_ctr_auc=0.610106 / cvr_auc=0.5701146360970408
+[모델 학습] DeepFM epoch=2 / loss=4.95293 / valid_ctr_auc=0.853440 / cvr_auc=0.5661157024793388
+[모델 학습] DeepFM epoch=3 / loss=3.45824 / valid_ctr_auc=0.879320 / cvr_auc=0.5679818715009332
+[모델 학습] DeepFM epoch=4 / loss=2.86841 / valid_ctr_auc=0.882370 / cvr_auc=0.565782458011197
+[모델 학습] DeepFM epoch=5 / loss=2.48948 / valid_ctr_auc=0.885223 / cvr_auc=0.5589842708611037
+[모델 학습] DeepFM epoch=6 / loss=2.11959 / valid_ctr_auc=0.891694 / cvr_auc=0.5740469208211143
+[모델 학습] DeepFM epoch=7 / loss=1.83898 / valid_ctr_auc=0.887049 / cvr_auc=0.5688483071181019
+[모델 학습] DeepFM epoch=8 / loss=1.62635 / valid_ctr_auc=0.881753 / cvr_auc=0.587643295121301
+[모델 학습] DeepFM epoch=9 / loss=1.42172 / valid_ctr_auc=0.886406 / cvr_auc=0.5959077579312184
+[모델 학습] 세션 epoch=1 / valid_loss=4.61912 / sampled_hit@10=0.27807
+[모델 학습] 세션 epoch=2 / valid_loss=4.27380 / sampled_hit@10=0.33155
+[모델 학습] 세션 epoch=3 / valid_loss=3.96325 / sampled_hit@10=0.46524
+[CT 버전 등록] 모델=v1.1
+[CT 버전 등록] 모델=v1.1
+[CT Trigger ] 재학습 완료. 후보 모델: v1.1 / 활성 모델: v1.1 / 승격
+[CT 서비스 모델 교체] 모델=v1.1
+[CT 버전 등록] 모델=v1.2
+[CT Trigger ] 재학습 완료. 후보 모델: v1.2 / 활성 모델: v1.1 / 기존 모델 유지
+[CT 롤백] v1.1 → v1.0 / 사유=controlled rollback drill after measured promotion
+[CT 서비스 모델 교체] 모델=v1.0

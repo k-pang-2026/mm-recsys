@@ -1,0 +1,14 @@
+[동료 평가 카테고리 다양성] diversity_U000001: 통과
+[동료 평가 MAB 탐색 슬롯] exploration_U000001: 통과
+[동료 평가 신상품 노출] new_item_U000001: 통과
+[동료 평가 카테고리 다양성] diversity_U000002: 통과
+[동료 평가 MAB 탐색 슬롯] exploration_U000002: 통과
+[동료 평가 신상품 노출] new_item_U000002: 통과
+[동료 평가 카테고리 다양성] diversity_U000003: 통과
+[동료 평가 MAB 탐색 슬롯] exploration_U000003: 통과
+[동료 평가 신상품 노출] new_item_U000003: 통과
+[동료 평가 신규 사용자 폴백] cold_start_0: 통과
+[동료 평가 이벤트 중복 방지] event_deduplication: 통과
+[동료 평가 HTTP 세션 반영] session_http: 통과
+[동료 평가 Redis 세션 저장] session_redis: 통과
+[동료 평가 신규 사용자 폴백] cold_start_4: 통과
