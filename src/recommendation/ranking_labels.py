@@ -48,13 +48,16 @@ def build_labels(impressions: pd.DataFrame, events: pd.DataFrame, start: pd.Time
     labels['ctr'] = labels.impression_id.isin(set(valid_views.impression_id)).astype(np.float32)
     labels['cvr'] = labels.impression_id.isin(positive).astype(np.float32)
     # Never label an incompletely observed negative as a known non-conversion.
-    mature = labels.exposed_at + pd.Timedelta(seconds=window_seconds) <= end
+    window = pd.Timedelta(seconds=window_seconds)
+    mature = labels.exposed_at + window <= end
+    last_click = views.groupby('impression_id').timestamp.max()
+    conversion_mature = labels.impression_id.map(last_click) + window <= end
     labels['ctr_mask'] = (labels.ctr == 1) | mature
-    labels['cvr_mask'] = (labels.ctr == 1) & ((labels.cvr == 1) | mature)
+    labels['cvr_mask'] = (labels.ctr == 1) & ((labels.cvr == 1) | conversion_mature)
     labels['censored'] = ~mature
     if ((labels.cvr == 1) & (labels.ctr != 1)).any():
         raise ValueError('purchase attributed outside a linked clicked exposure')
-    diagnostics = dict(version='linked-view-last-view-v2', rows=len(labels), clicks=int(labels.ctr.sum()),
+    diagnostics = dict(version='linked-view-last-view-v3', rows=len(labels), clicks=int(labels.ctr.sum()),
                        conversions=int(labels.cvr.sum()), ctr_observed=int(labels.ctr_mask.sum()),
                        cvr_observed=int(labels.cvr_mask.sum()), censored=int(labels.censored.sum()),
                        censored_cvr_negatives=int(((labels.ctr == 1) & ~labels.cvr_mask).sum()),

@@ -1,0 +1,8 @@
+{
+  "status": "UNMEASURED",
+  "scope": "Windows physical host RAM/CPU; separate from the measured Docker cgroup and Linux memory",
+  "exit_code": 1,
+  "error": "<3>WSL (81451 - ) ERROR: UtilAcceptVsock:271: accept4 failed 110",
+  "reason": "Read-only PowerShell CIM query failed at WSL interop; no host settings changed",
+  "docker_evidence": "smoke_full.json: benchmark.environment"
+}

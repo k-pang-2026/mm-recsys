@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+  "config_fingerprint": "5e1ac2441c40bd52b317ec769c58df6cb86735ff2dfe20fe1dfd2dfd52e5c734",
+  "stages": [
+    {
+      "stage": "data",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "data"
+      ],
+      "exit_code": 0,
+      "seconds": 13.558110800999202,
+      "log": "docs/results/experiments/A/pdf_docker_20261111/runtime/full/logs/prepare-data-1794398995932271735.log"
+    },
+    {
+      "stage": "audit",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "audit"
+      ],
+      "exit_code": 0,
+      "seconds": 11.11078378899947,
+      "log": "docs/results/experiments/A/pdf_docker_20261111/runtime/full/logs/prepare-audit-1794399009490464392.log"
+    },
+    {
+      "stage": "embeddings",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "embeddings"
+      ],
+      "exit_code": 0,
+      "seconds": 8.846740068000145,
+      "log": "docs/results/experiments/A/pdf_docker_20261111/runtime/full/logs/prepare-embeddings-1794399020646356505.log"
+    },
+    {
+      "stage": "indexes",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "indexes"
+      ],
+      "exit_code": 0,
+      "seconds": 1.7201284999991913,
+      "log": "docs/results/experiments/A/pdf_docker_20261111/runtime/full/logs/prepare-indexes-1794399029493125625.log"
+    },
+    {
+      "stage": "recommendation",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "recommendation"
+      ],
+      "exit_code": 0,
+      "seconds": 33.25319277500057,
+      "log": "docs/results/experiments/A/pdf_docker_20261111/runtime/full/logs/prepare-recommendation-1794399031213255761.log"
+    },
+    {
+      "stage": "warmup",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "warmup"
+      ],
+      "exit_code": 0,
+      "seconds": 31.355942397000035,
+      "log": "docs/results/experiments/A/pdf_docker_20261111/runtime/full/logs/prepare-warmup-1794399064518733881.log"
+    }
+  ],
+  "artifact_state_before": {
+    "data_manifest": true,
+    "search_indexes": true,
+    "recommendation": true
+  },
+  "elapsed_seconds": 99.85500267899988,
+  "scope": "artifact readiness; no full-test quality claim"
+}

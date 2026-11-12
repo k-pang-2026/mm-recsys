@@ -1,0 +1,13 @@
+{
+  "test_log_collection": {
+    "compose_cli_exit_code": 130,
+    "container_continued_running": true,
+    "observed_oom_killed": false,
+    "recovered_progress_users": 3500,
+    "total_users": 10000,
+    "original_cli_log": "raw/quality-test.log",
+    "recovered_container_log": "raw/quality-test-container.log",
+    "cause": "CLI attachment termination cause not established; evaluation process continued; not rerun"
+  },
+  "offline_container_healthcheck": "API image healthcheck expects HTTP server; quality command intentionally runs an offline evaluator. Actual API service is healthy."
+}

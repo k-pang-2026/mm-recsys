@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-11-12T06:48:57.657Z",
+  "errors": [],
+  "failures": [],
+  "selected": "결과 파일\n\nevaluation_full_test.json",
+  "final_metric": "최종 종합 품질\n\nPASS",
+  "ab": "사용자 단위 A/B 실험\n\n합성 실험 · 20명/군 · 2일 · seed=42 · 사용자별 적응 학습 상태 분리\n\n{\n\"control\":\"popularity\"\n\"treatment\":\"full_pipeline\"\n}\n\nControl CVR\n\n1.2500%\n\nTreatment CVR\n\n0.7500%\n\nCVR 상대 lift\n\n-40.00%\n\nCTR = 클릭/노출 · CVR = 구매/노출. control이 0이면 상대 lift는 정의되지 않습니다.\n\nCTR\nCVR\n탐색 슬롯 비율\n0%\n5%\n10%\n15%\n20%\nControl\nTreatment\n관측 비율\n비율\n\n사용자 cluster CVR 차이 95% CI: [-1.9483, +0.9483]%p\n\n양측 cluster Z p-value: 0.498639\n\n반복 노출을 독립 표본으로 세지 않습니다. 양의 lift나 유의성은 보장되지 않으며 실제 서비스 효과로 해석할 수 없습니다.",
+  "status": "FAIL",
+  "error": "Error: The actual full A/B population or negative CVR result is missing"
+}

@@ -10,6 +10,23 @@ from src.recommendation.testing import service_fixture
 from src.simulator.split import chronological_split
 
 
+def test_journal_closes_connections_and_rolls_back_failed_transactions(tmp_path):
+    import sqlite3
+    journal=Journal(tmp_path/'journal.db')
+    with journal.connect() as db:
+        db.execute('CREATE TABLE probe (value INTEGER)')
+    with pytest.raises(sqlite3.ProgrammingError,match='closed'):
+        db.execute('SELECT 1')
+    with pytest.raises(RuntimeError,match='abort'):
+        with journal.connect() as failed:
+            failed.execute('INSERT INTO probe VALUES (1)')
+            raise RuntimeError('abort')
+    with pytest.raises(sqlite3.ProgrammingError,match='closed'):
+        failed.execute('SELECT 1')
+    with journal.connect() as check:
+        assert check.execute('SELECT COUNT(*) FROM probe').fetchone()[0]==0
+
+
 def test_journal_batches_preserve_rows_and_snapshot_split_contract(tmp_path):
     cfg, data = service_fixture(tmp_path)
     source = Path(cfg['paths']['data_dir'])
@@ -68,13 +85,16 @@ def test_watch_does_not_rebuild_an_unchanged_deferred_snapshot(tmp_path, monkeyp
     cfg, _ = service_fixture(tmp_path)
     cfg['paths']['results_dir'] = str(tmp_path / 'results')
     bootstrap(cfg)
+    cfg['serving']['ct']['retrain_log_threshold'] = 1
+    _, journal, _ = runner.components(cfg)
+    journal.event(dict(event_id='pending', user_id='u', product_id='p00', event_type='view'), 10.)
     monkeypatch.setattr(sys, 'argv', ['ct', '--train', '--watch'])
     monkeypatch.setattr(runner, 'load_config', lambda: cfg)
     calls = []
     def deferred(*args):
         calls.append(True)
-        return dict(status='WAITING_FOR_LABELS')
-    monkeypatch.setattr(runner, 'trigger', deferred)
+        return dict(status='WAITING_FOR_LABELS', data_path='fixture-snapshot')
+    monkeypatch.setattr(runner, 'build_from_journal', deferred)
     polls = []
     def sleep(_):
         polls.append(True)
@@ -85,3 +105,31 @@ def test_watch_does_not_rebuild_an_unchanged_deferred_snapshot(tmp_path, monkeyp
         runner.main()
     assert len(calls) == 1
     assert '스냅샷을 다시 생성하지 않습니다' in capsys.readouterr().err
+
+
+def test_deferred_retry_survives_restart_and_throttles_changing_input(tmp_path, monkeypatch):
+    from src.ct import retrain_trigger as runner
+    from src.ct.bootstrap import bootstrap
+    cfg, _ = service_fixture(tmp_path)
+    cfg['paths']['results_dir'] = str(tmp_path / 'results')
+    cfg['serving']['ct'].update(retrain_log_threshold=1, retry_seconds=300)
+    bootstrap(cfg)
+    _, journal, registry = runner.components(cfg)
+    before = registry.read()
+    now = [1000.]
+    monkeypatch.setattr(runner.time, 'time', lambda: now[0])
+    calls = []
+    def deferred(*args):
+        calls.append(True)
+        return dict(status='WAITING_FOR_LABELS', eligibility={'ready': False}, data_path='fixture-snapshot')
+    journal.event(dict(event_id='first', user_id='u', product_id='p00', event_type='view'), 10.)
+    assert runner.trigger(cfg, deferred)['status'] == 'WAITING_FOR_LABELS'
+    journal.event(dict(event_id='unlinked', user_id='u', product_id='p00', event_type='view'), 11.)
+    assert runner.trigger(cfg, deferred)['reason'] == 'retry_cooldown'
+    assert len(calls) == 1
+    now[0] += 300
+    runner.trigger(cfg, deferred)
+    assert len(calls) == 2
+    now[0] += 300
+    assert runner.trigger(cfg, deferred)['reason'] == 'unchanged_observations'
+    assert len(calls) == 2 and registry.read() == before

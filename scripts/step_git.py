@@ -111,7 +111,6 @@ def main() -> int:
     root=Path(git('rev-parse','--show-toplevel')).resolve()
     if Path.cwd().resolve()!=root:raise ValueError('run from repository root')
     branch=git('branch','--show-current')
-    allowed=[f'feat/{args.role}/{args.step}-']
     plan_path=root/'config/team_workflow.yaml';plan=None
     if plan_path.exists():
         import yaml

@@ -38,6 +38,22 @@ def test_label_duplicate_and_window():
     assert labels.cvr.sum()==0
 
 
+def test_cvr_negative_waits_for_last_click_observation_window():
+    at,imps,events=fixture()
+    imps=imps.iloc[:1].copy()
+    events=events.iloc[:1].copy()
+    events.timestamp=at+pd.Timedelta(seconds=1700)
+    # The exposure is mature, but this late click can still convert until t=3500.
+    labels,_=build_labels(imps,events,at,at+pd.Timedelta(seconds=2000),1800)
+    assert labels.ctr_mask.tolist()==[True] and labels.cvr_mask.tolist()==[False]
+    mature,_=build_labels(imps,events,at,at+pd.Timedelta(seconds=3500),1800)
+    assert mature.cvr_mask.tolist()==[True] and mature.cvr.tolist()==[0]
+    purchase=events.assign(event_id='purchase',event_type='purchase',
+                           timestamp=at+pd.Timedelta(seconds=2500),impression_id=None)
+    positive,_=build_labels(imps,pd.concat([events,purchase]),at,at+pd.Timedelta(seconds=2500),1800)
+    assert positive.cvr_mask.tolist()==[True] and positive.cvr.tolist()==[1]
+
+
 def test_deepfm_fm_linear_dnn_and_conditional_gradients():
     torch.manual_seed(4); model=DeepFM([4,5],3,dict(embedding_dim=4,hidden_dims=[8,4]))
     logits=model(torch.tensor([[1,2],[2,3]]),torch.ones(2,3))

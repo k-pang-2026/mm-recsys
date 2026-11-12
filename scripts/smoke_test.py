@@ -33,12 +33,7 @@ def multipart(url: str, text: str, image: bytes) -> dict:
         return json.load(response)
 
 
-def quantiles(values: list[float]) -> dict:
-    import numpy as np
-    if not values or not np.isfinite(values).all():
-        raise ValueError('finite nonempty samples required')
-    stats = np.asarray(np.percentile(values, [50, 95, 99]))
-    return {name: float(stats[i]) for i, name in enumerate(('p50_ms', 'p95_ms', 'p99_ms'))}
+from src.evaluation.metrics import latency_percentiles as quantiles
 
 
 def run(cfg: dict, api: str, dashboard: str, benchmark: bool) -> dict:

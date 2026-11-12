@@ -1,0 +1,37 @@
+{
+  "started_at": "2026-11-11T13:30:45.564Z",
+  "browser": "143.0.7499.4",
+  "errors": [],
+  "failedRequests": [],
+  "captures": [
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_tab_0.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_tab_1.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_tab_2.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_tab_3.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_tab_4.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_purchase_ledger.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_tab_5.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_clip_vectors.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_search.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_recommend.png",
+    "docs/results/experiments/A/pdf_completion_20261111/browser_verified/browser_session.png"
+  ],
+  "checks": {
+    "api_docs_link": true,
+    "tab_검색": true,
+    "tab_추천": true,
+    "tab_A/B 실험": true,
+    "tab_시스템": true,
+    "tab_EDA·구매 이력": true,
+    "tab_상품·CLIP": true,
+    "search_images": true,
+    "actual_click_comparison": true
+  },
+  "api_docs": {
+    "url": "http://localhost:8000/docs",
+    "status": 200
+  },
+  "comparison_rendered_text": "미래 행동에 대한 추천 품질\n\n고정 사용자 10,000명 · 정답 사용자 7,473명 · 콜드스타트 300명 · top50\n\n추천 비교 지표\n\nHitRate@50\n\nNDCG@50\n\nCoverage\n\n인기순\nTwo Tower\nDeepFM\n전체 파이프라인\n0\n0.2\n0.4\n0.6\n동일 사용자·정답·카탈로그 기준\nHitRate@50\n기준 0.2\n\nCVR AUC: 0.5056053550350423 · 클릭 노출 56,329개 · 구매 양성 4,596개\n\n사용자가 확인한 기존 계약에 따라 AUC ≥ 0.70은 CTR에 적용하고, CVR AUC는 별도로 보고합니다.\n\n사용자 추천 데모\n\n사용자 ID\n\n추천 결과 수\n\n추천 실행\n\n빨간색 릴랙스핏 데님 반바지 · P001085 · 66,000원\n\n하의 / shorts / 데님 반바지 · Value · MAB 탐색\n\n이 상품 클릭 후 추천 비교\n\n빨간색 슬림핏 폴로 셔츠 · P000628 · 19,000원\n\n상의 / shirts / 폴로 셔츠 · Studio · MAB 탐색\n\n이 상품 클릭 후 추천 비교\n\n갈색 레귤러핏 샌들 · P000022 · 48,000원\n\n신발 / outdoor / 샌들 · Studio · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n갈색 릴랙스핏 티셔츠 · P001816 · 26,000원\n\n상의 / casual / 티셔츠 · Classic · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n노란색 슬림핏 치노 · P000229 · 33,000원\n\n하의 / trousers / 치노 · Muse · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n빨간색 릴랙스핏 니트 조끼 · P000255 · 41,000원\n\n상의 / knitwear / 니트 조끼 · Studio · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n빨간색 오버핏 가디건 · P000068 · 29,000원\n\n상의 / knitwear / 가디건 · Value · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n빨간색 슬림핏 스웨터 · P000462 · 29,000원\n\n상의 / knitwear / 스웨터 · Muse · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n흰색 레귤러핏 니트 조끼 · P000301 · 32,000원\n\n상의 / knitwear / 니트 조끼 · Muse · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n흰색 레귤러핏 폴로 셔츠 · P000104 · 24,000원\n\n상의 / shirts / 폴로 셔츠 · Classic · 인기·최근 상승 상품\n\n이 상품 클릭 후 추천 비교\n\n실제 클릭 전후 비교\n\n클릭 전후 추천 API 응답을 모두 받았습니다.\n\n{\n\"before\":{\n\"ok\":true\n\"status_code\":200\n\"data\":{\n\"user_id\":\"browser-1794403853305\"\n\"recommendations\":[\n0:{\n\"product_id\":\"P001085\"\n\"score\":0.5755693581780539\n\"reason\":\"MAB 탐색\"\n\"is_exploration\":true\n}\n1:{\n\"product_id\":\"P000628\"\n\"score\":0\n\"reason\":\"MAB 탐색\"\n\"is_exploration\":true\n}\n2:{\n\"product_id\":\"P000022\"\n\"score\":1.0201863354037266\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n3:{\n\"product_id\":\"P001816\"\n\"score\":0.9906832298136645\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n4:{\n\"product_id\":\"P000229\"\n\"score\":0.9301242236024845\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n5:{\n\"product_id\":\"P000255\"\n\"score\":0.9078674948240165\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n6:{\n\"product_id\":\"P000068\"\n\"score\":0.8928571428571429\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n7:{\n\"product_id\":\"P000462\"\n\"score\":0.8856107660455487\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n8:{\n\"product_id\":\"P000301\"\n\"score\":0.8561076604554865\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n9:{\n\"product_id\":\"P000104\"\n\"score\":0.8467908902691511\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n]\n\"pipeline_latency\":{\n\"candidate_ms\":2.8463569997256855\n\"ranking_ms\":20.13462300055835\n\"reranking_ms\":7.114288999218843\n\"total_ms\":30.095268999502878\n}\n\"session_context\":{\n\"recent_clicks\":[]\n\"session_interest\":NULL\n}\n}\n\"request_id\":\"04917461bfa94eb9a6f4c73c4a830e48\"\n\"error\":NULL\n}\n\"event\":{\n\"event_id\":\"d5c0a9ce6f0941f4b7b1593b383bba68\"\n\"user_id\":\"browser-1794403853305\"\n\"product_id\":\"P001085\"\n\"category\":\"denim shorts\"\n\"event_type\":\"view\"\n\"session_id\":\"dashboard-demo\"\n}\n\"response\":{\n\"ok\":true\n\"status_code\":200\n\"data\":{\n\"applied\":true\n\"features\":{\n\"recent_clicks\":[\n0:\"P001085\"\n]\n\"session_clicks\":1\n\"session_interest\":\"denim shorts\"\n\"profile\":{}\n}\n}\n\"request_id\":NULL\n\"error\":NULL\n}\n\"after\":{\n\"ok\":true\n\"status_code\":200\n\"data\":{\n\"user_id\":\"browser-1794403853305\"\n\"recommendations\":[\n0:{\n\"product_id\":\"P001085\"\n\"score\":0.5755693581780539\n\"reason\":\"MAB 탐색\"\n\"is_exploration\":true\n}\n1:{\n\"product_id\":\"P000628\"\n\"score\":0\n\"reason\":\"MAB 탐색\"\n\"is_exploration\":true\n}\n2:{\n\"product_id\":\"P000022\"\n\"score\":1.0201863354037266\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n3:{\n\"product_id\":\"P001816\"\n\"score\":0.9906832298136645\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n4:{\n\"product_id\":\"P000229\"\n\"score\":0.9301242236024845\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n5:{\n\"product_id\":\"P000255\"\n\"score\":0.9078674948240165\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n6:{\n\"product_id\":\"P000068\"\n\"score\":0.8928571428571429\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n7:{\n\"product_id\":\"P000462\"\n\"score\":0.8856107660455487\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n8:{\n\"product_id\":\"P000301\"\n\"score\":0.8561076604554865\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n9:{\n\"product_id\":\"P000104\"\n\"score\":0.8467908902691511\n\"reason\":\"인기·최근 상승 상품\"\n\"is_exploration\":false\n}\n]\n\"pipeline_latency\":{\n\"candidate_ms\":1.8600130006234394\n\"ranking_ms\":16.92841699878045\n\"reranking_ms\":6.8696260004799115\n\"total_ms\":25.6580559998838\n}\n\"session_context\":{\n\"recent_clicks\":[\n0:\"P001085\"\n]\n\"session_interest\":\"denim shorts\"\n}\n}\n\"request_id\":\"c49d299605774146a4e9ae41805a9137\"\n\"error\":NULL\n}\n}",
+  "status": "PASS",
+  "completed_at": "2026-11-11T13:30:55.587Z"
+}

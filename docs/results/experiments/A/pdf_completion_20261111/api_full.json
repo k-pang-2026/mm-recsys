@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": {
+    "api_schemas": "PASS"
+  },
+  "smoke": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/smoke_full.json",
+    "sha256": "3a4c2a383f6d26d718f608007a058093225ad9dfaac2bd9ca800181deb0d850d"
+  },
+  "semantic_examples": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/pdf_examples.json",
+    "sha256": "97e9f8bdc051d49576c61189832ab7a0f28fea581c74e65dd38ab14b2c64f923"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "user_id": "browser-1794403853305",
+  "events": [
+    {
+      "id": "d5c0a9ce6f0941f4b7b1593b383bba68",
+      "user_id": "browser-1794403853305",
+      "product_id": "P001085",
+      "kind": "view",
+      "request_id": "04917461bfa94eb9a6f4c73c4a830e48"
+    }
+  ],
+  "requests": [
+    {
+      "id": "04917461bfa94eb9a6f4c73c4a830e48",
+      "items": "[\"P001085\", \"P000628\", \"P000022\", \"P001816\", \"P000229\", \"P000255\", \"P000068\", \"P000462\", \"P000301\", \"P000104\"]"
+    },
+    {
+      "id": "c49d299605774146a4e9ae41805a9137",
+      "items": "[\"P001085\", \"P000628\", \"P000022\", \"P001816\", \"P000229\", \"P000255\", \"P000068\", \"P000462\", \"P000301\", \"P000104\"]"
+    }
+  ],
+  "scope": "Real Chromium click is linked in SQLite to the original displayed recommendation, with one new recommendation only after the click",
+  "source_hashes": {
+    "dashboard/app.py": "f1d4c3c05aa741e4dfb3fc18311cea640e6b1ec0887b5a47f9ba35833885bac7",
+    "dashboard/data.py": "58265d3611892c54873fed5651ff052015938abb1d60c7dd88e88afa5aa0b542",
+    "dashboard/explore.py": "284833dcfa68f3c679078a3211170d7bc0a1fbc806e10aab94b5eeab290e2184"
+  }
+}

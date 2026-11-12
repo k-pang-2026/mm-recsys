@@ -6,7 +6,6 @@ import math
 import os
 import re
 import base64
-from collections import deque
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -81,32 +80,50 @@ def search_payload(text: str, image: bytes | None, top_k: int) -> dict:
 
 
 def ct_log(root: Path, limit: int = 100) -> dict:
+    if limit < 1:
+        raise ValueError('CT log limit must be positive')
     path = root / 'ct_log.jsonl'
     if not path.is_file():
         return dict(status='UNMEASURED', rows=[], invalid_lines=0)
-    if path.stat().st_size > 10_000_000:
-        return dict(status='UNMEASURED', rows=[], invalid_lines=0, reason='CT 로그가 10MB를 초과했습니다.')
+    with path.open('rb') as stream:
+        position = stream.seek(0, os.SEEK_END)
+        remaining = min(position, 10_000_000)
+        chunks, newlines = [], 0
+        while remaining and newlines <= limit:
+            size = min(65536, remaining)
+            position -= size; remaining -= size
+            stream.seek(position)
+            block = stream.read(size)
+            chunks.append(block); newlines += block.count(b'\n')
+    lines = b''.join(reversed(chunks)).split(b'\n')
+    if position:
+        lines = lines[1:]  # The first chunk may start inside a UTF-8/JSON record.
+    if lines and not lines[-1]:
+        lines.pop()
     rows, invalid = [], 0
-    with path.open(encoding='utf-8') as stream:
-        for line in deque(stream, maxlen=limit):
-            try:
-                value = json.loads(line)
-                if not isinstance(value, dict):
-                    raise ValueError('CT log entry must be an object')
-                rows.append(value)
-            except (ValueError, TypeError):
-                invalid += 1
-    return dict(status='MEASURED', rows=rows, invalid_lines=invalid)
+    for line in lines[-limit:]:
+        try:
+            value = json.loads(line.decode('utf-8'))
+            if not isinstance(value, dict):
+                raise ValueError('CT log entry must be an object')
+            rows.append(value)
+        except (ValueError, TypeError):
+            invalid += 1
+    return dict(status='MEASURED', rows=rows, invalid_lines=invalid,
+                truncated=position > 0 and len(lines) < limit)
 
 
 def api_call(api_url: str, method: str, route: str, *, timeout: float = 10,
-             payload: dict | None = None, params: dict | None = None) -> dict:
+             payload: dict | None = None, params: dict | None = None,
+             request_id: str | None = None) -> dict:
     if route not in ('/health', '/ready', '/api/search', '/api/recommend', '/api/event'):
         raise ValueError('unsupported dashboard API route')
     try:
         with requests.Session() as session:
             session.trust_env = False
-            response = session.request(method, api_url + route, json=payload, params=params, timeout=timeout, allow_redirects=False)
+            headers = {'X-Recommendation-Request-ID': request_id} if request_id else {}
+            response = session.request(method, api_url + route, json=payload, params=params,
+                                       headers=headers, timeout=timeout, allow_redirects=False)
         try:
             body = response.json()
         except ValueError:
@@ -133,6 +150,7 @@ def api_call(api_url: str, method: str, route: str, *, timeout: float = 10,
             except (ValueError, KeyError, TypeError):
                 return dict(ok=False, status_code=response.status_code, data=None, error='API 응답 형식이 계약과 다릅니다.')
         return dict(ok=response.ok, status_code=response.status_code, data=body,
+                    request_id=response.headers.get('X-Recommendation-Request-ID'),
                     error=None if response.ok else f'API 요청 실패 (HTTP {response.status_code})')
     except requests.RequestException:
         return dict(ok=False, status_code=None, data=None, error='API에 연결할 수 없습니다. 서비스 실행과 API_URL을 확인하세요.')

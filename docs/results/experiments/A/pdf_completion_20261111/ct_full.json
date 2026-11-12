@@ -1,0 +1,195 @@
+{
+  "status": "PARTIAL",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "observed_new_events": 103504,
+  "threshold": 10000,
+  "retraining": {
+    "status": "RETAINED",
+    "version": "v1.1",
+    "active": "v1.0",
+    "new_events": 103504,
+    "through_seq": 103508,
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089",
+      "baseline": {
+        "ctr_auc": 0.9660557039603308,
+        "ctr_logloss": 0.14438927489894238,
+        "hit_rate_at_50": 0.6960438699569135,
+        "truth_users": 7659,
+        "ctr_samples": 247803,
+        "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089"
+      },
+      "candidate": {
+        "ctr_auc": 0.9659645561235506,
+        "ctr_logloss": 0.14402561635487068,
+        "hit_rate_at_50": 0.6993080036558298,
+        "truth_users": 7659,
+        "ctr_samples": 247803,
+        "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089"
+      },
+      "training_reports": {
+        "candidate": "aab1d155f09c3c784ca4223de5fd5dddfcdaaeb65fdc2f2449c7116096a55813",
+        "ranking": "0c781514af3b5929a8cbebe6ec530476aae99c49d46e4697985b16e271063a5e",
+        "session": "000dee9461804071aaaea17a8b87e60eaa96a00103fd2da3c569b61d3a9c1d1f"
+      }
+    }
+  },
+  "repeated_trigger": {
+    "status": "WAITING",
+    "new_events": 47,
+    "threshold": 10000
+  },
+  "monitor": {
+    "event": "monitor",
+    "status": "MEASURED",
+    "ctr": 0.012908729030423657,
+    "hit_rate_at_50": 0.32890855457227136,
+    "clicks": 454,
+    "exposures": 35170,
+    "mature_requests": 805,
+    "top50_requests": 678,
+    "hit_requests": 223,
+    "alerts": [],
+    "window_start": 1794324333.4275272,
+    "observed_through": 1794410733.4275272,
+    "attribution_seconds": 3600,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 20
+    }
+  },
+  "real_reload_and_rollback": false,
+  "reloads": [],
+  "checks": {
+    "full_three_model_retraining": true,
+    "threshold": true,
+    "event_watermark": true,
+    "paired_valid": true,
+    "real_reload_and_rollback": false
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "036a804278c75bf41af4f5bff2a0f0a8a08c2c932165bbb99b6e6f4b87452ae8",
+    "src/ct/verify_serving.py": "3a3d3b7b21cdf5a839a2f4612a5d263682de9d91ab7cca86fa8f0425e68c6c45",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "e35dcc02072ae349844499c4e19bf08986fded1c0f9ea9e49f2692a90b2ff174",
+    "src/ct/snapshot.py": "60c5ac8995445d9a469192518cf64e57686a40108e5cb987d8f5a886baa3e745",
+    "src/ct/retrain_trigger.py": "6e5d7ffd07e1949942b290fc1581caa48d15f30eb59b70e402bdd3d6041b688a",
+    "src/ct/training.py": "3ad543aa77e4d38c0673c764404c104f7938ddabcc6e4af9f99b2315dd58924a",
+    "src/ct/verify_ct.py": "49615c1730cd28912fd97c5ff8fe82d4b696c6397bb339c9035f9b01f989cfd0",
+    "src/ct/bootstrap.py": "841307aa2f7ae7357856f4ea1db9b17fbe77b5e4cfc006598e7e72bda0497e1e",
+    "docker/simulator.py": "3df5e278f78ddc6dc3e883aaf0aecef8d538ebddbbcf1b5cce82bb674afa2105",
+    "docker/ct_worker.py": "9feaf6486ed500e4be54c9c80e3a7634b79a4253d5184279d44d1d0da8bfa258"
+  },
+  "automatic_worker": true,
+  "training_started": {
+    "at": "2026-11-11T14:40:34.140680+00:00",
+    "event": "training_started",
+    "parent": "v1.0",
+    "version": "v1.1",
+    "new_events": 103504,
+    "through_seq": 103508
+  },
+  "training_finished": {
+    "at": "2026-11-11T15:24:36.405568+00:00",
+    "event": "retained",
+    "version": "v1.1",
+    "active": "v1.0",
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089",
+      "baseline": {
+        "ctr_auc": 0.9660557039603308,
+        "ctr_logloss": 0.14438927489894238,
+        "hit_rate_at_50": 0.6960438699569135,
+        "truth_users": 7659,
+        "ctr_samples": 247803,
+        "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089"
+      },
+      "candidate": {
+        "ctr_auc": 0.9659645561235506,
+        "ctr_logloss": 0.14402561635487068,
+        "hit_rate_at_50": 0.6993080036558298,
+        "truth_users": 7659,
+        "ctr_samples": 247803,
+        "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089"
+      },
+      "training_reports": {
+        "candidate": "aab1d155f09c3c784ca4223de5fd5dddfcdaaeb65fdc2f2449c7116096a55813",
+        "ranking": "0c781514af3b5929a8cbebe6ec530476aae99c49d46e4697985b16e271063a5e",
+        "session": "000dee9461804071aaaea17a8b87e60eaa96a00103fd2da3c569b61d3a9c1d1f"
+      }
+    }
+  },
+  "new_observations_by_split": {
+    "train": {
+      "new_events": 0,
+      "new_exposure_labels": {
+        "version": "linked-view-last-view-v3",
+        "rows": 0,
+        "clicks": 0,
+        "conversions": 0,
+        "ctr_observed": 0,
+        "cvr_observed": 0,
+        "censored": 0,
+        "censored_cvr_negatives": 0,
+        "unassigned_purchases": 0,
+        "window_seconds": 1800,
+        "start": "2025-12-02T00:00:00+00:00",
+        "end": "2025-12-27T21:35:47.522400+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 0,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ]
+      }
+    },
+    "valid": {
+      "new_events": 0,
+      "new_exposure_labels": {
+        "version": "linked-view-last-view-v3",
+        "rows": 0,
+        "clicks": 0,
+        "conversions": 0,
+        "ctr_observed": 0,
+        "cvr_observed": 0,
+        "censored": 0,
+        "censored_cvr_negatives": 0,
+        "unassigned_purchases": 0,
+        "window_seconds": 1800,
+        "start": "2025-12-27T21:35:48.580200+00:00",
+        "end": "2025-12-31T09:51:41.846400+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 0,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ]
+      }
+    },
+    "test": {
+      "new_events": 103504,
+      "scope": "count inferred from full-minus-train/valid; CT test file and labels not opened"
+    }
+  },
+  "scope": "Default Compose simulator launched the real CT worker; accumulated actual arrival-time Markov events and linked synthetic API observations triggered full three-model training and unchanged paired-valid selection",
+  "limitations": [
+    "Synthetic traffic is not production lift evidence",
+    "Chronological 80/10/10 split is preserved; newest observations may remain held out",
+    "Collection was slowed to one event per minute during the single training proof; 10000-event threshold unchanged",
+    "Natural retention does not establish promotion or rollback"
+  ]
+}

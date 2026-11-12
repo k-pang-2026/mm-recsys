@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "commands": [
+    {
+      "command": [
+        "/home/peachpetal/ecommerce/mm-recsys/.venv/bin/python",
+        ".cache/final-validation-20261112/prepare_submission.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.9640750885009766
+    },
+    {
+      "command": [
+        "/home/peachpetal/ecommerce/mm-recsys/.venv/bin/python",
+        "scripts/check_submission.py",
+        "--api-url",
+        "http://127.0.0.1:8000",
+        "--output-dir",
+        "docs/results/experiments/A/final_validation_20261112/submission",
+        "--evidence-dir",
+        "docs/results/experiments/A/final_validation_20261112",
+        "--integration-checks",
+        "docs/results/experiments/A/final_validation_20261112/integration_checks.json",
+        "--require-ready"
+      ],
+      "exit_code": 0,
+      "seconds": 372.33077931404114
+    },
+    {
+      "command": [
+        "/home/peachpetal/ecommerce/mm-recsys/.venv/bin/python",
+        "scripts/check_submission.py",
+        "--api-url",
+        "http://127.0.0.1:8000",
+        "--output-dir",
+        "docs/results/experiments/A/final_validation_20261112/submission",
+        "--evidence-dir",
+        "docs/results/experiments/A/final_validation_20261112",
+        "--integration-checks",
+        "docs/results/experiments/A/final_validation_20261112/integration_checks.json",
+        "--require-ready",
+        "--verify-existing"
+      ],
+      "exit_code": 0,
+      "seconds": 1.7382709980010986
+    },
+    {
+      "command": [
+        "/home/peachpetal/ecommerce/mm-recsys/.venv/bin/python",
+        "scripts/publish_integration_dashboard.py",
+        "--submission",
+        "docs/results/experiments/A/final_validation_20261112/submission/checks.json",
+        "--output",
+        "docs/results/experiments/A/final_validation_20261112/published/evaluation_full_test.json"
+      ],
+      "exit_code": 0,
+      "seconds": 2.456146240234375
+    }
+  ]
+}

@@ -36,7 +36,7 @@ def evaluate(cfg: dict, split: str) -> dict:
     training_path = output / f'ranking_training_{cfg["scale"]}.json'
     selection = json.loads(selection_path.read_text())
     training = json.loads(training_path.read_text())
-    data, labels, diagnostics = prepare(cfg, split)
+    data, labels, diagnostics = prepare(cfg, split, label_splits=(split,))
     model, encoder, meta = load_ranking(cfg, data)
     validate_selection(selection, training, meta)
     table = encoder.metadata.item_table(data['products'])

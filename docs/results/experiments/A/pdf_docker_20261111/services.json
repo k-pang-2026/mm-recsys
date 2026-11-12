@@ -1,0 +1,115 @@
+[
+  {
+    "Command": "\"python -m docker.ap…\"",
+    "CreatedAt": "2026-11-11 20:55:27 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "643107b4abac",
+    "Image": "mm-recsys-pdf-refactor-20261111-api-server",
+    "Labels": "desktop.docker.io/binds/6/Target=/app/verification-data,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8000/tcp=127.0.0.1:19000,desktop.docker.io/wsl-distro=Ubuntu,desktop.docker.io/binds/6/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/data,com.docker.compose.config-hash=0656e7900beb4498e06d5f70f484175a7b60206e7f8cb619cb22a2b0d9c8f00b,com.docker.compose.depends_on=redis:service_healthy:false,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/compose.yaml,com.docker.compose.version=5.5.1,desktop.docker.io/binds/1/Target=/app/verification-config.yaml,desktop.docker.io/binds/4/SourceKind=wsl2DistroFile,desktop.docker.io/binds/1/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/config.yaml,desktop.docker.io/binds/0/Target=/app/verification-models,com.docker.compose.image=sha256:23ff14777269d325f265ed09067f0d52c108e37f0d44a567bc05456398405f65,com.docker.compose.service=api-server,desktop.docker.io/binds/2/Source=/home/peachpetal/ecommerce/mm-recsys/data,desktop.docker.io/binds/2/Target=/app/data,com.docker.compose.project=mm-recsys-pdf-refactor-20261111,desktop.docker.io/binds/4/Target=/app/docs/results,com.docker.compose.container-number=1,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,desktop.docker.io/binds/0/SourceKind=wsl2DistroFile,desktop.docker.io/binds/2/SourceKind=wsl2DistroFile,desktop.docker.io/binds/3/Source=/home/peachpetal/ecommerce/mm-recsys/models,desktop.docker.io/binds/3/Target=/app/models,desktop.docker.io/binds/6/SourceKind=wsl2DistroFile,desktop.docker.io/binds/0/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/models,desktop.docker.io/binds/1/SourceKind=wsl2DistroFile,desktop.docker.io/binds/3/SourceKind=wsl2DistroFile,desktop.docker.io/binds/4/Source=/home/peachpetal/ecommerce/mm-recsys/docs/results",
+    "LocalVolumes": "1",
+    "Mounts": "/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,mm-recsys_hf_c…,/run/desktop/m…",
+    "Name": "mm-recsys-pdf-refactor-20261111-api-server-1",
+    "Names": "mm-recsys-pdf-refactor-20261111-api-server-1",
+    "Networks": "mm-recsys-pdf-refactor-20261111_default",
+    "Ports": "127.0.0.1:19000->8000/tcp",
+    "Project": "mm-recsys-pdf-refactor-20261111",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 8000,
+        "PublishedPort": 19000,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "21 minutes ago",
+    "Service": "api-server",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 7 minutes (healthy)"
+  },
+  {
+    "Command": "\"python -m docker.da…\"",
+    "CreatedAt": "2026-11-11 20:55:27 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "a2004947420f",
+    "Image": "mm-recsys-pdf-refactor-20261111-dashboard",
+    "Labels": "desktop.docker.io/binds/0/Source=/home/peachpetal/ecommerce/mm-recsys/data,desktop.docker.io/binds/0/SourceKind=wsl2DistroFile,desktop.docker.io/binds/0/Target=/app/data,com.docker.compose.service=dashboard,desktop.docker.io/binds/1/Target=/app/models,desktop.docker.io/binds/2/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/data,desktop.docker.io/binds/2/SourceKind=wsl2DistroFile,desktop.docker.io/binds/3/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/models,desktop.docker.io/binds/4/SourceKind=wsl2DistroFile,desktop.docker.io/ports.scheme=v2,desktop.docker.io/ports/8501/tcp=127.0.0.1:19501,com.docker.compose.config-hash=2860662cbcee28f5173d2c61b13803493deb3f17a62275f090b821f80cfbaf45,desktop.docker.io/binds/1/Source=/home/peachpetal/ecommerce/mm-recsys/models,desktop.docker.io/binds/2/Target=/app/verification-data,desktop.docker.io/binds/3/SourceKind=wsl2DistroFile,desktop.docker.io/binds/4/Target=/app/docs/results,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.depends_on=api-server:service_healthy:false,com.docker.compose.image=sha256:637900804b0337080a531271a377fcc4998e1cddaee4c03622360302dccd9089,com.docker.compose.version=5.5.1,desktop.docker.io/binds/1/SourceKind=wsl2DistroFile,desktop.docker.io/binds/3/Target=/app/verification-models,desktop.docker.io/binds/4/Source=/home/peachpetal/ecommerce/mm-recsys/docs/results,com.docker.compose.container-number=1,com.docker.compose.oneoff=False,com.docker.compose.project=mm-recsys-pdf-refactor-20261111,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/compose.yaml,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys",
+    "LocalVolumes": "0",
+    "Mounts": "/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,/run/desktop/m…",
+    "Name": "mm-recsys-pdf-refactor-20261111-dashboard-1",
+    "Names": "mm-recsys-pdf-refactor-20261111-dashboard-1",
+    "Networks": "mm-recsys-pdf-refactor-20261111_default",
+    "Ports": "127.0.0.1:19501->8501/tcp",
+    "Project": "mm-recsys-pdf-refactor-20261111",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 8501,
+        "PublishedPort": 19501,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "21 minutes ago",
+    "Service": "dashboard",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 21 minutes (healthy)"
+  },
+  {
+    "Command": "\"docker-entrypoint.s…\"",
+    "CreatedAt": "2026-11-11 20:55:27 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "6231e073368d",
+    "Image": "redis:7",
+    "Labels": "com.docker.compose.image=sha256:cd953e4e9b4725f0d87a2b170c3d313ad641be5370033b46262e07f8010788a3,com.docker.compose.oneoff=False,com.docker.compose.service=redis,desktop.docker.io/ports.scheme=v2,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.project=mm-recsys-pdf-refactor-20261111,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/compose.yaml,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,com.docker.compose.version=5.5.1,desktop.docker.io/ports/6379/tcp=127.0.0.1:16392,com.docker.compose.config-hash=cc9b257c48abc0762ea0786c4b1fb3b92c8824ac8e37e263d30b134def056f8f",
+    "LocalVolumes": "1",
+    "Mounts": "mm-recsys-pdf-…",
+    "Name": "mm-recsys-pdf-refactor-20261111-redis-1",
+    "Names": "mm-recsys-pdf-refactor-20261111-redis-1",
+    "Networks": "mm-recsys-pdf-refactor-20261111_default",
+    "Ports": "127.0.0.1:16392->6379/tcp",
+    "Project": "mm-recsys-pdf-refactor-20261111",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 6379,
+        "PublishedPort": 16392,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "21 minutes ago",
+    "Service": "redis",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 21 minutes (healthy)"
+  },
+  {
+    "Command": "\"python -m docker.si…\"",
+    "CreatedAt": "2026-11-11 20:55:27 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "",
+    "ID": "b3496fbc3766",
+    "Image": "mm-recsys-pdf-refactor-20261111-simulator",
+    "Labels": "desktop.docker.io/binds/6/Source=/home/peachpetal/ecommerce/mm-recsys/data,desktop.docker.io/binds/6/Target=/app/data,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/compose.yaml,desktop.docker.io/binds/1/SourceKind=wsl2DistroFile,desktop.docker.io/binds/4/SourceKind=wsl2DistroFile,com.docker.compose.project=mm-recsys-pdf-refactor-20261111,desktop.docker.io/binds/4/Target=/app/verification-models,com.docker.compose.config-hash=0bc867b1c4871aed813163e6d0ccc74ff0f098379f5c113b57651298843e95fd,desktop.docker.io/binds/1/Source=/home/peachpetal/ecommerce/mm-recsys/docs/results,desktop.docker.io/binds/5/SourceKind=wsl2DistroFile,com.docker.compose.depends_on=dashboard:service_healthy:false,redis:service_healthy:false,api-server:service_healthy:false,com.docker.compose.service=simulator,desktop.docker.io/binds/3/SourceKind=wsl2DistroFile,desktop.docker.io/ports.scheme=v2,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,desktop.docker.io/binds/0/Source=/home/peachpetal/ecommerce/mm-recsys/models,desktop.docker.io/binds/0/SourceKind=wsl2DistroFile,desktop.docker.io/binds/1/Target=/app/docs/results,desktop.docker.io/binds/3/Target=/app/verification-data,desktop.docker.io/binds/6/SourceKind=wsl2DistroFile,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.version=5.5.1,desktop.docker.io/binds/0/Target=/app/models,desktop.docker.io/binds/3/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/data,desktop.docker.io/binds/5/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/config.yaml,com.docker.compose.container-number=1,com.docker.compose.image=sha256:6b9936bbbbc6bb731c7e30d3018b75ad197de7028e85c697e9bf20c64a626e7e,com.docker.compose.oneoff=False,desktop.docker.io/binds/4/Source=/home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/models,desktop.docker.io/binds/5/Target=/app/verification-config.yaml",
+    "LocalVolumes": "1",
+    "Mounts": "/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,/run/desktop/m…,mm-recsys_hf_c…,/run/desktop/m…",
+    "Name": "mm-recsys-pdf-refactor-20261111-simulator-1",
+    "Names": "mm-recsys-pdf-refactor-20261111-simulator-1",
+    "Networks": "mm-recsys-pdf-refactor-20261111_default",
+    "Ports": "",
+    "Project": "mm-recsys-pdf-refactor-20261111",
+    "Publishers": [],
+    "RunningFor": "21 minutes ago",
+    "Service": "simulator",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 3 minutes"
+  }
+]

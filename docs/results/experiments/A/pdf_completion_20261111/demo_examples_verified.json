@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "command": "demo examples --output-dir docs/results/docker/runtime-v44/full/pdf-demo-verification",
+  "checks": {
+    "search": true,
+    "real_clicks": true,
+    "session_recommendation": true,
+    "full_ab": true,
+    "isolated_ct_lifecycle": true
+  },
+  "sources": {
+    "docs/results/experiments/A/pdf_completion_20261111/pdf_demo/ct_drill.json": "9d512a03c50b5873d026164e39f31014a84af38252da437652fad916ced7e023",
+    "docs/results/experiments/A/pdf_completion_20261111/pdf_demo/search.json": "880cfe31aa3290a758dceb2a9bbeb23658e763a94f8797cc34397a23e75e005e",
+    "docs/results/experiments/A/pdf_completion_20261111/pdf_demo/recommendation.json": "a5d930cb4b9dffbb9a608cedee68fc7fd5d352af8b9c730e372c6c4d236a5d5e",
+    "docs/results/experiments/A/pdf_completion_20261111/pdf_demo/session_events.json": "a7feaf8be06923167012e3c1871e508ecddaaf7531eae4375baf2089775f28c4",
+    "docs/results/experiments/A/pdf_completion_20261111/ab_full_archive.json": "a44a96515f4a519f4ba18eee970ccc8912e33023b5c57734882b1e0e75989e44",
+    "docs/results/experiments/A/pdf_completion_20261111/ab_verification_full.json": "ab9c8cbff141e353cc5116ffca49d42c867a5bd3d10ca60d74af3409e694fc2d",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_examples.txt": "2126067d79a5b1322a3aa2452176e47206a30560df70ecef87dc7beaa795c3b9",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_examples.log": "3a302a32ce068ee9d08b7f7a49ddcd5904703bfbbfe19e555b3d090a68ce4054"
+  },
+  "scope": "Actual combined command output; full 5000-per-arm 30-day A/B; small isolated CT drill. Production automatic full CT is recorded separately.",
+  "ab_run_id": "a536985f2dbdd759714d6960d70632de64c028a2f64b6672e7d0addfaf860c5d",
+  "ab_acceptance": {
+    "status": "PASS",
+    "scale": "full",
+    "acceptance": "UNMEASURED",
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ab_full_archive.json",
+    "sha256": "a44a96515f4a519f4ba18eee970ccc8912e33023b5c57734882b1e0e75989e44",
+    "run_id": "a536985f2dbdd759714d6960d70632de64c028a2f64b6672e7d0addfaf860c5d",
+    "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+    "checks": "assignment, causal counts, denominators, MAB exposure/feedback accounting, independent-user tests, cluster confidence intervals, config/data/source hashes",
+    "seeded_rerun": "UNMEASURED",
+    "repeat_sha256": null,
+    "original_verification": {
+      "source": "docs/results/experiments/A/pdf_completion_20261111/ab_verification_full.json",
+      "sha256": "ab9c8cbff141e353cc5116ffca49d42c867a5bd3d10ca60d74af3409e694fc2d"
+    },
+    "original_sha256": "b64a0700a078cb516b8b252d37749da6fb01deabfb98387b75372f9d96367915",
+    "archive_schema": "ab-lossless-archive-v1"
+  }
+}

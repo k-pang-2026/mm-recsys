@@ -1,7 +1,7 @@
 """Real checkpoint/vector/index integrity diagnostics; this is not B2b acceptance."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import log, run_cli
 
 import argparse
 from dataclasses import asdict
@@ -15,7 +15,6 @@ from src.common.artifacts import file_hash, fingerprint, write_json
 from src.common.config import load_config
 from src.common.seed import set_seed
 from src.search.bm25 import BM25Search
-from src.search.build_embeddings import current_bundle
 from src.search.build_index import current_indexes, fuse
 from src.search.encoder import CLIPEncoder, check_vectors
 from src.search.eval_support import ann_agreement, exact_search

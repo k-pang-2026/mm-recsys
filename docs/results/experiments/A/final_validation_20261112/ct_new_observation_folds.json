@@ -1,0 +1,64 @@
+{
+  "status": "MEASURED",
+  "folds": {
+    "train": {
+      "new_events": 0,
+      "new_exposure_labels": {
+        "version": "linked-view-last-view-v3",
+        "rows": 0,
+        "clicks": 0,
+        "conversions": 0,
+        "ctr_observed": 0,
+        "cvr_observed": 0,
+        "censored": 0,
+        "censored_cvr_negatives": 0,
+        "unassigned_purchases": 0,
+        "window_seconds": 1800,
+        "start": "2025-12-02T00:00:00+00:00",
+        "end": "2025-12-28T05:13:07.499700+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 0,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ]
+      }
+    },
+    "valid": {
+      "new_events": 5372,
+      "new_exposure_labels": {
+        "version": "linked-view-last-view-v3",
+        "rows": 2130,
+        "clicks": 13,
+        "conversions": 6,
+        "ctr_observed": 13,
+        "cvr_observed": 6,
+        "censored": 2130,
+        "censored_cvr_negatives": 7,
+        "unassigned_purchases": 315,
+        "window_seconds": 1800,
+        "start": "2025-12-28T05:13:09.086400+00:00",
+        "end": "2026-11-11T13:15:43.648514032+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 0,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ]
+      }
+    },
+    "test": {
+      "new_events": 111536,
+      "scope": "count inferred from full-minus-train/valid; CT test file and labels not opened"
+    }
+  },
+  "scope": "Actual journal IDs and exposure IDs in the unchanged chronological snapshot; no claim that newest events all entered fitting"
+}

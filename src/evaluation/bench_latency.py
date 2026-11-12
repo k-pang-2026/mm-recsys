@@ -1,7 +1,7 @@
 """Serial Redis feature latency, with execution and dataset evidence."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import log, run_cli
 
 import argparse
 import json

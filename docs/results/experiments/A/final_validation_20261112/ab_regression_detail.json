@@ -1,0 +1,29 @@
+{
+  "status": "FAIL",
+  "checks": {
+    "assignment": true,
+    "arms": false,
+    "user_outcomes": true,
+    "inference": true,
+    "outcome_model": true
+  },
+  "scope": "Compare the freshly measured full A/B outcomes against the prior same-data full run; no replacement of the new measurement",
+  "details": {
+    "same_user_counts_and_outcomes": true,
+    "same_statistics_and_confidence_intervals": true,
+    "control_identical": true,
+    "treatment_exposure_differences": [
+      {
+        "key": "U004964:P002368",
+        "before": 25,
+        "after": 26
+      },
+      {
+        "key": "U004964:P003437",
+        "before": 18,
+        "after": 17
+      }
+    ],
+    "scope": "One product exposure differed among 1500000 treatment exposures; exact arm statistics comparison fails. All per-user click/purchase outcomes and statistical inference are equal. No behavioral equality is claimed for every item exposure."
+  }
+}

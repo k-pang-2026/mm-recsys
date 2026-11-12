@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "environment": {
+    "CT_AUTO_TRAIN": "1",
+    "SIMULATOR_BATCH_SIZE": "100",
+    "SIMULATOR_INTERVAL_SECONDS": "5",
+    "SCALE": "full"
+  },
+  "checks": {
+    "actual_api": true,
+    "real_session": true,
+    "ab_statistics": true,
+    "ct_lifecycle": true,
+    "durable_unique_ct_evidence": true
+  },
+  "sources": {
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ct_drill.json": "ff66b77ec5674b6f7414b157c335cfc52d96a6e4c801d2979f37dfa82dc1dd47",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/search.json": "656abca61f2fa448fb5f263e93037a0e036126c61232e439ef69b489863683e0",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/recommendation.json": "3358844d95d8fd4d7c38d87a6c685a9807f32db8494f7dd37be4fe0da3298b17",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ab_test.json": "1f699b090e1355e3dc748f6ba51d5eadc07b9c684006439c715abe838bb137bf",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/session_events.json": "fe2f2917dd7a8167ead2c6b6aa1422e42b95ae115b5577ee727abbeab3b0cc55",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ab_test_verification.json": "a559af2b6ace54f1694e45d5587756c299945d65553c6d05e920f55a6b35aec0",
+    "docs/results/experiments/A/pdf_completion_20261111/default_compose_environment.json": "c1fa3ae32d3e0637ff55d79c267662482f2c44c775a9cc7fe006e7b802d3700c",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto.stdout": "995690f4b2878ac751f699eb52e4d2540bb88e56a83bb3cac040040684884b51",
+    "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto.stderr": "67f9a807be62d664aea13ca69248d9854c21ff5b2def3b3acd00046b0f156ff4"
+  },
+  "scope": "Current host launcher and deployed current modules; default four-service automatic CT enabled; actual API and small 100-per-arm 7-day A/B plus isolated CT. Full 5000-per-arm 30-day evidence is separate."
+}

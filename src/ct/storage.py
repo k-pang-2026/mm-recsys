@@ -16,7 +16,7 @@ from src.common.console import log, status_ko
 def describe_event(value: dict) -> None:
     event = value.get('event')
     if event == 'training_deferred':
-        log('CT', '학습 대기', '신규 로그 수는 충분하지만 train/valid의 실제 노출·클릭·구매 라벨이 부족합니다. '
+        log('CT', '학습 대기', '재학습 조건을 감지했지만 train/valid의 실제 노출·클릭·구매 라벨이 부족합니다. '
             '추천 request_id에 연결된 후속 행동을 수집하세요. 기존 모델과 미처리 로그는 유지합니다. '
             f"/ 상세={value['data_path']}", status='경고')
         return
@@ -31,7 +31,7 @@ def describe_event(value: dict) -> None:
             return
         if event == 'training_started':
             log('CT Trigger', '', f"신규 로그 {value['new_events']:,}건 축적 / "
-                f"모델 {value['parent']} → {value['version']} / 모델 재학습 트리거됨...")
+                f"사유={value.get('trigger_reason', 'new_logs')} / 모델 {value['parent']} → {value['version']} / 모델 재학습 트리거됨...")
             return
         if event in ('promoted', 'retained'):
             decision = '승격' if event == 'promoted' else '기존 모델 유지'
@@ -47,7 +47,7 @@ def describe_event(value: dict) -> None:
                else '관측 완료. null은 관측 표본 부족으로 미측정입니다.'),
             status='경고' if value['alerts'] else status_ko(value['status']))
     elif event == 'training_started':
-        log('CT', '재학습', f"신규 로그 {value['new_events']:,}건 누적 / {value['parent']} → {value['version']} / 재학습 시작")
+        log('CT', '재학습', f"신규 로그 {value['new_events']:,}건 누적 / 사유={value.get('trigger_reason', 'new_logs')} / {value['parent']} → {value['version']} / 재학습 시작")
     elif event in ('promoted', 'retained'):
         message = '검증 조건을 충족하여 새 모델을 승격합니다.' if event == 'promoted' else '검증 개선 조건을 충족하지 못해 기존 모델을 유지합니다.'
         log('CT', '판정', f"{message} / 후보={value['version']} / 활성={value['active']} / 검증={value['comparison']}", status='승격' if event == 'promoted' else '유지')
@@ -110,12 +110,17 @@ class Journal:
                     user_id TEXT NOT NULL, product_id TEXT NOT NULL, kind TEXT NOT NULL,
                     at REAL NOT NULL, request_id TEXT, payload TEXT NOT NULL);
                 CREATE INDEX IF NOT EXISTS event_request ON events(request_id);
+                CREATE INDEX IF NOT EXISTS request_time ON requests(at);
+                CREATE INDEX IF NOT EXISTS attributed_event_time ON events(at) WHERE request_id IS NOT NULL;
             ''')
 
-    def connect(self) -> sqlite3.Connection:
-        db = sqlite3.connect(self.path, timeout=5)
-        db.row_factory = sqlite3.Row
-        return db
+    @contextmanager
+    def connect(self) -> Iterator[sqlite3.Connection]:
+        # sqlite3's transaction context commits/rolls back but does not close.
+        with closing(sqlite3.connect(self.path, timeout=5)) as db:
+            db.row_factory = sqlite3.Row
+            with db:
+                yield db
 
     def exposure(self, request_id: str, user_id: str, products: list[str], top_n: int,
                  version: str, at: float) -> None:
@@ -132,7 +137,7 @@ class Journal:
     def events(self, entries: Iterable[tuple[dict, float]], request_id: str | None = None,
                window_seconds: int = 3600) -> int:
         """One durable transaction per batch; any invalid entry rolls back the batch."""
-        with closing(self.connect()) as db, db:
+        with self.connect() as db:
             before = db.total_changes
             for payload, at in entries:
                 if payload['event_type'] not in ('view', 'cart', 'purchase'):

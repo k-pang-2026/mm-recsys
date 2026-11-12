@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "checks": [
+    "repository_mypy",
+    "public_annotations",
+    "14_exception_recovery_tests"
+  ],
+  "sources": {
+    "docs/results/experiments/A/final_validation_20261112/mypy_current.txt": "62f7c4c63dd61757257e3e6457752556858069091c5f9afd703f3e2aaee660f7",
+    "docs/results/experiments/A/final_validation_20261112/public_signature_audit.json": "5ce6db9f3f22dfc2512507619bab8024a75f39fd5e5f2632f75ae6ad9bc72603",
+    "docs/results/experiments/A/final_validation_20261112/exception_fix_tests.txt": "ff5eaec71d65689669a9688121eda1c129c37b0518a0fd4854862a4696b5f9e6"
+  },
+  "scope": "Final corrected source mypy/public annotations and 14 focused error recovery tests; complete regression and dependencies are separately executed by submission/checks.json."
+}

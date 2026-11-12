@@ -1,4 +1,3 @@
-from pathlib import Path
 from types import SimpleNamespace
 import numpy as np
 from PIL import Image
@@ -7,7 +6,14 @@ import torch
 
 from src.common.config import load_config
 from src.search.encoder import CLIPEncoder, check_vectors, decode_rgb, unit_vectors
-from src.search.text import normalize_text
+from src.search.text import normalize_text, display_text
+
+
+def test_catalog_display_preserves_model_text_and_unknown_brand():
+    original = 'Acme black oversized hoodie'
+    assert display_text(original) == 'Acme 검정 오버핏 후드티'
+    assert display_text('brown crossbody bag') == '갈색 크로스백'
+    assert normalize_text(display_text(original)).encoded == original.casefold()
 
 
 def test_aliases_are_shared_and_unknown_terms_are_reported():

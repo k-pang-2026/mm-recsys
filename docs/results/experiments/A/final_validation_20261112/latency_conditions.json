@@ -1,0 +1,8 @@
+{
+  "api_stacks": 1,
+  "training_containers_paused": [],
+  "simulator_running": false,
+  "warmup": 10,
+  "requests": 100,
+  "concurrency": 1
+}

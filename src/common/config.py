@@ -1,5 +1,6 @@
 from __future__ import annotations
 import copy
+import math
 import os
 from pathlib import Path
 from typing import Any
@@ -47,6 +48,8 @@ def load_config(path: str | None = None) -> dict[str, Any]:
     sim = cfg["simulator"]
     if sim['event_interval_seconds'] <= 0:
         raise ValueError('event_interval_seconds must be positive')
+    if not 0 < sim['cart_reference_cvr'] <= 1:
+        raise ValueError('cart_reference_cvr must be in (0,1]')
     ratios = [float(value["ratio"]) for value in sim["personas"].values()]
     if len(ratios) < 6 or any(x <= 0 for x in ratios) or abs(sum(ratios)-1) > 1e-9:
         raise ValueError("configure six positive persona ratios summing to 1")
@@ -62,12 +65,20 @@ def load_config(path: str | None = None) -> dict[str, Any]:
     if choice['zipf_alpha'] < 0 or sim['image_size'] < 16 or sim['image_variants'] < 1:
         raise ValueError('invalid demand/image parameters')
     for spec in sim['personas'].values():
+        if not 0 <= spec['cvr'] <= 1:
+            raise ValueError('persona cvr must be in [0,1]')
         if not 0 <= spec.get('preferred_brand_probability', choice['preferred_brand_probability']) <= 1:
             raise ValueError('persona preferred_brand_probability must be in [0,1]')
         if len(spec['category_preferences']) != len(sim['taxonomy']) or abs(sum(spec['category_preferences'])-1)>1e-9:
             raise ValueError('persona category preferences must match taxonomy and sum to 1')
     for transitions in sim["transitions"].values():
         values = [float(x) for x in transitions.values()]
-        if any(x < 0 for x in values) or abs(sum(values)-1) > 1e-9:
+        if any(not math.isfinite(x) or x < 0 for x in values) or abs(sum(values)-1) > 1e-9:
             raise ValueError("Markov transition probabilities must sum to 1")
+    for name in ('candidate', 'ranking', 'session'):
+        spec = cfg['recommend'].get(name, {})
+        if 'max_grad_norm' in spec:
+            value = spec['max_grad_norm']
+            if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+                raise ValueError(f'{name}.max_grad_norm must be finite and positive')
     return cfg

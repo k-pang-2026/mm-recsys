@@ -197,7 +197,7 @@ def test_ct_compares_models_under_the_same_runtime_policy(tmp_path,monkeypatch):
     def validate(service,local):
         seen.append(service.scoring)
         return {'validation_fingerprint':'same-observed-cohort','ctr_auc':.8}
-    monkeypatch.setattr(training,'snapshot',snapshot)
+    monkeypatch.setattr('src.ct.snapshot.snapshot',snapshot)
     monkeypatch.setattr('src.ct.snapshot.training_eligibility', lambda *args: {'ready': True})
     monkeypatch.setattr(training,'train_all',train)
     monkeypatch.setattr(training,'validation',validate)

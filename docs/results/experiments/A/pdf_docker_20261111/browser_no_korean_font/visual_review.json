@@ -1,0 +1,7 @@
+{
+  "functional_status": "PASS",
+  "visual_status": "FAIL",
+  "cause": "verification Chromium had no Korean font; Korean DOM strings and HTTP JSON intact",
+  "correction": "temporary fontconfig uses existing Windows NotoSansKR; no application source change",
+  "initial_capture_directory": "browser (renamed to browser_no_korean_font to preserve the first evidence)"
+}

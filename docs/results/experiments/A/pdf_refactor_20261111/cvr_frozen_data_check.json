@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "linked_views": 563452,
+  "all_clicks_at_exposure": true,
+  "unlinked_views": 0,
+  "data_manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+  "conclusion": "For this frozen simulator dataset, last-click + window equals exposure + window, so the CVR negative maturity fix does not change labels. Late-click behavior is covered separately by the new regression test.",
+  "scope": "read-only full event/exposure timestamp equality, not a new training run"
+}

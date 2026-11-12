@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import copy
-import json
-from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -95,7 +93,7 @@ def test_recommendation_evaluator_uses_real_loader_and_fixed_origin(tmp_path, mo
     data['valid']['event_type'] = 'cart'
     labels = pd.DataFrame([dict(user_id='u', product_id='p00', exposed_at=data['valid'].timestamp.iloc[0],
                                ctr=1, cvr=0, ctr_mask=1, cvr_mask=1)])
-    monkeypatch.setattr(evaluator, 'prepare', lambda *_: (data, {'valid': labels}, {'valid': {'fixture': True}}))
+    monkeypatch.setattr(evaluator, 'prepare', lambda *_, **kwargs: (data, {'valid': labels}, {'valid': {'fixture': True}}))
     value = evaluator.evaluate(cfg, 'valid')
     assert value['cohort']['total_users'] == value['cohort']['truth_users'] == 1
     assert set(value['metrics']) == {'train_popularity', 'two_tower', 'deepfm', 'full_pipeline'}

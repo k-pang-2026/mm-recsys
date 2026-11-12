@@ -10,7 +10,6 @@ import hashlib
 import json
 from pathlib import Path
 
-import torch
 import numpy as np
 
 from src.common.artifacts import file_hash, write_json
@@ -107,7 +106,6 @@ def main() -> int:
     parser.add_argument('--bundle', type=Path)
     args = parser.parse_args()
     cfg = load_config()
-    import torch
     from src.recommendation.runtime import configure_inference
     configure_inference(cfg['recommend']['candidate'])
     from src.recommendation.train_two_tower import load_bundle

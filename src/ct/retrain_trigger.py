@@ -1,4 +1,4 @@
-"""Serialized event-threshold training; failures never consume events or replace active models."""
+"""Serialized log/degradation triggers; failures preserve pending events and active models."""
 from __future__ import annotations
 
 from typing import Any
@@ -6,13 +6,14 @@ from typing import Any
 import argparse
 import copy
 import json
+import math
 from pathlib import Path
 import time
 import requests
 import traceback
 
 from src.common.console import log, emit_json, run_cli
-from src.common.artifacts import write_json
+from src.common.artifacts import write_json, fingerprint
 from src.common.config import load_config
 from src.ct.model_registry import ModelRegistry
 from src.ct.storage import Journal, append_log, file_lock
@@ -22,8 +23,12 @@ def settings(cfg: dict) -> dict:
     spec = copy.deepcopy(cfg['serving']['ct'])
     spec.setdefault('hitrate_threshold', cfg['ct']['hitrate_threshold'])
     spec.setdefault('retrain_log_threshold', cfg['ct']['retrain_log_threshold'])
-    for key in ('poll_seconds', 'recent_seconds', 'attribution_seconds', 'min_mature_requests', 'retrain_log_threshold'):
-        if float(spec[key]) <= 0:
+    spec.setdefault('retry_seconds', spec['poll_seconds'])
+    spec.setdefault('retrain_on_degradation', True)
+    if not isinstance(spec['retrain_on_degradation'], bool):
+        raise ValueError('CT retrain_on_degradation must be boolean')
+    for key in ('poll_seconds', 'retry_seconds', 'recent_seconds', 'attribution_seconds', 'min_mature_requests', 'retrain_log_threshold'):
+        if not math.isfinite(float(spec[key])) or float(spec[key]) <= 0:
             raise ValueError(f'CT {key} must be positive')
     return spec
 
@@ -34,32 +39,58 @@ def components(cfg: dict) -> tuple[dict, Journal, ModelRegistry]:
             ModelRegistry(Path(cfg['paths']['model_dir']), Path(cfg['paths']['results_dir']) / 'ct_log.jsonl'))
 
 
-def trigger(cfg: dict, build: Any) -> dict:
+def trigger(cfg: dict, build: Any, *, monitoring: dict | None = None) -> dict:
+    from src.ct.monitor import measure
     spec, journal, registry = components(cfg)
     try:
         with file_lock(registry.root / '.ct' / 'training.lock', blocking=False):
             state = registry.read(); through = journal.high_watermark()
             count = journal.count_since(state['last_success_seq'], through)
-            if count < int(spec['retrain_log_threshold']):
+            now = time.time()
+            if monitoring is None or monitoring.get('model_version') != state['active']:
+                monitoring = measure(journal, spec, now, state['active'])
+            degraded = bool(state['active'] and spec['retrain_on_degradation'] and monitoring['alerts'])
+            threshold = int(spec['retrain_log_threshold'])
+            if count < threshold and not degraded:
                 return dict(status='WAITING', new_events=count, threshold=spec['retrain_log_threshold'])
             if not state['active']:
                 raise ValueError('register and initialize v1.0 before retraining')
+            reason = 'new_logs' if count >= threshold else 'performance_degradation'
+            with journal.connect() as db:
+                requests_count = db.execute('SELECT COUNT(*) FROM requests').fetchone()[0]
+            observed = [state['active'], through, requests_count, fingerprint(cfg)]
+            attempt_path = registry.root / '.ct' / 'last_attempt.json'
+            previous = json.loads(attempt_path.read_text()) if attempt_path.exists() else None
+            if previous and previous['input'][0] == state['active']:
+                pending = previous['result']['status'] == 'WAITING_FOR_LABELS'
+                unchanged = previous['input'] == observed
+                retry_after = max(0., float(spec['retry_seconds']) - (now - previous['at']))
+                if unchanged or (retry_after and (pending or reason == 'performance_degradation')):
+                    result = dict(previous['result']) if pending else dict(status='WAITING')
+                    result.update(new_events=count, threshold=threshold, retry_after_seconds=retry_after,
+                                  reason='unchanged_observations' if unchanged else 'retry_cooldown')
+                    log('CT', '학습 대기', '입력 변화·재시도 간격을 확인해 스냅샷을 다시 생성하지 않습니다.')
+                    return result
             parent, version = state['active'], registry.next_version()
             append_log(registry.log, dict(event='training_started', parent=parent, version=version,
-                                          new_events=count, through_seq=through))
+                                          new_events=count, through_seq=through, trigger_reason=reason,
+                                          alerts=monitoring['alerts']))
             try:
                 # build must only include journal events through this captured watermark.
                 result = build(version, through, registry)
                 if result.get('status') == 'WAITING_FOR_LABELS':
                     append_log(registry.log, dict(event='training_deferred', new_events=count,
                                                  through_seq=through, **result))
-                    return dict(new_events=count, through_seq=through, **result)
-                registry.register(version, result['config'], Path(result['data_path']),
-                                  result['comparison']['candidate'], parent, through)
-                promoted = registry.decide(version, result['comparison'], spec)
-                return dict(status='PROMOTED' if promoted else 'RETAINED', version=version,
-                            active=registry.read()['active'], new_events=count, through_seq=through,
-                            comparison=result['comparison'])
+                    result = dict(new_events=count, through_seq=through, trigger_reason=reason, **result)
+                else:
+                    registry.register(version, result['config'], Path(result['data_path']),
+                                      result['comparison']['candidate'], parent, through)
+                    promoted = registry.decide(version, result['comparison'], spec)
+                    result = dict(status='PROMOTED' if promoted else 'RETAINED', version=version,
+                                  active=registry.read()['active'], new_events=count, through_seq=through,
+                                  trigger_reason=reason, comparison=result['comparison'])
+                write_json(attempt_path, dict(input=observed, at=time.time(), result=result))
+                return result
             except Exception as error:
                 append_log(registry.log, dict(event='training_failed', version=version,
                                               error=f'{type(error).__name__}: {error}'))
@@ -71,8 +102,8 @@ def trigger(cfg: dict, build: Any) -> dict:
 def build_from_journal(cfg: dict, version: str, through: int, registry: ModelRegistry) -> dict:
     import gc
     import pandas as pd
-    from src.ct.training import snapshot, train_all, validation
-    from src.ct.snapshot import journal_tables, training_eligibility
+    from src.ct.training import train_all, validation
+    from src.ct.snapshot import snapshot, journal_tables, training_eligibility
     from src.serving.model_loader import load_record
     from src.serving.memory_store import MemoryFeatureStore
     from src.common.artifacts import file_hash
@@ -152,7 +183,7 @@ def main() -> int:
     parser.add_argument('--rollback', metavar='VERSION')
     parser.add_argument('--reason', default='explicit operator rollback', help='롤백 사유')
     parser.add_argument('--reload-url', help='승격·롤백 후 교체할 로컬 루프백 API URL')
-    parser.add_argument('--train', action='store_true', help='신규 이벤트 임계치를 충족할 때만 재학습')
+    parser.add_argument('--train', action='store_true', help='신규 로그 임계치 또는 성능 저하를 감지하면 재학습')
     args = parser.parse_args(); cfg = load_config()
     from src.ct.monitor import monitor
     spec, journal, registry = components(cfg)
@@ -166,8 +197,6 @@ def main() -> int:
         emit_json(dict(status='ROLLED_BACK', active=registry.read()['active']))
         return 0
     log('CT', '시작', f"모니터링 주기={spec['poll_seconds']}초 / 재학습 임계치={spec['retrain_log_threshold']}건 / 재학습 활성={args.train} / 활성 모델={registry.read()['active']}")
-    deferred = None
-    deferred_input = None
     while True:
         if args.train and args.reload_url and registry.read()['active']:
             try:
@@ -179,18 +208,9 @@ def main() -> int:
                 traceback.print_exc()
                 time.sleep(float(spec['poll_seconds']))
                 continue
-        measured = monitor(journal, spec, time.time(), registry.log)
+        measured = monitor(journal, spec, time.time(), registry.log, registry.read()['active'])
         if args.train:
-            with journal.connect() as db:
-                request_count = db.execute('SELECT COUNT(*) FROM requests').fetchone()[0]
-            observed = (journal.high_watermark(), request_count, registry.read()['active'])
-            if deferred is not None and observed == deferred_input:
-                result = deferred
-                log('CT', '학습 대기', '관측 데이터가 그대로여서 스냅샷을 다시 생성하지 않습니다. 노출·후속 행동 수집을 기다립니다.')
-            else:
-                result = trigger(cfg, lambda version, through, reg: build_from_journal(cfg, version, through, reg))
-                deferred = result if result['status'] == 'WAITING_FOR_LABELS' else None
-                deferred_input = observed
+            result = trigger(cfg, lambda version, through, reg: build_from_journal(cfg, version, through, reg), monitoring=measured)
             if result['status'] == 'WAITING':
                 log('CT', '대기', f"신규 로그={result['new_events']:,}건 / 임계치={result['threshold']:,}건", status='대기')
             elif result['status'] == 'BUSY':

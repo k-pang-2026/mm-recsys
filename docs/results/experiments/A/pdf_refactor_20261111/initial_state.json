@@ -1,0 +1,28 @@
+{
+  "base_commit": "4fab62d4d1abb2a8dc755f07758032bed52bf634",
+  "original_data_manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+  "model_hashes": {
+    "v1.0/two_tower.pt": "79405368dcbcb98e8734dea26733cbe853f384fbad0e8d780af84d1b9cdda362",
+    "v1.0/item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "v1.0/index_manifest.json": "d1e2ca35d919d462df37fdab23684a6d6d29d3b66087436a72a132532cd2089a",
+    "v1.0/meta.json": "bdef4ad6b11c1c35326901993b5d865441b541a027cf0ffdf2f25153e0966ad7",
+    "v1.0/feature_vocab_scalers.json": "efef2585d2190b577b297c4d0d7d7550cca2c0d886bdbcd08f9b89bd77d284d4",
+    "v1.0/item_index.faiss": "56b2c498f77f7869ae35e96c71e915db728ba3a4a114bc53cd2db743b2bfb3c0",
+    "v1.0/ranking/features.json": "2a41789bc86e32dd643f8ff1fa51f9069a6c8f0dd8802f15c3f841f4bd8754df",
+    "v1.0/ranking/deepfm.pt": "6467816c0908e3e53490d7ccd8b1e132e1eaab7581a9eedc15b0784df73a0f38",
+    "v1.0/ranking/meta.json": "7e9ebe4e226d52de06339528f5b8ab41c6b7aded63af2bca2d62382660c84335",
+    "v1.0/session/session.pt": "fe8694e4a69e2f6671e5ce22a7f21ce951d4cf5a7b53273cd6bf383a7d04e388",
+    "v1.0/session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953",
+    "v1.0/session/meta.json": "bdd713e77cc490c4e11ef1e5bb3b3afbe2dedbea8ec17e932fc20e74ce07384f"
+  },
+  "existing_changes": [
+    "README.md",
+    "data/.gitkeep",
+    "scripts/ct_api_traffic.py",
+    "tests/test_ct_api_traffic.py",
+    "docs/results/docker/ct_log.jsonl",
+    "docs/results/docker/ct_terminal_drill.json",
+    "docs/results/docker/experiments/"
+  ],
+  "scope": "기존 full v4.3 동결 데이터와 v1.0 모델, 별도 Redis 및 CT journal에서 현재 소스를 재검증"
+}

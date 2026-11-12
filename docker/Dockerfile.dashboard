@@ -8,5 +8,7 @@ COPY dashboard ./dashboard
 COPY docker/__init__.py docker/http.py docker/dashboard_entrypoint.py ./docker/
 COPY src/__init__.py ./src/
 COPY src/common/__init__.py src/common/console.py src/common/artifacts.py ./src/common/
+COPY src/search/__init__.py src/search/text.py ./src/search/
 COPY config.yaml .env ./
+RUN python -c "import dashboard.explore"
 CMD ["python", "-m", "docker.dashboard_entrypoint"]

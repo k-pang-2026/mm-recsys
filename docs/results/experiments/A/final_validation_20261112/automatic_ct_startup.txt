@@ -1,0 +1,9 @@
+simulator-1  | [시뮬레이터 시작] API·대시보드 준비 완료; 배치=1건 / 주기=60.0초 / 합성 추천 흐름=1회 / 귀속 로그=docs/results/docker/runtime-v44/full/ct_api_traffic_fd0fc622c7124690a965131b62a58361.jsonl
+simulator-1  | [시뮬레이터 CT 연결] 주기적 모니터링·설정 임계치 기반 재학습을 함께 시작합니다.
+simulator-1  | [CT 준비] API 준비 대기 / URL=http://127.0.0.1:8000
+simulator-1  | [CT 시작] API 준비 완료 / 모니터링 및 임계치 기반 재학습 작업자를 시작합니다.
+simulator-1  | [시뮬레이터 생성] 행동 로그 1건 생성 / 0.1초 / 11건/초 / CT 신규 로그=0건 / 합성 추천 흐름=1회
+simulator-1  | [CT 기록] 원본 JSON: docs/results/docker/runtime-v44/full/ct-cli/6b4cca9ed2614509b818ba8251d02291.jsonl
+simulator-1  | [CT 시작] 모니터링 주기=60초 / 재학습 임계치=10000건 / 재학습 활성=True / 활성 모델=v1.0
+simulator-1  | [CT Monitor ] 현재 HitRate@50: 0.3296 (임계값: 0.2) / CTR: 0.0128
+simulator-1  | [CT 대기] 다른 재학습이 실행 중입니다. 다음 주기에 다시 확인합니다.

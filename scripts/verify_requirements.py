@@ -1,4 +1,4 @@
-"""새 실행 결과를 PDF 요구사항에 연결합니다. 이 집계는 모델 재측정이 아닙니다."""
+"""v4.3 상세 감사 형식의 보존 근거를 재검산합니다. 현재 제출 판정은 check_submission.py를 사용합니다."""
 from __future__ import annotations
 
 import argparse
@@ -184,7 +184,8 @@ def aggregate(root: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--results', type=Path, default=Path('docs/results/integration/20261107_requirements'))
+    parser.add_argument('--results', type=Path, required=True,
+                        help='v4.3 상세 감사 파일 구조의 실행 폴더; 과거 PASS를 현재 실행으로 자동 선택하지 않음')
     result = aggregate(parser.parse_args().results)
     emit_json(dict(status=result['status'], requirements=len(result['requirements']), peer_questions=len(result['peer_review'])))
     return 0 if result['status'] == 'PASS' else 1

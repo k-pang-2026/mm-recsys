@@ -1,5 +1,17 @@
 # A/B 합성 모의실험 보고서
 
+<!-- current-v44 -->
+현재 리팩터링 소스의 품질·지연·CT 판정은 [현재 보고서](submission/report.md)를 따른다.
+2026-11-12 새로 실행한 5,000명/군·30일 A/B의 CTR은 25.0049% → 20.6625%,
+CVR은 1.2253% → 0.8857%다. CVR 상대 변화 **−27.72%**를 그대로 보존했다.
+[통계 검증](results/experiments/A/final_validation_20261112/ab_acceptance_full.json)은 통과했으며,
+이는 treatment의 개선을 뜻하지 않는다. 사용자별 클릭·구매·통계는 이전 실행과 같지만,
+150만 treatment 노출 중 1건의 상품 배분이 달라 모든 노출의 완전 일치를 주장하지 않는다.
+[세부 비교](results/experiments/A/final_validation_20261112/ab_regression_detail.json)와 원래 FAIL을 보존했다.
+최종 통합 상태는 [실행 집계](results/experiments/A/final_validation_20261112/submission/checks.json)를 따른다.
+
+## 이전 실행 기록 보존
+
 ## 2026-10-20 현재 full 데이터의 새 실험
 
 생성기 4.2 데이터 `8b578e5c...`와 보존된 full 품질 평가의 동일 v1.0 모델을 사용했다.

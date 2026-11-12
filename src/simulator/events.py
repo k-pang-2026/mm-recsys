@@ -117,10 +117,9 @@ def make_events(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
                 group=ids[(event_types==state)&(personas[ids]==persona)]
                 if not len(group):continue
                 transitions=dict(sim['transitions'][state])
-                if state=='cart':
-                    p=float(np.clip(spec['cvr']*9,0.05,0.9))
-                    remainder=1-p
-                    transitions={'purchase':p,'view':remainder*.45,'exit':remainder*.55}
+                if state=='cart' and 0 < transitions.get('purchase', 0) < 1:
+                    # Scale purchase odds; configured zero/one transitions remain exact.
+                    transitions['purchase'] *= spec['cvr'] / sim['cart_reference_cvr']
                 labels=list(transitions);probs=np.array(list(transitions.values()),dtype=float);probs/=probs.sum()
                 states[group]=rng.choice(labels,len(group),p=probs)
         seen_count[ids]+=1;offset+=m

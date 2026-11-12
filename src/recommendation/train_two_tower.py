@@ -177,7 +177,7 @@ def train(cfg: dict, output: Path | None = None, bundle: Path | None = None) -> 
             if not torch.isfinite(loss):
                 raise ValueError('nonfinite training loss')
             loss.backward()
-            grad = float(torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=10.0))
+            grad = float(torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=spec['max_grad_norm']))
             if not np.isfinite(grad):
                 raise ValueError('nonfinite gradient')
             optimizer.step(); updates += 1

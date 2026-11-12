@@ -1,0 +1,96 @@
+........F............................................................... [ 14%]
+........................................................................ [ 29%]
+.........................F.............................................. [ 44%]
+........................................................................ [ 59%]
+........................................................................ [ 74%]
+........................................................................ [ 89%]
+.....................................................                    [100%]
+=================================== FAILURES ===================================
+____________ test_model_policy_factory_uses_separate_mutable_state _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfbb17d41fa70>
+
+    def test_model_policy_factory_uses_separate_mutable_state(monkeypatch):
+        from types import SimpleNamespace
+        import src.recommendation.service as service
+        import src.recommendation.train_two_tower as candidate
+        import src.recommendation.train_deepfm as ranking
+        import src.recommendation.train_session as session
+        cfg, data = fixture()
+        # No model mock is used in the actual CLI run; this fixture isolates ownership.
+        data['train'] = pd.DataFrame([dict(product_id='P1')])
+        base = SimpleNamespace(table=SimpleNamespace(ids=['PAD', 'P1', 'P2']))
+        monkeypatch.setattr(service, 'create_service', lambda *args: base)
+        monkeypatch.setattr(candidate, 'load_bundle', lambda *args: (None, None, None, {'hash': 'candidate'}))
+        monkeypatch.setattr(ranking, 'load_ranking', lambda *args: (None, None, {'hash': 'ranking'}))
+        monkeypatch.setattr(session, 'load_session', lambda *args: (None, {'hash': 'session'}))
+>       policies, _ = create_policies(cfg, data, [0.])
+
+tests/test_ab.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+data = {'products':   product_id category_l1 category_l3  price                created_at
+0         P1        tops       shir...5     U15  brand_loyal
+16     U16    impulsive
+17     U17      careful
+18     U18  trendsetter
+19     U19   pragmatist}
+clock = [0.0]
+
+    def create_policies(cfg: dict, data: dict, clock: list[float]) -> tuple[dict, dict]:
+        from src.recommendation.feature_store import RecommendationFeatureStore
+        from src.recommendation.reranking import Reranker
+        from src.recommendation.service import create_service
+        spec = cfg['serving']['ab_test']
+        names = {'control': spec['control'], 'treatment': spec['treatment']}
+        if names['control'] not in ('popularity', 'two_tower') or names['treatment'] != 'full_pipeline':
+            raise ValueError('control must be popularity/two_tower; treatment must be full_pipeline')
+        base_cfg = copy.deepcopy(cfg)
+        base_cfg['recommend']['enable_reranking'] = True
+        base_cfg['recommend']['record_exposures'] = True
+>       base = create_service(base_cfg, RecommendationFeatureStore(cfg, data['products']), data=data)
+E       TypeError: test_model_policy_factory_uses_separate_mutable_state.<locals>.<lambda>() got an unexpected keyword argument 'data'
+
+src/evaluation/ab_test.py:153: TypeError
+_______ test_recommendation_evaluator_uses_real_loader_and_fixed_origin ________
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-2/test_recommendation_evaluator_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0xfbb17460e210>
+
+    def test_recommendation_evaluator_uses_real_loader_and_fixed_origin(tmp_path, monkeypatch):
+        from src.recommendation.testing import service_fixture
+        import src.evaluation.recommendation as evaluator
+        cfg, data = service_fixture(tmp_path)
+        data['valid']['event_type'] = 'cart'
+        labels = pd.DataFrame([dict(user_id='u', product_id='p00', exposed_at=data['valid'].timestamp.iloc[0],
+                                   ctr=1, cvr=0, ctr_mask=1, cvr_mask=1)])
+        monkeypatch.setattr(evaluator, 'prepare', lambda *_: (data, {'valid': labels}, {'valid': {'fixture': True}}))
+>       value = evaluator.evaluate(cfg, 'valid')
+
+tests/test_evaluation_dashboard.py:97: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cfg = {'benchmark': {'concurrency': 1, 'requests': 100, 'warmup': 10}, 'ct': {'hitrate_threshold': 0.2, 'retrain_log_thresho...': 20, ...}, 'candidate_config_snapshot': 'docs/results/candidate_config_original.json', 'candidate_k': 300, ...}, ...}
+split = 'valid'
+
+    def evaluate(cfg: dict, split: str) -> dict:
+        configure_inference(cfg['recommend']['candidate'], with_faiss=True)
+>       data, labels, label_diagnostics = prepare(cfg, split, label_splits=(split,))
+E       TypeError: test_recommendation_evaluator_uses_real_loader_and_fixed_origin.<locals>.<lambda>() got an unexpected keyword argument 'label_splits'
+
+src/evaluation/recommendation.py:47: TypeError
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_ab.py::test_model_policy_factory_uses_separate_mutable_state
+FAILED tests/test_evaluation_dashboard.py::test_recommendation_evaluator_uses_real_loader_and_fixed_origin
+2 failed, 483 passed, 2 warnings in 286.90s (0:04:46)

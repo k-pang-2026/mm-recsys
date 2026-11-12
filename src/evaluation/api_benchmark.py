@@ -12,7 +12,6 @@ import uuid
 from pathlib import Path
 
 import httpx
-import numpy as np
 import uvicorn
 
 from src.common.artifacts import fingerprint
@@ -23,11 +22,7 @@ from src.serving.warmup_features import warmup
 from src.search.queries import freeze_queries
 
 
-def percentiles(samples: list[float]) -> dict:
-    if not samples or not np.isfinite(samples).all():
-        raise ValueError('nonempty finite latency samples required')
-    values = np.asarray(np.percentile(samples, [50, 95, 99]))
-    return {name: float(values[i]) for i, name in enumerate(('p50_ms', 'p95_ms', 'p99_ms'))}
+from src.evaluation.metrics import latency_percentiles as percentiles
 
 
 def benchmark(cfg: dict) -> dict:

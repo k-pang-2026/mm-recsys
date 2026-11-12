@@ -2,12 +2,12 @@ from __future__ import annotations
 
 import copy
 from pathlib import Path
-import numpy as np
 import pandas as pd
 import pytest
 from PIL import Image
 from src.common.config import load_config
-from src.common.data import history_before
+from src.recommendation.datasets import context_for
+from src.recommendation.features import FeatureEncoder
 from src.simulator.generate import generate
 from src.simulator.split import chronological_split
 from src.evaluation.diagnose_data import diagnose
@@ -44,7 +44,12 @@ def test_generation_causality_and_reproducibility(tmp_path,tiny_config):
     assert train.timestamp.max()<valid.timestamp.min()<test.timestamp.min()
     assert len(train)+len(valid)+len(test)==4000
     uid=train.user_id.iloc[0];cutoff=valid.timestamp.min()
-    assert (history_before(events,uid,cutoff,50).timestamp<cutoff).all()
+    encoder=FeatureEncoder.fit(products,users,cutoff);table=encoder.item_table(products)
+    user=users.set_index('user_id').loc[uid].to_dict()
+    history=events[events.user_id==uid]
+    before=context_for(history[history.timestamp<cutoff],user,encoder,table,cutoff,50)
+    after=context_for(history,user,encoder,table,cutoff,50)
+    assert (before.history==after.history).all() and before.purchased==after.purchased
     # Removing test outcomes cannot affect the pilot, proving it is valid-only.
     (data/'split/test.parquet').unlink()
     result=diagnose(tiny_config,data)

@@ -1,7 +1,6 @@
 """Compact observed-data snapshots; journal rows are decoded in bounded batches."""
 from __future__ import annotations
 
-from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -26,7 +25,7 @@ def journal_tables(source: Path, journal: Journal, after: int, through: int) -> 
     events = pq.read_table(source / 'events.parquet')
     impressions = pq.read_table(source / 'impressions.parquet')
     event_parts, exposure_parts = [events], [impressions]
-    with closing(journal.connect()) as db:
+    with journal.connect() as db:
         cursor = db.execute('SELECT * FROM events WHERE seq>? AND seq<=? ORDER BY seq', (after, through))
         while rows := cursor.fetchmany(10000):
             incoming = []

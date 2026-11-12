@@ -1,0 +1,45 @@
+{
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": {
+    "docker_reproduction": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/pdf_completion_20261111/fresh_reproduction_full.json",
+      "sha256": "09a09b1a7319f226a34c361bcb949ac2a77b24029718f938f88b573df8e10444"
+    },
+    "api_schemas": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/pdf_completion_20261111/api_full.json",
+      "sha256": "b00e3c1b26cbbbb97b15f8c4d1040d12e7079928c10939296876c66366be2ec8"
+    },
+    "ab_statistics": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/pdf_completion_20261111/ab_acceptance_full.json",
+      "sha256": "b4d5bb56056969d9c5dd43e7902f4003d5ab885dc439d60b7d3598c28e09b6cb"
+    },
+    "session_response": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/pdf_completion_20261111/mab_full.json",
+      "sha256": "e6720d15260cf96a958e1e2c8bb7e9a7e00648a48ad9e648be1c30fe34c7638f"
+    },
+    "ct_retrain_and_rollback": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/pdf_completion_20261111/ct_acceptance_full.json",
+      "sha256": "117c8c6242cbbbaee8714f82e5d297d369b441f3c67b26384d05e5cff4f83fb6"
+    }
+  },
+  "limitations": [
+    "Measured current local source and empty artifact paths; pinned dependency/HuggingFace caches reused; not a newly published remote clone",
+    "Synthetic full A/B: treatment CTR -17.37% and CVR -27.72%; statistical verification is not improvement or real-user causal evidence",
+    "CTR AUC meets its .70 contract; separate initial CVR AUC .530408 is not strong purchase-prediction evidence",
+    "Chronological CT folds are unchanged; fresh journal events may remain held out; exact new-event/label counts are recorded in ct_full.json",
+    "Frozen quality and isolated serial latency describe initial v1.0; simultaneous training load is not that latency benchmark",
+    "Physical Windows host RAM query failed at WSL interop; actual Docker allocation/runtime was measured",
+    "Current source push/PR and external submission have not been performed",
+    "Actual automatic full training was naturally RETAINED. A separate full-size constant-initial fixture verified actual guarded promotion/HTTP replacement/rollback using the exact trained candidate; production unchanged. Neither measured result is substituted for the other."
+  ]
+}

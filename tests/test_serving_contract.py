@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from src.common.schemas import EventRequest,FeedbackRequest,SearchResponse,SearchItem
 from src.serving.main import create_app
 from src.serving.memory_store import MemoryFeatureStore
+import pytest
 
 
 def test_unimplemented_models_never_report_empty_success():
@@ -43,3 +44,18 @@ def test_search_plugin_receives_shared_model_and_preserves_api_schema():
 def test_invalid_image_fails_validation_before_model_loading():
     with TestClient(create_app()) as client:
         assert client.post('/api/search',json={'query_image':'not-base64'}).status_code==422
+
+
+def test_owned_store_is_closed_when_model_startup_fails(monkeypatch, tmp_path):
+    from unittest.mock import Mock
+    from src.common.config import load_config
+    store=Mock();cfg=load_config()
+    cfg['paths']['model_dir']=str(tmp_path)
+    monkeypatch.setattr('src.serving.main.create_feature_store',lambda cfg:store)
+    def corrupt(*args):
+        raise ValueError('corrupt model')
+    monkeypatch.setattr('src.search.service.create_service',corrupt)
+    with pytest.raises(ValueError,match='corrupt model'):
+        with TestClient(create_app(cfg)):
+            pass
+    store.close.assert_called_once()

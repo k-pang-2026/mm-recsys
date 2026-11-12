@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "before": {
+    "mrr": 0.925,
+    "ndcg_at_10": 0.925,
+    "recall_at_300": 0.7457929264118653,
+    "auc": 0.9657847659453032,
+    "hit_rate_at_50": 0.6651454649172847,
+    "ndcg_at_50": 0.32991414345182957,
+    "coverage": 0.37448
+  },
+  "after": {
+    "mrr": 0.925,
+    "ndcg_at_10": 0.925,
+    "recall_at_300": 0.7457929264118653,
+    "auc": 0.9657847659453032,
+    "hit_rate_at_50": 0.6651454649172847,
+    "ndcg_at_50": 0.32991414345182957,
+    "coverage": 0.37448
+  },
+  "current_source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+  "current_sha256": "16ab47078a6ad7f3e0cc7d39e6bc89fa8911d874b932a528b5407b232af43fbb",
+  "scope": "Seven fixed full-cohort quality metrics equal after final exception alias repair; latency independently remeasured."
+}

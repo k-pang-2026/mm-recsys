@@ -1,0 +1,20 @@
+{
+  "status": "REPRODUCED",
+  "file": "src/simulator/events.py",
+  "line": 122,
+  "original_cart": {
+    "purchase": 0.45,
+    "view": 0.25,
+    "exit": 0.3
+  },
+  "changed_cart": {
+    "purchase": 0.0,
+    "view": 0.0,
+    "exit": 1.0
+  },
+  "events_identical": true,
+  "exposures_identical": true,
+  "purchase_events": 97,
+  "scope": "isolated 400 products/40 users/2000 events, no frozen data modified",
+  "note": "cart transitions are overridden by persona cvr; other states use config"
+}

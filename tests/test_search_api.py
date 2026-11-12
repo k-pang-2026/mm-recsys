@@ -1,7 +1,5 @@
 import base64
 from io import BytesIO
-from types import SimpleNamespace
-from pathlib import Path
 import pandas as pd
 from PIL import Image
 import pytest
@@ -12,6 +10,7 @@ from src.common.schemas import SearchRequest
 from src.search.api import create_app
 from src.search.index import SearchHit
 from src.search.service import SearchService, create_service
+from src.serving.main import create_app as shared_app
 
 pytest_plugins = ['src.search.testing']
 
@@ -62,8 +61,9 @@ def test_invalid_json_fails_before_encoder_call(payload):
         assert searcher.calls == []
 
 
-def test_multipart_image_hybrid_and_invalid_fields(image_bytes):
-    with TestClient(create_app(search_service=SearchService(FixtureSearcher()))) as client:
+@pytest.mark.parametrize('factory', [create_app, shared_app])
+def test_multipart_image_hybrid_and_invalid_fields(image_bytes, factory):
+    with TestClient(factory(search_service=SearchService(FixtureSearcher()))) as client:
         files = {'query_image': ('query.png', image_bytes, 'image/png')}
         assert client.post('/api/search', files=files).json()['search_type'] == 'image'
         response = client.post('/api/search', files=files, data={'query_text': 'shirt', 'top_k': '7'})
@@ -71,6 +71,15 @@ def test_multipart_image_hybrid_and_invalid_fields(image_bytes):
         assert client.post('/api/search', files=files, data={'top_k': '1.5'}).status_code == 422
         assert client.post('/api/search', files={'query_image': ('bad', b'bad')}).status_code == 422
         assert client.post('/api/search', files=files, data={'unknown': 'x'}).status_code == 422
+
+
+@pytest.mark.parametrize('factory', [create_app, shared_app])
+def test_all_entrypoints_reject_oversized_body_before_inference(factory):
+    searcher = FixtureSearcher()
+    with TestClient(factory(search_service=SearchService(searcher))) as client:
+        response = client.post('/api/search', content=b'x' * (8*1024*1024+1),
+                               headers={'content-type': 'application/json'})
+        assert response.status_code == 413 and not searcher.calls
 
 
 def test_factory_is_loaded_once_per_lifespan(monkeypatch, tmp_path):

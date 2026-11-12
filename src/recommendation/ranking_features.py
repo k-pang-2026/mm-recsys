@@ -101,17 +101,13 @@ class RankingEncoder:
     def transform(self, labels: pd.DataFrame, users: pd.DataFrame, table: Any, history: HistoryIndex,
                   freeze_at: pd.Timestamp | None = None, fit: bool = False,
                   user_rows: dict | None = None) -> tuple[np.ndarray, np.ndarray]:
-        sparse = np.zeros((len(labels), len(SPARSE_FIELDS)), np.int64)
         dense = np.zeros((len(labels), len(DENSE_FIELDS)), np.float32)
         if user_rows is None:
             user_rows = users.set_index('user_id').to_dict('index')
         rows = labels.product_id.map(table.id_to_index).to_numpy(dtype=np.int64)
-        at = pd.to_datetime(labels.exposed_at)
-        if (table.created[rows] > at.astype('int64').to_numpy()).any():
-            raise ValueError('ranking exposure before product registration')
-        sparse[:, 2:8] = table.categories[rows]
-        sparse[:, 8] = at.dt.hour.to_numpy(); sparse[:, 9] = at.dt.dayofweek.to_numpy()
-        times = at.astype('int64').to_numpy()
+        at = pd.DatetimeIndex(labels.exposed_at)
+        sparse = self.item_features(rows, at, table)
+        times = at.asi8
         if freeze_at is not None:
             times = np.minimum(times, freeze_at.value)
         for uid, positions in labels.groupby('user_id', sort=False).indices.items():
@@ -123,29 +119,41 @@ class RankingEncoder:
         if fit:
             self.mean = dense.mean(axis=0, dtype=np.float64).astype(np.float32)
             self.std = np.maximum(dense.std(axis=0, dtype=np.float64), 1e-6).astype(np.float32)
+        return sparse, self.normalize(dense)
+
+    def item_features(self, rows: np.ndarray, at: pd.DatetimeIndex, table: Any) -> np.ndarray:
+        if (table.created[rows] > at.asi8).any():
+            raise ValueError('ranking exposure before product registration')
+        sparse = np.zeros((len(rows), len(SPARSE_FIELDS)), np.int64)
+        sparse[:, 2:8] = table.categories[rows]
+        sparse[:, 8] = at.hour; sparse[:, 9] = at.dayofweek
+        return sparse
+
+    def normalize(self, dense: np.ndarray) -> np.ndarray:
         dense = (dense - self.mean) / self.std
         if not self.cross_features:
             dense[:, 3:10] = 0
         if not np.isfinite(dense).all():
             raise ValueError('nonfinite ranking features')
-        return sparse, dense.astype(np.float32)
+        return dense.astype(np.float32)
 
     def serving(self, user_id: str, products: list[str], at: pd.Timestamp, users: pd.DataFrame,
                 table: Any, history: HistoryIndex, recent_clicks: list[str], session_count: int,
                 user_rows: dict | None = None) -> tuple[np.ndarray, np.ndarray]:
-        labels = pd.DataFrame(dict(user_id=[user_id]*len(products), product_id=products, exposed_at=[at]*len(products)))
-        sparse, dense = self.transform(labels, users, table, history, user_rows=user_rows)
+        rows = np.array([table.id_to_index[p] for p in products], dtype=np.int64)
+        sparse = self.item_features(rows, pd.DatetimeIndex([at]), table)
+        if user_rows is None:
+            user_rows = users.set_index('user_id').to_dict('index')
+        sparse[:, :2] = self.metadata.demographics(user_rows.get(user_id), pd.Timestamp(at.value, tz='UTC'))
+        raw = history.raw(user_id, rows, np.full(len(rows), at.value, dtype=np.int64))
         # Online session views augment observed affinities; current request is never an input label.
         known = [table.id_to_index[p] for p in recent_clicks if p in table.id_to_index and table.created[table.id_to_index[p]] <= at.value]
-        raw = dense * self.std + self.mean
         if known:
-            rows = np.array([table.id_to_index[p] for p in products]); cats = table.categories
+            cats = table.categories
             for field, target in [(0, 3), (2, 4), (3, 5)]:
                 counts = np.bincount(cats[known, field], minlength=int(cats[:, field].max())+1) / len(known)
                 raw[:, target] = counts[cats[rows, field]]
             raw[:, 8] = np.abs(table.prices[rows, 0] - table.prices[known, 0].mean())
             raw[:, 9] = 1
         raw[:, 10] = np.log1p(session_count)
-        dense = (raw-self.mean)/self.std
-        if not self.cross_features: dense[:, 3:10] = 0
-        return sparse, dense.astype(np.float32)
+        return sparse, self.normalize(raw)

@@ -82,12 +82,21 @@ FeatureStore는 src/common/schemas.py에 정의되어 있다. C가 Redis를 추�
 `/health`는 liveness, `/ready`는 두 모델 readiness다. 모델이 없으면 해당 API는 503이다.
 속성 변경은 역할별 config overlay로 적용하고 data generator fingerprint에는 search/추천 설정을 넣지 않는다.
 
-현재 생성기 v4.3의 dev 데이터는 `data/dev-v43/`, full은 `data/full-v43/`에 분리한다.
-모델은 각각 `models/dev-v43/`, `models/full-v43/`를 사용한다. `SCALE=full`이면
+현재 생성기 v4.4의 dev 데이터는 `data/dev-v44/`, full은 `data/full-v44/`에 분리한다.
+모델은 각각 `models/dev-v44/`, `models/full-v44/`를 사용한다. `SCALE=full`이면
 load_config가 data/split/model 경로까지 전환한다. 과거 `data/`, `data/full/`의 산출물은
-보존하며 새 데이터로 덮어쓰지 않는다. v4.3 변경 근거는 [통합 검증](requirements_completion.md)을 따른다.
+보존하며 새 데이터로 덮어쓰지 않는다. v4.4는 장바구니 전이의 설정 확률 0·1을 정확히 유지하며, 중간 확률에는 persona CVR /
+`simulator.cart_reference_cvr`로 구매 오즈만 조정한다. v4.3의 [통합 검증](requirements_completion.md)은 과거 근거로 보존한다.
 
 ## Docker 준비와 파일 소유권
+
+CT는 신규 이벤트 임계치 또는 활성 모델의 성능 저하로 재학습을 시작한다.
+성능 저하는 귀속 시간이 지난 최소 요청 수를 충족한 CTR/HitRate 관측으로 판단하며,
+이전 모델의 노출은 현재 모델의 저하 근거에서 제외한다. `serving.ct.retrain_on_degradation`으로
+성능 저하 조건을 제어하고, `retry_seconds`는 라벨 대기 및 성능 저하 재시도의 최소 간격이다.
+관측·활성 모델·설정이 그대로면 스냅샷을 다시 만들지 않으며 이 상태는 작업자 재시작 후에도 유지한다.
+라벨 부족·학습 실패는 이벤트를 소비하거나 활성 모델을 교체하지 않는다.
+승격은 기존 paired valid 개선·최소 품질 조건을 그대로 적용한다.
 
 A는 B10에서 Docker/Compose, artifacts 준비·smoke orchestration, 컨테이너 성능 검증을 담당한다.
 B2b/B5/B9 PR이 병합된 main의 서비스 factory, 학습 CLI와 Redis/CT 인터페이스를 사용한다.
@@ -116,3 +125,9 @@ PDF의 `Ranking AUC >= 0.70`은 **CTR AUC**에 적용한다. CVR AUC, 클릭 노
 구매 양성 수는 별도로 보고한다. CVR의 낮은 값이나 단일 클래스 상태를 숨기지 않으며,
 CTR 합격을 CVR 품질 개선으로 표시하지 않는다. 이 해석은 첨부 요구사항 1~9 통합 작업 중
 사용자가 “기존 계약: CTR 기준, CVR 별도 보고”로 명시 확인했다.
+
+CTR 비클릭 라벨은 노출 시각부터 귀속 시간이 경과해야 확정한다. CVR 미구매 라벨은
+해당 노출의 마지막 클릭 시각부터 귀속 시간이 경과해야 확정한다. 늦은 클릭·반복 클릭의
+구매 관측 시간이 부족하면 CVR 학습·평가에서 마스킹하며, 미래 구매를 미리 참조하지 않는다.
+이 관측 종료 처리는 `linked-view-last-view-v3`로 기록한다. 이전 full PASS는 당시
+데이터·모델·소스의 측정 기록이며, 변경한 코드의 최종 합격으로 재사용하지 않는다.

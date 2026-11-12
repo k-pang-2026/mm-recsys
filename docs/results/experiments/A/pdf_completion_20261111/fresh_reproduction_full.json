@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "initial_data_files": 0,
+  "initial_model_files": 0,
+  "prepared_data_and_models_from_empty": true,
+  "preparation": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/preparation_first_full.json",
+    "sha256": "8f6016116cc43090332d88abd4665b234867be8e2c39d0ca7c1d4a6f29423426"
+  },
+  "runtime_sources": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/runtime_sources_final.json",
+    "sha256": "2fd5ff4649fdeb5ecae1ad21bec81a8854f37da35a931529bc215613123fd853"
+  },
+  "independent_regeneration": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/data_reproduction_full.json",
+    "sha256": "cff5955c83e1e944bf9058df235a332f5f90adf76e1b68c07431eab2a651e71e"
+  },
+  "four_services": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/default_compose_ready_ps.json",
+    "sha256": "2bca1f06dc34ae448965f3b45fc55bb238736f735c313053ab6239c2520a8793"
+  },
+  "scope": "New empty v4.4 data/model paths in the current checkout, real full generation and three-model training; existing pinned HF download cache and Docker dependency layers reused; independent full data repeat matches every recorded file hash",
+  "limitations": [
+    "Local uncommitted source was built and fingerprinted; not a newly published remote clone",
+    "Initial model training was followed by CLI/dashboard-only repairs; frozen measurement sources unchanged"
+  ]
+}

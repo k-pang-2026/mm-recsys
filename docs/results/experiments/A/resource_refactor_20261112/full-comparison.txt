@@ -1,0 +1,8 @@
+ Container mm-recsys-api-server-run-029052b10a03 Creating 
+ Container mm-recsys-api-server-run-029052b10a03 Created 
+[A/B 실험] 진행 일수=1/2 / 그룹별 사용자=20명 / seed=42
+[A/B 실험] 진행 일수=2/2 / 그룹별 사용자=20명 / seed=42
+{"source": "/app", "setup_seconds": 27.041790704999983, "peak_rss_mib": 1712.3828125, "recommend_median_ms": 19.481733, "recommend_p95_ms": 21.399492, "feature_median_ms": 10.922084}
+[A/B 실험] 진행 일수=1/2 / 그룹별 사용자=20명 / seed=42
+[A/B 실험] 진행 일수=2/2 / 그룹별 사용자=20명 / seed=42
+{"source": "/current", "setup_seconds": 26.01642581699997, "peak_rss_mib": 1486.62890625, "recommend_median_ms": 11.671184, "recommend_p95_ms": 13.409916, "feature_median_ms": 1.685475}

@@ -1,0 +1,414 @@
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+...........................F................................F........... [ 44%]
+........................................................................ [ 59%]
+........F.........................
+=================================== FAILURES ===================================
+________________ test_failed_replay_does_not_advance_checkpoint ________________
+
+self = <src.serving.feature_store.RedisFeatureStore object at 0xfd9da1471190>
+event = EventRequest(event_id='e', user_id='u', product_id='p', event_type='view', session_id='s', category='tops')
+
+    def append_event(self, event: EventRequest) -> bool:
+        session_key = self.key("user", event.user_id, "session")
+        views_key = self.key("user", event.user_id, "recent_views")
+        seen_key = self.key("event", event.event_id)
+        try:
+            for _ in range(self.write_retries):
+>               with self.client.pipeline() as pipe:
+
+src/serving/feature_store.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/unittest/mock.py:1134: in __call__
+    return self._mock_call(*args, **kwargs)
+/usr/lib/python3.12/unittest/mock.py:1138: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Mock name='mock.pipeline' id='278853457306224'>, args = (), kwargs = {}
+effect = ConnectionError('offline')
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+>               raise effect
+E               redis.exceptions.ConnectionError: offline
+
+/usr/lib/python3.12/unittest/mock.py:1193: ConnectionError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = PosixPath('/tmp/pytest-of-peachpetal/pytest-6/test_failed_replay_does_not_ad0')
+
+    def test_failed_replay_does_not_advance_checkpoint(tmp_path):
+        from unittest.mock import Mock
+        from redis.exceptions import ConnectionError as RedisConnectionError
+        pd.DataFrame([{"product_id": "p", "category_l1": "tops"}]).to_parquet(tmp_path / "products.parquet")
+        (tmp_path / "split_manifest.json").write_text(json.dumps({"generation_fingerprint": "v1"}))
+        stream = tmp_path / "stream"
+        stream.mkdir()
+        pd.DataFrame([{"event_id": "e", "user_id": "u", "product_id": "p",
+                       "session_id": "s", "event_type": "view"}]).to_parquet(stream / "events-0.parquet")
+        client = Mock()
+        client.pipeline.side_effect = RedisConnectionError("offline")
+        store = RedisFeatureStore(client)
+        with pytest.raises(ConnectionError, match="checkpoint"):
+>           replay_stream({"paths": {"data_dir": str(tmp_path)}}, store)
+
+tests/test_feature_stream.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/serving/stream_features.py:48: in replay_stream
+    store.append_event(event)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <src.serving.feature_store.RedisFeatureStore object at 0xfd9da1471190>
+event = EventRequest(event_id='e', user_id='u', product_id='p', event_type='view', session_id='s', category='tops')
+
+    def append_event(self, event: EventRequest) -> bool:
+        session_key = self.key("user", event.user_id, "session")
+        views_key = self.key("user", event.user_id, "recent_views")
+        seen_key = self.key("event", event.event_id)
+        try:
+            for _ in range(self.write_retries):
+                with self.client.pipeline() as pipe:
+                    try:
+                        pipe.watch(session_key, views_key, seen_key)
+                        if pipe.exists(seen_key):
+                            self.available = True
+                            return False
+                        old = cast(dict[str, str], pipe.hgetall(session_key))
+                        reset = not old or old.get("id") != event.session_id
+                        clicks = 0 if reset else int(old.get("clicks", 0))
+                        interest = event.category or (None if reset else old.get("interest"))
+                        values = {"id": event.session_id,
+                                  "clicks": str(clicks + int(event.event_type == "view"))}
+                        if interest is not None:
+                            values["interest"] = interest
+                        pipe.multi()
+                        pipe.set(seen_key, "1", ex=self.feedback_ttl)
+                        if reset:
+                            pipe.delete(session_key, views_key)
+                        pipe.hset(session_key, mapping=values)
+                        if event.event_type == "view":
+                            pipe.rpush(views_key, event.product_id)
+                            pipe.ltrim(views_key, -self.history_limit, -1)
+                        pipe.expire(session_key, self.session_ttl)
+                        pipe.expire(views_key, self.session_ttl)
+                        pipe.execute()
+                        self.available = True
+                        return True
+                    except WatchError:
+                        continue
+            raise RedisError("event write contention exceeded configured retry limit")
+        except RedisError as error:
+            self._failure("append_event", error)
+>           raise ConnectionError('Redis event write failed; retry the same event ID') from error
+E           redis.exceptions.ConnectionError: Redis event write failed; retry the same event ID
+
+src/serving/feature_store.py:117: ConnectionError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:57 [2026-11-12T06:23:26+00:00] [Redis 연결] [경고] append_event 실패 / 원인: offline / 조회는 빈 특징값을 사용하며 쓰기는 실패를 반환합니다. 다음 조치: Redis 연결·상태를 확인하고 쓰기 재시도에는 동일 event_id를 사용하세요.
+_____ test_storage_failure_retries_without_skipping_or_duplicating_events ______
+
+self = <src.serving.feature_store.RedisFeatureStore object at 0xfd9da1353a70>
+event = EventRequest(event_id='click', user_id='u', product_id='p', event_type='view', session_id='s', category=None)
+
+    def append_event(self, event: EventRequest) -> bool:
+        session_key = self.key("user", event.user_id, "session")
+        views_key = self.key("user", event.user_id, "recent_views")
+        seen_key = self.key("event", event.event_id)
+        try:
+            for _ in range(self.write_retries):
+>               with self.client.pipeline() as pipe:
+
+src/serving/feature_store.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/unittest/mock.py:1134: in __call__
+    return self._mock_call(*args, **kwargs)
+/usr/lib/python3.12/unittest/mock.py:1138: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Mock name='mock.pipeline' id='278853456623136'>, args = (), kwargs = {}
+effect = ConnectionError('offline')
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+>               raise effect
+E               redis.exceptions.ConnectionError: offline
+
+/usr/lib/python3.12/unittest/mock.py:1193: ConnectionError
+
+The above exception was the direct cause of the following exception:
+
+    def test_storage_failure_retries_without_skipping_or_duplicating_events():
+        cfg = load_config(); cfg['serving']['ct']['enabled'] = False
+        backend = fakeredis.FakeRedis(decode_responses=True)
+        store = RedisFeatureStore(backend)
+        unavailable = Mock(); unavailable.pipeline.side_effect = RedisConnectionError('offline')
+        payload = dict(event_id='click', user_id='u', product_id='p', event_type='view', session_id='s')
+        with TestClient(create_app(cfg, search_service=object(), recommend_service=object(), feature_store=store)) as client:
+            store.client = unavailable
+            for route in ('event', 'feedback'):
+>               assert client.post('/api/'+route, json=payload).status_code == 503
+
+tests/test_ponytail_refactor.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.12/site-packages/starlette/testclient.py:593: in post
+    return super().post(
+.venv/lib/python3.12/site-packages/httpx/_client.py:1144: in post
+    return self.request(
+.venv/lib/python3.12/site-packages/starlette/testclient.py:484: in request
+    return super().request(
+.venv/lib/python3.12/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+.venv/lib/python3.12/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+.venv/lib/python3.12/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+.venv/lib/python3.12/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+.venv/lib/python3.12/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+.venv/lib/python3.12/site-packages/starlette/testclient.py:377: in handle_request
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/testclient.py:374: in handle_request
+    portal.call(self.app, scope, receive, send)
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+/usr/lib/python3.12/concurrent/futures/_base.py:456: in result
+    return self.__get_result()
+/usr/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+    raise self._exception
+.venv/lib/python3.12/site-packages/anyio/from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+.venv/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:187: in __call__
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/middleware/errors.py:165: in __call__
+    await self.app(scope, receive, _send)
+src/search/transport.py:19: in __call__
+    return await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/middleware/exceptions.py:62: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:715: in __call__
+    await self.middleware_stack(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:735: in app
+    await route.handle(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:288: in handle
+    await self.app(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/routing.py:76: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+.venv/lib/python3.12/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+.venv/lib/python3.12/site-packages/starlette/routing.py:73: in app
+    response = await f(request)
+.venv/lib/python3.12/site-packages/fastapi/routing.py:301: in app
+    raw_response = await run_endpoint_function(
+.venv/lib/python3.12/site-packages/fastapi/routing.py:214: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+.venv/lib/python3.12/site-packages/starlette/concurrency.py:39: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+.venv/lib/python3.12/site-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:2706: in run_sync_in_worker_thread
+    return await future
+.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py:1100: in run
+    result = context.run(func, *args)
+src/serving/main.py:99: in event
+    applied = request.app.state.store.append_event(payload)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <src.serving.feature_store.RedisFeatureStore object at 0xfd9da1353a70>
+event = EventRequest(event_id='click', user_id='u', product_id='p', event_type='view', session_id='s', category=None)
+
+    def append_event(self, event: EventRequest) -> bool:
+        session_key = self.key("user", event.user_id, "session")
+        views_key = self.key("user", event.user_id, "recent_views")
+        seen_key = self.key("event", event.event_id)
+        try:
+            for _ in range(self.write_retries):
+                with self.client.pipeline() as pipe:
+                    try:
+                        pipe.watch(session_key, views_key, seen_key)
+                        if pipe.exists(seen_key):
+                            self.available = True
+                            return False
+                        old = cast(dict[str, str], pipe.hgetall(session_key))
+                        reset = not old or old.get("id") != event.session_id
+                        clicks = 0 if reset else int(old.get("clicks", 0))
+                        interest = event.category or (None if reset else old.get("interest"))
+                        values = {"id": event.session_id,
+                                  "clicks": str(clicks + int(event.event_type == "view"))}
+                        if interest is not None:
+                            values["interest"] = interest
+                        pipe.multi()
+                        pipe.set(seen_key, "1", ex=self.feedback_ttl)
+                        if reset:
+                            pipe.delete(session_key, views_key)
+                        pipe.hset(session_key, mapping=values)
+                        if event.event_type == "view":
+                            pipe.rpush(views_key, event.product_id)
+                            pipe.ltrim(views_key, -self.history_limit, -1)
+                        pipe.expire(session_key, self.session_ttl)
+                        pipe.expire(views_key, self.session_ttl)
+                        pipe.execute()
+                        self.available = True
+                        return True
+                    except WatchError:
+                        continue
+            raise RedisError("event write contention exceeded configured retry limit")
+        except RedisError as error:
+            self._failure("append_event", error)
+>           raise ConnectionError('Redis event write failed; retry the same event ID') from error
+E           redis.exceptions.ConnectionError: Redis event write failed; retry the same event ID
+
+src/serving/feature_store.py:117: ConnectionError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:57 [2026-11-12T06:24:43+00:00] [Redis 연결] [경고] append_event 실패 / 원인: offline / 조회는 빈 특징값을 사용하며 쓰기는 실패를 반환합니다. 다음 조치: Redis 연결·상태를 확인하고 쓰기 재시도에는 동일 event_id를 사용하세요.
+_________ test_failure_returns_empty_features_and_warning_and_recovers _________
+
+self = <src.serving.feature_store.RedisFeatureStore object at 0xfd9d9cef73b0>
+event = EventRequest(event_id='e', user_id='u', product_id='e', event_type='view', session_id='s', category=None)
+
+    def append_event(self, event: EventRequest) -> bool:
+        session_key = self.key("user", event.user_id, "session")
+        views_key = self.key("user", event.user_id, "recent_views")
+        seen_key = self.key("event", event.event_id)
+        try:
+            for _ in range(self.write_retries):
+>               with self.client.pipeline() as pipe:
+
+src/serving/feature_store.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.12/unittest/mock.py:1134: in __call__
+    return self._mock_call(*args, **kwargs)
+/usr/lib/python3.12/unittest/mock.py:1138: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+/usr/lib/python3.12/unittest/mock.py:1193: in _execute_mock_call
+    raise effect
+src/serving/feature_store.py:64: in get_features
+    with self.client.pipeline(transaction=True) as pipe:
+/usr/lib/python3.12/unittest/mock.py:1134: in __call__
+    return self._mock_call(*args, **kwargs)
+/usr/lib/python3.12/unittest/mock.py:1138: in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Mock name='mock.pipeline' id='278853441663776'>, args = ()
+kwargs = {'transaction': True}, effect = ConnectionError('offline')
+
+    def _execute_mock_call(self, /, *args, **kwargs):
+        # separate from _increment_mock_call so that awaited functions are
+        # executed separately from their call, also AsyncMock overrides this method
+    
+        effect = self.side_effect
+        if effect is not None:
+            if _is_exception(effect):
+>               raise effect
+E               redis.exceptions.ConnectionError: offline
+
+/usr/lib/python3.12/unittest/mock.py:1193: ConnectionError
+
+The above exception was the direct cause of the following exception:
+
+store = <src.serving.feature_store.RedisFeatureStore object at 0xfd9d9cef73b0>
+caplog = <_pytest.logging.LogCaptureFixture object at 0xfd9da0e4f200>
+
+    def test_failure_returns_empty_features_and_warning_and_recovers(store, caplog):
+        original = store.client
+        store.client = Mock()
+        store.client.pipeline.side_effect = ConnectionError("offline")
+        assert store.get_features("u").model_dump() == {
+            "recent_clicks": [], "session_clicks": 0, "session_interest": None, "profile": {}}
+        with pytest.raises(OSError, match='event write failed'):
+>           store.append_event(event("e"))
+
+tests/test_redis_features.py:151: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <src.serving.feature_store.RedisFeatureStore object at 0xfd9d9cef73b0>
+event = EventRequest(event_id='e', user_id='u', product_id='e', event_type='view', session_id='s', category=None)
+
+    def append_event(self, event: EventRequest) -> bool:
+        session_key = self.key("user", event.user_id, "session")
+        views_key = self.key("user", event.user_id, "recent_views")
+        seen_key = self.key("event", event.event_id)
+        try:
+            for _ in range(self.write_retries):
+                with self.client.pipeline() as pipe:
+                    try:
+                        pipe.watch(session_key, views_key, seen_key)
+                        if pipe.exists(seen_key):
+                            self.available = True
+                            return False
+                        old = cast(dict[str, str], pipe.hgetall(session_key))
+                        reset = not old or old.get("id") != event.session_id
+                        clicks = 0 if reset else int(old.get("clicks", 0))
+                        interest = event.category or (None if reset else old.get("interest"))
+                        values = {"id": event.session_id,
+                                  "clicks": str(clicks + int(event.event_type == "view"))}
+                        if interest is not None:
+                            values["interest"] = interest
+                        pipe.multi()
+                        pipe.set(seen_key, "1", ex=self.feedback_ttl)
+                        if reset:
+                            pipe.delete(session_key, views_key)
+                        pipe.hset(session_key, mapping=values)
+                        if event.event_type == "view":
+                            pipe.rpush(views_key, event.product_id)
+                            pipe.ltrim(views_key, -self.history_limit, -1)
+                        pipe.expire(session_key, self.session_ttl)
+                        pipe.expire(views_key, self.session_ttl)
+                        pipe.execute()
+                        self.available = True
+                        return True
+                    except WatchError:
+                        continue
+            raise RedisError("event write contention exceeded configured retry limit")
+        except RedisError as error:
+            self._failure("append_event", error)
+>           raise ConnectionError('Redis event write failed; retry the same event ID') from error
+E           redis.exceptions.ConnectionError: Redis event write failed; retry the same event ID
+
+src/serving/feature_store.py:117: ConnectionError
+------------------------------ Captured log call -------------------------------
+WARNING  src.serving.feature_store:feature_store.py:57 [2026-11-12T06:24:45+00:00] [Redis 연결] [경고] get_features 실패 / 원인: offline / 조회는 빈 특징값을 사용하며 쓰기는 실패를 반환합니다. 다음 조치: Redis 연결·상태를 확인하고 쓰기 재시도에는 동일 event_id를 사용하세요.
+WARNING  src.serving.feature_store:feature_store.py:57 [2026-11-12T06:24:45+00:00] [Redis 연결] [경고] append_event 실패 / 원인: offline / 조회는 빈 특징값을 사용하며 쓰기는 실패를 반환합니다. 다음 조치: Redis 연결·상태를 확인하고 쓰기 재시도에는 동일 event_id를 사용하세요.
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+.venv/lib/python3.12/site-packages/faiss/loader.py:49
+  /home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/faiss/loader.py:49: DeprecationWarning: numpy.core._multiarray_umath is deprecated and has been renamed to numpy._core._multiarray_umath. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core._multiarray_umath.__cpu_features__.
+    from numpy.core._multiarray_umath import __cpu_features__
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /home/peachpetal/ecommerce/mm-recsys/docs/results/experiments/A/final_validation_20261112/submission/pytest.xml -
+=========================== short test summary info ============================
+FAILED tests/test_feature_stream.py::test_failed_replay_does_not_advance_checkpoint
+FAILED tests/test_ponytail_refactor.py::test_storage_failure_retries_without_skipping_or_duplicating_events
+FAILED tests/test_redis_features.py::test_failure_returns_empty_features_and_warning_and_recovers
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/home/peachpetal/ecommerce/mm-recsys/.venv/lib/python3.12/site-packages/redis/connection.py:534: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+3 failed, 319 passed, 2 warnings in 118.07s (0:01:58)

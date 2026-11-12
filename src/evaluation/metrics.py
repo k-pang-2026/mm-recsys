@@ -49,9 +49,8 @@ def logloss(y_true: Sequence[int], y_prob: Sequence[float], eps: float = 1e-7) -
     p = np.clip(np.asarray(y_prob, dtype=float), eps, 1.0 - eps)
     return float(_log_loss(np.asarray(y_true), p, labels=[0, 1]))
 
-def category_entropy(categories: Sequence[str]) -> float:
-    if len(categories) == 0:
-        return 0.0
-    _, counts = np.unique(np.asarray(categories), return_counts=True)
-    p = counts / counts.sum()
-    return float(-(p * np.log2(p)).sum())
+def latency_percentiles(samples: Sequence[float]) -> dict[str, float]:
+    values = np.asarray(samples, dtype=float)
+    if values.ndim != 1 or not len(values) or not np.isfinite(values).all() or (values < 0).any():
+        raise ValueError('nonempty finite nonnegative latency samples required')
+    return {f'p{p}_ms': float(value) for p, value in zip((50, 95, 99), np.percentile(values, [50, 95, 99]))}

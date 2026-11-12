@@ -7,12 +7,16 @@ from pathlib import Path
 from src.ct.storage import Journal, append_log
 
 
-def measure(journal: Journal, spec: dict, now: float) -> dict:
+def measure(journal: Journal, spec: dict, now: float, model_version: str | None = None) -> dict:
     window = int(spec['attribution_seconds'])
     start = now - int(spec['recent_seconds'])
     with journal.connect() as db:
-        requests = db.execute('SELECT * FROM requests WHERE at>=? AND at+?<=?',
-                              (start, window, now)).fetchall()
+        query = 'SELECT * FROM requests WHERE at>=? AND at<=?'
+        parameters: tuple = (start, now - window)
+        if model_version is not None:
+            query += ' AND version=?'
+            parameters += (model_version,)
+        requests = db.execute(query, parameters).fetchall()
         outcomes = db.execute('SELECT request_id,product_id,kind,at FROM events '
                               'WHERE request_id IS NOT NULL AND at>=? AND at<=?', (start, now)).fetchall()
     linked: dict[str, list] = {}
@@ -32,11 +36,12 @@ def measure(journal: Journal, spec: dict, now: float) -> dict:
     hitrate = hit_requests / top50_requests if top50_requests else None
     minimum = int(spec['min_mature_requests'])
     alerts = []
-    if len(requests) >= minimum and ctr is not None and ctr < float(spec['ctr_threshold']):
+    if len(requests) >= minimum and ctr is not None and ctr <= float(spec['ctr_threshold']):
         alerts.append('ctr_below_threshold')
-    if top50_requests >= minimum and hitrate is not None and hitrate < float(spec['hitrate_threshold']):
+    if top50_requests >= minimum and hitrate is not None and hitrate <= float(spec['hitrate_threshold']):
         alerts.append('hitrate_below_threshold')
     return dict(event='monitor', status='ALERT' if alerts else ('MEASURED' if requests else 'UNMEASURED'),
+                model_version=model_version,
                 ctr=ctr, hit_rate_at_50=hitrate, clicks=clicks, exposures=exposures,
                 mature_requests=len(requests), top50_requests=top50_requests, hit_requests=hit_requests,
                 alerts=alerts, window_start=start, observed_through=now, attribution_seconds=window,
@@ -46,7 +51,7 @@ def measure(journal: Journal, spec: dict, now: float) -> dict:
                 thresholds={k: spec[k] for k in ('ctr_threshold', 'hitrate_threshold', 'min_mature_requests')})
 
 
-def monitor(journal: Journal, spec: dict, now: float, log: Path) -> dict:
-    result = measure(journal, spec, now)
+def monitor(journal: Journal, spec: dict, now: float, log: Path, model_version: str | None = None) -> dict:
+    result = measure(journal, spec, now, model_version)
     append_log(log, result)
     return result

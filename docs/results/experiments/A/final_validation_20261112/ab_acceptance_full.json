@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "source": "docs/results/experiments/A/final_validation_20261112/ab_full_archive.json",
+  "sha256": "9d6a0929075cead478aac1d8c9b8c68a7f8279c12aa8589ba746f3da8566ad9f",
+  "run_id": "64b305edb1d0eb420c5bb4d1617821b798bdc7973d760829e1814e5b09fcd2c2",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": "assignment, causal counts, denominators, MAB exposure/feedback accounting, independent-user tests, cluster confidence intervals, config/data/source hashes",
+  "seeded_rerun": "UNMEASURED",
+  "repeat_sha256": null,
+  "original_verification": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ab_verification_full.json",
+    "sha256": "2598ce28ebd4348d4dd9c6067d6bd37e058082cfa286aa6cb9520b02228cd133"
+  },
+  "original_sha256": "39125491bde4f64856616dd40f1200780969cc6b654e149e794fe0b9f748b483",
+  "archive_schema": "ab-lossless-archive-v1"
+}

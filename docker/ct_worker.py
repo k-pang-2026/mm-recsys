@@ -1,4 +1,4 @@
-"""Opt-in CT worker calls reload through the API's shared loopback namespace."""
+"""CT worker calls reload through the API's shared loopback namespace."""
 from __future__ import annotations
 
 import os

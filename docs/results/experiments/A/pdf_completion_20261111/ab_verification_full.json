@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "source": "docs/results/docker/runtime-v44/full/pdf-demo-verification/ab_test.json",
+  "sha256": "b64a0700a078cb516b8b252d37749da6fb01deabfb98387b75372f9d96367915",
+  "run_id": "a536985f2dbdd759714d6960d70632de64c028a2f64b6672e7d0addfaf860c5d",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": "assignment, causal counts, denominators, MAB exposure/feedback accounting, independent-user tests, cluster confidence intervals, config/data/source hashes",
+  "seeded_rerun": "UNMEASURED",
+  "repeat_sha256": null
+}

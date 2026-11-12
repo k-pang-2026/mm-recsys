@@ -1,0 +1,151 @@
+{
+  "scale": "full",
+  "stage": "INTEGRATE",
+  "status": "UNMEASURED",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2254172
+  },
+  "metrics": {
+    "mrr": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.925,
+      "split": "test",
+      "status": "PASS"
+    },
+    "ndcg_at_10": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.925,
+      "split": "test",
+      "status": "PASS"
+    },
+    "recall_at_300": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.7457929264118653,
+      "split": "test",
+      "status": "PASS"
+    },
+    "auc": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.9657847659453032,
+      "split": "test",
+      "status": "PASS"
+    },
+    "hit_rate_at_50": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.6651454649172847,
+      "split": "test",
+      "status": "PASS"
+    },
+    "ndcg_at_50": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.32991414345182957,
+      "split": "test",
+      "status": "PASS"
+    },
+    "coverage": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.37448,
+      "split": "test",
+      "status": "PASS"
+    },
+    "candidate_p95_ms": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 3.452274399614907,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "search_p95_ms": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 78.75007015027222,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "recommend_p95_ms": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 18.496816400329408,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "feature_p95_ms": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 0.22435255059463088,
+      "split": "benchmark",
+      "status": "PASS"
+    },
+    "candidate_count": {
+      "source": "docs/results/experiments/A/final_validation_20261112/quality_full_test.json",
+      "sha256": "e5c9f16b1d05d616d80a16239e7c7d8c2856e3a86e2c1370c57b6b06c4874208",
+      "value": 300,
+      "split": "test",
+      "status": "PASS"
+    }
+  },
+  "checks": {
+    "docker_reproduction": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/fresh_reproduction_full.json",
+      "sha256": "02687a6006435fe03ed9ba1459c05fa0048805cab29137c6ba422168b18059be"
+    },
+    "api_schemas": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/api_full.json",
+      "sha256": "7f47076e1a6bfcf3940dcd19a182f34c1feec009361390b4bff734d7bbf972ff"
+    },
+    "ab_statistics": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/ab_acceptance_full.json",
+      "sha256": "a1917af5f532680256eb132bac7c18382f7e293600fb0ecd982c5666670f8866"
+    },
+    "session_response": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/mab_full.json",
+      "sha256": "e5751439a7a12456cdce84778d914cf28d338c90f5a4b3e987bb832a92b5d870"
+    },
+    "ct_retrain_and_rollback": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/ct_acceptance_full.json",
+      "sha256": "6c4a906ef2ec9f368bda7c7021d5951ccc4f13de83d5bb68029484510929616c"
+    },
+    "submission": {
+      "source": "docs/results/experiments/A/final_validation_20261112/submission/checks.json",
+      "sha256": "f78b1c220eca03bcf7d4b06cd2598456900e5c257b33a1a83df8c69eae29bdd9",
+      "status": "BLOCKED",
+      "exit_code": null
+    }
+  },
+  "limitations": [
+    "Synthetic full A/B has negative treatment uplift; no real-user improvement claimed.",
+    "Actual full CT retained production v1.0; controlled promotion/rollback is separate.",
+    "One treatment item exposure differs from the prior run; user outcomes and inference are identical.",
+    "Local verification only; current changes have not been committed or pushed."
+  ],
+  "dataset_scope": {
+    "status": "RESOLVED_OPTIONAL",
+    "date": "2026-10-16",
+    "decision_source": "사용자가 전달한 강사 지시",
+    "primary_acceptance": "합성 full 데이터로 개발과 필수 검증을 완료한다",
+    "real_datasets_required": false,
+    "real_datasets_use": "H&M, Retailrocket, DeepFashion은 개발 완료 후 추가적인 모델 검증에 사용한다",
+    "acquisition_performed": false
+  }
+}

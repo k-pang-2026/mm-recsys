@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": {
+    "live_redis_mab": "PASS",
+    "dedup_feedback": "PASS",
+    "max_reward": "PASS",
+    "session_response": "PASS",
+    "unknown_user": "PASS",
+    "request_attribution_header": "PASS"
+  },
+  "reward_before": {
+    "exposures": 74.0,
+    "reward": 11.4
+  },
+  "reward_click": {
+    "exposures": 74.0,
+    "reward": 11.6
+  },
+  "reward_purchase": {
+    "exposures": 74.0,
+    "reward": 12.4
+  },
+  "session": {
+    "recent_clicks": [
+      "P000423",
+      "P000628",
+      "P000022"
+    ],
+    "session_interest": "sandals"
+  },
+  "url": "http://127.0.0.1:8000",
+  "source_hashes": {
+    "src/serving/feature_store.py": "036383a31ecb0c2dd287a934a72056aa0a2f19b34ed1f6859f13e8ea999a4f41",
+    "src/recommendation/recommender.py": "696d3acde04c8367364d264fb065a8928cd990f5746492bc3508d464c9c18637",
+    "scripts/verify_integration_mab.py": "ff654e262b29a85449bd69cc17b29bdcd905cddba1d4efe89a1470a37d042bd2"
+  },
+  "scope": "real deployed HTTP + separate Redis client observation; latest user/product exposure attribution, no quality-lift claim"
+}

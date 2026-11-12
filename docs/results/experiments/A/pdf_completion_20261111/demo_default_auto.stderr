@@ -1,0 +1,67 @@
+ Container mm-recsys-api-server-run-0e8e1db14181 Creating 
+ Container mm-recsys-api-server-run-0e8e1db14181 Created 
+[PDF 시연 범위] 검색·추천·통계는 실제 결과이며, CT 승격·롤백은 별도 소규모 통제 시연입니다.
+[A/B 실행 순서] 같은 배포의 CT 학습과 순차 실행합니다. 실행 중인 학습이 있으면 완료를 기다립니다.
+[A/B 준비] 규모=full / seed=42 / 데이터·실제 추천 전략 로딩 시작
+[A/B 준비] 전략=popularity·full_pipeline / 준비 완료
+[A/B 실험] 진행 일수=1/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=2/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=3/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=4/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=5/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=6/7 / 그룹별 사용자=100명 / seed=42
+[A/B 실험] 진행 일수=7/7 / 그룹별 사용자=100명 / seed=42
+[A/B 결과] 클릭률 상대 변화=-16.62% / p-value=6.839067889023647e-06 / 차이의 95% CI=[-0.05865776500317304, -0.0230565207111127] / 분모=노출 수 / 통계 단위=사용자 / 합성 실험 / 결과=docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ab_test.json
+[A/B 결과] 구매 전환율 상대 변화=-24.72% / p-value=0.10267589062599107 / 차이의 95% CI=[-0.006917258114830719, 0.0006315438291164318] / 분모=노출 수 / 통계 단위=사용자 / 합성 실험 / 결과=docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ab_test.json
+[CT 격리 시연] 작은 별도 데이터로 실제 학습·승격·롤백을 검사합니다. 운영 모델 개선 측정과 구분합니다.
+[CT 실행 순서] 같은 배포의 자동 CT·A/B 실행이 끝난 뒤 격리 시연을 시작합니다.
+[데이터 준비] 상품 400개·사용자 24명·이벤트 6,000건 준비 완료 / 경로=/app/models/.ct/verification/79b62de08e/source
+[모델 학습] Two-Tower epoch=1 / loss=1.24867 / valid_recall@300=0.916667 / 갱신=6
+[모델 학습] Two-Tower epoch=2 / loss=0.57212 / valid_recall@300=0.939394 / 갱신=6
+[모델 학습] Two-Tower epoch=3 / loss=0.39220 / valid_recall@300=0.939394 / 갱신=6
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.939394 / 결과=/app/models/.ct/verification/79b62de08e/initial_training/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=16.06001 / valid_ctr_auc=0.642022 / cvr_auc=0.4382569204152249
+[모델 학습] DeepFM epoch=2 / loss=5.68106 / valid_ctr_auc=0.889779 / cvr_auc=0.4146842560553633
+[모델 학습] DeepFM epoch=3 / loss=3.93568 / valid_ctr_auc=0.903936 / cvr_auc=0.431985294117647
+[모델 학습] DeepFM epoch=4 / loss=3.24860 / valid_ctr_auc=0.905454 / cvr_auc=0.4469074394463668
+[모델 학습] DeepFM epoch=5 / loss=2.75101 / valid_ctr_auc=0.907171 / cvr_auc=0.4752378892733564
+[모델 학습] DeepFM epoch=6 / loss=2.33704 / valid_ctr_auc=0.909030 / cvr_auc=0.49080882352941174
+[모델 학습] DeepFM epoch=7 / loss=1.98158 / valid_ctr_auc=0.908773 / cvr_auc=0.5068122837370242
+[모델 학습] DeepFM epoch=8 / loss=1.68627 / valid_ctr_auc=0.910807 / cvr_auc=0.5213019031141868
+[모델 학습] DeepFM epoch=9 / loss=1.47723 / valid_ctr_auc=0.909666 / cvr_auc=0.5273572664359862
+[모델 학습] DeepFM epoch=10 / loss=1.26361 / valid_ctr_auc=0.911727 / cvr_auc=0.5424956747404844
+[모델 학습] DeepFM epoch=11 / loss=1.10808 / valid_ctr_auc=0.911365 / cvr_auc=0.5530925605536332
+[모델 학습] DeepFM epoch=12 / loss=0.96530 / valid_ctr_auc=0.907114 / cvr_auc=0.5327638408304498
+[모델 학습] DeepFM epoch=13 / loss=0.83656 / valid_ctr_auc=0.911304 / cvr_auc=0.5587153979238755
+[모델 학습] 세션 epoch=1 / valid_loss=4.14343 / sampled_hit@10=0.32692
+[모델 학습] 세션 epoch=2 / valid_loss=3.86391 / sampled_hit@10=0.49359
+[모델 학습] 세션 epoch=3 / valid_loss=3.61830 / sampled_hit@10=0.55128
+[CT 버전 등록] 모델=v1.0
+[CT 초기화] 모델=v1.0
+[CT Monitor ] 현재 HitRate@50: 0.0000 (임계값: 0.2) / CTR: 0.0000
+[CT Monitor 알림] [경고] 성능 저하 감지! 재학습을 권장합니다.
+[CT Trigger ] 신규 로그 712건 축적 / 모델 v1.0 → v1.1 / 모델 재학습 트리거됨...
+[CT 스냅샷] 관측 로그를 묶음 단위로 읽고 시간순 학습 스냅샷을 생성합니다.
+[CT 학습 준비] 스냅샷·관측 라벨 검사 통과; 세 모델 학습을 시작합니다.
+[모델 학습] Two-Tower epoch=1 / loss=1.19647 / valid_recall@300=0.961806 / 갱신=7
+[모델 학습] Two-Tower epoch=2 / loss=0.53223 / valid_recall@300=0.972222 / 갱신=7
+[모델 학습] Two-Tower epoch=3 / loss=0.38114 / valid_recall@300=0.958333 / 갱신=7
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.972222 / 결과=/app/models/.ct/verification/79b62de08e/models/.ct/runs/v1.1-29d9aefa/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=15.19322 / valid_ctr_auc=0.709000 / cvr_auc=0.47088262056414926
+[모델 학습] DeepFM epoch=2 / loss=5.10139 / valid_ctr_auc=0.891524 / cvr_auc=0.4609872611464968
+[모델 학습] DeepFM epoch=3 / loss=3.69829 / valid_ctr_auc=0.908127 / cvr_auc=0.4794131028207461
+[모델 학습] DeepFM epoch=4 / loss=3.01060 / valid_ctr_auc=0.899981 / cvr_auc=0.48089171974522305
+[모델 학습] DeepFM epoch=5 / loss=2.56571 / valid_ctr_auc=0.904864 / cvr_auc=0.467697907188353
+[모델 학습] DeepFM epoch=6 / loss=2.15139 / valid_ctr_auc=0.903377 / cvr_auc=0.4794131028207462
+[모델 학습] 세션 epoch=1 / valid_loss=3.99862 / sampled_hit@10=0.43787
+[모델 학습] 세션 epoch=2 / valid_loss=3.70289 / sampled_hit@10=0.54438
+[모델 학습] 세션 epoch=3 / valid_loss=3.44556 / sampled_hit@10=0.64497
+[CT 버전 등록] 모델=v1.1
+[CT 버전 등록] 모델=v1.1
+[CT Trigger ] 재학습 완료. 후보 모델: v1.1 / 활성 모델: v1.1 / 승격
+[CT 서비스 모델 교체] 모델=v1.1
+[CT 버전 등록] 모델=v1.2
+[CT Trigger ] 재학습 완료. 후보 모델: v1.2 / 활성 모델: v1.1 / 기존 모델 유지
+[CT 롤백] v1.1 → v1.0 / 사유=controlled rollback drill after measured promotion
+[CT 서비스 모델 교체] 모델=v1.0
+[PDF 시연 완료] 원본 결과=docs/results/experiments/A/pdf_completion_20261111/demo_default_auto

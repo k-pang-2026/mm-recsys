@@ -77,7 +77,11 @@ def test_simulator_retries_storage_and_log_archiving_without_skipping(monkeypatc
     rows = pd.DataFrame([dict(event_id='live-e1', user_id='u', product_id='p', event_type='view', session_id='s')])
     store = RedisFeatureStore(fakeredis.FakeRedis(decode_responses=True))
     monkeypatch.setattr(simulator, 'create_feature_store', lambda cfg: store)
-    monkeypatch.setattr(simulator, 'runtime_config', lambda: {'seed': 42, 'paths': {'data_dir': str(tmp_path)}})
+    cfg = load_config()
+    cfg['paths'].update(data_dir=str(tmp_path), results_dir=str(tmp_path / 'results'))
+    cfg['serving']['ct']['enabled'] = False
+    monkeypatch.setenv('SIMULATOR_ATTRIBUTED_VISITS', '0')
+    monkeypatch.setattr(simulator, 'runtime_config', lambda: cfg)
     monkeypatch.setattr(simulator, 'wait_ready', lambda *args: None)
     monkeypatch.setattr(simulator, 'generate_batch', lambda *args: rows)
     calls = []; pending = []; clicks = []
@@ -138,7 +142,7 @@ def test_watch_recovers_pending_reload_before_training(monkeypatch, tmp_path):
     monkeypatch.setattr(retrain_trigger, 'components', lambda cfg: (
         {'poll_seconds': 1, 'retrain_log_threshold': cfg['ct']['retrain_log_threshold']}, Journal(tmp_path/'journal.db'), registry))
     monkeypatch.setattr('src.ct.monitor.monitor', lambda *args: None)
-    def train(*args):
+    def train(*args, **kwargs):
         calls.append('train')
         if active[0] == 'v1.1':
             raise StopIteration('test finished after recovered reload')

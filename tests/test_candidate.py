@@ -4,16 +4,17 @@ from __future__ import annotations
 import copy
 import json
 
-import faiss
 import numpy as np
 import pytest
 
-from tests.test_two_tower import fixture
+from tests import test_two_tower
 from src.recommendation.candidate import FaissCandidate
 from src.recommendation.eval_candidate import Evaluation
 from src.recommendation.index import build_index, load_index
 from src.recommendation.train_two_tower import load_bundle, save_bundle
 from src.recommendation.two_tower import TwoTower
+
+fixture = test_two_tower.fixture
 
 
 def setup_index(fixture, tmp_path):

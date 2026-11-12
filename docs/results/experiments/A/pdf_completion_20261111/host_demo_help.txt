@@ -1,0 +1,16 @@
+usage: demo [-h] [--install] [--project PROJECT]
+            [{search,recommend,session,ab,ct,examples,evaluate,verify-peer-review}]
+            ...
+
+호스트의 demo 명령을 현재 Compose 배포의 API·실험·CT 실행기에 연결합니다.
+
+positional arguments:
+  {search,recommend,session,ab,ct,examples,evaluate,verify-peer-review}
+  arguments
+
+options:
+  -h, --help            show this help message and exit
+  --install             Linux/WSL/macOS의 ~/.local/bin/demo에 한 번 등록
+  --project PROJECT     같은 저장소에 여러 배포가 실행 중일 때 선택
+
+예: demo search --query-text "검정 오버핏 후드티" / demo ab / demo ct / demo examples

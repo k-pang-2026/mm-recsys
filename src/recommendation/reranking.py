@@ -20,13 +20,6 @@ class RankedItem:
     is_exploration: bool = False
 
 
-class ColdStart:
-    def apply(self,items: Any,**context: Any) -> Any:
-        score=context['fallback_scores']
-        return [replace(item,score=float(score.get(item.product_id,0)),reason='인기·최근 상승 상품')
-                for item in sorted(items,key=lambda x:(-score.get(x.product_id,0),x.product_id))]
-
-
 def diversity_capacity(counts: dict[str, int],limit: int,tail: str | None=None,run: int=0) -> int:
     total=sum(counts.values())
     return min([total]+[(limit+1)*(total-number)+limit-(run if category==tail else 0)
@@ -51,7 +44,7 @@ class Reranker:
         if field not in ('category_l2','category_l3'): raise ValueError('unsupported diversity category')
         self.categories=products.set_index('product_id')[field].astype(str).to_dict()
         self.created=products.set_index('product_id').created_at.to_dict()
-        self.bandit=create_strategy(self.spec['mab']); self.cold=ColdStart()
+        self.bandit=create_strategy(self.spec['mab'])
         if set(self.spec['reranking']['pipeline'])!={'cold_start','new_item','exploration','diversity'} or self.spec['reranking']['pipeline'][-1]!='diversity':
             raise ValueError('pipeline must include all strategies and finish with diversity')
         if self.spec['reranking']['cold_sort']!='popularity_growth': raise ValueError('unsupported cold sort')
@@ -72,7 +65,8 @@ class Reranker:
         for stage in self.spec['reranking']['pipeline'][:-1]:
             if (stage=='cold_start' and history_count<self.spec['cold_start_min_events']
                     and self.spec.get('scoring',{}).get('strategy')!='newest'):
-                pool=self.cold.apply(pool,fallback_scores=fallback_scores)
+                pool=[replace(item,score=float(fallback_scores.get(item.product_id,0)),reason='인기·최근 상승 상품')
+                      for item in sorted(pool,key=lambda x:(-fallback_scores.get(x.product_id,0),x.product_id))]
             elif stage=='new_item' and new:
                 new_anchor=next(item.product_id for item in pool if item.product_id in new)
             elif stage=='exploration':

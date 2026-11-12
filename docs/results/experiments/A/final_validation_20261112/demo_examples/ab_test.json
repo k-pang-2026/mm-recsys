@@ -1,0 +1,2272 @@
+{
+  "version": "user-randomized-ab-v1",
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "full",
+  "seed": 42,
+  "simulated_start": "2026-01-01T00:00:00+00:00",
+  "days": 2,
+  "top_n": 10,
+  "strategies": {
+    "control": "popularity",
+    "treatment": "full_pipeline"
+  },
+  "assignment": {
+    "control": [
+      "U001665",
+      "U005173",
+      "U009815",
+      "U009368",
+      "U008454",
+      "U001128",
+      "U003147",
+      "U004672",
+      "U005863",
+      "U008713",
+      "U002776",
+      "U000727",
+      "U003271",
+      "U004186",
+      "U001502",
+      "U009041",
+      "U006961",
+      "U004786",
+      "U007027",
+      "U006991"
+    ],
+    "treatment": [
+      "U008637",
+      "U006593",
+      "U002889",
+      "U009519",
+      "U003228",
+      "U008451",
+      "U003339",
+      "U008703",
+      "U005508",
+      "U002883",
+      "U002023",
+      "U000651",
+      "U007764",
+      "U004457",
+      "U007158",
+      "U009569",
+      "U009992",
+      "U009120",
+      "U006053",
+      "U002765"
+    ]
+  },
+  "assignment_sha256": "7cb8652e9a2a4fb3ecee12b0ead124ee29beeb1972f09ef8d48e6128107d3bb4",
+  "arms": {
+    "control": {
+      "users": 20,
+      "impressions": 400,
+      "clicks": 88,
+      "purchases": 5,
+      "explorations": 0,
+      "ctr": 0.22,
+      "cvr": 0.0125,
+      "purchase_given_click": 0.056818181818181816,
+      "exploration_rate": 0.0,
+      "users_clicked": 20,
+      "users_purchased": 4,
+      "arm_statistics": {
+        "U001665:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001665:P001816": {
+          "exposures": 2,
+          "reward": 1.2000000000000002
+        },
+        "U001665:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001665:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001665:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001665:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001665:P000301": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001665:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001665:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001665:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000022": {
+          "exposures": 2,
+          "reward": 1.0
+        },
+        "U005173:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005173:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005173:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P000255": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009815:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009815:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009815:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009815:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009368:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009368:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009368:P000229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009368:P000255": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009368:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009368:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009368:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009368:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009368:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009368:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000068": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U008454:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008454:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008454:P000044": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001128:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001128:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001128:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001128:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003147:P000229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003147:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003147:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003147:P000044": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004672:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004672:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004672:P000229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004672:P000255": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004672:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004672:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004672:P000301": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004672:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004672:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004672:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005863:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005863:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005863:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005863:P000255": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005863:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005863:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005863:P000301": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005863:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005863:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005863:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008713:P000022": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U008713:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008713:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008713:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008713:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008713:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008713:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008713:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008713:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008713:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002776:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002776:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002776:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P000301": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002776:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000727:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000727:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000727:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000727:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000727:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000727:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000727:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000727:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000727:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000727:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003271:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003271:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003271:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003271:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003271:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003271:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003271:P000301": {
+          "exposures": 2,
+          "reward": 1.0
+        },
+        "U003271:P000084": {
+          "exposures": 2,
+          "reward": 1.0
+        },
+        "U003271:P000104": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U003271:P000044": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004186:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004186:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004186:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004186:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004186:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004186:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004186:P000301": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004186:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004186:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004186:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001502:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001502:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001502:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001502:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001502:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001502:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001502:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U001502:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001502:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U001502:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009041:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009041:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009041:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009041:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006961:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006961:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006961:P000229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006961:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006961:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006961:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006961:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006961:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006961:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006961:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000022": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004786:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004786:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004786:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000022": {
+          "exposures": 2,
+          "reward": 1.0
+        },
+        "U007027:P001816": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U007027:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000255": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000068": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007027:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007027:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P000229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006991:P000255": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U006991:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P000301": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P000084": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006991:P000104": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006991:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        }
+      },
+      "unattributed_feedback": 0
+    },
+    "treatment": {
+      "users": 20,
+      "impressions": 400,
+      "clicks": 83,
+      "purchases": 3,
+      "explorations": 80,
+      "ctr": 0.2075,
+      "cvr": 0.0075,
+      "purchase_given_click": 0.03614457831325301,
+      "exploration_rate": 0.2,
+      "users_clicked": 20,
+      "users_purchased": 3,
+      "arm_statistics": {
+        "U008637:P000154": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008637:P004201": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U008637:P000462": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008637:P003226": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008637:P000574": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008637:P000279": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008637:P002904": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008637:P001381": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008637:P000173": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008637:P005676": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U006593:P001481": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006593:P017130": {
+          "exposures": 2,
+          "reward": 1.2000000000000002
+        },
+        "U006593:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006593:P000748": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006593:P000557": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006593:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006593:P002217": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006593:P000104": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006593:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006593:P000923": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P001428": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P035793": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002889:P000044": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P002558": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P002135": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002889:P000381": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P000602": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P002040": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P001287": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002889:P003274": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002889:P022670": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002889:P017199": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009519:P000482": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009519:P009880": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009519:P001998": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P001019": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P000630": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P003438": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P001823": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P000972": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P000183": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009519:P003115": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003228:P000002": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003228:P013881": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U003228:P000445": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003228:P000686": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003228:P000586": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003228:P000076": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003228:P001281": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003228:P000705": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003228:P001172": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003228:P001579": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001182": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P017515": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U008451:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001744": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001456": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001108": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001246": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001523": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P000489": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008451:P001367": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008451:P032446": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U003339:P000012": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003339:P011465": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003339:P001108": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U003339:P000917": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003339:P001358": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003339:P001291": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U003339:P001561": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U003339:P002002": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003339:P003109": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U003339:P001524": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008703:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008703:P000628": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008703:P001816": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008703:P000229": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U008703:P000255": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008703:P000068": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008703:P000462": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U008703:P000301": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U008703:P000104": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U008703:P000084": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P001043": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P004320": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005508:P000835": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005508:P000976": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P002281": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U005508:P000569": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P002344": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P003071": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P001564": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U005508:P002794": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U005508:P003374": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002883:P000201": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P041862": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002883:P000229": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P000232": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P004149": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002883:P001816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P002735": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P003430": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P000022": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002883:P001005": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002883:P003598": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U002023:P000122": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002023:P020009": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002023:P000101": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002023:P000224": {
+          "exposures": 2,
+          "reward": 1.2000000000000002
+        },
+        "U002023:P000843": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002023:P000931": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002023:P000891": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002023:P002348": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002023:P000933": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002023:P002412": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000651:P001535": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000651:P029546": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000651:P000197": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000651:P000554": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000651:P001021": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000651:P000507": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000651:P004319": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000651:P004573": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U000651:P000291": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U000651:P004244": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P049982": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U007764:P036247": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U007764:P000033": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P000470": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007764:P000678": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P001340": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P001348": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P003816": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P000895": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P000830": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007764:P033640": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U007764:P002638": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U004457:P000141": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004457:P005755": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004457:P001679": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U004457:P000651": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004457:P001283": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004457:P000108": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004457:P002216": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004457:P005853": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004457:P003264": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U004457:P001949": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007158:P000091": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007158:P029332": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007158:P000507": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007158:P000910": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007158:P001135": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007158:P001447": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007158:P005332": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U007158:P000497": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U007158:P001076": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U007158:P008461": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U007158:P002520": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U007158:P004883": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009569:P000286": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009569:P009195": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009569:P000164": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009569:P000610": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009569:P001233": {
+          "exposures": 2,
+          "reward": 1.2000000000000002
+        },
+        "U009569:P000740": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009569:P002330": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009569:P001687": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009569:P001256": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009569:P001506": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009992:P000324": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P036609": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U009992:P000172": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009992:P000334": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P000669": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P000144": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P002112": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P002901": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P003374": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009992:P003244": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009992:P005357": {
+          "exposures": 1,
+          "reward": 0.2
+        },
+        "U009120:P000612": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009120:P040883": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009120:P003287": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009120:P001114": {
+          "exposures": 2,
+          "reward": 0.4
+        },
+        "U009120:P002398": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009120:P007048": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009120:P005650": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009120:P000764": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009120:P032213": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U009120:P003487": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U009120:P003055": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U009120:P047339": {
+          "exposures": 1,
+          "reward": 0.0
+        },
+        "U006053:P000167": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006053:P041966": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006053:P030229": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006053:P000845": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006053:P000656": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006053:P044545": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U006053:P002839": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006053:P000525": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006053:P045967": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U006053:P006520": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P000643": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P034504": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P000625": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P000985": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P002528": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P000627": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002765:P003316": {
+          "exposures": 2,
+          "reward": 0.0
+        },
+        "U002765:P003583": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002765:P000469": {
+          "exposures": 2,
+          "reward": 0.2
+        },
+        "U002765:P000997": {
+          "exposures": 2,
+          "reward": 0.0
+        }
+      },
+      "unattributed_feedback": 0
+    }
+  },
+  "user_outcomes": {
+    "control": [
+      {
+        "user_id": "U001665",
+        "impressions": 20,
+        "clicks": 7,
+        "purchases": 1,
+        "explorations": 0
+      },
+      {
+        "user_id": "U005173",
+        "impressions": 20,
+        "clicks": 2,
+        "purchases": 1,
+        "explorations": 0
+      },
+      {
+        "user_id": "U009815",
+        "impressions": 20,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U009368",
+        "impressions": 20,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U008454",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U001128",
+        "impressions": 20,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U003147",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U004672",
+        "impressions": 20,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U005863",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U008713",
+        "impressions": 20,
+        "clicks": 7,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U002776",
+        "impressions": 20,
+        "clicks": 7,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U000727",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U003271",
+        "impressions": 20,
+        "clicks": 8,
+        "purchases": 2,
+        "explorations": 0
+      },
+      {
+        "user_id": "U004186",
+        "impressions": 20,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U001502",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U009041",
+        "impressions": 20,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U006961",
+        "impressions": 20,
+        "clicks": 6,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U004786",
+        "impressions": 20,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 0
+      },
+      {
+        "user_id": "U007027",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 1,
+        "explorations": 0
+      },
+      {
+        "user_id": "U006991",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 0
+      }
+    ],
+    "treatment": [
+      {
+        "user_id": "U008637",
+        "impressions": 20,
+        "clicks": 7,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U006593",
+        "impressions": 20,
+        "clicks": 6,
+        "purchases": 1,
+        "explorations": 4
+      },
+      {
+        "user_id": "U002889",
+        "impressions": 20,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U009519",
+        "impressions": 20,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U003228",
+        "impressions": 20,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U008451",
+        "impressions": 20,
+        "clicks": 1,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U003339",
+        "impressions": 20,
+        "clicks": 7,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U008703",
+        "impressions": 20,
+        "clicks": 8,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U005508",
+        "impressions": 20,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U002883",
+        "impressions": 20,
+        "clicks": 2,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U002023",
+        "impressions": 20,
+        "clicks": 6,
+        "purchases": 1,
+        "explorations": 4
+      },
+      {
+        "user_id": "U000651",
+        "impressions": 20,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U007764",
+        "impressions": 20,
+        "clicks": 1,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U004457",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U007158",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U009569",
+        "impressions": 20,
+        "clicks": 5,
+        "purchases": 1,
+        "explorations": 4
+      },
+      {
+        "user_id": "U009992",
+        "impressions": 20,
+        "clicks": 4,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U009120",
+        "impressions": 20,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U006053",
+        "impressions": 20,
+        "clicks": 5,
+        "purchases": 0,
+        "explorations": 4
+      },
+      {
+        "user_id": "U002765",
+        "impressions": 20,
+        "clicks": 3,
+        "purchases": 0,
+        "explorations": 4
+      }
+    ]
+  },
+  "inference": {
+    "experimental_unit": "randomized user; repeated exposures clustered within user",
+    "independent_user_risks": {
+      "any_click": {
+        "control": 1.0,
+        "treatment": 1.0,
+        "difference": 0.0,
+        "relative_lift": 0.0,
+        "z_statistic": 0.0,
+        "z_p_value": 1.0,
+        "chi_square": 0.0,
+        "chi_square_p_value": 1.0,
+        "difference_ci95": [
+          0.0,
+          0.0
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      },
+      "any_purchase": {
+        "control": 0.2,
+        "treatment": 0.15,
+        "difference": -0.05000000000000002,
+        "relative_lift": -0.2500000000000001,
+        "z_statistic": -0.41612518928823966,
+        "z_p_value": 0.6773183986143619,
+        "chi_square": 0.17316017316017313,
+        "chi_square_p_value": 0.677318398614362,
+        "difference_ci95": [
+          -0.2849914265403699,
+          0.18499142654036987
+        ],
+        "ci_method": "unpooled user-risk Wald; degenerate at boundary counts",
+        "low_expected_counts": true,
+        "asymptotic_reliable": false,
+        "fisher_p_value": 1.0,
+        "experimental_unit": "one independent randomized user"
+      }
+    },
+    "ctr": {
+      "status": "PASS",
+      "control": 0.22,
+      "treatment": 0.2075,
+      "difference": -0.012500000000000011,
+      "relative_lift": -0.05681818181818188,
+      "difference_ci95": [
+        -0.07184440550627277,
+        0.046844405506272745
+      ],
+      "z_p_value": 0.6797262451413697,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    },
+    "cvr": {
+      "status": "PASS",
+      "control": 0.0125,
+      "treatment": 0.0075,
+      "difference": -0.005000000000000001,
+      "relative_lift": -0.4,
+      "difference_ci95": [
+        -0.01948322718920817,
+        0.009483227189208165
+      ],
+      "z_p_value": 0.498639254004143,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    }
+  },
+  "denominators": {
+    "ctr": "clicks / impressions",
+    "cvr": "purchases / impressions",
+    "purchase_given_click": "purchases / clicks",
+    "exploration_rate": "marked exploration slots / impressions",
+    "independent_user_risks": "users with >=1 outcome / randomized users"
+  },
+  "outcome_model": {
+    "parameters": {
+      "click_base": 0.35,
+      "category_weight": 1.0,
+      "price_penalty": 2.0,
+      "position_decay": 0.25,
+      "conversion_multiplier": 1.0
+    },
+    "semantics": "persona L1 affinity, normalized price sensitivity, position decay; identical formula in both arms; purchase conditional on click",
+    "latent_preferences_used": false
+  },
+  "isolation": "immutable loaded models shared; separate arm and per-user adaptive stores/config/RNG/locks; common virtual clock; hash-keyed user/day outcome streams",
+  "limitations": [
+    "synthetic randomized simulation; no guarantee of positive or significant lift",
+    "static catalog and train+valid history; no test outcomes read",
+    "MAB exposure/feedback uses B5 in-memory adapter; live Redis attribution is verified separately",
+    "per-user adaptive bandits preserve independent user clusters; this is not a shared cross-user live-bandit experiment",
+    "dev result is not full acceptance"
+  ],
+  "identity": {
+    "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+    "data_hashes": {
+      "products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+      "users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+      "events.parquet": "e8f67a2033b2f7bc1a472599b012483c36446def9c9aa8ad56e892264e263898",
+      "impressions.parquet": "baae83e4e6e2271967860cab99f377e623595fb9cf8516390d403f16f56b3334",
+      "image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+      "split/train.parquet": "a5e217de3f9fd8625532e6986a3a8cbccd1ed071f0582c9542bb259886b47b9c",
+      "split/valid.parquet": "ae4f7dac168b4bd3398174efabbf3d2e4432386a0a259fca0702c1665ce047c5",
+      "split/test.parquet": "7e3a676d50056172cc8369a3c7408dc3e773b789c2c22a0021a6a0b29834f453"
+    },
+    "config_fingerprint": "68f9f794ae8b53cb08594b6e9348da7796529201a0ef40ac335ced61d774a6e1",
+    "bundle_metadata": {
+      "candidate": {
+        "contract": {
+          "version": "candidate-bundle-v1",
+          "directory": "models[/full]/v1.0",
+          "files": {
+            "two_tower.pt": "best valid-selected state_dict (weights_only load)",
+            "feature_vocab_scalers.json": "train-only feature encoding including PAD=0/UNK=1",
+            "item_ids.json": "canonical ordered public IDs, excludes PAD",
+            "meta.json": "model/feature/config/data hashes, dimensions and cutoff",
+            "item_index.faiss": "all catalog normalized HNSW/IP, labels aligned to item_ids.json",
+            "index_manifest.json": "index parameters and model/data/config/mapping checksums"
+          },
+          "history_inputs": [
+            "observed product IDs before timestamp",
+            "age_group",
+            "gender",
+            "past purchase category/brand distribution and price"
+          ],
+          "item_inputs": [
+            "category_l1",
+            "category_l2",
+            "category_l3",
+            "brand",
+            "color",
+            "style",
+            "price"
+          ],
+          "persona": false,
+          "item_id_residual": false,
+          "normalized": true,
+          "metric": "inner_product"
+        },
+        "scale": "full",
+        "dim": 64,
+        "model_version": "v1.0",
+        "retrieval": "HNSW inner_product; cutoff filtering and adaptive refill",
+        "best_epoch": 3,
+        "best_valid_recall_at_300": 0.7489629332262813,
+        "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+        "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+        "feature_fingerprint": "008a632e7f5f950f7b085015140cbf2f54cdae4cd5b270d75da193f93905c382",
+        "config_fingerprint": "d076a6b312828c687fece88ece9149fc88575efb03c1e54fdbca1e1c4a898c11",
+        "candidate_scope_fingerprint": "ad7020b9d9c427830b1b3378024dc4f60213fa495284b8f1578d8e80bf419241",
+        "training_spec": {
+          "dim": 64,
+          "history_n": 50,
+          "batch_size": 512,
+          "epochs": 20,
+          "patience": 3,
+          "learning_rate": 0.001,
+          "temperature": 0.1,
+          "negatives_per_positive": 4,
+          "loss": "sampled_softmax",
+          "positive_weights": {
+            "view": 0.2,
+            "cart": 0.6,
+            "purchase": 1.0
+          },
+          "faiss": {
+            "type": "HNSW",
+            "metric": "inner_product",
+            "M": 32,
+            "ef_search": 512
+          },
+          "embedding_dim": 16,
+          "hidden_dim": 128,
+          "weight_decay": 0.0001,
+          "threads": 4,
+          "num_workers": 0,
+          "history_pooling": "mean",
+          "item_id_residual": false,
+          "profile_categories": "category_l3",
+          "tiny_fit_steps": 160,
+          "tiny_fit_learning_rate": 0.01
+        },
+        "hashes": {
+          "two_tower.pt": "3f942f08bdb4cdda4fe5a8bf20b2e56c0985a4abf3d94f59ef86e2011ac85a16",
+          "feature_vocab_scalers.json": "cba8bfb7a5f2ceb90fb966c5b7febfe82387a72ee194475772343dfc616fc0eb",
+          "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+          "item_index.faiss": "b96e79e08fbb96cea504723075752462fcf1ddc5bec29ff9860948496947c484",
+          "index_manifest.json": "fee198acc9235766ba987c3aa197f53d7902ce80ca26c1eb46dee30760543705"
+        }
+      },
+      "ranking": {
+        "version": "deepfm-bundle-v1",
+        "scale": "full",
+        "best_epoch": 6,
+        "selection_split": "valid",
+        "config_fingerprint": "d86cf5df6e2a69079abdcc674d451505ee38b22386925690bd8cf337ad2f5b12",
+        "feature_fingerprint": "b394e430f589eb4ff807430e2b3b4cab77472f69cb7bda1c50896f4c19a99304",
+        "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+        "catalog_sha256": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+        "hashes": {
+          "deepfm.pt": "c410ae300ebf265392d458afac29ab1fe4147ad62764f879e60be198d888cf8a",
+          "features.json": "4396425d3f27b9d2b587dfe6c8af1858bc04ca44d5f1e6ab0e4ec70ab58125bc"
+        },
+        "ranking_score": "P(click)*P(purchase|click)"
+      },
+      "session": {
+        "version": "gru-session-v1",
+        "best_epoch": 20,
+        "selection_split": "valid",
+        "config_fingerprint": "12d7a11dba82d761489faa26a9e86e7aae20ccbbde9b4ec9cdb8a7e7db759c14",
+        "candidate_sha256": "3f942f08bdb4cdda4fe5a8bf20b2e56c0985a4abf3d94f59ef86e2011ac85a16",
+        "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+        "hashes": {
+          "session.pt": "de24632b15101ee04893c4d68842a347013358f188729d4ea8506c798819057a",
+          "item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+        }
+      }
+    },
+    "source_hashes": {
+      "src/evaluation/ab_test.py": "1e1403c60c05cf6b06e3be57bf8a5311a8cfe40726ee2dfaffc0c3660d493566",
+      "src/evaluation/ab_statistics.py": "b93a8b025001a4014df0cfb1fb52985c3a707a9d847acbe00733cb85ec9c0554",
+      "src/recommendation/service.py": "3919fd50b45901bdd0a91eb468e987b740165ccda7d59d3d07124bee71b5d40f",
+      "src/recommendation/recommender.py": "696d3acde04c8367364d264fb065a8928cd990f5746492bc3508d464c9c18637",
+      "src/recommendation/reranking.py": "0dbd1f63e274575191e27009de59b8999a88ffa55ab7ec2993a7894dfc427276",
+      "src/recommendation/mab.py": "a6e1cb1c65e121f8dacb9e0eb68dc3a56de44b63a3a9ed1fdd760af9e2d5d8b3",
+      "src/recommendation/feature_store.py": "04a88f19de2d73547b0ffe4eeaa6153edde09f2f3ff2a4658986e0c318425d79",
+      "src/recommendation/scoring.py": "b2cd350b1f6b255553ffea3b3db4495939895ecc86e2e3dbb227c976243188f9",
+      "src/recommendation/session.py": "3a9014eb898084f6bffdb54de10fb103dcaa3b02c3565a01315641a6a86c6cbb"
+    }
+  },
+  "run_id": "5f05bb62c3c768f0d9100c290e3abdc6a3069175c0dedefc91745f22b7aa156e",
+  "environment": {
+    "python": "3.11.18",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.41",
+    "torch": "2.6.0+cpu",
+    "numpy": "2.1.3",
+    "device": "cpu",
+    "threads": 4,
+    "pythonhashseed": "42",
+    "determinism": "seed42 CPU; floating-point/model bytes may differ across OS/Python versions"
+  }
+}

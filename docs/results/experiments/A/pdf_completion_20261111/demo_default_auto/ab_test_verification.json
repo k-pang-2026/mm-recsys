@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "acceptance": "UNMEASURED",
+  "source": "docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ab_test.json",
+  "sha256": "1f699b090e1355e3dc748f6ba51d5eadc07b9c684006439c715abe838bb137bf",
+  "run_id": "10c78ebea36305b991bb62bc5b7d5de63932647d4b182adfbd4c036aa16797ac",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": "assignment, causal counts, denominators, MAB exposure/feedback accounting, independent-user tests, cluster confidence intervals, config/data/source hashes",
+  "seeded_rerun": "UNMEASURED",
+  "repeat_sha256": null
+}

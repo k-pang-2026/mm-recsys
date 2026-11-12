@@ -60,6 +60,24 @@ def test_top10_and_unlinked_events_never_fabricate_hitrate_or_clicks(tmp_path):
     assert result['top50_requests'] == 0 and journal.high_watermark() == 1
 
 
+@pytest.mark.parametrize('clicks,hits,alert', [(9, 3, True), (10, 4, True), (11, 5, False)])
+def test_monitor_inclusive_threshold_and_minimum_sample(tmp_path, clicks, hits, alert):
+    journal = Journal(tmp_path / 'boundary.sqlite3')
+    spec = dict(attribution_seconds=3600, recent_seconds=86400, min_mature_requests=20,
+                ctr_threshold=.01, hitrate_threshold=.20)
+    for i in range(20):
+        journal.exposure(f'r{i}', 'u', [f'p{k}' for k in range(50)], 50, 'v1.0', 10000.)
+        if i < clicks:
+            journal.event(dict(event(f'view{i}'), product_id='p0'), 10001., f'r{i}')
+        if i < hits:
+            journal.event(dict(event(f'buy{i}'), product_id='p0', event_type='purchase'), 10002., f'r{i}')
+    value = measure(journal, spec, 13601.)
+    assert value['ctr'] == clicks / 1000 and value['hit_rate_at_50'] == hits / 20
+    assert set(value['alerts']) == ({'ctr_below_threshold', 'hitrate_below_threshold'} if alert else set())
+    assert measure(journal, dict(spec, min_mature_requests=21), 13601.)['alerts'] == []
+    assert measure(journal, spec, 10003.)['status'] == 'UNMEASURED'
+
+
 @pytest.fixture
 def registry_fixture(tmp_path, monkeypatch):
     monkeypatch.delenv('RECOMMEND_MODEL_DIR', raising=False)
@@ -75,6 +93,54 @@ def registry_fixture(tmp_path, monkeypatch):
 def comparison(before=.5, after=.8, split='valid'):
     return dict(baseline=dict(ctr_auc=before), candidate=dict(ctr_auc=after), split=split,
                 validation_fingerprint='controlled-fixture-cohort')
+
+
+def test_degradation_triggers_below_log_threshold_once_per_observation(registry_fixture, monkeypatch):
+    from src.ct import retrain_trigger as runner
+    cfg, journal, registry = registry_fixture
+    cfg['serving']['ct'].update(attribution_seconds=10, recent_seconds=100)
+    monkeypatch.setattr(runner.time, 'time', lambda: 30.)
+    journal.exposure('low-ctr', 'u', ['p00'], 10, 'v1.0', 10.)
+    calls = []
+    def build(version, through, reg):
+        calls.append(True)
+        assert through == 0
+        copy_version(reg, version)
+        return dict(config=cfg, data_path=cfg['paths']['data_dir'], comparison=comparison(.8, .7))
+    result = trigger(cfg, build)
+    assert result['trigger_reason'] == 'performance_degradation'
+    assert result['status'] == 'RETAINED' and registry.read()['active'] == 'v1.0'
+    assert trigger(cfg, build)['reason'] == 'unchanged_observations'
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize('version,at,minimum,enabled', [
+    ('old-model', 10., 1, True), ('v1.0', 25., 1, True),
+    ('v1.0', 10., 2, True), ('v1.0', 10., 1, False),
+])
+def test_degradation_requires_current_mature_sufficient_enabled_evidence(registry_fixture, monkeypatch, version, at, minimum, enabled):
+    from src.ct import retrain_trigger as runner
+    cfg, journal, _ = registry_fixture
+    cfg['serving']['ct'].update(attribution_seconds=10, recent_seconds=100,
+                              min_mature_requests=minimum, retrain_on_degradation=enabled)
+    monkeypatch.setattr(runner.time, 'time', lambda: 30.)
+    journal.exposure('r', 'u', ['p00'], 10, version, at)
+    assert trigger(cfg, lambda *args: pytest.fail('insufficient monitoring evidence'))['status'] == 'WAITING'
+
+
+def test_monitor_queries_use_time_indexes_without_changing_boundary_counts(tmp_path):
+    journal = Journal(tmp_path / 'indexed.sqlite3')
+    spec = settings(config(tmp_path))
+    journal.exposure('mature', 'u', ['p'], 50, 'v1.0', 20.)
+    journal.exposure('immature', 'u', ['p'], 50, 'v1.0', 20.01)
+    journal.event(event('linked'), 30., 'mature', 10)
+    value = measure(journal, spec, 30.)
+    with journal.connect() as db:
+        plan = db.execute('EXPLAIN QUERY PLAN SELECT * FROM events WHERE request_id IS NOT NULL AND at>=? AND at<=?', (0, 30)).fetchall()
+        assert any('attributed_event_time' in row['detail'] for row in plan)
+        db.execute('DROP INDEX request_time'); db.execute('DROP INDEX attributed_event_time')
+    assert measure(journal, spec, 30.) == value
+    assert value['mature_requests'] == 1 and value['clicks'] == 1
 
 
 def test_ct_validation_labels_match_training_pipeline_without_train_labels(tmp_path):
@@ -196,10 +262,9 @@ def test_atomic_reload_allows_old_inflight_request_to_finish(registry_fixture, m
 
 
 def test_fresh_snapshot_checks_hashes_and_keeps_timestamp_groups(tmp_path):
-    import json
     import pandas as pd
     from src.common.artifacts import file_hash
-    from src.ct.training import snapshot
+    from src.ct.snapshot import snapshot
     cfg, data = service_fixture(tmp_path)
     source = Path(cfg['paths']['data_dir'])
     events = pd.concat([data['train'], data['valid']], ignore_index=True)

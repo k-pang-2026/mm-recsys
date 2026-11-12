@@ -1,0 +1,6 @@
+{
+  "data_dir": "verification-data",
+  "model_dir": "verification-models",
+  "search_subdir": "search",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97"
+}

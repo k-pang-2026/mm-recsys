@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "initial_data_files": 0,
+  "initial_model_files": 0,
+  "prepared_data_and_models_from_empty": true,
+  "initial_state": {
+    "source": "docs/results/experiments/A/final_validation_20261112/fresh_retry_initial.json",
+    "sha256": "43f78be27d2ee566049347997fdb8f449805bcf8988453a0af3ca343e0b6b501"
+  },
+  "preparation": {
+    "source": "docs/results/experiments/A/final_validation_20261112/fresh-retry-runtime/full/preparation.json",
+    "sha256": "3a01f67e618182a2267017a2841fb1a389bb3b6e1c08477f9374f177035fcfdf"
+  },
+  "runtime_sources": {
+    "source": "docs/results/experiments/A/final_validation_20261112/release/runtime_sources.json",
+    "sha256": "69b9e96530766911458de3e2a1777c36bb245458c0d8ca1817e56a1e2993fbb7"
+  },
+  "independent_regeneration": {
+    "source": "docs/results/experiments/A/final_validation_20261112/data_reproduction_full.json",
+    "sha256": "7d7b6ad56a7f92af90421dd67fdcb0ba44901354cded2a8f1226277a89700ac2"
+  },
+  "four_services": {
+    "source": "docs/results/experiments/A/final_validation_20261112/four_services.json",
+    "sha256": "188413f292fa17b757ff838c12aab7dd2faf510f49da29adafaa5c6e9089d949"
+  },
+  "scope": "Actual fresh full data, CLIP/FAISS, three-model training and Redis warmup from empty isolated data/model paths. Existing pinned model downloads and Docker dependency layers reused.",
+  "limitations": [
+    "Current local checkout, not a newly published remote clone.",
+    "Initial full preparation failed at Redis warmup; original failure retained. Bounded idempotent retry repair was verified by repeating all stages from new empty paths.",
+    "The empty-directory preparation is the preserved earlier run; this release rechecks deployed source identity and dashboard display, without repeating unchanged model training."
+  ],
+  "previous_receipt": {
+    "source": "docs/results/experiments/A/final_validation_20261112/fresh_reproduction_full.json",
+    "sha256": "c7c65e3a0d247e81aeb34c67320136cbdda917206da4e7856b30731298c4a709"
+  }
+}

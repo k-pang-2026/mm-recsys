@@ -1,0 +1,4 @@
+{
+  "status": "PASS",
+  "scope": "Actual screenshot inspected after installing a Korean font in the headless browser environment; Korean headings, controls, table and returned hoodie product names render correctly."
+}

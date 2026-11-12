@@ -53,8 +53,8 @@ class SetupTests(unittest.TestCase):
         for name in ('requirements.txt', 'requirements-torch.txt', 'requirements-dashboard.txt'):
             lines = (self.project / name).read_text().splitlines()
             self.assertTrue(all('==' in line for line in lines if line and not line.startswith('#')))
-        for name in ('api', 'simulator'):
-            text = (self.project / f'docker/Dockerfile.{name}').read_text()
+        for name in ('api-server', 'simulator'):
+            text = (self.project / compose['services'][name]['build']['dockerfile']).read_text()
             self.assertIn('-r requirements-torch.txt', text)
         for name in ('docs/team_workflow.md', 'docs/contracts.md', 'scripts/step_git.py', 'setup_env.sh', '.github/workflows/ci.yml'):
             self.assertEqual((ROOT / name).read_bytes(), (self.project / name).read_bytes())

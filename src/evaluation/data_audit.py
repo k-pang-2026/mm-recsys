@@ -6,7 +6,6 @@ from datetime import datetime, timezone
 import json
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 from src.common.artifacts import file_hash, write_json

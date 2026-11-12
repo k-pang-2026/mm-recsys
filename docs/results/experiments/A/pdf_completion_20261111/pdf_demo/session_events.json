@@ -1,0 +1,53 @@
+[
+  {
+    "request": {
+      "event_id": "ffb3ca125c764cf0b87dfadc98fbfa0b",
+      "user_id": "U000001",
+      "product_id": "P000780",
+      "event_type": "view",
+      "session_id": "pdf-demo-93e00c2aa05e4b2abc2bf547a75936c9",
+      "category": null
+    },
+    "response": {
+      "applied": true,
+      "features": {
+        "recent_clicks": [
+          "P000780"
+        ],
+        "session_clicks": 1,
+        "session_interest": null,
+        "profile": {
+          "age_group": "18-24",
+          "gender": "F",
+          "signup_at": "2025-07-26 00:00:00+00:00"
+        }
+      }
+    }
+  },
+  {
+    "request": {
+      "event_id": "c6c788cbfd424daa8b94678acd62f5f1",
+      "user_id": "U000001",
+      "product_id": "P001542",
+      "event_type": "view",
+      "session_id": "pdf-demo-93e00c2aa05e4b2abc2bf547a75936c9",
+      "category": null
+    },
+    "response": {
+      "applied": true,
+      "features": {
+        "recent_clicks": [
+          "P000780",
+          "P001542"
+        ],
+        "session_clicks": 2,
+        "session_interest": null,
+        "profile": {
+          "age_group": "18-24",
+          "gender": "F",
+          "signup_at": "2025-07-26 00:00:00+00:00"
+        }
+      }
+    }
+  }
+]

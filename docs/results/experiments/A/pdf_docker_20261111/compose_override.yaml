@@ -1,0 +1,49 @@
+services:
+  api-server:
+    volumes:
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/data
+      target: /app/verification-data
+      read_only: false
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/models
+      target: /app/verification-models
+      read_only: false
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/config.yaml
+      target: /app/verification-config.yaml
+      read_only: true
+    environment:
+      CONFIG_PATH: /app/verification-config.yaml
+  simulator:
+    volumes:
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/data
+      target: /app/verification-data
+      read_only: false
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/models
+      target: /app/verification-models
+      read_only: false
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/config.yaml
+      target: /app/verification-config.yaml
+      read_only: true
+    environment:
+      CONFIG_PATH: /app/verification-config.yaml
+  dashboard:
+    volumes:
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/data
+      target: /app/verification-data
+      read_only: true
+    - type: bind
+      source: /home/peachpetal/ecommerce/mm-recsys/.team/pdf-docker-20261111/models
+      target: /app/verification-models
+      read_only: true
+    environment:
+      PUBLIC_API_URL: http://localhost:19000
+volumes:
+  hf_cache:
+    external: true
+    name: mm-recsys_hf_cache

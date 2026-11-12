@@ -1,0 +1,301 @@
+{
+  "generated_at": "2026-11-11T12:20:00.034964+00:00",
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scope": "fresh Docker build and actual services with original full v4.3 artifacts; no clean-room regeneration or new model training",
+  "project": "mm-recsys-pdf-refactor-20261111",
+  "urls": {
+    "dashboard": "http://localhost:19501",
+    "api_docs": "http://localhost:19000/docs",
+    "readiness": "http://localhost:19000/ready"
+  },
+  "checks": {
+    "full_valid_quality": true,
+    "full_test_quality": true,
+    "all_test_metric_targets": true,
+    "valid_test_identity_unchanged": true,
+    "source_files_unchanged_during_measurement": true,
+    "container_sources_and_original_search_checksums": true,
+    "original_data_files_unchanged": true,
+    "original_model_files_unchanged": true,
+    "original_manifest_unchanged": true,
+    "actual_docker_http": true,
+    "peer_review": true,
+    "pdf_search_examples": true,
+    "browser": true,
+    "korean_visual_review": true,
+    "bounded_ab_execution": true,
+    "dashboard_ab_copy_matches": true,
+    "four_services_running": true,
+    "published_api_ready": true,
+    "full_test_report_in_browser": true
+  },
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2253808
+  },
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "docker_engine": {
+    "ServerVersion": "29.8.2",
+    "Architecture": "aarch64",
+    "NCPU": 8,
+    "MemTotal": 8103927808,
+    "OperatingSystem": "Docker Desktop",
+    "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+    "Driver": "overlayfs",
+    "CgroupVersion": "2",
+    "Containers": 10,
+    "ContainersRunning": 3
+  },
+  "api_allocation": {
+    "Memory": 4294967296,
+    "MemorySwap": 8589934592,
+    "NanoCpus": 4000000000,
+    "ReadonlyRootfs": false,
+    "Init": true
+  },
+  "latency_conditions": {
+    "deployments": 1,
+    "warmup_per_mode": 10,
+    "requests_per_mode": 100,
+    "concurrency": 1,
+    "simulator_during_http_benchmark": "stopped",
+    "offline_quality_and_browser_during_http_benchmark": "not running",
+    "serving_runtime": {
+      "torch_threads": 2,
+      "faiss_threads": 2,
+      "inference_worker_budget": true,
+      "parallel_hybrid": true,
+      "vision_optimization": {
+        "enabled": true,
+        "implementation": "torch.jit.optimize_for_inference",
+        "dtype": "float32",
+        "query_shape": [
+          1,
+          3,
+          224,
+          224
+        ],
+        "startup_max_abs_vector_error": 3.129243850708008e-07,
+        "process_environment": {
+          "OMP_NUM_THREADS": "2",
+          "MKL_NUM_THREADS": "2",
+          "OPENBLAS_NUM_THREADS": "2"
+        },
+        "scope": "same pinned FP32 weights and preprocessing; CPU query vision graph only; no response cache"
+      },
+      "gc_enabled": true,
+      "gc_freeze_enabled": true,
+      "gc_frozen_objects": 644933,
+      "configured_search_threads": 1,
+      "configured_candidate_training_threads": 4,
+      "scope": "one shared serving process; model weights and ranking policy unchanged"
+    },
+    "scope": "warm serial HTTP; concurrent-user load and cold-start latency unmeasured"
+  },
+  "http_p95_ms": {
+    "text": 22.709799599761027,
+    "image": 82.64738045127159,
+    "hybrid": 84.21744815113925,
+    "recommendation": 34.834971799773484
+  },
+  "candidate_p95_ms": 4.480634350056789,
+  "redis_p95_ms": 0.23554695071652532,
+  "test_metrics": [
+    {
+      "name": "mrr",
+      "value": 0.925,
+      "target": 0.55,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "search.primary",
+      "reason": null
+    },
+    {
+      "name": "ndcg_at_10",
+      "value": 0.925,
+      "target": 0.5,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "search.primary",
+      "reason": null
+    },
+    {
+      "name": "recall_at_300",
+      "value": 0.7550559124434927,
+      "target": 0.3,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.candidate.ann_two_tower",
+      "reason": null
+    },
+    {
+      "name": "auc",
+      "value": 0.9663220591039295,
+      "target": 0.7,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.classification.ctr",
+      "reason": null
+    },
+    {
+      "name": "hit_rate_at_50",
+      "value": 0.678372591006424,
+      "target": 0.2,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.metrics.full_pipeline",
+      "reason": null
+    },
+    {
+      "name": "ndcg_at_50",
+      "value": 0.33278106544930586,
+      "target": 0.08,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.metrics.full_pipeline",
+      "reason": null
+    },
+    {
+      "name": "coverage",
+      "value": 0.3641,
+      "target": 0.2,
+      "direction": "min",
+      "status": "PASS",
+      "split": "test",
+      "source": "recommendation.metrics.full_pipeline",
+      "reason": null
+    },
+    {
+      "name": "search_p95_ms",
+      "value": 84.21744815113925,
+      "target": 200,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "api.modes; worst-mode HTTP p95",
+      "reason": null
+    },
+    {
+      "name": "recommend_p95_ms",
+      "value": 34.834971799773484,
+      "target": 200,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "api.modes.recommendation.http",
+      "reason": null
+    },
+    {
+      "name": "candidate_p95_ms",
+      "value": 4.480634350056789,
+      "target": 100,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "candidate_latency",
+      "reason": null
+    },
+    {
+      "name": "feature_p95_ms",
+      "value": 0.23554695071652532,
+      "target": 10,
+      "direction": "max",
+      "status": "PASS",
+      "split": "benchmark",
+      "source": "feature_store",
+      "reason": null
+    }
+  ],
+  "quality_sources": [
+    "quality_full_valid.json",
+    "quality_full_test.json",
+    "quality_selection_full.json"
+  ],
+  "quality_elapsed_seconds": {
+    "valid": 529.7653779339998,
+    "test": 540.044769514001
+  },
+  "peer_review_checks": {
+    "diversity_U000001": true,
+    "exploration_U000001": true,
+    "new_item_U000001": true,
+    "diversity_U000002": true,
+    "exploration_U000002": true,
+    "new_item_U000002": true,
+    "diversity_U000003": true,
+    "exploration_U000003": true,
+    "new_item_U000003": true,
+    "cold_start_0": true,
+    "event_deduplication": true,
+    "session_http": true,
+    "session_redis": true,
+    "cold_start_4": true
+  },
+  "search_examples": {
+    "text": 10,
+    "image": 10,
+    "hybrid": 10
+  },
+  "browser_checks": {
+    "api_docs_link": true,
+    "tab_검색": true,
+    "tab_추천": true,
+    "tab_A/B 실험": true,
+    "tab_시스템": true,
+    "tab_EDA·구매 이력": true,
+    "tab_상품·CLIP": true,
+    "search_images": true,
+    "actual_click_comparison": true
+  },
+  "ab": {
+    "scope": "separate bounded synthetic demo; not the configured 5000 users per arm for 30 days",
+    "days": 7,
+    "users_per_arm": 100,
+    "source": "ab_demo.json",
+    "cvr": {
+      "control": 0.012714285714285714,
+      "treatment": 0.009714285714285713
+    },
+    "cvr_inference": {
+      "status": "PASS",
+      "control": 0.012714285714285714,
+      "treatment": 0.009714285714285713,
+      "difference": -0.003000000000000001,
+      "relative_lift": -0.2359550561797753,
+      "difference_ci95": [
+        -0.0065988001336656985,
+        0.0005988001336656962
+      ],
+      "z_p_value": 0.10229079677559945,
+      "method": "independent-user cluster delta variance; descriptive simulated effect"
+    },
+    "positive_or_significant_lift_claimed": false
+  },
+  "previous_evidence": {
+    "native_refactor_verification": "../pdf_refactor_20261111/verification.json",
+    "native_generic_search_p95_ms": 231.140428,
+    "native_generic_search_status": "FAIL, preserved; different runtime path from Docker serving hooks",
+    "unit_tests": "425 passed in prior refactor verification; not rerun for this Docker-only verification",
+    "controlled_ct": "prior controlled drill passed; not natural production improvement",
+    "initial_browser_visual": "browser_no_korean_font/visual_review.json"
+  },
+  "remaining": [
+    "cart transition configuration is ignored in v4.3; repair requires a separately versioned recipe and new dataset/model verification",
+    "current-code configured A/B at 5000 users per arm for 30 days is not rerun here",
+    "full natural CT with mature exposure labels and production model comparison remains unmeasured",
+    "clean-clone generation/training and final submission/acceptance bundle are not established by this reused-artifact run",
+    "Docker VM reports 7.547 GiB; retain these measured conditions rather than claiming the PDF reference hardware"
+  ],
+  "service_source_changes_this_docker_run": false,
+  "commit": "NOT_CREATED",
+  "push": "NOT_PERFORMED"
+}

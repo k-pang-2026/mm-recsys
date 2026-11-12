@@ -1,0 +1,17 @@
+usage: demo search [-h] [--api-url API_URL] [--json] [--output OUTPUT]
+                   [--timeout TIMEOUT] [--query-text QUERY_TEXT]
+                   [--query-image QUERY_IMAGE] [--top-k TOP_K]
+
+텍스트·이미지·하이브리드 검색
+
+options:
+  -h, --help            show this help message and exit
+  --api-url API_URL     실행 중인 API 주소
+  --json                stdout은 원본 JSON만 출력 (기본값); 안내는 stderr
+  --output OUTPUT       원본 결과를 UTF-8 JSON 파일로 저장
+  --timeout TIMEOUT     HTTP 제한 시간(초)
+  --query-text QUERY_TEXT
+                        검색 텍스트
+  --query-image QUERY_IMAGE
+                        실제 이미지 파일 경로 (컨테이너에서는 마운트 경로)
+  --top-k TOP_K         반환 상품 수

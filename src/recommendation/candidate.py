@@ -66,7 +66,7 @@ class FaissCandidate:
     def search(self, vectors: np.ndarray, k: int = 300, excluded: frozenset[int]=frozenset()) -> list[list[str]]:
         if k <= 0 or not np.isfinite(vectors).all():
             raise ValueError('invalid candidate vectors/k')
-        allowed = self.allowed - set(excluded)
+        allowed = self.allowed - excluded if excluded else self.allowed
         wanted = min(k, len(allowed))
         if not wanted:
             return [[] for _ in vectors]

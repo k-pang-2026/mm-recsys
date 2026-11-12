@@ -1,0 +1,115 @@
+[
+  {
+    "Command": "\"python -m docker.ap…\"",
+    "CreatedAt": "2026-11-12 14:51:50 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "12e9efbf1454",
+    "Image": "mm-recsys-api-server",
+    "Labels": "desktop.docker.io/binds/2/Target=/app/docs/results,desktop.docker.io/ports/8000/tcp=127.0.0.1:8000,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.container-number=1,com.docker.compose.depends_on=redis:service_healthy:false,com.docker.compose.image=sha256:85856340dd3cfb8adf099cfa6e4da195738a4da04f7173ed16be01e10bfc78b8,com.docker.compose.project=mm-recsys,com.docker.compose.config-hash=5cf7bdc4fc21f6edf9b2cd0a1615b80cf9466d99657b603a9ad44dff65b1876b,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,com.docker.compose.service=api-server,com.docker.compose.version=5.7.0,desktop.docker.io/binds/2/SourceKind=wsl2DistroFile,com.docker.compose.oneoff=False,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,desktop.docker.io/binds/0/Target=/app/data,desktop.docker.io/binds/1/Source=/home/peachpetal/ecommerce/mm-recsys/models,desktop.docker.io/binds/2/Source=/home/peachpetal/ecommerce/mm-recsys/docs/results,desktop.docker.io/ports.scheme=v2,com.docker.compose.replace=api-server-1,desktop.docker.io/binds/0/Source=/home/peachpetal/ecommerce/mm-recsys/data,desktop.docker.io/binds/0/SourceKind=wsl2DistroFile,desktop.docker.io/binds/1/SourceKind=wsl2DistroFile,desktop.docker.io/binds/1/Target=/app/models",
+    "LocalVolumes": "1",
+    "Mounts": "/run/desktop/m…,/run/desktop/m…,mm-recsys_hf_c…,/run/desktop/m…",
+    "Name": "mm-recsys-api-server-1",
+    "Names": "mm-recsys-api-server-1",
+    "Networks": "mm-recsys_default",
+    "Ports": "127.0.0.1:8000->8000/tcp",
+    "Project": "mm-recsys",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 8000,
+        "PublishedPort": 8000,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "10 minutes ago",
+    "Service": "api-server",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 7 minutes (healthy)"
+  },
+  {
+    "Command": "\"python -m docker.da…\"",
+    "CreatedAt": "2026-11-12 13:46:40 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "2e168e648493",
+    "Image": "mm-recsys-dashboard",
+    "Labels": "com.docker.compose.depends_on=api-server:service_healthy:false,com.docker.compose.project=mm-recsys,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,com.docker.compose.replace=dashboard-1,desktop.docker.io/binds/0/Target=/app/data,desktop.docker.io/binds/1/SourceKind=wsl2DistroFile,com.docker.compose.image=sha256:0050c7101aedf0e358911d7344fb8348442a2d69757dda0a2a2051a478d25acd,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,desktop.docker.io/binds/0/SourceKind=wsl2DistroFile,desktop.docker.io/binds/1/Target=/app/models,desktop.docker.io/binds/2/SourceKind=wsl2DistroFile,desktop.docker.io/binds/2/Target=/app/docs/results,desktop.docker.io/ports.scheme=v2,com.docker.compose.oneoff=False,com.docker.compose.version=5.7.0,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.service=dashboard,desktop.docker.io/binds/0/Source=/home/peachpetal/ecommerce/mm-recsys/data,desktop.docker.io/binds/1/Source=/home/peachpetal/ecommerce/mm-recsys/models,desktop.docker.io/binds/2/Source=/home/peachpetal/ecommerce/mm-recsys/docs/results,desktop.docker.io/ports/8501/tcp=127.0.0.1:8501,com.docker.compose.config-hash=9bc85caed72fd128c33e9fd88a106c126eee26173f30c4a9c782fd35a1873758,com.docker.compose.container-number=1",
+    "LocalVolumes": "0",
+    "Mounts": "/run/desktop/m…,/run/desktop/m…,/run/desktop/m…",
+    "Name": "mm-recsys-dashboard-1",
+    "Names": "mm-recsys-dashboard-1",
+    "Networks": "mm-recsys_default",
+    "Ports": "127.0.0.1:8501->8501/tcp",
+    "Project": "mm-recsys",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 8501,
+        "PublishedPort": 8501,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "About an hour ago",
+    "Service": "dashboard",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 52 minutes (healthy)"
+  },
+  {
+    "Command": "\"docker-entrypoint.s…\"",
+    "CreatedAt": "2026-11-11 22:10:33 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "healthy",
+    "ID": "6aa4fcf67041",
+    "Image": "redis:7",
+    "Labels": "desktop.docker.io/ports/6379/tcp=127.0.0.1:6379,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.config-hash=7ac5bb15e097aa630986367fdc58ac1976a8b45afd13b245b9d1273d35442423,com.docker.compose.container-number=1,com.docker.compose.depends_on=,com.docker.compose.image=sha256:cd953e4e9b4725f0d87a2b170c3d313ad641be5370033b46262e07f8010788a3,com.docker.compose.oneoff=False,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,com.docker.compose.service=redis,com.docker.compose.version=5.5.1,com.docker.compose.project=mm-recsys,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,desktop.docker.io/ports.scheme=v2",
+    "LocalVolumes": "1",
+    "Mounts": "mm-recsys_redi…",
+    "Name": "mm-recsys-redis-1",
+    "Names": "mm-recsys-redis-1",
+    "Networks": "mm-recsys_default",
+    "Ports": "127.0.0.1:6379->6379/tcp",
+    "Project": "mm-recsys",
+    "Publishers": [
+      {
+        "URL": "127.0.0.1",
+        "TargetPort": 6379,
+        "PublishedPort": 6379,
+        "Protocol": "tcp"
+      }
+    ],
+    "RunningFor": "17 hours ago",
+    "Service": "redis",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up About an hour (healthy)"
+  },
+  {
+    "Command": "\"python -m docker.si…\"",
+    "CreatedAt": "2026-11-12 15:01:58 +0900 KST",
+    "Engine": "",
+    "ExitCode": 0,
+    "Health": "",
+    "ID": "71918af33ac6",
+    "Image": "mm-recsys-simulator",
+    "Labels": "com.docker.compose.depends_on=redis:service_healthy:false,api-server:service_healthy:false,dashboard:service_healthy:false,desktop.docker.io/binds/1/Source=/home/peachpetal/ecommerce/mm-recsys/models,desktop.docker.io/binds/1/SourceKind=wsl2DistroFile,desktop.docker.io/ports.scheme=v2,com.docker.compose.image=sha256:ec4de562c1bdde64f7528e66ae6cbf39f22288f70ab4964e2fb76c429d731098,com.docker.compose.project=mm-recsys,com.docker.compose.project.config_files=/home/peachpetal/ecommerce/mm-recsys/docker-compose.yml,com.docker.compose.replace=simulator-1,desktop.docker.io/binds/0/SourceKind=wsl2DistroFile,desktop.docker.io/binds/1/Target=/app/models,desktop.docker.io/binds/2/SourceKind=wsl2DistroFile,desktop.docker.io/binds/2/Target=/app/docs/results,com.docker.compose.container-number=1,com.docker.compose.oneoff=False,desktop.docker.io/binds/0/Source=/home/peachpetal/ecommerce/mm-recsys/data,desktop.docker.io/binds/0/Target=/app/data,desktop.docker.io/binds/2/Source=/home/peachpetal/ecommerce/mm-recsys/docs/results,desktop.docker.io/wsl-distro=Ubuntu,com.docker.compose.project.working_dir=/home/peachpetal/ecommerce/mm-recsys,com.docker.compose.service=simulator,com.docker.compose.version=5.7.0,com.docker.compose.config-hash=a327192810a2205f9860a34851dd85a1b3fcf444d0211b5c4781fc335dfee35f",
+    "LocalVolumes": "1",
+    "Mounts": "/run/desktop/m…,/run/desktop/m…,mm-recsys_hf_c…,/run/desktop/m…",
+    "Name": "mm-recsys-simulator-1",
+    "Names": "mm-recsys-simulator-1",
+    "Networks": "",
+    "Ports": "",
+    "Project": "mm-recsys",
+    "Publishers": [],
+    "RunningFor": "31 seconds ago",
+    "Service": "simulator",
+    "Size": "0B",
+    "State": "running",
+    "Status": "Up 30 seconds"
+  }
+]

@@ -23,4 +23,5 @@ docs/results/integration/raw/
 docs/results/integration/**/raw/
 docs/results/integration/runtime/
 docs/results/**/analysis/
-docs/results/docker/runtime-v43/
+docs/results/docker/runtime-v*/
+docs/results/experiments/**/raw/

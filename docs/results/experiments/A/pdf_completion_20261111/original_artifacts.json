@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+  "model_files": {
+    "v1.0/two_tower.pt": true,
+    "v1.0/item_ids.json": true,
+    "v1.0/index_manifest.json": true,
+    "v1.0/meta.json": true,
+    "v1.0/feature_vocab_scalers.json": true,
+    "v1.0/item_index.faiss": true,
+    "v1.0/ranking/features.json": true,
+    "v1.0/ranking/deepfm.pt": true,
+    "v1.0/ranking/meta.json": true,
+    "v1.0/session/session.pt": true,
+    "v1.0/session/item_ids.json": true,
+    "v1.0/session/meta.json": true
+  },
+  "data_files": {
+    "products.parquet": true,
+    "users.parquet": true,
+    "events.parquet": true,
+    "impressions.parquet": true,
+    "image_manifest.json": true,
+    "split/train.parquet": true,
+    "split/valid.parquet": true,
+    "split/test.parquet": true
+  }
+}

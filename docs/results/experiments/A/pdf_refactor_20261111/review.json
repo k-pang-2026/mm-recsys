@@ -1,0 +1,268 @@
+{
+  "project": "CLIP 상품 검색 및 Two-Tower/DeepFM/GRU 개인화 추천, Redis 실시간 피처, A/B와 CT, Streamlit 대시보드",
+  "assumed_load": "PDF full: 상품 50,000 / 사용자 10,000 / 이벤트 1,000,000; API warmup 10 + 순차 100회; 단일 CPU 프로세스",
+  "review_scope": "전체 src/scripts/docker/dashboard/tests Python AST와 참조/미사용 import 검사, 배포/의존성/진입점 조사; 주요 데이터 생성-학습-검색-추천-서빙-평가-CT 흐름 수동 검토. 모든 파일의 모든 행에 대한 정형 증명 또는 기능 완전성 주장이 아님.",
+  "findings": [
+    {
+      "id": 1,
+      "priority": "필수 수정",
+      "status": "FIXED",
+      "title": "공통 API에서 multipart 검색 누락",
+      "source": {
+        "path": "src/serving/main.py",
+        "line": 51,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "공통 FastAPI 진입점은 JSON만 처리하고 검색 전용 진입점만 multipart를 변환했다.",
+      "reproduction": "같은 이미지 업로드가 실행 진입점에 따라 422가 된다.",
+      "minimum_fix": "SearchTransport를 공통 middleware로 이동하고 검색 진입점은 호환 export만 유지했다.",
+      "if_unfixed": "PDF의 이미지 및 하이브리드 API를 실행 방법에 따라 사용할 수 없다.",
+      "evidence": "tests/test_search_api.py"
+    },
+    {
+      "id": 2,
+      "priority": "필수 수정",
+      "status": "FIXED",
+      "title": "늦은 클릭의 CVR 관찰 기간 부족",
+      "source": {
+        "path": "src/recommendation/ranking_labels.py",
+        "line": 49,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "CTR과 CVR 미관측 여부를 모두 노출 시각으로 판정했다.",
+      "reproduction": "노출 0초, 클릭 1700초, 관찰 종료 2000초, 귀속 1800초일 때 미래 구매 가능성이 있는 클릭을 음성 정답으로 확정했다.",
+      "minimum_fix": "CTR은 노출, CVR은 마지막 클릭을 기준으로 음성 라벨 성숙도를 계산한다. 양성 관측은 즉시 인정한다.",
+      "if_unfixed": "실시간 CT 로그에서 잘못된 CVR 음성 정답이 학습과 평가에 섞인다.",
+      "evidence": "tests/test_deepfm.py:41"
+    },
+    {
+      "id": 3,
+      "priority": "필수 수정",
+      "status": "FIXED",
+      "title": "CT SQLite 연결 종료 누락",
+      "source": {
+        "path": "src/ct/storage.py",
+        "line": 115,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "SQLite transaction context만 사용해 commit/rollback 이후 연결이 닫히지 않았다.",
+      "reproduction": "with journal.connect() 블록 밖에서도 SELECT가 가능했다.",
+      "minimum_fix": "closing과 transaction을 한 contextmanager로 통합하고 호출자를 변경했다.",
+      "if_unfixed": "반복 모니터링 및 이벤트 기록의 연결 해제가 garbage collection에 의존한다.",
+      "evidence": "tests/test_ct_snapshot.py:14"
+    },
+    {
+      "id": 4,
+      "priority": "필수 수정",
+      "status": "FIXED",
+      "title": "모델 시작 실패 때 Redis 연결 종료 누락",
+      "source": {
+        "path": "src/serving/main.py",
+        "line": 28,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "모델/registry 로딩이 cleanup try 범위 밖에 있었다.",
+      "reproduction": "Feature Store 생성 후 모델 로딩 예외가 발생하면 close를 호출하지 않았다.",
+      "minimum_fix": "모델과 CT 초기화부터 finally 범위에 포함했다.",
+      "if_unfixed": "실패한 시작을 반복할 때 소유한 연결을 즉시 정리하지 못한다.",
+      "evidence": "tests/test_serving_contract.py:49"
+    },
+    {
+      "id": 5,
+      "priority": "권장 수정",
+      "status": "FIXED",
+      "title": "API와 simulator Dockerfile 중복",
+      "source": {
+        "path": "docker-compose.yml",
+        "line": 86,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "두 Dockerfile은 같은 패키지 설치와 소스를 복제하고 시작 명령만 달랐다.",
+      "reproduction": "한쪽만 수정하면 같은 프로젝트 서비스의 의존성이나 준비 과정이 달라질 수 있다.",
+      "minimum_fix": "Dockerfile.api를 공유하고 simulator command만 Compose에서 지정했다. 독립 컨테이너는 유지한다.",
+      "if_unfixed": "중복 설치 정의를 계속 동기화해야 한다.",
+      "evidence": "tests/test_docker.py, tests/test_setup_env.py"
+    },
+    {
+      "id": 6,
+      "priority": "권장 수정",
+      "status": "FIXED",
+      "title": "실행되지 않는 공통 데이터 헬퍼",
+      "source": {
+        "path": "src/common/data.py",
+        "line": 1,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "load_dataset은 호출자가 없고 history_before는 테스트에서만 사용했다.",
+      "reproduction": "실제 추천 경로가 아닌 별도 helper를 검사해 시간 cutoff 회귀를 놓칠 수 있었다.",
+      "minimum_fix": "파일을 삭제하고 테스트/제출 문서가 실제 recommendation.datasets의 context_for를 가리키게 했다.",
+      "if_unfixed": "데이터 로딩과 시간 cutoff 구현이 중복으로 남는다.",
+      "evidence": "tests/test_simulator.py"
+    },
+    {
+      "id": 7,
+      "priority": "권장 수정",
+      "status": "FIXED",
+      "title": "지연 백분위 계산 중복",
+      "source": {
+        "path": "src/evaluation/metrics.py",
+        "line": 56,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "검색/랭킹/HTTP/smoke에서 p50/p95/p99를 따로 계산했다.",
+      "reproduction": "빈 값 및 non-finite 검증 범위가 구현마다 달랐다.",
+      "minimum_fix": "latency_percentiles 한 곳으로 통합하고 유효한 모든 표본을 그대로 사용한다.",
+      "if_unfixed": "측정 코드별 유효성 검사와 계산 방식을 따로 유지해야 한다.",
+      "evidence": "tests/test_metrics.py, tests/test_smoke.py"
+    },
+    {
+      "id": 8,
+      "priority": "선택 개선",
+      "status": "FIXED",
+      "title": "일회성 ColdStart 래퍼와 미사용 import/re-export",
+      "source": {
+        "path": "src/recommendation/reranking.py",
+        "line": 65,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "ColdStart는 객체 상태 없이 단일 호출을 전달했다. 사용되지 않는 import와 snapshot 재노출도 있었다.",
+      "reproduction": "ColdStart를 인스턴스화해 run에서 한 번 호출하며 별도의 교체 가능한 구현이 없다.",
+      "minimum_fix": "기존 분기에서 같은 정렬과 reason을 적용하고 snapshot은 정의 모듈에서 직접 import한다.",
+      "if_unfixed": "독자가 필요 없는 추상화와 사용 경로를 추적해야 한다.",
+      "evidence": "tests/test_reranking.py, tests/test_ct.py, pyflakes"
+    },
+    {
+      "id": 9,
+      "priority": "권장 수정",
+      "status": "OPEN_DATA_RECIPE_CHANGE",
+      "title": "cart 전이 설정이 무시됨",
+      "source": {
+        "path": "src/simulator/events.py",
+        "line": 119,
+        "revision": "base commit for deleted file; otherwise working tree"
+      },
+      "behavior": "cart 전이표를 읽은 뒤 persona cvr와 상수로 덮어쓴다.",
+      "reproduction": "purchase=0, view=0, exit=1로 바꿔도 2000개 이벤트가 완전히 동일하며 구매 97건이 생성됐다.",
+      "minimum_fix": "다음 데이터 생성기 버전에서 config 전이에 persona 가중치를 적용하고 새 경로에 데이터/세 모델을 재생성한 뒤 valid/test를 동결 검증해야 한다.",
+      "if_unfixed": "사용자가 cart 전이 확률을 바꿔도 효과가 없다. 이번 변경에서는 동결 v4.3 분포를 보존하기 위해 정책 변경을 수행하지 않았다.",
+      "evidence": "cart_config_reproduction.json"
+    }
+  ],
+  "requirement_map": [
+    {
+      "pdf": "pp.3,6,8: 규모/페르소나/시간순 분할/seed/negative",
+      "implementation": [
+        "src/simulator",
+        "src/recommendation/datasets.py",
+        "src/recommendation/features.py"
+      ],
+      "evidence": [
+        "initial_state.json",
+        "tests/test_simulator.py",
+        "tests/test_candidate.py",
+        "tests/test_simulator_recipe.py"
+      ]
+    },
+    {
+      "pdf": "pp.1,2,3,4: CLIP 세 검색 모드/FAISS/API/품질",
+      "implementation": [
+        "src/search",
+        "src/serving/main.py",
+        "src/common/schemas.py"
+      ],
+      "evidence": [
+        "evaluation_full_valid.json",
+        "evaluation_full_test.json",
+        "pdf_examples.json"
+      ]
+    },
+    {
+      "pdf": "pp.4,5: Two-Tower/DeepFM/재정렬/MAB/GRU/Recall/Coverage",
+      "implementation": [
+        "src/recommendation"
+      ],
+      "evidence": [
+        "evaluation_full_test.json",
+        "peer_review.json",
+        "tests/test_reranking.py",
+        "tests/test_session.py"
+      ]
+    },
+    {
+      "pdf": "p.5: Redis/독립 컨테이너/Compose",
+      "implementation": [
+        "src/serving",
+        "docker",
+        "docker-compose.yml"
+      ],
+      "evidence": [
+        "evaluation_full_test.json",
+        "peer_review.json",
+        "tests/test_integration_redis.py",
+        "tests/test_docker.py"
+      ],
+      "limit": "Docker daemon/WSL integration unavailable; native HTTP+Redis is not new Compose acceptance"
+    },
+    {
+      "pdf": "pp.2,5: A/B/통계/대시보드",
+      "implementation": [
+        "src/evaluation/ab_test.py",
+        "src/evaluation/ab_statistics.py",
+        "dashboard"
+      ],
+      "evidence": [
+        "tests/test_ab.py",
+        "tests/test_dashboard.py",
+        "tests/test_evaluation_dashboard.py"
+      ],
+      "limit": "new full 30-day A/B and interactive browser run not performed"
+    },
+    {
+      "pdf": "p.5: CT 모니터링/경고/트리거/버전",
+      "implementation": [
+        "src/ct",
+        "src/serving/ct_admin.py"
+      ],
+      "evidence": [
+        "ct_drill.json",
+        "tests/test_ct.py",
+        "tests/test_ct_snapshot.py"
+      ],
+      "limit": "controlled real training fixture; no production improvement claim"
+    },
+    {
+      "pdf": "pp.5,6,11-14: 문서/데모/동료 평가",
+      "implementation": [
+        "README.md",
+        "docs",
+        "scripts/demo.py",
+        "scripts/verify_peer_review.py"
+      ],
+      "evidence": [
+        "pdf_examples.json",
+        "peer_review.json"
+      ],
+      "limit": "remote publication not authorized; prior evidence retained as historical"
+    }
+  ],
+  "not_checked": [
+    "Docker image build and four-service execution in current environment",
+    "fresh interactive browser behavior",
+    "new full A/B simulation",
+    "production CT retraining/improvement",
+    "external real datasets (optional per docs/data_sources.md)",
+    "complete hardware/OS matrix and arbitrary load beyond specified tests"
+  ],
+  "acceptance": "UNMEASURED",
+  "runtime_observations": {
+    "generic_native_http": {
+      "status": "FAIL",
+      "valid_search_p95_ms": 229.25145699973655,
+      "test_search_p95_ms": 231.14042820002396,
+      "target_ms": 200,
+      "source": "src/evaluation/api_benchmark.py:35",
+      "behavior": "공통 create_app, 배포용 runtime hooks 미적용",
+      "impact": "This native entry point does not meet the PDF latency target in the measured environment. Existing docker.serve thread/vision/parallel settings are measured separately; a separate pass must not overwrite this failure."
+    }
+  }
+}

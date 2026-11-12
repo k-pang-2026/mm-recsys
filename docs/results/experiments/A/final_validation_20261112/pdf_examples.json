@@ -1,0 +1,445 @@
+{
+  "status": "PASS",
+  "scope": "Docker published HTTP endpoint, real models and Redis; synthetic full catalog PDF examples",
+  "checks": {
+    "text_shape": true,
+    "text_semantics": true,
+    "image_shape": true,
+    "image_semantics": true,
+    "hybrid_shape": true,
+    "hybrid_semantics": true,
+    "invalid_body_422": true,
+    "body_limit_413": true
+  },
+  "responses": {
+    "text": {
+      "response": {
+        "search_type": "text",
+        "results": [
+          {
+            "product_id": "P000780",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 112000.0
+          },
+          {
+            "product_id": "P001542",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 36000.0
+          },
+          {
+            "product_id": "P003447",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 85000.0
+          },
+          {
+            "product_id": "P003627",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 20000.0
+          },
+          {
+            "product_id": "P003786",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 43000.0
+          },
+          {
+            "product_id": "P004774",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 117000.0
+          },
+          {
+            "product_id": "P005252",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 58000.0
+          },
+          {
+            "product_id": "P005957",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 114000.0
+          },
+          {
+            "product_id": "P008510",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 131000.0
+          },
+          {
+            "product_id": "P009019",
+            "name": "검정 오버핏 후드티",
+            "score": 0.929589033126831,
+            "price": 60000.0
+          }
+        ],
+        "latency_ms": 789.9541110000428,
+        "total_count": 50000
+      },
+      "matching_items": 10,
+      "catalog_attributes": [
+        {
+          "product_id": "P000780",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P001542",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P003447",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P003627",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P003786",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P004774",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P005252",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P005957",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P008510",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        },
+        {
+          "product_id": "P009019",
+          "color": "black",
+          "style": "oversized",
+          "category_l2": "casual",
+          "category_l3": "hoodie"
+        }
+      ]
+    },
+    "image": {
+      "response": {
+        "search_type": "image",
+        "results": [
+          {
+            "product_id": "P000001",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.9999999403953552,
+            "price": 137000.0
+          },
+          {
+            "product_id": "P000820",
+            "name": "갈색 슬림핏 크로스백",
+            "score": 0.9999999403953552,
+            "price": 55000.0
+          },
+          {
+            "product_id": "P000878",
+            "name": "갈색 슬림핏 크로스백",
+            "score": 0.9999999403953552,
+            "price": 111000.0
+          },
+          {
+            "product_id": "P000932",
+            "name": "갈색 슬림핏 토트백",
+            "score": 0.9999999403953552,
+            "price": 77000.0
+          },
+          {
+            "product_id": "P001107",
+            "name": "갈색 레귤러핏 크로스백",
+            "score": 0.9999999403953552,
+            "price": 164000.0
+          },
+          {
+            "product_id": "P001329",
+            "name": "갈색 슬림핏 백팩",
+            "score": 0.9999999403953552,
+            "price": 169000.0
+          },
+          {
+            "product_id": "P001347",
+            "name": "갈색 슬림핏 백팩",
+            "score": 0.9999999403953552,
+            "price": 34000.0
+          },
+          {
+            "product_id": "P001761",
+            "name": "갈색 레귤러핏 크로스백",
+            "score": 0.9999999403953552,
+            "price": 149000.0
+          },
+          {
+            "product_id": "P001911",
+            "name": "갈색 슬림핏 토트백",
+            "score": 0.9999999403953552,
+            "price": 136000.0
+          },
+          {
+            "product_id": "P002174",
+            "name": "갈색 레귤러핏 백팩",
+            "score": 0.9999999403953552,
+            "price": 61000.0
+          }
+        ],
+        "latency_ms": 1460.9942340002817,
+        "total_count": 50000
+      },
+      "matching_items": 10,
+      "catalog_attributes": [
+        {
+          "product_id": "P000001",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P000820",
+          "color": "brown",
+          "style": "slim",
+          "category_l2": "bags",
+          "category_l3": "crossbody bag"
+        },
+        {
+          "product_id": "P000878",
+          "color": "brown",
+          "style": "slim",
+          "category_l2": "bags",
+          "category_l3": "crossbody bag"
+        },
+        {
+          "product_id": "P000932",
+          "color": "brown",
+          "style": "slim",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P001107",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "crossbody bag"
+        },
+        {
+          "product_id": "P001329",
+          "color": "brown",
+          "style": "slim",
+          "category_l2": "bags",
+          "category_l3": "backpack"
+        },
+        {
+          "product_id": "P001347",
+          "color": "brown",
+          "style": "slim",
+          "category_l2": "bags",
+          "category_l3": "backpack"
+        },
+        {
+          "product_id": "P001761",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "crossbody bag"
+        },
+        {
+          "product_id": "P001911",
+          "color": "brown",
+          "style": "slim",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P002174",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "backpack"
+        }
+      ]
+    },
+    "hybrid": {
+      "response": {
+        "search_type": "hybrid",
+        "results": [
+          {
+            "product_id": "P000001",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 137000.0
+          },
+          {
+            "product_id": "P001682",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 54000.0
+          },
+          {
+            "product_id": "P002751",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 86000.0
+          },
+          {
+            "product_id": "P004424",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 142000.0
+          },
+          {
+            "product_id": "P004967",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 30000.0
+          },
+          {
+            "product_id": "P006806",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 105000.0
+          },
+          {
+            "product_id": "P008292",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 32000.0
+          },
+          {
+            "product_id": "P011062",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 18000.0
+          },
+          {
+            "product_id": "P011675",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 137000.0
+          },
+          {
+            "product_id": "P013435",
+            "name": "갈색 레귤러핏 토트백",
+            "score": 0.7190512418746948,
+            "price": 24000.0
+          }
+        ],
+        "latency_ms": 183.0589589999363,
+        "total_count": 50000
+      },
+      "matching_items": 10,
+      "catalog_attributes": [
+        {
+          "product_id": "P000001",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P001682",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P002751",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P004424",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P004967",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P006806",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P008292",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P011062",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P011675",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        },
+        {
+          "product_id": "P013435",
+          "color": "brown",
+          "style": "regular",
+          "category_l2": "bags",
+          "category_l3": "tote bag"
+        }
+      ]
+    }
+  },
+  "image_product_id": "P000001",
+  "image_sha256": "b7dedd2e81b4eff9b6b733b6ecaf0f04ed3bfa5bacdb2d404376a735778f7182",
+  "verifier_sha256": "caf2fa72b9a7226496bafd4f021e8bb935b5e7fd007b5e3eb9f32688e375c4c6"
+}

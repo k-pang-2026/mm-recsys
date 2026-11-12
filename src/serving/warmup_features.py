@@ -1,7 +1,7 @@
 """Load observable user profiles; replay is an explicit serving-only operation."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import log, run_cli
 
 import argparse
 import json

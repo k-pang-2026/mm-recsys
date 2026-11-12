@@ -44,7 +44,7 @@ def aggregate(rows: list[tuple[str, list[str]]], truth: dict[str, set[str]],
 
 def evaluate(cfg: dict, split: str) -> dict:
     configure_inference(cfg['recommend']['candidate'], with_faiss=True)
-    data, labels, label_diagnostics = prepare(cfg, split)
+    data, labels, label_diagnostics = prepare(cfg, split, label_splits=(split,))
     root = Path(cfg['paths']['model_dir']) / 'v1.0'
     root = Path(cfg['recommend'].get('candidate_bundle', root))
     candidate, encoder, table, candidate_meta = load_bundle(root, data, cfg)

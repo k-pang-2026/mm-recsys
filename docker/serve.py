@@ -170,7 +170,6 @@ def install_runtime_limits(shared: Any, cfg: dict) -> None:
     shared.router.lifespan_context = lifespan
 
 
-# Preserve A's exact JSON/multipart app and C's API/CT routers and factories.
-from src.search.api import app as app
+from src.serving.main import app as app
 
-install_runtime_limits(app.app, runtime_config())
+install_runtime_limits(app, runtime_config())

@@ -6,7 +6,6 @@ from src.common.console import log
 from typing import Any, Callable
 
 import json
-from pathlib import Path
 from time import perf_counter
 
 import numpy as np

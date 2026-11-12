@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-11-12T06:50:21.938Z",
+  "errors": [],
+  "failures": [],
+  "selected": "결과 파일\n\nevaluation_full_test.json",
+  "final_metric": "최종 종합 품질\n\nPASS",
+  "ab": "",
+  "status": "FAIL",
+  "error": "Error: The actual full A/B population or negative CVR result is missing"
+}

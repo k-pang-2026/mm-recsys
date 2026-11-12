@@ -2,15 +2,34 @@ from __future__ import annotations
 
 import base64
 import json
+from copy import deepcopy
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
 import requests
+import pandas as pd
+import pyarrow as pa
 from streamlit.testing.v1 import AppTest
 
 import dashboard.data as data
+from dashboard.formatting import display_value
+
+
+def test_display_conversion_handles_timezone_rollover_without_mutating_values():
+    original = dict(at='2026-11-11T18:07:08.123Z', other='2026-11-11T20:07:08+02:00',
+        naive=pd.Timestamp('2026-11-11 18:07:08'), score=.9663299617,
+        nested=[True, 300, None, 4.409705e-106], identifier='v1.0', date='2026-11-11',
+        invalid='2026-99-99T00:00:00Z')
+    before = deepcopy(original)
+    shown = display_value(original)
+    assert shown['at'] == shown['other'] == shown['naive'] == '2026-11-12 03:07:08 KST'
+    assert shown['score'] == '1.0' and shown['nested'] == [True, 300, None, '4.4e-106']
+    assert shown['identifier'] == 'v1.0' and shown['date'] == '2026-11-11'
+    assert shown['invalid'] == original['invalid']
+    assert display_value('2026-11-12T03:07:08+09:00') == shown['at']
+    assert original == before
 
 
 @pytest.fixture
@@ -39,6 +58,24 @@ def report():
 
 def offline(*args, **kwargs):
     return dict(ok=False, status_code=None, data=None, error='fixture: API unavailable')
+
+
+def test_large_ct_log_reads_latest_utf8_records_and_preserves_invalid_count(tmp_path):
+    path = tmp_path / 'ct_log.jsonl'
+    with path.open('wb') as stream:
+        stream.write(b'x' * 11_000_000 + b'\n')
+        for i in range(120):
+            stream.write((json.dumps(dict(index=i, message='학습 관측'), ensure_ascii=False) + '\n').encode())
+        stream.write(b'\xff\n{"partial":')
+    result = data.ct_log(tmp_path, limit=102)
+    assert result['status'] == 'MEASURED' and not result['truncated']
+    assert result['invalid_lines'] == 2
+    assert [row['index'] for row in result['rows']] == list(range(20, 120))
+    assert result['rows'][-1]['message'] == '학습 관측'
+    path.write_bytes(b'x' * 11_000_000)
+    assert data.ct_log(tmp_path)['truncated']
+    with pytest.raises(ValueError):
+        data.ct_log(tmp_path, limit=0)
 
 
 @pytest.mark.parametrize('api_url,public_url,expected', [
@@ -92,7 +129,7 @@ def test_four_tabs_charts_and_metric_tables_match_json(tmp_path, monkeypatch, re
     assert len(app.get('plotly_chart')) == 5
     metrics = {m.label: m.value for m in app.metric}
     assert metrics['측정 기준 판정'] == 'FAIL' and metrics['최종 종합 품질'] == 'UNMEASURED'
-    assert metrics['CVR 상대 lift'] == '-50.00%' and metrics['API 연결'] == '연결 안 됨'
+    assert metrics['CVR 상대 lift'] == '-50.0%' and metrics['API 연결'] == '연결 안 됨'
     observed = {}
     for frame in app.dataframe:
         df = frame.value
@@ -105,6 +142,10 @@ def test_four_tabs_charts_and_metric_tables_match_json(tmp_path, monkeypatch, re
     spec = json.loads(app.get('plotly_chart')[0].proto.spec)
     assert spec['data'][0]['y'] == [.6, .6, .6]
     assert spec['data'][1]['y'] == [.4, None, .4]
+    assert spec['layout']['yaxis']['tickformat'] == '.1f'
+    assert spec['layout']['yaxis']['hoverformat'] == '.1f'
+    shown = pa.ipc.open_stream(app.dataframe[0].proto.styler.display_values).read_all().to_pandas()
+    assert shown['측정값'].tolist() == ['0.6', '0.5']
 
 
 def test_absent_and_malformed_results_render_without_fake_values(tmp_path, monkeypatch):
@@ -192,7 +233,7 @@ def test_api_unavailable_is_explicit(monkeypatch):
 def test_live_model_version_and_nested_ct_logs_are_distinct_from_saved_measurement(tmp_path, monkeypatch, report):
     (tmp_path / 'evaluation_dev_valid.json').write_text(json.dumps(report))
     (tmp_path / 'ct_log.jsonl').write_text(json.dumps(dict(event='promoted', scope='controlled_fixture',
-        version='v1.1', comparison=dict(candidate=dict(ctr_auc=.9)), hashes=dict(candidate='abc'))) + '\n' +
+        version='v1.1', at='2026-11-11T18:07:08.123Z', comparison=dict(candidate=dict(ctr_auc=.9)), hashes=dict(candidate='abc'))) + '\n' +
         json.dumps(dict(event='rollback', version='v1.0')) + '\n')
     monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
     def api(url, method, route, **kwargs):
@@ -205,3 +246,8 @@ def test_live_model_version_and_nested_ct_logs_are_distinct_from_saved_measureme
     assert any('controlled_fixture' in caption.value for caption in app.caption)
     frame = next(df.value for df in app.dataframe if 'event' in df.value)
     assert frame['comparison.candidate.ctr_auc'].iloc[0] == .9
+    assert frame['at'].iloc[0] == '2026-11-11T18:07:08.123Z'
+    element = next(df for df in app.dataframe if 'event' in df.value)
+    shown = pa.ipc.open_stream(element.proto.styler.display_values).read_all().to_pandas()
+    assert shown['at'].iloc[0] == '2026-11-12 03:07:08 KST'
+    assert shown['comparison.candidate.ctr_auc'].iloc[0] == '0.9'

@@ -4,7 +4,7 @@ from unittest.mock import Mock
 import fakeredis
 import pytest
 from fastapi.testclient import TestClient
-from redis.exceptions import ConnectionError
+from redis.exceptions import ConnectionError, TimeoutError
 
 from src.common.config import load_config
 from src.common.schemas import EventRequest, FeedbackRequest, RecommendResponse
@@ -97,6 +97,48 @@ def test_batch_profiles_are_chunked_and_replacements_remove_old_fields(store):
     assert store.get_features("1000").profile == {"age_group": "18-24"}
     with pytest.raises(ValueError):
         store.batch_load_profiles({}, batch_size=1001)
+
+
+@pytest.mark.parametrize('committed', [False, True])
+def test_profile_warmup_retries_timeout_without_changing_session(store, committed):
+    store.append_event(event('existing', category='tops'))
+    before = store.get_features('u')
+    pipeline = store.client.pipeline
+    attempts = []
+
+    def interrupted(*args, **kwargs):
+        pipe = pipeline(*args, **kwargs)
+        execute = pipe.execute
+
+        def once():
+            attempts.append(True)
+            if len(attempts) == 1:
+                if committed:
+                    execute()
+                raise TimeoutError('reply timed out')
+            return execute()
+
+        pipe.execute = once
+        return pipe
+
+    store.client.pipeline = interrupted
+    store.batch_load_profiles({'u': {'age_group': '25-34'}, 'v': {'gender': 'x'}})
+    assert len(attempts) == 2
+    store.client.pipeline = pipeline
+    after = store.get_features('u')
+    assert after.profile == {'age_group': '25-34'}
+    assert after.recent_clicks == before.recent_clicks
+    assert after.session_clicks == before.session_clicks
+    assert store.get_features('v').profile == {'gender': 'x'}
+
+
+def test_profile_warmup_stops_after_configured_retries(store):
+    store.client = Mock()
+    store.client.pipeline.side_effect = ConnectionError('offline')
+    with pytest.raises(ConnectionError, match='offline'):
+        store.batch_load_profiles({'u': {'gender': 'x'}})
+    assert store.client.pipeline.call_count == store.write_retries
+    assert not store.available
 
 
 def test_failure_returns_empty_features_and_warning_and_recovers(store, caplog):

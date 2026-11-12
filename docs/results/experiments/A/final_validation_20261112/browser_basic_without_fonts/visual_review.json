@@ -1,0 +1,4 @@
+{
+  "status": "FAIL",
+  "reason": "Headless Linux browser had no Korean glyph font; DOM and actions passed but screenshots showed missing glyphs. Browser test environment will be repaired; service source unchanged."
+}

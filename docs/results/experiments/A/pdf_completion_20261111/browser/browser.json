@@ -1,0 +1,48 @@
+{
+  "started_at": "2026-11-11T13:28:12.941Z",
+  "browser": "143.0.7499.4",
+  "errors": [
+    "Failed to load resource: net::ERR_CONNECTION_RESET",
+    "Failed to load resource: net::ERR_CONNECTION_RESET",
+    "Failed to load resource: net::ERR_CONNECTION_RESET",
+    "Failed to load resource: net::ERR_CONNECTION_RESET",
+    "Failed to load resource: net::ERR_CONNECTION_RESET"
+  ],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8501/_stcore/health",
+      "error": {
+        "errorText": "net::ERR_CONNECTION_RESET"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8501/_stcore/host-config",
+      "error": {
+        "errorText": "net::ERR_CONNECTION_RESET"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8501/_stcore/host-config",
+      "error": {
+        "errorText": "net::ERR_CONNECTION_RESET"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8501/_stcore/host-config",
+      "error": {
+        "errorText": "net::ERR_CONNECTION_RESET"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8501/_stcore/health",
+      "error": {
+        "errorText": "net::ERR_CONNECTION_RESET"
+      }
+    }
+  ],
+  "captures": [],
+  "checks": {},
+  "status": "FAIL",
+  "error": "TimeoutError: locator.waitFor: Timeout 120000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: '검색·추천 평가실', exact: true }) to be visible\u001b[22m\n",
+  "completed_at": "2026-11-11T13:30:13.620Z"
+}

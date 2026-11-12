@@ -59,7 +59,8 @@ def session_path(cfg: dict) -> Path: return Path(cfg['paths']['model_dir'])/'v1.
 
 def load_session(cfg: dict,data: dict,table: Any,candidate_meta: dict) -> tuple[SessionEncoder, dict]:
     path=session_path(cfg); meta=json.loads((path/'meta.json').read_text())
-    if meta['config_fingerprint']!=fingerprint(cfg['recommend']['session']): raise ValueError('session config mismatch')
+    from src.recommendation.bundle_compat import training_config_matches
+    if not training_config_matches(meta['config_fingerprint'], cfg['recommend']['session']): raise ValueError('session config mismatch')
     if meta['data_fingerprint']!=data['manifest']['generation_fingerprint'] or meta['candidate_sha256']!=candidate_meta['hashes']['two_tower.pt']:
         raise ValueError('session candidate/data mismatch')
     for name,digest in meta['hashes'].items():
@@ -104,7 +105,7 @@ def train(cfg: dict) -> dict:
             logits=torch.einsum('bd,bkd->bk',vector,model.items(train_items[indices]))/temperature
             value=F.cross_entropy(logits,torch.zeros(len(indices),dtype=torch.long))
             if not torch.isfinite(value): raise ValueError('nonfinite session loss')
-            value.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(),10.); optimizer.step(); total+=float(value.detach())*len(indices)
+            value.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(),spec['max_grad_norm']); optimizer.step(); total+=float(value.detach())*len(indices)
         metrics=evaluate(model,valid_seq,valid_items,spec['batch_size'],temperature)
         epochs.append(dict(epoch=epoch,loss=total/len(train_seq),valid=metrics,seconds=time.perf_counter()-tick))
         log('모델', '학습', f'세션 epoch={epoch} / valid_loss={metrics["loss"]:.5f} / sampled_hit@10={metrics["sampled_hit_at_10"]:.5f}')
