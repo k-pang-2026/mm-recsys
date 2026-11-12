@@ -1,0 +1,21 @@
+{
+  "event": "monitor",
+  "status": "MEASURED",
+  "ctr": 0.012632062471290766,
+  "hit_rate_at_50": 0.32439024390243903,
+  "clicks": 275,
+  "exposures": 21770,
+  "mature_requests": 537,
+  "top50_requests": 410,
+  "hit_requests": 133,
+  "alerts": [],
+  "window_start": 1794322990.8012488,
+  "observed_through": 1794409390.8012488,
+  "attribution_seconds": 3600,
+  "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+  "thresholds": {
+    "ctr_threshold": 0.01,
+    "hitrate_threshold": 0.2,
+    "min_mature_requests": 20
+  }
+}

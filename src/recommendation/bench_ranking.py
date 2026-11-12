@@ -27,8 +27,7 @@ from src.recommendation.feature_store import RecommendationFeatureStore
 from src.serving.main import create_app
 
 
-def percentiles(values: list[float]) -> dict[str, float]:
-    return {f'p{p}_ms':float(np.percentile(values,p)) for p in [50,95,99]}
+from src.evaluation.metrics import latency_percentiles as percentiles
 
 
 def benchmark(cfg: dict,b5: bool=True,output: Path | None=None) -> dict:

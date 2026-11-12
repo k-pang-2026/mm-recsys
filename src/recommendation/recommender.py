@@ -1,7 +1,10 @@
 """One loaded candidate/ranking/session pipeline, batched over 300 candidates."""
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import faiss
 
 import threading
 import time
@@ -18,11 +21,21 @@ from src.recommendation.ranking_features import HistoryIndex
 from src.recommendation.reranking import Reranker,RankedItem,diversity_capacity
 from src.recommendation.session import sequence_for
 from src.recommendation.scoring import score_items, policy
+from src.common.schemas import FeatureReader
+from src.recommendation.two_tower import TwoTower
+from src.recommendation.deepfm import DeepFM
+from src.recommendation.features import FeatureEncoder, ItemTable
+from src.recommendation.ranking_features import RankingEncoder
+from src.recommendation.session import SessionEncoder
 
 
 class Recommender:
-    def __init__(self,cfg: dict,store,data: dict,candidate,encoder,table,index,ranker,ranking_encoder,session_model=None,at: pd.Timestamp | None=None,history: pd.DataFrame | None=None) -> None:
+    def __init__(self, cfg: dict, store: FeatureReader, data: dict, candidate: TwoTower,
+                 encoder: FeatureEncoder, table: ItemTable, index: faiss.Index, ranker: DeepFM,
+                 ranking_encoder: RankingEncoder, session_model: SessionEncoder | None = None,
+                 at: pd.Timestamp | None = None, history: pd.DataFrame | None = None) -> None:
         self.cfg,self.store,self.data=cfg,store,data
+        self.bundle_metadata: dict = {}
         self.scoring=policy(cfg['recommend'].get('scoring'))
         self.candidate_model,self.encoder,self.table=candidate,encoder,table
         self.ranker,self.ranking_encoder,self.session_model=ranker,ranking_encoder,session_model

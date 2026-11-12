@@ -1,0 +1,160 @@
+{
+  "search_type": "text",
+  "results": [
+    {
+      "product_id": "P000780",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 112000.0
+    },
+    {
+      "product_id": "P001542",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 36000.0
+    },
+    {
+      "product_id": "P003447",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 85000.0
+    },
+    {
+      "product_id": "P003627",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 20000.0
+    },
+    {
+      "product_id": "P003786",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 43000.0
+    },
+    {
+      "product_id": "P004774",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 117000.0
+    },
+    {
+      "product_id": "P005252",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 58000.0
+    },
+    {
+      "product_id": "P005957",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 114000.0
+    },
+    {
+      "product_id": "P008510",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 131000.0
+    },
+    {
+      "product_id": "P009019",
+      "name": "검정 오버핏 후드티",
+      "score": 0.929589033126831,
+      "price": 60000.0
+    }
+  ],
+  "latency_ms": 751.7471079991083,
+  "total_count": 50000
+}
+{
+  "user_id": "U000001",
+  "recommendations": [
+    {
+      "product_id": "P029135",
+      "score": 0.03078426979482174,
+      "reason": "MAB 탐색",
+      "is_exploration": true
+    },
+    {
+      "product_id": "P010130",
+      "score": 0.023098532110452652,
+      "reason": "MAB 탐색",
+      "is_exploration": true
+    },
+    {
+      "product_id": "P001050",
+      "score": 0.9993270635604858,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P000540",
+      "score": 0.19284658133983612,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P001542",
+      "score": 0.9936801195144653,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P001805",
+      "score": 0.9935346841812134,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P000102",
+      "score": 0.1551211178302765,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P003483",
+      "score": 0.9785369634628296,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P002212",
+      "score": 0.9638006687164307,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    },
+    {
+      "product_id": "P000953",
+      "score": 0.14711613953113556,
+      "reason": "DeepFM 클릭 가능성",
+      "is_exploration": false
+    }
+  ],
+  "pipeline_latency": {
+    "candidate_ms": 16.875884000910446,
+    "ranking_ms": 17.256660998100415,
+    "reranking_ms": 9.251366001990391,
+    "total_ms": 43.38391100100125
+  },
+  "session_context": {
+    "recent_clicks": [
+      "P000780",
+      "P001542"
+    ],
+    "session_interest": "hoodie"
+  }
+}
+========== A/B 테스트 결과 ==========
+실험 기간: 시뮬레이션 7일 (합성 실험)
+샘플 수: Control 100명, Treatment 100명
+전략: popularity → full_pipeline
++-------------------+--------------+--------------+--------------+
+| Metric            | Control      | Treatment    | Lift         |
++-------------------+--------------+--------------+--------------+
+| CTR               | 24.5857%     | 20.5000%     | -16.62%      |
+| CVR               | 1.2714%      | 0.9571%      | -24.72%      |
+| MAB Exploration   | 0.0000%      | 20.0000%     | -            |
++-------------------+--------------+--------------+--------------+
+통계적 유의성 (사용자 단위, 반복 노출 보정):
+  CTR p-value: 6.839067889023647e-06 (유의함) / 차이의 95% CI: [-5.8658, -2.3057] %p
+  CVR p-value: 0.10267589062599107 (유의하지 않음) / 차이의 95% CI: [-0.6917, +0.0632] %p
+원본 결과: docs/results/experiments/A/pdf_completion_20261111/demo_default_auto/ab_test.json

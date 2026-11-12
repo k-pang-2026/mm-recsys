@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "reviewed_at": "2026-11-11T12:14:47.969175+00:00",
+  "checked": [
+    "Korean labels readable",
+    "A/B sample size and duration displayed: 100 per arm, 7 days",
+    "CVR values and negative lift displayed",
+    "UNMEASURED final acceptance retained"
+  ],
+  "browser_report": "browser.json",
+  "inspected_image": "browser_tab_2.png",
+  "font_family": "Noto Sans KR",
+  "font_sha256": "018174e8cdd366aff67c8d366c7dc806a7babbe7f2819fc23b00d59f7b8353d0",
+  "font_config": "/tmp/mm-pdf-fonts.conf",
+  "prior_capture": "../browser_no_korean_font",
+  "application_source_changed": false
+}

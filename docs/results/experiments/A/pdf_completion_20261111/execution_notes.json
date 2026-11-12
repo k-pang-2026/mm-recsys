@@ -1,0 +1,70 @@
+{
+  "preserved_failures": [
+    {
+      "source": "pytest.log",
+      "reason": "One simulator fixture lacked new configuration; one default Redis test was run without the required project plugin/host settings. Fixed fixture and reran with actual Redis and the project plugin."
+    },
+    {
+      "source": "/tmp/mm-pdf-completion-foundation-tests.log",
+      "reason": "Initial sandboxed TestClient tests stopped making progress; interrupted and terminated only the two owned pytest processes, then reran via normal escalation."
+    },
+    {
+      "source": "mypy.log",
+      "reason": "Duplicate namespace invocation; reran repository-standard --explicit-package-bases. Missing display mapping annotation was fixed."
+    },
+    {
+      "source": "pyflakes.log",
+      "reason": "pyflakes is an audit-only dependency under /tmp/mm-pdf-tools; reran with the explicit temporary PYTHONPATH."
+    },
+    {
+      "source": "mab_full.log",
+      "reason": "The legacy checker was launched with base config instead of the deployed config that contains the Redis namespace. Rerun uses CONFIG_PATH=models/full-v44/.docker/config.yaml with concurrent simulator feedback paused."
+    },
+    {
+      "source": "host_recommend.log; host_hybrid.log",
+      "reason": "Host CLI called during deployment preparation; API correctly returned HTTP 503. Retried only after /ready returned ready; original failures preserved separately."
+    },
+    {
+      "source": "dashboard_missing_module.log; browser.log",
+      "reason": "Actual dashboard image omitted src.search.text, newly imported for Korean product labels. Added that standard-library-only module to Dockerfile.dashboard and an image-build import check; rerun real browser after image repair."
+    }
+  ],
+  "original_v43_artifacts": "preserved; new paths data/full-v44 and models/full-v44",
+  "download_cache": "existing pinned Hugging Face cache and dependency image layers reused",
+  "remote_publication": "not performed",
+  "benchmark_control": "Default Compose enables CT automatically. Initial quality was frozen with CT_AUTO_TRAIN=0; single-stack latency paused simulator. Automatic CT is verified separately after quality and A/B.",
+  "interactive_latency": "host_hybrid_ready.log reports one 402.1 ms request during concurrent full quality evaluation and model reinitialization, without benchmark warmup. Preserved as observed under-load latency; the isolated 10 warmup/100 serial benchmark is a different measured condition.",
+  "ct_execution_plan": {
+    "at": "2026-11-11T13:50:03.080926+00:00",
+    "scope": "One real default-worker threshold/full-training/valid-decision lifecycle; no requirement that every newest observation immediately enters the train fold",
+    "collection": "Earlier batches of 350 preserved; remaining A/B collection restored to default 100 events per 5 seconds. Auto training is temporarily disabled while A/B runs.",
+    "training": "After A/B completes, enable default automatic worker with one event per minute solely to observe one completion and watermark reuse without another >=10000-event training cycle starting during verification.",
+    "temporal_contract": "All received events through the actual captured watermark are retained; timestamps, 80/10/10 split, labels and promotion thresholds unchanged. Report actual new-event fold counts rather than claiming all new logs are fitted."
+  },
+  "ct_repeat_evidence_fix": {
+    "problem": "Consecutive small CT drills shared auxiliary lifecycle/training output paths",
+    "change": "Use the unique training workspace name below output-parent/experiments/C",
+    "verification": {
+      "source": "docs/results/experiments/A/pdf_completion_20261111/ct_repeat_verified.json",
+      "sha256": "2f6e14d4d18f4acc6e99099e6cda807eb79ef1f547b6b60aa5128163f0876d94"
+    },
+    "scope": "Both independently trained small runs passed promotion/rollback and retained their original checkable artifacts; not production lift evidence"
+  },
+  "thread_conditions": {
+    "source": "smoke_full.json: benchmark.serving_runtime",
+    "api_inference_torch_faiss": 2,
+    "api_process_omp_mkl_openblas": 2,
+    "initial_compose_environment": 1,
+    "separate_quality_evaluator_torch_faiss": 4,
+    "scope": "Documented actual server runtime, not only the initial Compose environment variables"
+  },
+  "combined_demo_conditions": {
+    "source": "demo_examples_runtime.json",
+    "scale": "full",
+    "users_per_arm": 5000,
+    "days": 30,
+    "ct_auto_train_at_completion": false,
+    "concurrent_worker_proof": "automatic_ct_busy.jsonl",
+    "scope": "Full experiment held the production training lock; an actual enabled worker reported BUSY earlier, then automatic training was paused for completion. A/B and the isolated drill remained real. A final quick command with default automatic CT enabled is checked separately."
+  }
+}

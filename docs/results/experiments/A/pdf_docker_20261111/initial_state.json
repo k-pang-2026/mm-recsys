@@ -1,0 +1,30 @@
+{
+  "created_at": "2026-11-11T11:54:58.227785+00:00",
+  "data_fingerprint": "f594913c3560e4de555c3054e188f7fe545bbfe3ffe3d083f46cafa2c84c5b97",
+  "data_counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2253808
+  },
+  "original_data_file_hashes": {
+    "products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+    "events.parquet": "c82c40925a3c2f91199f56d144e711830aee9f7e884ffdf7235f66d89348291d",
+    "impressions.parquet": "f0e59241f85b1539de6811e3c1cec17b8853662ca7386f5edd0a3e6b31283af7",
+    "image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+    "split/train.parquet": "34bb7f5be422945a6c8b9f2868634b6b6eced180fd41bc5948a9b07f149cf1ef",
+    "split/valid.parquet": "7ac8a9c78feb9a4f0b9f4467edde29325afc007af91a765d8c3035dcf650c349",
+    "split/test.parquet": "896f27c23d5769e61d65f95d194c47ceb367dbf4e62ae3b8c38834c4db6601ca"
+  },
+  "original_manifest_sha256": "76296b140398a50f0b301a4652205c03cc6aeef7dfa0d5ff4bec31e75c98ed3d",
+  "host_model_view": ".team/pdf-docker-20261111/models",
+  "host_data_copy": ".team/pdf-docker-20261111/data",
+  "ports": {
+    "api": 19000,
+    "dashboard": 19501,
+    "redis": 16392
+  },
+  "project": "mm-recsys-pdf-refactor-20261111",
+  "scope": "fresh containers and isolated live state; reused immutable full v4.3 artifacts, not clean-room data/model regeneration"
+}

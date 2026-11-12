@@ -1,7 +1,7 @@
 """Serial, real localhost HTTP benchmark including encoding and request validation."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import log, run_cli
 
 import argparse
 import base64
@@ -12,7 +12,6 @@ from pathlib import Path
 import threading
 from time import perf_counter, sleep
 import httpx
-import numpy as np
 import uvicorn
 
 from src.common.artifacts import file_hash, fingerprint, write_json
@@ -21,8 +20,7 @@ from src.search.api import create_app
 from src.search.queries import freeze_queries
 
 
-def percentiles(values: list[float]) -> dict:
-    return dict(zip(('p50_ms', 'p95_ms', 'p99_ms'), [float(v) for v in np.percentile(values, [50, 95, 99])]))
+from src.evaluation.metrics import latency_percentiles as percentiles
 
 
 def benchmark(cfg: dict) -> dict:
@@ -78,7 +76,7 @@ def benchmark(cfg: dict) -> dict:
             if response.status_code != 200 or response.json()['search_type'] != 'hybrid':
                 raise ValueError('multipart hybrid search failed')
             smoke.append({'mode': 'multipart_hybrid', 'status_code': 200})
-        bundle = app.app.state.search.searcher.bundle['manifest']
+        bundle = app.state.search.searcher.bundle['manifest']
         return {'scale': cfg['scale'], 'status': 'MEASURED', 'concurrency': 1, 'transport': 'real localhost HTTP, persistent connection',
                 'data_fingerprint': bundle['identity']['data_fingerprint'], 'model_fingerprint': bundle['fingerprint'],
                 'input_queries': 'frozen valid queries; no test labels used', 'query_manifest_sha256': file_hash(folder/'manifest.json'),

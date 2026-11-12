@@ -15,6 +15,7 @@ from src.serving.feature_store import create_feature_store
 from src.serving.ct_admin import router as ct_router
 from src.ct.retrain_trigger import components
 from src.serving.model_loader import load_record
+from src.search.transport import SearchTransport
 
 
 def create_app(cfg: dict | None = None, search_service: Any=None, recommend_service: Any=None,
@@ -25,26 +26,27 @@ def create_app(cfg: dict | None = None, search_service: Any=None, recommend_serv
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         serving = cfg['serving']
         app.state.store = feature_store if feature_store is not None else create_feature_store(cfg)
-        app.state.ct = components(cfg) if serving.get('ct', {}).get('enabled', False) else None
-        active = app.state.ct[2].read()['active'] if app.state.ct else None
-        app.state.model_version = active or 'v1.0'
-        for kind, supplied in [('search', search_service), ('recommend', recommend_service)]:
-            backend = supplied
-            module_name = serving['plugins'][kind]
-            if backend is None and kind == 'recommend' and active:
-                assert app.state.ct is not None
-                backend = load_record(app.state.ct[2], active, app.state.store,
-                                      scoring=cfg['recommend'].get('scoring'))
-            if backend is None and importlib.util.find_spec(module_name) is not None:
-                backend = importlib.import_module(module_name).create_service(cfg, app.state.store)
-            setattr(app.state, kind, backend)
         try:
+            app.state.ct = components(cfg) if serving.get('ct', {}).get('enabled', False) else None
+            active = app.state.ct[2].read()['active'] if app.state.ct else None
+            app.state.model_version = active or 'v1.0'
+            for kind, supplied in [('search', search_service), ('recommend', recommend_service)]:
+                backend = supplied
+                module_name = serving['plugins'][kind]
+                if backend is None and kind == 'recommend' and active:
+                    assert app.state.ct is not None
+                    backend = load_record(app.state.ct[2], active, app.state.store,
+                                          scoring=cfg['recommend'].get('scoring'))
+                if backend is None and importlib.util.find_spec(module_name) is not None:
+                    backend = importlib.import_module(module_name).create_service(cfg, app.state.store)
+                setattr(app.state, kind, backend)
             yield
         finally:
             if feature_store is None and hasattr(app.state.store, 'close'):
                 app.state.store.close()
 
     app = FastAPI(title='MM Search & Recommend', lifespan=lifespan)
+    app.add_middleware(SearchTransport)
 
     app.include_router(ct_router)
 

@@ -11,15 +11,15 @@ scales:
     n_users: 10000
     n_events: 1000000
 paths:
-  data_dir: data/integration-v41-full
-  model_dir: models/integration-v41-full
-  results_dir: docs/results
-  split_dir: data/integration-v41-full/split
+  data_dir: data/full-v44
+  model_dir: models/full-v44
+  results_dir: docs/results/experiments/A/resource_refactor_20261112/runtime/full
+  split_dir: data/full-v44/split
   by_scale:
     full:
-      data_dir: data/integration-v41-full
-      split_dir: data/integration-v41-full/split
-      model_dir: models/integration-v41-full
+      data_dir: data/full-v44
+      split_dir: data/full-v44/split
+      model_dir: models/full-v44
 simulator:
   n_products: 50000
   n_users: 10000
@@ -69,6 +69,7 @@ simulator:
       - 0.15
     brand_loyal:
       ratio: 0.15
+      preferred_brand_probability: 0.98
       price_sensitivity: 0.2
       cvr: 0.06
       category_preferences:
@@ -98,6 +99,8 @@ simulator:
       - 0.2
       - 0.1
   window_days: 30
+  event_interval_seconds: 60
+  cart_reference_cvr: 0.05
   new_item_ratio: 0.04
   cold_user_ratio: 0.03
   cold_max_events: 3
@@ -243,8 +246,8 @@ search:
     text_weight: 0.5
     image_weight: 0.5
   query_fusion:
-    text_weight: 0.75
-    image_weight: 0.25
+    text_weight: 0.5
+    image_weight: 0.5
   evaluation:
     relevance: observable_attributes
     queries_per_mode: 200
@@ -296,6 +299,7 @@ recommend:
       metric: inner_product
       M: 32
       ef_search: 512
+    max_grad_norm: 10.0
     embedding_dim: 16
     hidden_dim: 128
     weight_decay: 0.0001
@@ -332,6 +336,7 @@ recommend:
     strategy: ctr
   candidate_config_snapshot: docs/results/candidate_config_original.json
   ranking:
+    max_grad_norm: 10.0
     embedding_dim: 16
     hidden_dims:
     - 128
@@ -356,6 +361,7 @@ recommend:
     trend_days: 3
     growth_weight: 0.5
   session:
+    max_grad_norm: 10.0
     enabled: true
     hidden_dim: 64
     max_length: 20
@@ -422,6 +428,7 @@ serving:
     max_connections: 32
     write_retries: 8
     db: 0
+    namespace: mm-recsys:full:8d2a27b521f7
   ab_test:
     control: popularity
     treatment: full_pipeline
@@ -438,6 +445,8 @@ serving:
   ct:
     enabled: true
     poll_seconds: 60
+    retry_seconds: 300
+    retrain_on_degradation: true
     recent_seconds: 86400
     attribution_seconds: 3600
     min_mature_requests: 20

@@ -1,0 +1,148 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "scenario": "controlled_initial_constant_ranker",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1116908,
+    "impressions": 2308462
+  },
+  "natural_retraining": "RETAINED",
+  "comparison": {
+    "split": "valid",
+    "validation_fingerprint": "12d6335e778f90de882a3f0a18223eee7fe701c0570b4cd0da8a4e955fd97f6b",
+    "baseline": {
+      "ctr_auc": 0.5,
+      "ctr_logloss": 0.6931471805599451,
+      "ctr_samples": 232241,
+      "ctr_positives": 58070,
+      "validation_fingerprint": "12d6335e778f90de882a3f0a18223eee7fe701c0570b4cd0da8a4e955fd97f6b"
+    },
+    "candidate": {
+      "ctr_auc": 0.9663299617059631,
+      "ctr_logloss": 0.14223005907819794,
+      "ctr_samples": 232241,
+      "ctr_positives": 58070,
+      "validation_fingerprint": "12d6335e778f90de882a3f0a18223eee7fe701c0570b4cd0da8a4e955fd97f6b"
+    }
+  },
+  "guard": {
+    "enabled": true,
+    "poll_seconds": 60,
+    "retry_seconds": 300,
+    "retrain_on_degradation": true,
+    "recent_seconds": 86400,
+    "attribution_seconds": 3600,
+    "min_mature_requests": 20,
+    "ctr_threshold": 0.01,
+    "promotion_metric": "ctr_auc",
+    "min_improvement": 0.001,
+    "promotion_floor": 0.7,
+    "hitrate_threshold": 0.2,
+    "retrain_log_threshold": 10000
+  },
+  "real_reload_and_rollback": true,
+  "http": [
+    {
+      "version": "v1.0",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    },
+    {
+      "version": "v1.1",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.1",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    }
+  ],
+  "reloads": [
+    {
+      "status": "reloaded",
+      "version": "v1.1"
+    },
+    {
+      "status": "reloaded",
+      "version": "v1.0"
+    }
+  ],
+  "original_candidate_hashes": {
+    "meta.json": "7f4fd4dd2e127a1566c216af97b4a9186e5e78be3bea800caeaf5dcba051d835",
+    "two_tower.pt": "5b3cde4c6bf3e1ef6cf898848aa74cb0bf87298db3090ce18058226f2581a275",
+    "feature_vocab_scalers.json": "48624928d7250971dcc924d9d7a5abab5a89f880c45ae98b33f0ec955d06578f",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "de9c2e4f7dada8c455a24be5e3b5749adc8ebdb2cca67e9681292ca26f898d97",
+    "index_manifest.json": "b926529d4f0051b4925a770d26db2f9ce4a823d06b94bd99d3a300a658955b1e",
+    "ranking/meta.json": "569fae2f08f9697b0d4a1351a95f7aaa3a201e1e971a68d0c8878594350ea3c6",
+    "ranking/deepfm.pt": "7e5b41252597942a267850f52c1aa6887cbf6b2aa77db8084b50f041cb5b2405",
+    "ranking/features.json": "f179f9d641fc3c3128d814baa6cf37f96c66ed1c66a48d62187c213406ad70fd",
+    "session/meta.json": "416d7564df7a47afa2c0c7ef9ca66afdc548b5c0fbfb86933869f52f12735b5d",
+    "session/session.pt": "18452353d53e81002f123dc05451d097b57ef1ebb32ea5539d10298ded806d47",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "candidate_hashes": {
+    "meta.json": "7f4fd4dd2e127a1566c216af97b4a9186e5e78be3bea800caeaf5dcba051d835",
+    "two_tower.pt": "5b3cde4c6bf3e1ef6cf898848aa74cb0bf87298db3090ce18058226f2581a275",
+    "feature_vocab_scalers.json": "48624928d7250971dcc924d9d7a5abab5a89f880c45ae98b33f0ec955d06578f",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "de9c2e4f7dada8c455a24be5e3b5749adc8ebdb2cca67e9681292ca26f898d97",
+    "index_manifest.json": "b926529d4f0051b4925a770d26db2f9ce4a823d06b94bd99d3a300a658955b1e",
+    "ranking/meta.json": "569fae2f08f9697b0d4a1351a95f7aaa3a201e1e971a68d0c8878594350ea3c6",
+    "ranking/deepfm.pt": "7e5b41252597942a267850f52c1aa6887cbf6b2aa77db8084b50f041cb5b2405",
+    "ranking/features.json": "f179f9d641fc3c3128d814baa6cf37f96c66ed1c66a48d62187c213406ad70fd",
+    "session/meta.json": "416d7564df7a47afa2c0c7ef9ca66afdc548b5c0fbfb86933869f52f12735b5d",
+    "session/session.pt": "18452353d53e81002f123dc05451d097b57ef1ebb32ea5539d10298ded806d47",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "production_unchanged": true,
+  "fixture_active": "v1.0",
+  "redis_namespace": "mm-recsys:full:ct-lifecycle-full-lifecycle-3720cab020",
+  "natural": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_full.json",
+    "sha256": "5b3291b38386706e9640e6c5efb6ee24279bd2f93cc17c7738ba22369513c80b"
+  },
+  "lifecycle": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_controlled_lifecycle_full.jsonl",
+    "sha256": "ea3cb3d2bae4534abb5968f06b1497c5ebe0c9a818f3c2280946aa490c51e933"
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "5d5ec0e8324ff2d632383f8a19291e5f20475736c102cee0dca3de6165f80047",
+    "src/ct/verify_serving.py": "3a3d3b7b21cdf5a839a2f4612a5d263682de9d91ab7cca86fa8f0425e68c6c45",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "0b9cb09a3ba5a0fe79d573c97485954123a1ab09b302ac1c7bbca23e672fdb6c",
+    "src/ct/snapshot.py": "60c5ac8995445d9a469192518cf64e57686a40108e5cb987d8f5a886baa3e745",
+    "src/ct/retrain_trigger.py": "d430bf4703d1d95b50892b4107810154c1376e4a9bd88f98bedcdba666fd3f05",
+    "src/ct/training.py": "8b1bf9118664191595c8b2b530f373ef2866edb4749ce7b1a897fd1b8b7483aa",
+    "src/ct/verify_ct.py": "49615c1730cd28912fd97c5ff8fe82d4b696c6397bb339c9035f9b01f989cfd0",
+    "src/ct/bootstrap.py": "841307aa2f7ae7357856f4ea1db9b17fbe77b5e4cfc006598e7e72bda0497e1e",
+    "scripts/verify_integration_ct_lifecycle.py": "2ba328a4a32c8dfc576e0a61854d0f6a453d64f799dcbbb787b4cb94bf8acc8f"
+  },
+  "scope": "full-size independent functional promotion/reload/rollback, deliberately weak INITIAL fixture, exact naturally retrained candidate and original guard; production remains naturally RETAINED",
+  "limitations": [
+    "controlled fault injection does not measure production improvement",
+    "CTR paired valid comparison; no new test evaluation",
+    "not a second training run; exact actual full three-model candidate reused",
+    "production initial bundle and registry pointer remain unchanged"
+  ]
+}

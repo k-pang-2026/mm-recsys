@@ -146,17 +146,12 @@ def test_invalid_state_or_future_inventory_is_rejected():
 def test_model_policy_factory_uses_separate_mutable_state(monkeypatch):
     from types import SimpleNamespace
     import src.recommendation.service as service
-    import src.recommendation.train_two_tower as candidate
-    import src.recommendation.train_deepfm as ranking
-    import src.recommendation.train_session as session
     cfg, data = fixture()
     # No model mock is used in the actual CLI run; this fixture isolates ownership.
     data['train'] = pd.DataFrame([dict(product_id='P1')])
-    base = SimpleNamespace(table=SimpleNamespace(ids=['PAD', 'P1', 'P2']))
-    monkeypatch.setattr(service, 'create_service', lambda *args: base)
-    monkeypatch.setattr(candidate, 'load_bundle', lambda *args: (None, None, None, {'hash': 'candidate'}))
-    monkeypatch.setattr(ranking, 'load_ranking', lambda *args: (None, None, {'hash': 'ranking'}))
-    monkeypatch.setattr(session, 'load_session', lambda *args: (None, {'hash': 'session'}))
+    base = SimpleNamespace(table=SimpleNamespace(ids=['PAD', 'P1', 'P2']),
+                           bundle_metadata={key: {'hash': key} for key in ('candidate', 'ranking', 'session')})
+    monkeypatch.setattr(service, 'create_service', lambda *args, **kwargs: base)
     policies, _ = create_policies(cfg, data, [0.])
     a, b = policies['control'].service, policies['treatment'].service
     assert a.store is not b.store and a.cfg is not b.cfg and a.reranker is not b.reranker

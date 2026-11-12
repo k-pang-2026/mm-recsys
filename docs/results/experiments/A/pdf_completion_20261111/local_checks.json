@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "full_regression_tests": 458,
+  "additional_host_tests": 16,
+  "scope": "458 full tests including real Redis passed; two subsequently added host-output safety cases are covered by the 16-case host suite. Final submission checker reruns the full current suite.",
+  "pytest": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/pytest_release.xml",
+    "sha256": "0fce17cf6b84ead78a4ca452b65311c2e7eaa5c217d81d5394bb342440b4ece5"
+  },
+  "host_tests": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/pytest_host_posix.log",
+    "sha256": "590dbc4f5c123295cd127dfad099b8f0f74b5daff9de9099967616ab6655a2b8"
+  },
+  "mypy": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/mypy_host_persistence.log",
+    "sha256": "44c87c1dbb99f09198aa9ef2494752b85e61794ec703cc093bfc70f38a4858ad"
+  },
+  "pyflakes": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/pyflakes_complete.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "pip": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/pip_check.log",
+    "sha256": "6a869f0778b40b2b24e66801d7986576b3104b6d700e56b1ec727197f0618df7"
+  },
+  "ct_repeated_drill": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_repeat_verified.json",
+    "sha256": "2f6e14d4d18f4acc6e99099e6cda807eb79ef1f547b6b60aa5128163f0876d94"
+  },
+  "ct_last_change_typing": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/mypy_ct_evidence_isolation.log",
+    "sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+  },
+  "host_last_change_typing": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/mypy_host_posix.log",
+    "sha256": "5d4b6d285b77932e3d08212c3b4974d0a803f98ec60408ac6ccf6a063fa6c19e"
+  }
+}

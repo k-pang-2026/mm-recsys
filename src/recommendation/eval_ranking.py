@@ -35,7 +35,7 @@ def evaluate(cfg: dict,split: str,with_session: bool=False,reuse: Path | None=No
         data=read_data(cfg['paths']['data_dir'],split)
         anchor=json.loads(reuse.read_text()); labels=None; diagnostics={split:anchor['labels']}
     else:
-        data,labels,diagnostics=prepare(cfg,split)
+        data,labels,diagnostics=prepare(cfg,split,label_splits=(split,))
     candidate_path=Path(cfg['recommend'].get('candidate_bundle',Path(cfg['paths']['model_dir'])/'v1.0'))
     candidate,encoder,table,candidate_meta=load_bundle(candidate_path,data,cfg)
     index,_=load_index(candidate_path,table,candidate_meta)

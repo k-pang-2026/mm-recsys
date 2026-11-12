@@ -20,7 +20,7 @@ x-runtime: &runtime
     READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
     DOCKER_RUNTIME: "1"
     MM_LOG_FORMAT: ${MM_LOG_FORMAT:-compact}
-    RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v43}
+    RUNTIME_RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v44}
   volumes:
     - ./data:/app/data
     - ./models:/app/models
@@ -63,7 +63,7 @@ services:
       API_URL: http://api-server:8000
       PUBLIC_DASHBOARD_URL: http://localhost:${DASHBOARD_PORT:-8501}
       READY_TIMEOUT_SECONDS: ${READY_TIMEOUT_SECONDS:-21600}
-      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v43}/${SCALE:-full}
+      RESULTS_DIR: ${RUNTIME_RESULTS_DIR:-docs/results/docker/runtime-v44}/${SCALE:-full}
       MM_LOG_FORMAT: ${MM_LOG_FORMAT:-compact}
     ports: ["127.0.0.1:${DASHBOARD_PORT:-8501}:8501"]
     depends_on:
@@ -79,13 +79,23 @@ services:
 
   simulator:
     <<: *runtime
-    build: {context: ., dockerfile: docker/Dockerfile.simulator}
+    build: {context: ., dockerfile: docker/Dockerfile.api}
+    command: ["python", "-m", "docker.simulator"]
+    network_mode: service:api-server
+    environment:
+      <<: *environment
+      API_URL: http://127.0.0.1:8000
+      CT_AUTO_TRAIN: ${CT_AUTO_TRAIN:-1}
+      SIMULATOR_BATCH_SIZE: ${SIMULATOR_BATCH_SIZE:-100}
+      SIMULATOR_INTERVAL_SECONDS: ${SIMULATOR_INTERVAL_SECONDS:-5}
+      SIMULATOR_ATTRIBUTED_VISITS: ${SIMULATOR_ATTRIBUTED_VISITS:-1}
     depends_on:
       redis: {condition: service_healthy}
       api-server: {condition: service_healthy}
       dashboard: {condition: service_healthy}
     init: true
-    mem_limit: 512m
+    mem_limit: 4g
+    cpus: 4
 
 volumes:
   hf_cache:

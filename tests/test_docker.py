@@ -31,6 +31,8 @@ def test_compose_defaults_to_full_and_simulator_waits_for_dashboard():
     dashboard = cfg['services']['dashboard']
     assert dashboard['healthcheck']['start_period'] == '${READY_TIMEOUT_SECONDS:-21600}s'
     assert cfg['services']['simulator']['depends_on']['dashboard']['condition'] == 'service_healthy'
+    assert cfg['services']['simulator']['build'] == cfg['services']['api-server']['build']
+    assert cfg['services']['simulator']['command'] == ['python', '-m', 'docker.simulator']
 
 
 def test_dashboard_connects_to_api_before_launch_and_announces_after_http(monkeypatch, capsys):
@@ -138,7 +140,7 @@ def test_runtime_does_not_mutate_role_configuration():
     original = load_config()
     runtime = runtime_config(original)
     assert original['paths']['results_dir'] == 'docs/results'
-    assert runtime['paths']['results_dir'] == 'docs/results/docker/runtime-v43/dev'
+    assert runtime['paths']['results_dir'] == 'docs/results/docker/runtime-v44/dev'
     assert runtime['recommend'] == original['recommend'] and runtime['targets'] == original['targets']
 
 
@@ -170,7 +172,6 @@ def test_process_budget_applies_after_both_factories(tmp_path):
     from docker.serve import install_runtime_limits
     import faiss
     import torch
-    import gc
     old_torch, old_faiss = torch.get_num_threads(), faiss.omp_get_max_threads()
     cfg = runtime_config(); cfg['paths']['results_dir'] = str(tmp_path)
     cfg['search']['torch_threads'] = 1

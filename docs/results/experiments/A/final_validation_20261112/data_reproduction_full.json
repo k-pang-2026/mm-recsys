@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2254172
+  },
+  "file_hash_equality": {
+    "products.parquet": true,
+    "users.parquet": true,
+    "events.parquet": true,
+    "impressions.parquet": true,
+    "image_manifest.json": true,
+    "split/train.parquet": true,
+    "split/valid.parquet": true,
+    "split/test.parquet": true
+  },
+  "source_manifest": "data/final-validation-20261112-retry/full-v44/split_manifest.json",
+  "scope": "Independent fresh full generation; actual hashes of all eight recorded catalog, user, event, impression, image-manifest and split files match the frozen original dataset.",
+  "actual_file_hashes_verified": true,
+  "manifest_sha256": "62967222a57a01b43d79b021aa1dee8124655006b547f424cf6e9183188c7f86"
+}

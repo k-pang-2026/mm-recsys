@@ -102,7 +102,6 @@ class Evaluation:
     def ann_metrics(self, model: Any, index: Any) -> dict:
         from src.recommendation.runtime import configure_inference
         configure_inference(self.cfg['recommend']['candidate'], with_faiss=True)
-        import faiss
         batch_size = self.cfg['recommend']['candidate']['batch_size']
         reference, exact = flat_reference(model, self.table, self.eligible, batch_size)
         from src.recommendation.index import stored_vectors

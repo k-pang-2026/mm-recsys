@@ -1,0 +1,17 @@
+{
+  "errors": [],
+  "failures": [],
+  "chart": {
+    "ticks": ".1%",
+    "hover": ".1%",
+    "raw_cvr": 0.012253333333333333
+  },
+  "metrics": {
+    "Control CVR": "Control CVR\n\n1.2%",
+    "Treatment CVR": "Treatment CVR\n\n0.9%",
+    "CVR 상대 lift": "CVR 상대 lift\n\n-27.7%"
+  },
+  "audit": "데이터=2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8 · seed=42 · 생성기=4.4.0 · 분석 시각=2026-11-12 16:00:53 KST",
+  "catalog": "상품 원천 데이터와 실제 CLIP 벡터\n\n상품 ID\n\n{\n\"product_id\":\"P000001\"\n\"name\":\"brown regular tote bag\"\n\"category_l1\":\"accessories\"\n\"category_l2\":\"bags\"\n\"category_l3\":\"tote bag\"\n\"brand\":\"Field\"\n\"color\":\"brown\"\n\"style\":\"regular\"\n\"attributes\":\"{\"style\": \"regular\"}\"\n\"price\":137000\n\"created_at\":\"2025-09-27 09:00:00 KST\"\n\"image_path\":\"images/P000001.jpg\"\n\"description_en\":\"a photo of a brown regular tote bag\"\n\"image_sha256\":\"b7dedd2e81b4eff9b6b733b6ecaf0f04ed3bfa5bacdb2d404376a735778f7182\"\n\"visual_group\":\"b7dedd2e81b4eff9b6b733b6ecaf0f04ed3bfa5bacdb2d404376a735778f7182\"\n}\n{\n\"product_id\":\"P000001\"\n\"item_ids_index\":0\n\"text\":{\n\"product_id\":\"P000001\"\n\"raw\":\"a photo of a brown regular tote bag\"\n\"encoded\":\"a photo of a brown regular tote bag\"\n\"applied_aliases\":[]\n\"unknown_terms\":[]\n}\n\"encoder\":{\n\"model\":\"openai/clip-vit-base-patch32\"\n\"model_revision\":\"3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268\"\n\"processor_revision\":\"3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268\"\n\"projection_dim\":512\n\"normalization\":\"L2\"\n\"dtype\":\"float32\"\n\"max_text_length\":77\n\"preprocess_version\":\"observable-alias-v1\"\n\"alias_fingerprint\":\"4839d249f340369c7e1c913f5755f452c6264f0a4242f5806e6b4126f266be29\"\n\"transformers\":\"4.46.3\"\n\"torch\":\"2.6.0+cpu\"\n\"device\":\"cpu\"\n}\n\"vectors\":{\n\"text\":{\n\"dimension\":512\n\"norm\":\"1.0\"\n\"first_12_values\":[\n0:\"4.4e-02\"\n1:\"1.8e-02\"\n2:\"-3.7e-02\"\n3:\"0.1\"\n4:\"-2.6e-02\"\n5:\"-9.0e-03\"\n6:\"3.5e-02\"\n7:\"-4.3e-02\"\n8:\"1.2e-02\"\n9:\"0.1\"\n10:\"-2.7e-02\"\n11:\"-0.1\"\n]\n}\n\"image\":{\n\"dimension\":512\n\"norm\":\"1.0\"\n\"first_12_values\":[\n0:\"4.1e-02\"\n1:\"7.9e-04\"\n2:\"1.7e-02\"\n3:\"8.7e-03\"\n4:\"3.7e-02\"\n5:\"-0.1\"\n6:\"1.7e-02\"\n7:\"0.1\"\n8:\"8.6e-03\"\n9:\"2.5e-02\"\n10:\"-4.7e-02\"\n11:\"-6.1e-03\"\n]\n}\n}\n\"bundle_fingerprint\":\"caf73094012ed7a948d87835cf3412da52b4f67182c42f5a3803a79b887c763a\"\n\"data_fingerprint\":\"2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8\"\n}\n\nitem_ids.json의 실제 행과 text_audit.json·text.npy·image.npy를 읽었습니다. 모델은 로컬 CLIP이며 클라우드 추론을 호출하지 않습니다.",
+  "status": "PASS"
+}

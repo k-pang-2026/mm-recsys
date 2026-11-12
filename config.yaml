@@ -11,15 +11,15 @@ scales:
     n_users: 10000
     n_events: 1000000
 paths:
-  data_dir: data/dev-v43
-  model_dir: models/dev-v43
+  data_dir: data/dev-v44
+  model_dir: models/dev-v44
   results_dir: docs/results
-  split_dir: data/dev-v43/split
+  split_dir: data/dev-v44/split
   by_scale:
     full:
-      data_dir: data/full-v43
-      split_dir: data/full-v43/split
-      model_dir: models/full-v43
+      data_dir: data/full-v44
+      split_dir: data/full-v44/split
+      model_dir: models/full-v44
 simulator:
   n_products: 50000
   n_users: 10000
@@ -100,6 +100,8 @@ simulator:
       - 0.1
   window_days: 30
   event_interval_seconds: 60
+  # At this persona CVR, cart transitions equal the configured probabilities.
+  cart_reference_cvr: 0.05
   new_item_ratio: 0.04
   cold_user_ratio: 0.03
   cold_max_events: 3

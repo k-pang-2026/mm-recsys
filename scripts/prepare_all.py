@@ -94,8 +94,9 @@ def stage(cfg: dict, name: str) -> None:
             from src.serving.memory_store import MemoryFeatureStore
             _, _, registry = components(cfg)
             record = registry.verify(state['active'])
-            if ({k:v for k,v in record['config']['recommend'].items() if k!='scoring'}
-                    != {k:v for k,v in cfg['recommend'].items() if k!='scoring'}):
+            from src.recommendation.bundle_compat import legacy_training_spec
+            if ({k:v for k,v in legacy_training_spec(record['config']['recommend']).items() if k!='scoring'}
+                    != {k:v for k,v in legacy_training_spec(cfg['recommend']).items() if k!='scoring'}):
                 raise ValueError('active release uses a different recommendation configuration; explicit new release required')
             current = json.loads((Path(cfg['paths']['data_dir']) / 'split_manifest.json').read_text())
             active = json.loads((Path(record['data_path']) / 'split_manifest.json').read_text())

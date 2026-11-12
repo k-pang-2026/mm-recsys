@@ -1,0 +1,12 @@
+{
+  "ServerVersion": "29.8.2",
+  "Architecture": "aarch64",
+  "NCPU": 8,
+  "MemTotal": 8103927808,
+  "OperatingSystem": "Docker Desktop",
+  "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+  "Driver": "overlayfs",
+  "CgroupVersion": "2",
+  "Containers": 10,
+  "ContainersRunning": 3
+}

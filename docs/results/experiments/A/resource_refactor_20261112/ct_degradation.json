@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "scope": "controlled fixture; deliberately weak original ranker and mature zero-click observations; real three-model training, paired valid decision and isolated rollback",
+  "new_events": 0,
+  "threshold": 200,
+  "training": {
+    "status": "PROMOTED",
+    "version": "v1.3",
+    "active": "v1.3",
+    "new_events": 0,
+    "through_seq": 712,
+    "trigger_reason": "performance_degradation",
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4",
+      "baseline": {
+        "ctr_auc": 0.5,
+        "ctr_logloss": 0.6931471805599454,
+        "hit_rate_at_50": 0.125,
+        "truth_users": 24,
+        "ctr_samples": 1374,
+        "validation_fingerprint": "6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4"
+      },
+      "candidate": {
+        "ctr_auc": 0.908127198583944,
+        "ctr_logloss": 1.077794754532974,
+        "hit_rate_at_50": 0.9583333333333334,
+        "truth_users": 24,
+        "ctr_samples": 1374,
+        "validation_fingerprint": "6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4"
+      },
+      "training_reports": {
+        "candidate": "68a5f56bcdbd532db90828c9699f2af0c31e668408043f503297e927a7b5ed9d",
+        "ranking": "9b5d4b9cfd826d0efc632526794c04544fecddf046d58f00958fc50f8a25fc8a",
+        "session": "1bb15481b7819b87db12e99316cc0ec94ea098b5e25b0b01fdc92a24a8f5b408"
+      }
+    }
+  },
+  "final_active": "v1.0",
+  "original_lifecycle_registry_unchanged": true,
+  "artifacts": {
+    "registry": "/app/models/.ct/resource-refactor-20261112/degradation-models/registry.json",
+    "registry_sha256": "f06b4dd9b4eb4ac3ec7833dd0a08c4cd3acca66fbcd468ef5e23232f6322db61",
+    "log": "/app/models/.ct/resource-refactor-20261112/degradation-results/ct_log.jsonl",
+    "log_sha256": "837b94ae38f50b8932c2ec4cf8e2ee8249784a0aaa647fcbc290303089987ef6"
+  }
+}

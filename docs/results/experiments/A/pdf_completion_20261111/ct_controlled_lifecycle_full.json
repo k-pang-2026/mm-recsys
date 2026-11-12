@@ -1,0 +1,146 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "scenario": "controlled_initial_constant_ranker",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1103504,
+    "impressions": 2296992
+  },
+  "natural_retraining": "RETAINED",
+  "comparison": {
+    "split": "valid",
+    "validation_fingerprint": "c02283ccec5d9ffdabbb75ed9b3d45db5e5b8a701d2635e2e851faeb8022a35d",
+    "baseline": {
+      "ctr_auc": 0.5,
+      "ctr_logloss": 0.693147180559945,
+      "ctr_samples": 247803,
+      "ctr_positives": 62094,
+      "validation_fingerprint": "c02283ccec5d9ffdabbb75ed9b3d45db5e5b8a701d2635e2e851faeb8022a35d"
+    },
+    "candidate": {
+      "ctr_auc": 0.9659645561235506,
+      "ctr_logloss": 0.14402561635487068,
+      "ctr_samples": 247803,
+      "ctr_positives": 62094,
+      "validation_fingerprint": "c02283ccec5d9ffdabbb75ed9b3d45db5e5b8a701d2635e2e851faeb8022a35d"
+    }
+  },
+  "guard": {
+    "enabled": true,
+    "poll_seconds": 60,
+    "recent_seconds": 86400,
+    "attribution_seconds": 3600,
+    "min_mature_requests": 20,
+    "ctr_threshold": 0.01,
+    "promotion_metric": "ctr_auc",
+    "min_improvement": 0.001,
+    "promotion_floor": 0.7,
+    "hitrate_threshold": 0.2,
+    "retrain_log_threshold": 10000
+  },
+  "real_reload_and_rollback": true,
+  "http": [
+    {
+      "version": "v1.0",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    },
+    {
+      "version": "v1.1",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.1",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "U000001",
+      "status": 200
+    },
+    {
+      "version": "v1.0",
+      "user_id": "unknown-full-lifecycle",
+      "status": 200
+    }
+  ],
+  "reloads": [
+    {
+      "status": "reloaded",
+      "version": "v1.1"
+    },
+    {
+      "status": "reloaded",
+      "version": "v1.0"
+    }
+  ],
+  "original_candidate_hashes": {
+    "meta.json": "ea6ffdcbbbb307bb43940652eeb217abe6979da535b3b4a65e52f1805ba9866d",
+    "two_tower.pt": "1720b89c0f19cbbdbbe2c5d592a8aade8040c26c8e4560c78ffc99a48e93cc3a",
+    "feature_vocab_scalers.json": "f930b4263b5a8c3ce760121d3f0c112e79365b91928a7f84d6e3006fbd162719",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "62f3f912022fdaa482dae30ae4a22b00f46e5fc0871a1e78c49329534b7f94ff",
+    "index_manifest.json": "206c54ba76fefbc12cf85631c02fa3015c6e2398664efda165f6fd5f37077c44",
+    "ranking/meta.json": "7dfcbbe131104ed5553868efa62d6fd5fc71f2e600e369c68fdf8de0c2f87ebf",
+    "ranking/deepfm.pt": "f69ec85e8d52f2323c3e3bd59e4bc3a13b01c1a5d39f6d6ad71fba583af8f9f1",
+    "ranking/features.json": "080d3889ff60d6bbaf3cf4662d66ea641fb8fddf707ff26f4355d498b51b8632",
+    "session/meta.json": "a3c54050d733b2917f07600e436638e4f9d992f8f2879f924a59bb8397f946ee",
+    "session/session.pt": "8bc6cd9daeede116f36095e35d4c94789d2a313b0ebf68aea1313e58c170915c",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "candidate_hashes": {
+    "meta.json": "ea6ffdcbbbb307bb43940652eeb217abe6979da535b3b4a65e52f1805ba9866d",
+    "two_tower.pt": "1720b89c0f19cbbdbbe2c5d592a8aade8040c26c8e4560c78ffc99a48e93cc3a",
+    "feature_vocab_scalers.json": "f930b4263b5a8c3ce760121d3f0c112e79365b91928a7f84d6e3006fbd162719",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "62f3f912022fdaa482dae30ae4a22b00f46e5fc0871a1e78c49329534b7f94ff",
+    "index_manifest.json": "206c54ba76fefbc12cf85631c02fa3015c6e2398664efda165f6fd5f37077c44",
+    "ranking/meta.json": "7dfcbbe131104ed5553868efa62d6fd5fc71f2e600e369c68fdf8de0c2f87ebf",
+    "ranking/deepfm.pt": "f69ec85e8d52f2323c3e3bd59e4bc3a13b01c1a5d39f6d6ad71fba583af8f9f1",
+    "ranking/features.json": "080d3889ff60d6bbaf3cf4662d66ea641fb8fddf707ff26f4355d498b51b8632",
+    "session/meta.json": "a3c54050d733b2917f07600e436638e4f9d992f8f2879f924a59bb8397f946ee",
+    "session/session.pt": "8bc6cd9daeede116f36095e35d4c94789d2a313b0ebf68aea1313e58c170915c",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "production_unchanged": true,
+  "fixture_active": "v1.0",
+  "redis_namespace": "mm-recsys:full:ct-lifecycle-full-lifecycle-e2ba3130f4",
+  "natural": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_full.json",
+    "sha256": "01bb8c46fa469398d954cee717c59206406326a5aa0609621a8aaf5eca81033b"
+  },
+  "lifecycle": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_controlled_lifecycle_full.jsonl",
+    "sha256": "7cb006c43ed2a3f267d16a092c329f135dcd4c45731fd37dd708be1f0df641d4"
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "036a804278c75bf41af4f5bff2a0f0a8a08c2c932165bbb99b6e6f4b87452ae8",
+    "src/ct/verify_serving.py": "3a3d3b7b21cdf5a839a2f4612a5d263682de9d91ab7cca86fa8f0425e68c6c45",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "e35dcc02072ae349844499c4e19bf08986fded1c0f9ea9e49f2692a90b2ff174",
+    "src/ct/snapshot.py": "60c5ac8995445d9a469192518cf64e57686a40108e5cb987d8f5a886baa3e745",
+    "src/ct/retrain_trigger.py": "6e5d7ffd07e1949942b290fc1581caa48d15f30eb59b70e402bdd3d6041b688a",
+    "src/ct/training.py": "3ad543aa77e4d38c0673c764404c104f7938ddabcc6e4af9f99b2315dd58924a",
+    "src/ct/verify_ct.py": "49615c1730cd28912fd97c5ff8fe82d4b696c6397bb339c9035f9b01f989cfd0",
+    "src/ct/bootstrap.py": "841307aa2f7ae7357856f4ea1db9b17fbe77b5e4cfc006598e7e72bda0497e1e",
+    "scripts/verify_integration_ct_lifecycle.py": "2ba328a4a32c8dfc576e0a61854d0f6a453d64f799dcbbb787b4cb94bf8acc8f"
+  },
+  "scope": "full-size independent functional promotion/reload/rollback, deliberately weak INITIAL fixture, exact naturally retrained candidate and original guard; production remains naturally RETAINED",
+  "limitations": [
+    "controlled fault injection does not measure production improvement",
+    "CTR paired valid comparison; no new test evaluation",
+    "not a second training run; exact actual full three-model candidate reused",
+    "production initial bundle and registry pointer remain unchanged"
+  ]
+}

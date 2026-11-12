@@ -1,0 +1,31 @@
+{
+  "schema": "ct-full-separated-lifecycle-v1",
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "natural": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_full.json",
+    "sha256": "5b3291b38386706e9640e6c5efb6ee24279bd2f93cc17c7738ba22369513c80b"
+  },
+  "controlled_lifecycle": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_controlled_lifecycle_full.json",
+    "sha256": "0addea515cf2204cd3763f8ed1e194ca8061dfdfb1aad7c1cd15e8ca3b99ef04"
+  },
+  "training": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_training_sources_full.json",
+    "sha256": "37a59560855ab2f00ae6b25f6f99805084d84c0f3b069669bcc582d08fa2c40a"
+  },
+  "candidate_validation": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_candidate_valid_full.json",
+    "sha256": "5343db2285e71b79fc406962a3155e6adb97a911a4d9cd30bb237850cfc6304d"
+  },
+  "configuration": {
+    "source": "docs/results/experiments/A/final_validation_20261112/configuration_full.json",
+    "sha256": "b787c997379fda1d2e4c9f69cab4dc79d4c6c6898bb4e9300685f2d799ec69eb"
+  },
+  "controlled_reload": {
+    "source": "docs/results/experiments/A/final_validation_20261112/ct_controlled_reload_full.jsonl",
+    "sha256": "a402fa38e48b56111437a7f8bd353ae11a45bb99921d5a00f8111d25a388b529"
+  },
+  "scope": "Actual full deployed-journal retraining was RETAINED: AUC improvement below the unchanged 0.001 guard. A separate full-size constant-initial fixture verified actual promotion, HTTP replacement and rollback with the exact naturally trained candidate. Production improvement and functional lifecycle are reported separately."
+}

@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "source_sha256": "49615c1730cd28912fd97c5ff8fe82d4b696c6397bb339c9035f9b01f989cfd0",
+  "outputs": {
+    "docs/results/experiments/A/pdf_completion_20261111/ct_repeat/first.json": "1b2930ebed9b7f7e1efdd99c4ed31f6c3492b391dbdd33867b67eb5a8cd0bf85",
+    "docs/results/experiments/A/pdf_completion_20261111/ct_repeat/second.json": "4892820d3adda920eb78679fc0aaa2d01488d81e10c4887c27916464589caa39"
+  },
+  "scope": "Two real independent small controlled training/promotion/rollback runs in the same output directory; both original evidence bundles reverified after the second run; no production training lock or model change"
+}

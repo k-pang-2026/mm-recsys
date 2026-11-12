@@ -1,0 +1,41 @@
+{
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "checks": {
+    "docker_reproduction": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/release/fresh_reproduction_full.json",
+      "sha256": "ca2760b0989a802f73408af88dfa5763e8204c8a31efc75a7f66057d7d1f0b95"
+    },
+    "api_schemas": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/api_full.json",
+      "sha256": "b9276e092a98ca02a1de2be86b8fdb3f51f05c690ad00faf9bd97b96bf1ed89e"
+    },
+    "ab_statistics": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/ab_acceptance_full.json",
+      "sha256": "a1917af5f532680256eb132bac7c18382f7e293600fb0ecd982c5666670f8866"
+    },
+    "session_response": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/mab_full.json",
+      "sha256": "82291bfa7cabc6afeac8d1e2b1a62e35b38cc074bcf033cf5fbbe0f909efd6a0"
+    },
+    "ct_retrain_and_rollback": {
+      "status": "PASS",
+      "exit_code": 0,
+      "source": "docs/results/experiments/A/final_validation_20261112/ct_acceptance_full.json",
+      "sha256": "6c4a906ef2ec9f368bda7c7021d5951ccc4f13de83d5bb68029484510929616c"
+    }
+  },
+  "limitations": [
+    "Synthetic full A/B has negative treatment uplift; no real-user improvement claimed.",
+    "Actual full CT retained production v1.0; controlled promotion/rollback is separate.",
+    "One treatment item exposure differs from the prior run; user outcomes and inference are identical.",
+    "Measurements are from the local Docker environment; remote PR/CI/merge are independently verified during publication."
+  ]
+}

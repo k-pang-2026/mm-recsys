@@ -1,0 +1,198 @@
+{
+  "status": "PARTIAL",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "observed_new_events": 13404,
+  "threshold": 10000,
+  "retraining": {
+    "status": "RETAINED",
+    "version": "v1.2",
+    "active": "v1.0",
+    "new_events": 13404,
+    "through_seq": 116912,
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "398d06a8d48df14847642b5028b1871efcc238c356fa82818aa5325b6f596417",
+      "baseline": {
+        "ctr_auc": 0.9661146535368351,
+        "ctr_logloss": 0.14430639995538333,
+        "hit_rate_at_50": 0.6816618516989957,
+        "truth_users": 7269,
+        "ctr_samples": 232241,
+        "validation_fingerprint": "398d06a8d48df14847642b5028b1871efcc238c356fa82818aa5325b6f596417"
+      },
+      "candidate": {
+        "ctr_auc": 0.9663299617059631,
+        "ctr_logloss": 0.14223005907819794,
+        "hit_rate_at_50": 0.6812491401843445,
+        "truth_users": 7269,
+        "ctr_samples": 232241,
+        "validation_fingerprint": "398d06a8d48df14847642b5028b1871efcc238c356fa82818aa5325b6f596417"
+      },
+      "training_reports": {
+        "candidate": "e6fdcbfa9261cf7ea93df0e6995832e1b141187c6c785cebecfd84abef08d95c",
+        "ranking": "3160f6db740e36777638b57d89a36c2320da05969746a4ffbf03695cdd8425b1",
+        "session": "32d86e6a0a7a15b9cb4cd78eddad1eb8c1dd8db0476082a6e40f06a9f37440fc"
+      }
+    }
+  },
+  "repeated_trigger": {
+    "status": "WAITING",
+    "new_events": 0,
+    "threshold": 10000
+  },
+  "monitor": {
+    "event": "monitor",
+    "status": "MEASURED",
+    "model_version": "v1.0",
+    "ctr": 0.01276173285198556,
+    "hit_rate_at_50": 0.3295561850802644,
+    "clicks": 707,
+    "exposures": 55400,
+    "mature_requests": 1304,
+    "top50_requests": 1059,
+    "hit_requests": 349,
+    "alerts": [],
+    "window_start": 1794376475.5743892,
+    "observed_through": 1794462875.5743892,
+    "attribution_seconds": 3600,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 20
+    }
+  },
+  "real_reload_and_rollback": false,
+  "reloads": [],
+  "checks": {
+    "full_three_model_retraining": true,
+    "threshold": true,
+    "event_watermark": true,
+    "paired_valid": true,
+    "real_reload_and_rollback": false
+  },
+  "source_hashes": {
+    "src/ct/monitor.py": "5d5ec0e8324ff2d632383f8a19291e5f20475736c102cee0dca3de6165f80047",
+    "src/ct/verify_serving.py": "3a3d3b7b21cdf5a839a2f4612a5d263682de9d91ab7cca86fa8f0425e68c6c45",
+    "src/ct/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/ct/model_registry.py": "9d823820a981b975e0e134fffd600974ac1d4adb4be1f055b0befbad1a14e222",
+    "src/ct/storage.py": "0b9cb09a3ba5a0fe79d573c97485954123a1ab09b302ac1c7bbca23e672fdb6c",
+    "src/ct/snapshot.py": "60c5ac8995445d9a469192518cf64e57686a40108e5cb987d8f5a886baa3e745",
+    "src/ct/retrain_trigger.py": "d430bf4703d1d95b50892b4107810154c1376e4a9bd88f98bedcdba666fd3f05",
+    "src/ct/training.py": "8b1bf9118664191595c8b2b530f373ef2866edb4749ce7b1a897fd1b8b7483aa",
+    "src/ct/verify_ct.py": "49615c1730cd28912fd97c5ff8fe82d4b696c6397bb339c9035f9b01f989cfd0",
+    "src/ct/bootstrap.py": "841307aa2f7ae7357856f4ea1db9b17fbe77b5e4cfc006598e7e72bda0497e1e",
+    "docker/simulator.py": "3df5e278f78ddc6dc3e883aaf0aecef8d538ebddbbcf1b5cce82bb674afa2105",
+    "docker/ct_worker.py": "9feaf6486ed500e4be54c9c80e3a7634b79a4253d5184279d44d1d0da8bfa258"
+  },
+  "automatic_worker": false,
+  "training_started": {
+    "at": "2026-11-12T05:09:32.393823+00:00",
+    "event": "training_started",
+    "parent": "v1.0",
+    "version": "v1.2",
+    "new_events": 13404,
+    "through_seq": 116912,
+    "trigger_reason": "new_logs",
+    "alerts": []
+  },
+  "training_finished": {
+    "at": "2026-11-12T05:53:33.067973+00:00",
+    "event": "retained",
+    "version": "v1.2",
+    "active": "v1.0",
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "398d06a8d48df14847642b5028b1871efcc238c356fa82818aa5325b6f596417",
+      "baseline": {
+        "ctr_auc": 0.9661146535368351,
+        "ctr_logloss": 0.14430639995538333,
+        "hit_rate_at_50": 0.6816618516989957,
+        "truth_users": 7269,
+        "ctr_samples": 232241,
+        "validation_fingerprint": "398d06a8d48df14847642b5028b1871efcc238c356fa82818aa5325b6f596417"
+      },
+      "candidate": {
+        "ctr_auc": 0.9663299617059631,
+        "ctr_logloss": 0.14223005907819794,
+        "hit_rate_at_50": 0.6812491401843445,
+        "truth_users": 7269,
+        "ctr_samples": 232241,
+        "validation_fingerprint": "398d06a8d48df14847642b5028b1871efcc238c356fa82818aa5325b6f596417"
+      },
+      "training_reports": {
+        "candidate": "e6fdcbfa9261cf7ea93df0e6995832e1b141187c6c785cebecfd84abef08d95c",
+        "ranking": "3160f6db740e36777638b57d89a36c2320da05969746a4ffbf03695cdd8425b1",
+        "session": "32d86e6a0a7a15b9cb4cd78eddad1eb8c1dd8db0476082a6e40f06a9f37440fc"
+      }
+    }
+  },
+  "new_observations_by_split": {
+    "train": {
+      "new_events": 0,
+      "new_exposure_labels": {
+        "version": "linked-view-last-view-v3",
+        "rows": 0,
+        "clicks": 0,
+        "conversions": 0,
+        "ctr_observed": 0,
+        "cvr_observed": 0,
+        "censored": 0,
+        "censored_cvr_negatives": 0,
+        "unassigned_purchases": 0,
+        "window_seconds": 1800,
+        "start": "2025-12-02T00:00:00+00:00",
+        "end": "2025-12-28T05:13:07.499700+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 0,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ]
+      }
+    },
+    "valid": {
+      "new_events": 5372,
+      "new_exposure_labels": {
+        "version": "linked-view-last-view-v3",
+        "rows": 2130,
+        "clicks": 13,
+        "conversions": 6,
+        "ctr_observed": 13,
+        "cvr_observed": 6,
+        "censored": 2130,
+        "censored_cvr_negatives": 7,
+        "unassigned_purchases": 315,
+        "window_seconds": 1800,
+        "start": "2025-12-28T05:13:09.086400+00:00",
+        "end": "2026-11-11T13:15:43.648514032+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 0,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ]
+      }
+    },
+    "test": {
+      "new_events": 111536,
+      "scope": "count inferred from full-minus-train/valid; CT test file and labels not opened"
+    }
+  },
+  "scope": "One actual CT CLI polling cycle detected the original 10000-event threshold from the existing deployed journal; full three-model training and unchanged paired-valid selection; no added or retimed fixture traffic",
+  "limitations": [
+    "Synthetic traffic is not production lift evidence",
+    "Chronological 80/10/10 split is preserved; newest observations may remain held out",
+    "Simulator remained stopped during training; captured event watermark and original 10000-event threshold unchanged",
+    "Natural retention does not establish promotion or rollback"
+  ]
+}

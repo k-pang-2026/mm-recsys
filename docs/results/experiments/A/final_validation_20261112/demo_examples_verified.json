@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "command": "docker compose exec -T api-server python scripts/demo.py examples --users-per-group 20 --days 2 --output-dir docs/results/experiments/A/final_validation_20261112/demo_examples",
+  "checks": {
+    "search": true,
+    "real_clicks": true,
+    "session_recommendation": true,
+    "ab_statistics": true,
+    "isolated_ct_lifecycle": true
+  },
+  "sources": {
+    "docs/results/experiments/A/final_validation_20261112/demo_examples/search.json": "8b82017d7c9f2f0602197240685d72dc4422631e7f0a3e6afdd318ffaca85c77",
+    "docs/results/experiments/A/final_validation_20261112/demo_examples/session_events.json": "4890520f666e5011df36aaea8f7313eed018f706b07de09e72e2cf99add59218",
+    "docs/results/experiments/A/final_validation_20261112/demo_examples/recommendation.json": "16a8cd31a22fee049eaf8e1dc7e84ca267c81da5334c5f420c8240de6fea397e",
+    "docs/results/experiments/A/final_validation_20261112/demo_examples/ct_drill.json": "d0d88ad2fdc861b2324eca3b88e142c31834d0341e2223b18c06a68be891f2f0",
+    "docs/results/experiments/A/final_validation_20261112/demo_examples/ab_test.json": "d39a4f98078e3246de9b12b549b45caa5f6eafb3ba056715d811be64b00ba1d3",
+    "docs/results/experiments/A/final_validation_20261112/demo_examples/ab_test_verification.json": "b023c87524f5e088f49e9c7a52dfde35453dc678670764e13558854f8c2a7acd"
+  },
+  "scope": "Actual single-command workflow regression with 20 users per arm and 2 days; configured full 5000-user/30-day A/B was independently remeasured in ab_full_archive.json. CT drill is controlled, separate from natural full retraining."
+}

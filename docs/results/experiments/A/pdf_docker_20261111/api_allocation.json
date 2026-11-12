@@ -1,0 +1,7 @@
+{
+  "Memory": 4294967296,
+  "MemorySwap": 8589934592,
+  "NanoCpus": 4000000000,
+  "ReadonlyRootfs": false,
+  "Init": true
+}

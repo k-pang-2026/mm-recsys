@@ -1,0 +1,78 @@
+{
+  "status": "FAIL",
+  "scale": "full",
+  "stages": [
+    {
+      "stage": "data",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "data"
+      ],
+      "exit_code": 0,
+      "seconds": 56.966644825,
+      "log": "docs/results/experiments/A/final_validation_20261112/fresh-runtime/full/logs/prepare-data-1794460240532360214.log"
+    },
+    {
+      "stage": "audit",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "audit"
+      ],
+      "exit_code": 0,
+      "seconds": 12.853264626000055,
+      "log": "docs/results/experiments/A/final_validation_20261112/fresh-runtime/full/logs/prepare-audit-1794460303284244109.log"
+    },
+    {
+      "stage": "embeddings",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "embeddings"
+      ],
+      "exit_code": 0,
+      "seconds": 77.40173006100008,
+      "log": "docs/results/experiments/A/final_validation_20261112/fresh-runtime/full/logs/prepare-embeddings-1794460316137883315.log"
+    },
+    {
+      "stage": "indexes",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "indexes"
+      ],
+      "exit_code": 0,
+      "seconds": 3.778770972000075,
+      "log": "docs/results/experiments/A/final_validation_20261112/fresh-runtime/full/logs/prepare-indexes-1794460399845332574.log"
+    },
+    {
+      "stage": "recommendation",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "recommendation"
+      ],
+      "exit_code": 0,
+      "seconds": 1594.498181686,
+      "log": "docs/results/experiments/A/final_validation_20261112/fresh-runtime/full/logs/prepare-recommendation-1794460406723945052.log"
+    },
+    {
+      "stage": "warmup",
+      "command": [
+        "/usr/local/bin/python",
+        "/app/scripts/prepare_all.py",
+        "--stage",
+        "warmup"
+      ],
+      "exit_code": 1,
+      "seconds": 2.800592940000115,
+      "log": "docs/results/experiments/A/final_validation_20261112/fresh-runtime/full/logs/prepare-warmup-1794462140629221834.log"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+> 과거 v4.3 실행 기록이다. 현재 v4.4 실행 절차와 결과는 [제출 재현 문서](submission/reproduction.md)와 [요구사항 대응표](submission/requirements.md)를 따른다. 이 문서의 PASS를 새 소스의 측정으로 사용하지 않는다.
+
 # PDF·첨부 요구사항 통합 검증 (2026-11-07)
 
 이 작업은 첨부 텍스트 1~10번을 통합 보완한다. 과거 PASS는 현재 실행 결과로 사용하지 않는다.
@@ -413,7 +415,7 @@ API `/ready`, Windows PowerShell 접속, 실제 검색·추천 HTTP 응답을 �
 요구사항 50개와 동료 평가 질문 13개는 다음 집계기로 원본 근거·SHA-256을 검사한다.
 
 ```text
-.venv/bin/python scripts/verify_requirements.py
+.venv/bin/python scripts/verify_requirements.py --results docs/results/integration/20261107_requirements
 ```
 
 최종 판정과 항목별 구현·명령·근거는 `requirements.json`, 코드 fingerprint는

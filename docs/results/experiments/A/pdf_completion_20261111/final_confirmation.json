@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "checked_at": "2026-11-11T15:43:57.864100+00:00",
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "460",
+    "time": "326.293",
+    "timestamp": "2026-11-12T00:37:07.892739+09:00",
+    "hostname": "LAPTOP-FM76KA0A"
+  },
+  "delivery": "PASS",
+  "readiness": "PASS",
+  "final_acceptance": "PASS",
+  "browser_errors": [],
+  "browser_failed_requests": [],
+  "services": {
+    "api-server": {
+      "state": "running",
+      "health": "healthy"
+    },
+    "dashboard": {
+      "state": "running",
+      "health": "healthy"
+    },
+    "redis": {
+      "state": "running",
+      "health": "healthy"
+    },
+    "simulator": {
+      "state": "running",
+      "health": ""
+    }
+  },
+  "api_ready": {
+    "status": "ready"
+  },
+  "simulator_resumed": true,
+  "source_changes_after_final_checker": false,
+  "source_commit": "not created",
+  "remote_publication": "not performed",
+  "hashes": {
+    "submission/checks.json": "ef0a303a014b2690d6d01f96c0a96dab7a05e82065dc72d755acde575e0637bb",
+    "submission/pytest.xml": "ca78166535221113c636c211cedf525dcddde93e406508af1f231eacd329f7ee",
+    "browser_final/browser.json": "d2327db3cd610136203698c1a1cd854d5893f856356bc4f8b206f9288f30e1c2",
+    "final_hash_verification.log": "5c975f32ab6852e340fd822f380021c3ca88cf9aed8423b58d3b8827268b2ee6",
+    "dashboard_publish.log": "3bda7cbfe18ad813d110aa19eb9522fca6b22dafed1cfe8ad17effa92e035b95",
+    "demo_default_auto_verified.json": "b111931d81b9b29d682f43f969a96f930154ac2d51729c765daefcb0992f4cb1",
+    "ct_acceptance_full.json": "117c8c6242cbbbaee8714f82e5d297d369b441f3c67b26384d05e5cff4f83fb6",
+    "ab_acceptance_full.json": "b4d5bb56056969d9c5dd43e7902f4003d5ab885dc439d60b7d3598c28e09b6cb"
+  }
+}

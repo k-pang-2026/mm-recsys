@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-11-11T15:43:06.247Z",
+  "errors": [],
+  "failures": [],
+  "selected": "결과 파일\n\nevaluation_full_test.json",
+  "final_metric": "최종 종합 품질\n\nPASS",
+  "ab": "사용자 단위 A/B 실험\n\n합성 실험 · 5,000명/군 · 30일 · seed=42 · 사용자별 적응 학습 상태 분리\n\n{\n\"control\":\"popularity\"\n\"treatment\":\"full_pipeline\"\n}\n\nControl CVR\n\n1.2253%\n\nTreatment CVR\n\n0.8857%\n\nCVR 상대 lift\n\n-27.72%\n\nCTR = 클릭/노출 · CVR = 구매/노출. control이 0이면 상대 lift는 정의되지 않습니다.\n\nCTR\nCVR\n탐색 슬롯 비율\n0%\n5%\n10%\n15%\n20%\n25%\nControl\nTreatment\n관측 비율\n비율\n\n사용자 cluster CVR 차이 95% CI: [-0.3701, -0.3092]%p\n\n양측 cluster Z p-value: 4.40971e-106\n\n반복 노출을 독립 표본으로 세지 않습니다. 양의 lift나 유의성은 보장되지 않으며 실제 서비스 효과로 해석할 수 없습니다.",
+  "system": "서비스와 측정 환경\n\n실시간 상태와 저장된 성능 측정은 서로 다른 시점의 결과입니다.\n\nAPI 연결\n\n정상\n\n모델 준비\n\n준비됨\n\n현재 모델 버전\n\nv1.0\n\n저장된 성능 측정의 모델 버전: v1.0\n\n검색 HTTP p95 (ms)\n추천 HTTP p95 (ms)\n후보 p95 (ms)\nRedis p95 (ms)\n0\n50\n100\n150\n200\ntrace 0\n각 지표 기준\np95와 기준\nms\nCT 기록\n\nfull 재학습 RETAINED · 교체·복구 검사 PASS · 신규 관측 103,504건\n\n별도 full 배포의 통합 검증 결과입니다. 현재 API 모델은 위 실시간 상태를 따릅니다.\n\n측정 근거와 제한",
+  "status": "PASS"
+}

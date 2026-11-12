@@ -1,12 +1,11 @@
 """Valid-only selection and separately invoked frozen test evaluation."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import log, run_cli
 
 
 
 import argparse
-from dataclasses import asdict
 import json
 from pathlib import Path
 import numpy as np

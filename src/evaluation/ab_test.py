@@ -7,8 +7,6 @@ from __future__ import annotations
 
 from src.common.console import log, run_cli, status_ko
 
-from typing import Any
-
 import argparse
 import copy
 import hashlib
@@ -152,7 +150,7 @@ def create_policies(cfg: dict, data: dict, clock: list[float]) -> tuple[dict, di
     base_cfg = copy.deepcopy(cfg)
     base_cfg['recommend']['enable_reranking'] = True
     base_cfg['recommend']['record_exposures'] = True
-    base = create_service(base_cfg, RecommendationFeatureStore(cfg, data['products']))
+    base = create_service(base_cfg, RecommendationFeatureStore(cfg, data['products']), data=data)
     if base is None:
         raise ValueError('compatible Two Tower/FAISS/DeepFM/session bundles required; regenerate first')
     policies = {}
@@ -164,15 +162,7 @@ def create_policies(cfg: dict, data: dict, clock: list[float]) -> tuple[dict, di
         service._lock = threading.RLock()
         service.last_diagnostics = {}
         policies[arm] = ModelPolicy(service, strategy, data['train'])
-    # service loaders have already checked data/config and every bundle's hashes.
-    from src.recommendation.train_two_tower import load_bundle
-    from src.recommendation.train_deepfm import load_ranking
-    from src.recommendation.train_session import load_session
-    path = Path(cfg['recommend'].get('candidate_bundle', Path(cfg['paths']['model_dir']) / 'v1.0'))
-    _, _, table, candidate = load_bundle(path, data, cfg)
-    _, _, ranking = load_ranking(cfg, data)
-    _, session = load_session(cfg, data, table, candidate)
-    return policies, {'candidate': candidate, 'ranking': ranking, 'session': session}
+    return policies, copy.deepcopy(base.bundle_metadata)
 
 
 def outcome_probabilities(cfg: dict, user: dict, product: dict, rank: int) -> tuple[float, float]:

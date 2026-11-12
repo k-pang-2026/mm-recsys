@@ -1,7 +1,7 @@
 """Re-measure native dev HTTP after enabling the durable CT journal."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import run_cli
 
 from pathlib import Path
 

@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "version": "v1.1",
+  "bundle_hashes": {
+    "meta.json": "ea6ffdcbbbb307bb43940652eeb217abe6979da535b3b4a65e52f1805ba9866d",
+    "two_tower.pt": "1720b89c0f19cbbdbbe2c5d592a8aade8040c26c8e4560c78ffc99a48e93cc3a",
+    "feature_vocab_scalers.json": "f930b4263b5a8c3ce760121d3f0c112e79365b91928a7f84d6e3006fbd162719",
+    "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+    "item_index.faiss": "62f3f912022fdaa482dae30ae4a22b00f46e5fc0871a1e78c49329534b7f94ff",
+    "index_manifest.json": "206c54ba76fefbc12cf85631c02fa3015c6e2398664efda165f6fd5f37077c44",
+    "ranking/meta.json": "7dfcbbe131104ed5553868efa62d6fd5fc71f2e600e369c68fdf8de0c2f87ebf",
+    "ranking/deepfm.pt": "f69ec85e8d52f2323c3e3bd59e4bc3a13b01c1a5d39f6d6ad71fba583af8f9f1",
+    "ranking/features.json": "080d3889ff60d6bbaf3cf4662d66ea641fb8fddf707ff26f4355d498b51b8632",
+    "session/meta.json": "a3c54050d733b2917f07600e436638e4f9d992f8f2879f924a59bb8397f946ee",
+    "session/session.pt": "8bc6cd9daeede116f36095e35d4c94789d2a313b0ebf68aea1313e58c170915c",
+    "session/item_ids.json": "1597417f43fb70984d90a935c4202cbc73d84eaff15d274e3329fbb0ec93f953"
+  },
+  "comparison": {
+    "split": "valid",
+    "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089",
+    "baseline": {
+      "ctr_auc": 0.9660557039603308,
+      "ctr_logloss": 0.14438927489894238,
+      "hit_rate_at_50": 0.6960438699569135,
+      "truth_users": 7659,
+      "ctr_samples": 247803,
+      "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089"
+    },
+    "candidate": {
+      "ctr_auc": 0.9659645561235506,
+      "ctr_logloss": 0.14402561635487068,
+      "hit_rate_at_50": 0.6993080036558298,
+      "truth_users": 7659,
+      "ctr_samples": 247803,
+      "validation_fingerprint": "8ce277fb4c2ba7868e199fd985a04fa42cabcd9dae8eb0e431ec77108bef5089"
+    },
+    "training_reports": {
+      "candidate": "aab1d155f09c3c784ca4223de5fd5dddfcdaaeb65fdc2f2449c7116096a55813",
+      "ranking": "0c781514af3b5929a8cbebe6ec530476aae99c49d46e4697985b16e271063a5e",
+      "session": "000dee9461804071aaaea17a8b87e60eaa96a00103fd2da3c569b61d3a9c1d1f"
+    }
+  },
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1103504,
+    "impressions": 2296992
+  },
+  "eligibility": {
+    "ready": true,
+    "splits": {
+      "train": {
+        "version": "linked-view-last-view-v3",
+        "rows": 1997448,
+        "clicks": 499362,
+        "conversions": 40762,
+        "ctr_observed": 1996449,
+        "cvr_observed": 499049,
+        "censored": 1332,
+        "censored_cvr_negatives": 313,
+        "unassigned_purchases": 0,
+        "window_seconds": 1800,
+        "start": "2025-12-02T00:00:00+00:00",
+        "end": "2025-12-27T21:35:47.522400+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 499362,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ],
+        "ctr_classes": 2,
+        "cvr_classes": 2
+      },
+      "valid": {
+        "version": "linked-view-last-view-v3",
+        "rows": 248376,
+        "clicks": 62094,
+        "conversions": 4293,
+        "ctr_observed": 247803,
+        "cvr_observed": 61903,
+        "censored": 764,
+        "censored_cvr_negatives": 191,
+        "unassigned_purchases": 0,
+        "window_seconds": 1800,
+        "start": "2025-12-27T21:35:48.580200+00:00",
+        "end": "2025-12-31T09:51:41.846400+00:00",
+        "ctr_proxy": "linked view; generator timestamps equal exposure timestamps",
+        "cvr_denominator": "observed linked clicked exposures only",
+        "same_timestamp_view_exposure": 561456,
+        "excluded_inputs": [
+          "position",
+          "impression_id",
+          "request_id",
+          "event_type",
+          "persona"
+        ],
+        "ctr_classes": 2,
+        "cvr_classes": 2
+      }
+    },
+    "reason": "train/valid require observed positive and negative CTR/CVR labels"
+  }
+}

@@ -1,5 +1,13 @@
 # 검색 구현 보고서 — A B2a / B2b
 
+<!-- current-v44 -->
+현재 구현·새 full valid/test·실행 조건은 [v4.4 보고서](submission/report.md)를 따른다.
+2026-11-12 리팩터링 소스로 full valid/test와 지연을 다시 측정해 11개 기준이 모두 통과했다.
+검색의 과거 단계 기록과 현재 결과를 구분한다. 현재 전체 시연·CT·최종 통합 상태는
+[최종 실행 집계](results/experiments/A/final_validation_20261112/submission/checks.json)를 따른다.
+
+## 이전 실행 기록 보존
+
 현재 최신 단계는 B2b다. full 상품 50,000개에서 고정 test 600개의 MRR/NDCG@10은
 0.931667이며 실제 HTTP의 최대 모드 p95는 178.251ms다. 검색 단계 기준은 통과했고,
 추천 모델과 전체 Docker 재현을 포함한 최종 종합 acceptance는 아직 UNMEASURED다.

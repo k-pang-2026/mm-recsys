@@ -32,7 +32,9 @@
     "scripts/archive_integration_ab.py",
     "scripts/resume_integration_ct.py",
     "scripts/verify_integration_ct_lifecycle.py",
-    "scripts/publish_integration_dashboard.py"
+    "scripts/publish_integration_dashboard.py",
+    "scripts/demo.py",
+    "scripts/demo_host.py"
   ],
   "modules": [
     "src/common/config.py",
@@ -69,12 +71,11 @@
     "n_events"
   ],
   "pending_integration": [
-    "P0: real-dataset requirement interpretation UNRESOLVED; instructor decision not recorded",
-    "live Redis MAB exposure/reward attribution UNCONNECTED",
-    "fresh-clone full data/model regeneration UNMEASURED; B10 reused data/search/HF cache",
-    "full matching A/B statistics UNMEASURED; dev simulation is separate",
-    "full CT retraining and rollback UNMEASURED; controlled fixture and same-version reload only",
-    "B11 commit push/PR and final GitHub URL submission await explicit approval"
+    "B11 alone does not establish current INTEGRATE readiness; supply executed current integration evidence",
+    "current empty-artifact full Docker reproduction must be verified",
+    "current HTTP/Redis attribution and session behavior must be verified",
+    "current full matching A/B statistics must be verified",
+    "current full CT training and guarded lifecycle evidence must be verified"
   ],
   "audit_policy": "AST inventory and repository-wide mypy findings are disclosed; B11 does not modify B/C implementations. New checker typing, pytest and pip checks must pass for delivery. --require-ready returns nonzero for any remaining final condition."
 }

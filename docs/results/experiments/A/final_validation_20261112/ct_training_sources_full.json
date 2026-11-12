@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "training_sources": {
+    "candidate": {
+      "source": "docs/results/experiments/A/final_validation_20261112/ct_candidate_training_full.json",
+      "sha256": "e6fdcbfa9261cf7ea93df0e6995832e1b141187c6c785cebecfd84abef08d95c"
+    },
+    "ranking": {
+      "source": "docs/results/experiments/A/final_validation_20261112/ct_ranking_training_full.json",
+      "sha256": "3160f6db740e36777638b57d89a36c2320da05969746a4ffbf03695cdd8425b1"
+    },
+    "session": {
+      "source": "docs/results/experiments/A/final_validation_20261112/ct_session_training_full.json",
+      "sha256": "32d86e6a0a7a15b9cb4cd78eddad1eb8c1dd8db0476082a6e40f06a9f37440fc"
+    }
+  }
+}

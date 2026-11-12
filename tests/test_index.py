@@ -1,4 +1,3 @@
-import json
 import faiss
 import numpy as np
 import pytest
@@ -6,7 +5,7 @@ import pytest
 from src.common.config import load_config
 from src.search.encoder import unit_vectors
 from src.search.index import make_index, SearchIndex
-from src.search.eval_support import ann_agreement, exact_search
+from src.search.eval_support import ann_agreement
 from src.search.build_index import fuse
 
 

@@ -23,15 +23,19 @@ from src.recommendation.features import FeatureEncoder
 from src.recommendation.deepfm import DeepFM, loss
 from src.recommendation.ranking_features import RankingEncoder, HistoryIndex, DENSE_FIELDS
 from src.recommendation.ranking_labels import build_labels, read_impressions
+from src.recommendation.bundle_compat import training_config_matches
 
 
-def prepare(cfg: dict, split: str = 'valid') -> tuple[dict, dict, dict]:
+def prepare(cfg: dict, split: str = 'valid', *, label_splits: tuple[str, ...] | None = None) -> tuple[dict, dict, dict]:
     data = read_data(cfg['paths']['data_dir'], split)
     impressions = read_impressions(cfg['paths']['data_dir'], data['manifest'])
     available = ['train', 'valid'] + (['test'] if split == 'test' else [])
+    selected = available if label_splits is None else label_splits
+    if not selected or len(set(selected)) != len(selected) or not set(selected) <= set(available):
+        raise ValueError('label splits must be unique and within the loaded temporal boundary')
     events = pd.concat([data[s] for s in available], ignore_index=True)
     labels, diagnostics = {}, {}
-    for name in available:
+    for name in selected:
         boundary = data['manifest']['boundaries'][name]
         labels[name], diagnostics[name] = build_labels(impressions, events[events.timestamp <= pd.Timestamp(boundary['end'])],
                                                        pd.Timestamp(boundary['start']), pd.Timestamp(boundary['end']),
@@ -76,7 +80,7 @@ def load_ranking(cfg: dict, data: dict) -> tuple[DeepFM, RankingEncoder, dict]:
     path=bundle_path(cfg); meta=json.loads((path/'meta.json').read_text())
     if meta['data_fingerprint'] != data['manifest']['generation_fingerprint'] or meta['catalog_sha256'] != data['manifest']['file_hashes']['products.parquet']:
         raise ValueError('ranking bundle/data mismatch')
-    if meta['config_fingerprint'] != fingerprint(cfg['recommend']['ranking']):
+    if not training_config_matches(meta['config_fingerprint'], cfg['recommend']['ranking']):
         raise ValueError('ranking config mismatch')
     for name,digest in meta['hashes'].items():
         if file_hash(path/name) != digest: raise ValueError(f'ranking checksum mismatch: {name}')
@@ -116,7 +120,7 @@ def train(cfg: dict) -> dict:
             logits=model(training['sparse'][indices],training['dense'][indices])
             value=loss(logits,training['targets'][indices],training['masks'][indices],spec['cvr_loss_weight'])
             if not torch.isfinite(value): raise ValueError('nonfinite DeepFM loss')
-            value.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(),10.); optimizer.step()
+            value.backward(); torch.nn.utils.clip_grad_norm_(model.parameters(),spec['max_grad_norm']); optimizer.step()
             total+=float(value.detach())*len(indices); updates+=1
         metrics=measure(validation, probabilities(model,validation,spec['batch_size']))
         score=metrics['ctr']['auc']

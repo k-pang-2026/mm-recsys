@@ -26,7 +26,8 @@ from src.ct.bootstrap import bootstrap
 from src.ct.monitor import monitor
 from src.ct.retrain_trigger import build_from_journal, components, trigger
 from src.ct.storage import Journal, file_lock
-from src.ct.training import snapshot, train_all
+from src.ct.training import train_all
+from src.ct.snapshot import snapshot
 from src.serving.main import create_app
 from src.serving.memory_store import MemoryFeatureStore
 from src.simulator.generate import generate
@@ -150,7 +151,7 @@ def verify(work: Path, output: Path) -> dict:
         assert api.get(url + '/api/recommend', params={'user_id': 'unknown'}, timeout=10).status_code == 200
         waiting = trigger(cfg, lambda *args: None)
         assert waiting['status'] == 'WAITING'
-        log_source = output.parent / 'experiments/C/ct_fixture_log.jsonl'
+        log_source = output.parent / 'experiments/C' / work.name / 'ct_fixture_log.jsonl'
         log_source.parent.mkdir(parents=True, exist_ok=True)
         # Publish only aggregated lifecycle evidence, never raw journals/data/models.
         with log_source.open('w', encoding='utf-8') as stream:

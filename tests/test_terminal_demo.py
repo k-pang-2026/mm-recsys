@@ -7,6 +7,51 @@ from scripts.demo import summarize_ab
 from src.ct.storage import Journal
 
 
+def test_pdf_examples_uses_live_clicks_and_separate_experiment_processes(tmp_path, monkeypatch):
+    from scripts import demo
+    calls, children = [], []
+    def request(url, payload=None):
+        calls.append((url, payload))
+        if url.endswith('/api/search'):
+            return dict(search_type='text', results=[dict(product_id=p, name='검정 후드티', score=.7, price=59000)
+                for p in ('actual-1','actual-2')], total_count=50000, latency_ms=42.)
+        if url.endswith('/api/event'):
+            return dict(applied=True)
+        clicks = [body for endpoint, body in calls if endpoint.endswith('/api/event')]
+        return dict(user_id=clicks[0]['user_id'], recommendations=[], pipeline_latency={},
+                    session_context=dict(recent_clicks=[p['product_id'] for p in clicks], session_interest='hoodie'))
+    monkeypatch.setattr(demo, 'request', request)
+    monkeypatch.setattr(demo.subprocess, 'call', lambda args: children.append(args) or 0)
+    output = tmp_path / 'examples'
+    assert demo.examples(['--api-url','http://api','--output-dir',str(output)]) == 0
+    assert len(children) == 2 and '5000' in children[0] and '30' in children[0]
+    assert children[1][2:4] == ['ct','--drill']
+    actual = json.loads((output / 'recommendation.json').read_text())
+    assert actual['session_context']['recent_clicks'] == ['actual-1','actual-2']
+    assert json.loads((output / 'search.json').read_text())['total_count'] == 50000
+    with pytest.raises(FileExistsError):
+        demo.examples(['--output-dir',str(output)])
+
+
+def test_ab_serializes_with_ct_and_releases_lock_on_failure(tmp_path, monkeypatch):
+    from scripts.demo import operational
+    from src.ct.storage import file_lock
+    from src.common.config import load_config
+    cfg = load_config()
+    cfg['paths'].update(model_dir=str(tmp_path / 'models'), results_dir=str(tmp_path / 'results'))
+    lock = tmp_path / 'models' / '.ct' / 'training.lock'
+    monkeypatch.setattr('docker.runtime.runtime_config', lambda: cfg)
+    def fail(cfg, output):
+        with pytest.raises(BlockingIOError), file_lock(lock, blocking=False):
+            pass
+        raise RuntimeError('original experiment failure')
+    monkeypatch.setattr('src.evaluation.ab_test.run', fail)
+    with pytest.raises(RuntimeError, match='original experiment failure'):
+        operational(['ab'])
+    with file_lock(lock, blocking=False):
+        pass
+
+
 def test_ct_batch_is_atomic_idempotent_and_keeps_attribution_checks(tmp_path):
     journal = Journal(tmp_path / 'journal.sqlite3')
     payload = dict(event_id='e1', user_id='u', product_id='p', event_type='view')
@@ -47,6 +92,25 @@ def test_ct_human_monitor_does_not_invent_missing_measurements(tmp_path, monkeyp
     assert result['status'] == 'UNMEASURED'
     assert '미측정' in capsys.readouterr().err
     assert json.loads((tmp_path / 'ct.jsonl').read_text())['hit_rate_at_50'] is None
+
+
+def test_ct_default_output_does_not_truncate_another_monitor(tmp_path, monkeypatch):
+    import io
+    from types import SimpleNamespace
+    from src.common.config import load_config
+    from scripts import demo
+    cfg = load_config()
+    cfg['paths'].update(model_dir=str(tmp_path / 'models'), results_dir=str(tmp_path / 'results'))
+    monkeypatch.setattr('docker.runtime.runtime_config', lambda: cfg)
+    counter = iter((1, 2))
+    def process(*args, **kwargs):
+        stream = io.BytesIO((json.dumps(dict(sequence=next(counter))) + '\n').encode())
+        return SimpleNamespace(stdout=stream, wait=lambda: 0, poll=lambda: 0)
+    monkeypatch.setattr(demo.subprocess, 'Popen', process)
+    assert demo.operational(['ct']) == demo.operational(['ct']) == 0
+    paths = list((tmp_path / 'results/ct-cli').glob('*.jsonl'))
+    assert len(paths) == 2
+    assert sorted(json.loads(p.read_text())['sequence'] for p in paths) == [1, 2]
 
 
 def test_ct_watch_flushes_output_before_process_exit(tmp_path):

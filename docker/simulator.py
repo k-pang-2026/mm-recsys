@@ -5,11 +5,17 @@ from src.common.console import log, run_cli
 import traceback
 
 import copy
+from contextlib import suppress
 import json
 import os
 from pathlib import Path
+import signal
+import subprocess
+import sys
 import time
+from types import FrameType
 import uuid
+from urllib.request import build_opener, ProxyHandler
 
 import numpy as np
 import pandas as pd
@@ -22,6 +28,7 @@ from src.common.schemas import FeedbackRequest
 from src.serving.feature_store import RedisFeatureStore, create_feature_store
 from src.simulator.events import make_events
 from src.ct.storage import Journal
+from scripts.ct_api_traffic import visit
 
 
 def generate_batch(cfg: dict, products: pd.DataFrame, users: pd.DataFrame,
@@ -88,31 +95,76 @@ def main() -> None:
     root = Path(cfg['paths']['data_dir'])
     size = int(os.getenv('SIMULATOR_BATCH_SIZE', '100'))
     interval = float(os.getenv('SIMULATOR_INTERVAL_SECONDS', '5'))
+    visits = int(os.getenv('SIMULATOR_ATTRIBUTED_VISITS', '1'))
+    auto_train = os.getenv('CT_AUTO_TRAIN', '1')
     if not 1 <= size <= 10000 or not np.isfinite(interval) or interval <= 0:
         raise ValueError('live batch size must be 1..10000 and interval must be finite and positive')
+    if not 0 <= visits <= 100:
+        raise ValueError('SIMULATOR_ATTRIBUTED_VISITS must be 0..100')
+    if auto_train not in ('0', '1'):
+        raise ValueError('CT_AUTO_TRAIN must be 0 or 1')
+    if visits and not cfg['serving']['ct']['enabled']:
+        raise ValueError('attributed visits require CT; set SIMULATOR_ATTRIBUTED_VISITS=0 to disable')
     products = pd.read_parquet(root / 'products.parquet')
     users = pd.read_parquet(root / 'users.parquet')
     rng = np.random.default_rng(cfg['seed'])
     store = create_feature_store(cfg)
     if not isinstance(store, RedisFeatureStore):
         raise ValueError('live simulator requires the serving Redis backend')
-    log('시뮬레이터', '시작', f'API·대시보드 준비 완료; 배치={size}건 / 주기={interval}초 / 모의 로그 생성·Redis 피처 갱신')
+    run_id, visit_index = uuid.uuid4().hex, 0
+    output = Path(cfg['paths']['results_dir']) / f'ct_api_traffic_{run_id}.jsonl'
+    output.parent.mkdir(parents=True, exist_ok=True)
+    opener = build_opener(ProxyHandler({}))
+    worker = None
+    def stop(signum: int, frame: FrameType | None) -> None:
+        raise KeyboardInterrupt
+    previous_handler = signal.signal(signal.SIGTERM, stop)
+    log('시뮬레이터', '시작', f'API·대시보드 준비 완료; 배치={size}건 / 주기={interval}초 / 합성 추천 흐름={visits}회 / 귀속 로그={output}')
     try:
-        while True:
-            started = time.monotonic()
-            try:
-                result = run_batch(cfg, store, products, users, rng, size)
-            except (OSError, RedisError) as error:
-                log('시뮬레이터', '재시도', f'원인: {type(error).__name__}: {error} / 다음 조치: Redis 연결과 저장 공간을 확인하세요. {interval}초 뒤 같은 배치를 재시도합니다.', status='실패')
-                traceback.print_exc()
-                delay = interval
-            else:
-                elapsed = time.monotonic() - started
-                log('시뮬레이터', '생성', f"행동 로그 {result['generated']:,}건 생성 / {elapsed:.1f}초 / "
-                    f"{result['generated']/max(elapsed, .001):,.0f}건/초 / CT 신규 로그={result['ct_new_events']:,}건", status='성공')
-                delay = max(.01, interval - elapsed)
-            time.sleep(delay)
+        if auto_train == '1' and cfg['serving']['ct']['enabled']:
+            worker = subprocess.Popen([sys.executable, '-m', 'docker.ct_worker'], start_new_session=True)
+            log('시뮬레이터', 'CT 연결', '주기적 모니터링·설정 임계치 기반 재학습을 함께 시작합니다.', status='성공')
+        with output.open('x', encoding='utf-8') as stream:
+            def record(value: dict) -> None:
+                stream.write(json.dumps(dict(run_id=run_id, recorded_at=time.time(), synthetic=True, **value),
+                                        ensure_ascii=False, allow_nan=False) + '\n')
+                stream.flush()
+
+            record(dict(event='start', api=api, visits_per_batch=visits, top_n=50))
+            while True:
+                if worker is not None and worker.poll() is not None:
+                    raise RuntimeError(f'CT worker exited: {worker.returncode}; inspect the original worker log')
+                started = time.monotonic()
+                try:
+                    result = run_batch(cfg, store, products, users, rng, size)
+                    for _ in range(visits):
+                        index = visit_index
+                        visit_index += 1
+                        visit(opener, api, str(users.iloc[index % len(users)].user_id),
+                              run_id, index, 50, record)
+                except (OSError, RedisError) as error:
+                    record(dict(event='error', detail=str(error), visit_index=visit_index))
+                    log('시뮬레이터', '재시도', f'원인: {type(error).__name__}: {error} / 다음 조치: API·Redis와 귀속 로그의 intent·ack를 확인하세요. 미완료 Markov 배치는 보존됩니다.', status='실패')
+                    traceback.print_exc()
+                    delay = interval
+                else:
+                    elapsed = time.monotonic() - started
+                    log('시뮬레이터', '생성', f"행동 로그 {result['generated']:,}건 생성 / {elapsed:.1f}초 / "
+                        f"{result['generated']/max(elapsed, .001):,.0f}건/초 / CT 신규 로그={result['ct_new_events']:,}건 / 합성 추천 흐름={visits}회", status='성공')
+                    delay = max(.01, interval - elapsed)
+                time.sleep(delay)
     finally:
+        if worker is not None and worker.poll() is None:
+            # The Docker worker owns its demo/trainer process group.
+            with suppress(ProcessLookupError):
+                os.killpg(worker.pid, signal.SIGTERM)
+            try:
+                worker.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                with suppress(ProcessLookupError):
+                    os.killpg(worker.pid, signal.SIGKILL)
+                worker.wait()
+        signal.signal(signal.SIGTERM, previous_handler)
         store.close()
 
 

@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "reason": "original index directory mode 0700 owned by root in host namespace (nobody in sandbox); unsandboxed peachpetal also receives PermissionError; original retained",
+  "embeddings_pointer_sha256": "2031840d3615805979a12bd9a7c2b9f96e43b1a9068d18be0328c7709aab41f4",
+  "index_manifest_sha256": "6b4b39467e4bee121d271b03988bc74f1327b6b4fce7cb47121d521025841114",
+  "path": ".team/pdf-refactor/models/search/indexes/49a3d5a7d102c3fa28daed382107daff70285d8c7840a8910d18f3b20817f4d7"
+}

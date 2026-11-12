@@ -1,0 +1,31 @@
+{
+  "schema": "ct-full-separated-lifecycle-v1",
+  "status": "PASS",
+  "scale": "full",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "natural": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_full.json",
+    "sha256": "01bb8c46fa469398d954cee717c59206406326a5aa0609621a8aaf5eca81033b"
+  },
+  "controlled_lifecycle": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_controlled_lifecycle_full.json",
+    "sha256": "7e9a517fa52daf40be7e11b68a9cc706827e1b9c917e50b07400c91d20b0a549"
+  },
+  "training": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_training_sources_full.json",
+    "sha256": "04b5e689e687ec5cdd6b52dd8cf0d3eb6901ef51cef09689b02f69e51b3e9305"
+  },
+  "candidate_validation": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_candidate_valid_full.json",
+    "sha256": "99736fc471ea72f8e90d9cf40dad78b2388ea6b8345c92c75a64712f565a9ff6"
+  },
+  "configuration": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/configuration_full.json",
+    "sha256": "47f7af394bb22423ae9bf165d6a41997984d82182495b2a03bd18f89a3f5f32d"
+  },
+  "controlled_reload": {
+    "source": "docs/results/experiments/A/pdf_completion_20261111/ct_controlled_reload_full.jsonl",
+    "sha256": "8e57540c284579b5aa29559a3dc090779c780b24725ace985cb7631ff6a2c150"
+  },
+  "scope": "Actual automatic full training was naturally RETAINED. A separate full-size constant-initial fixture verified actual guarded promotion/HTTP replacement/rollback using the exact trained candidate; production unchanged. Neither measured result is substituted for the other."
+}

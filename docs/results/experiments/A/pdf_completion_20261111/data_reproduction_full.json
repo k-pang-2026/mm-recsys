@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "scale": "full",
+  "generator_version": "4.4.0",
+  "data_fingerprint": "2df9b64e07e3b2aad48c967c4c8d3d8b04883dd19279896bb374c4f9926ad7d8",
+  "counts": {
+    "products": 50000,
+    "users": 10000,
+    "events": 1000000,
+    "impressions": 2254172
+  },
+  "original_manifest_sha256": "62967222a57a01b43d79b021aa1dee8124655006b547f424cf6e9183188c7f86",
+  "repeat_manifest_sha256": "62967222a57a01b43d79b021aa1dee8124655006b547f424cf6e9183188c7f86",
+  "file_hashes_identical": true,
+  "original_files": {
+    "products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+    "events.parquet": "e8f67a2033b2f7bc1a472599b012483c36446def9c9aa8ad56e892264e263898",
+    "impressions.parquet": "baae83e4e6e2271967860cab99f377e623595fb9cf8516390d403f16f56b3334",
+    "image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+    "split/train.parquet": "a5e217de3f9fd8625532e6986a3a8cbccd1ed071f0582c9542bb259886b47b9c",
+    "split/valid.parquet": "ae4f7dac168b4bd3398174efabbf3d2e4432386a0a259fca0702c1665ce047c5",
+    "split/test.parquet": "7e3a676d50056172cc8369a3c7408dc3e773b789c2c22a0021a6a0b29834f453"
+  },
+  "repeated_files": {
+    "products.parquet": "14632fc462ade96dca989577d27a44bec82a00f1db12bceeecb2610d100bedf2",
+    "users.parquet": "a0d8e5f4218b36e5aa583cacd586e13dc31e2998dfb1c7e02871ea518926b128",
+    "events.parquet": "e8f67a2033b2f7bc1a472599b012483c36446def9c9aa8ad56e892264e263898",
+    "impressions.parquet": "baae83e4e6e2271967860cab99f377e623595fb9cf8516390d403f16f56b3334",
+    "image_manifest.json": "a459cfcbc5ec764bfd7310af887cec980a82a5ba93ffc8bf3d5195a3cdf10b95",
+    "split/train.parquet": "a5e217de3f9fd8625532e6986a3a8cbccd1ed071f0582c9542bb259886b47b9c",
+    "split/valid.parquet": "ae4f7dac168b4bd3398174efabbf3d2e4432386a0a259fca0702c1665ce047c5",
+    "split/test.parquet": "7e3a676d50056172cc8369a3c7408dc3e773b789c2c22a0021a6a0b29834f453"
+  },
+  "python": "3.11.18",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.41",
+  "scope": "independent full regeneration in the same pinned Docker environment; images and every parquet/manifest checksum included"
+}

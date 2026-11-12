@@ -4,13 +4,11 @@ from __future__ import annotations
 from typing import Any
 
 import copy
-import json
 from pathlib import Path
 
 import pandas as pd
 
-from src.common.artifacts import file_hash, fingerprint, write_json
-from src.ct.snapshot import snapshot as snapshot
+from src.common.artifacts import fingerprint
 
 
 def train_all(cfg: dict, work: Path) -> tuple[dict, Path]:
@@ -32,17 +30,9 @@ def train_all(cfg: dict, work: Path) -> tuple[dict, Path]:
 
 
 def validation_data(cfg: dict) -> tuple[dict, pd.DataFrame]:
-    from src.recommendation.datasets import read_data
-    from src.recommendation.ranking_labels import read_impressions, build_labels
-    data = read_data(cfg['paths']['data_dir'], 'valid')
-    impressions = read_impressions(cfg['paths']['data_dir'], data['manifest'])
-    events = pd.concat([data['train'], data['valid']], ignore_index=True)
-    boundary = data['manifest']['boundaries']['valid']
-    # CT evaluates valid only; constructing unused train labels inflates peak memory.
-    labels, _ = build_labels(impressions, events[events.timestamp <= pd.Timestamp(boundary['end'])],
-                            pd.Timestamp(boundary['start']), pd.Timestamp(boundary['end']),
-                            cfg['recommend']['ranking']['attribution_seconds'])
-    return data, labels
+    from src.recommendation.train_deepfm import prepare
+    data, labels, _ = prepare(cfg, 'valid', label_splits=('valid',))
+    return data, labels['valid']
 
 
 def validation(service: Any, cfg: dict) -> dict:

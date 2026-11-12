@@ -1,10 +1,9 @@
 """Freeze independent queries before evaluation. Labels never enter the searcher."""
 from __future__ import annotations
 
-from src.common.console import log, emit_json, run_cli
+from src.common.console import log, run_cli
 
 import argparse
-from io import BytesIO
 import json
 from pathlib import Path
 from typing import cast

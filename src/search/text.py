@@ -35,6 +35,18 @@ ALIASES = {
     '레귤러핏': 'regular', '릴랙스핏': 'relaxed',
 }
 
+_DISPLAY: dict[str, str] = {}
+for _korean, _english in ALIASES.items():
+    _DISPLAY.setdefault(_english, _korean)
+_DISPLAY.update(black='검정', oversized='오버핏')
+_DISPLAY_PATTERN = re.compile(r'\b(' + '|'.join(
+    re.escape(word) for word in sorted(_DISPLAY, key=len, reverse=True)) + r')\b', re.IGNORECASE)
+
+
+def display_text(value: str) -> str:
+    """Localize catalog labels without changing the indexed/model input text."""
+    return _DISPLAY_PATTERN.sub(lambda match: _DISPLAY[match.group().casefold()], value)
+
 
 @dataclass(frozen=True)
 class NormalizedText:

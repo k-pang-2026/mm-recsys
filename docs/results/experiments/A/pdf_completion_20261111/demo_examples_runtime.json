@@ -1,0 +1,11 @@
+{
+  "container": "/mm-recsys-api-server-run-97a361483a53",
+  "image": "sha256:1ae0feb0667ad0c109972591632e37add11d230fe4214737b9d82f9570f14bc2",
+  "started_at": "2026-11-11T13:36:44.579780172Z",
+  "cpus": 4.0,
+  "memory_bytes": 4294967296,
+  "scope": "Actual default demo examples job; image remains unchanged while experiment runs",
+  "ended_at": "2026-11-11T14:39:02.758340+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 3738.17856
+}

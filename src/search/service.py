@@ -8,12 +8,12 @@ import copy
 import json
 from io import BytesIO
 import os
-from pathlib import Path
 from time import perf_counter
 from PIL import Image
 
 from src.common.schemas import SearchItem, SearchRequest, SearchResponse
 from src.search.searcher import Searcher
+from src.search.text import display_text
 
 
 class SearchService:
@@ -31,7 +31,7 @@ class SearchService:
         finally:
             if image is not None:
                 image.close()
-        results = [SearchItem(product_id=hit.product_id, name=self.searcher.products.loc[hit.product_id, 'name'],
+        results = [SearchItem(product_id=hit.product_id, name=display_text(self.searcher.products.loc[hit.product_id, 'name']),
                     score=hit.score, price=float(self.searcher.products.loc[hit.product_id, 'price'])) for hit in hits]
         return SearchResponse(search_type=mode, results=results, latency_ms=(perf_counter()-started)*1000,
                               total_count=len(self.searcher.eligible_ids()))

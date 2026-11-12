@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dashboard.data import api_call, available_reports, ct_log, read_report, settings, search_payload
 from dashboard.explore import product_cards, data_tab, catalog_tab
 from dashboard.assets import ab_result
+from dashboard.formatting import display_frame, display_value
 
 COLORS = dict(primary='#2563eb', baseline='#94a3b8', treatment='#0f766e', target='#e35d42')
 LABELS = dict(mrr='MRR', ndcg_at_10='NDCG@10', recall_at_300='Recall@300', auc='CTR AUC',
@@ -30,6 +31,8 @@ def layout(fig: go.Figure, title: str, y: str) -> go.Figure:
     fig.update_layout(title=title, template='plotly_white', font=dict(color='#334155'), yaxis_title=y,
         margin=dict(l=10, r=20, t=65, b=10), height=340, legend=dict(orientation='h', y=-.2),
         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
+    fig.update_xaxes(tickformat='.1f', hoverformat='.1f')
+    fig.update_yaxes(tickformat='.1f', hoverformat='.1f')
     return fig
 
 
@@ -43,10 +46,10 @@ def search_tab(report: dict, config: dict) -> None:
         fig.add_bar(name='CLIP', x=labels, y=[search['per_mode'][mode][key] for mode in modes], marker_color=COLORS['primary'])
         fig.add_bar(name='BM25', x=labels, y=[search['bm25'][mode].get(key) for mode in modes], marker_color=COLORS['baseline'])
         target = next(row['target'] for row in report['metrics'] if row['name'] == key)
-        fig.add_hline(y=target, line_dash='dash', line_color=COLORS['target'], annotation_text=f'기준 {target}')
+        fig.add_hline(y=target, line_dash='dash', line_color=COLORS['target'], annotation_text=f'기준 {display_value(target)}')
         st.plotly_chart(layout(fig, 'CLIP · BM25', LABELS[key]), use_container_width=True)
         st.caption('이미지 전용 입력에는 BM25가 적용되지 않습니다. ANN/exact 벡터 일치율은 relevance 품질과 별개입니다.')
-        st.dataframe(metric_table(report, ('mrr', 'ndcg_at_10')), hide_index=True, use_container_width=True)
+        st.dataframe(display_frame(metric_table(report, ('mrr', 'ndcg_at_10'))), hide_index=True, use_container_width=True)
         rows = search.get('tradeoff', [])
         if rows:
             fig = go.Figure()
@@ -78,8 +81,8 @@ def search_tab(report: dict, config: dict) -> None:
         if response['ok']:
             body = response['data']
             st.session_state['search_response'] = body
-            st.caption(f'{body["search_type"]} · {body["latency_ms"]:.2f}ms · 후보 {body["total_count"]:,}개')
-            st.dataframe(pd.DataFrame(body['results']), hide_index=True, use_container_width=True)
+            st.caption(f'{body["search_type"]} · {body["latency_ms"]:.1f}ms · 후보 {body["total_count"]:,}개')
+            st.dataframe(display_frame(pd.DataFrame(body['results'])), hide_index=True, use_container_width=True)
         else:
             st.warning(response['error'])
     if 'search_response' in st.session_state:
@@ -89,7 +92,7 @@ def search_tab(report: dict, config: dict) -> None:
 def recommendation_tab(report: dict, config: dict) -> None:
     rec = report.get('recommendation', {})
     st.subheader('미래 행동에 대한 추천 품질')
-    st.dataframe(metric_table(report, ('recall_at_300', 'auc', 'hit_rate_at_50', 'ndcg_at_50', 'coverage')), hide_index=True, use_container_width=True)
+    st.dataframe(display_frame(metric_table(report, ('recall_at_300', 'auc', 'hit_rate_at_50', 'ndcg_at_50', 'coverage'))), hide_index=True, use_container_width=True)
     if rec.get('status') == 'MEASURED':
         cohort = rec['cohort']
         st.caption(f'고정 사용자 {cohort["total_users"]:,}명 · 정답 사용자 {cohort["truth_users"]:,}명 · 콜드스타트 {cohort.get("cold", 0):,}명 · top50')
@@ -98,11 +101,11 @@ def recommendation_tab(report: dict, config: dict) -> None:
         fig = go.Figure(go.Bar(x=list(labels.values()), y=[rec['metrics'][name][key] for name in labels],
             marker_color=[COLORS['baseline'], '#64748b', COLORS['primary'], COLORS['treatment']]))
         target = next(row['target'] for row in report['metrics'] if row['name'] == key)
-        fig.add_hline(y=target, line_dash='dash', line_color=COLORS['target'], annotation_text=f'기준 {target}')
+        fig.add_hline(y=target, line_dash='dash', line_color=COLORS['target'], annotation_text=f'기준 {display_value(target)}')
         st.plotly_chart(layout(fig, '동일 사용자·정답·카탈로그 기준', LABELS[key]), use_container_width=True)
         cvr = rec['classification']['cvr']
-        st.write(f"CVR AUC: {cvr['auc']} · 클릭 노출 {cvr['samples']:,}개 · 구매 양성 {cvr['positives']:,}개")
-        st.caption('사용자가 확인한 기존 계약에 따라 AUC ≥ 0.70은 CTR에 적용하고, CVR AUC는 별도로 보고합니다.')
+        st.write(f"CVR AUC: {display_value(cvr['auc']) or '미측정'} · 클릭 노출 {cvr['samples']:,}개 · 구매 양성 {cvr['positives']:,}개")
+        st.caption('사용자가 확인한 기존 계약에 따라 AUC ≥ 0.7은 CTR에 적용하고, CVR AUC는 별도로 보고합니다.')
         if cvr['auc'] is None:
             st.info(f'CVR AUC 미정의: {cvr["auc_status"]} · 클릭 노출 {cvr["samples"]:,}개, 구매 양성 {cvr["positives"]:,}개')
     else:
@@ -120,14 +123,14 @@ def recommendation_tab(report: dict, config: dict) -> None:
         response = api_call(config['api_url'], 'GET', '/api/recommend', params=dict(user_id=uid.strip(), top_n=int(count)), timeout=config['api_timeout'])
         if response['ok']:
             body = response['data']
-            st.session_state['recommend_response'] = (uid.strip(), body)
-            st.dataframe(pd.DataFrame(body['recommendations']), hide_index=True, use_container_width=True)
-            st.caption(f'파이프라인 {body["pipeline_latency"]["total_ms"]:.2f}ms · 세션 관심사 {body["session_context"]["session_interest"] or "없음"}')
+            st.session_state['recommend_response'] = (uid.strip(), response)
+            st.dataframe(display_frame(pd.DataFrame(body['recommendations'])), hide_index=True, use_container_width=True)
+            st.caption(f'파이프라인 {body["pipeline_latency"]["total_ms"]:.1f}ms · 세션 관심사 {body["session_context"]["session_interest"] or "없음"}')
         else:
             st.warning(response['error'])
     if 'recommend_response' in st.session_state:
-        selected_uid, body = st.session_state['recommend_response']
-        product_cards(body['recommendations'], config, 'recommend', selected_uid)
+        selected_uid, response = st.session_state['recommend_response']
+        product_cards(response['data']['recommendations'], config, 'recommend', selected_uid, response)
 
 
 def ab_tab(report: dict) -> None:
@@ -142,24 +145,24 @@ def ab_tab(report: dict) -> None:
         st.write(ab['strategies'])
     inference = ab['inference']['cvr']
     a, b, c = st.columns(3)
-    a.metric('Control CVR', f'{control["cvr"]:.4%}' if control['cvr'] is not None else '미측정')
-    b.metric('Treatment CVR', f'{treatment["cvr"]:.4%}' if treatment['cvr'] is not None else '미측정')
+    a.metric('Control CVR', f'{control["cvr"]:.1%}' if control['cvr'] is not None else '미측정')
+    b.metric('Treatment CVR', f'{treatment["cvr"]:.1%}' if treatment['cvr'] is not None else '미측정')
     lift = inference.get('relative_lift')
-    c.metric('CVR 상대 lift', f'{lift:+.2%}' if lift is not None else '정의되지 않음')
+    c.metric('CVR 상대 lift', f'{lift:+.1%}' if lift is not None else '정의되지 않음')
     st.caption('CTR = 클릭/노출 · CVR = 구매/노출. control이 0이면 상대 lift는 정의되지 않습니다.')
     fig = go.Figure()
     for name, values, color in [('Control', control, COLORS['baseline']), ('Treatment', treatment, COLORS['treatment'])]:
         fig.add_bar(name=name, x=['CTR', 'CVR', '탐색 슬롯 비율'], y=[values['ctr'], values['cvr'], values['exploration_rate']], marker_color=color)
-    st.plotly_chart(layout(fig, '관측 비율', '비율').update_yaxes(tickformat='.0%'), use_container_width=True)
+    st.plotly_chart(layout(fig, '관측 비율', '비율').update_yaxes(tickformat='.1%', hoverformat='.1%'), use_container_width=True)
     ci = inference.get('difference_ci95')
     if ci is not None:
-        st.write(f'사용자 cluster CVR 차이 95% CI: [{ci[0] * 100:+.4f}, {ci[1] * 100:+.4f}]%p')
+        st.write(f'사용자 cluster CVR 차이 95% CI: [{ci[0] * 100:+.1f}, {ci[1] * 100:+.1f}]%p')
         p = inference.get('z_p_value')
-        st.write(f'양측 cluster Z p-value: {p:.6g}' if p is not None else '퇴화된 분산으로 cluster p-value를 계산할 수 없습니다.')
+        st.write(f'양측 cluster Z p-value: {display_value(p)}' if p is not None else '퇴화된 분산으로 cluster p-value를 계산할 수 없습니다.')
     risks = ab['inference']['independent_user_risks']
-    st.dataframe(pd.DataFrame([dict(지표=label, Control=risks[name]['control'], Treatment=risks[name]['treatment'],
+    st.dataframe(display_frame(pd.DataFrame([dict(지표=label, Control=risks[name]['control'], Treatment=risks[name]['treatment'],
         양측_Z_p=risks[name]['z_p_value'], 카이제곱_p=risks[name]['chi_square_p_value'], 저빈도=risks[name]['low_expected_counts'])
-        for name, label in [('any_click', '한 번 이상 클릭한 사용자'), ('any_purchase', '한 번 이상 구매한 사용자')]]), hide_index=True, use_container_width=True)
+        for name, label in [('any_click', '한 번 이상 클릭한 사용자'), ('any_purchase', '한 번 이상 구매한 사용자')]])), hide_index=True, use_container_width=True)
     st.caption('반복 노출을 독립 표본으로 세지 않습니다. 양의 lift나 유의성은 보장되지 않으며 실제 서비스 효과로 해석할 수 없습니다.')
 
 
@@ -176,7 +179,7 @@ def system_tab(report: dict, config: dict) -> None:
     st.caption(f"저장된 성능 측정의 모델 버전: {report.get('model_version', '미측정')}")
     if not health['ok']:
         st.info(health['error'])
-    st.dataframe(metric_table(report, ('search_p95_ms', 'recommend_p95_ms', 'candidate_p95_ms', 'feature_p95_ms')), hide_index=True, use_container_width=True)
+    st.dataframe(display_frame(metric_table(report, ('search_p95_ms', 'recommend_p95_ms', 'candidate_p95_ms', 'feature_p95_ms'))), hide_index=True, use_container_width=True)
     rows = [row for row in report.get('metrics', []) if row['name'].endswith('_ms') and row['value'] is not None]
     if rows:
         fig = go.Figure(go.Bar(x=[LABELS[row['name']] for row in rows], y=[row['value'] for row in rows], marker_color=COLORS['primary']))
@@ -191,13 +194,13 @@ def system_tab(report: dict, config: dict) -> None:
     if logs['rows']:
         if any(row.get('scope') == 'controlled_fixture' for row in logs['rows']):
             st.caption('controlled_fixture 기록은 소규모 기능 검증이며 실제 서비스 품질을 뜻하지 않습니다.')
-        st.dataframe(pd.json_normalize(logs['rows'], sep='.'), hide_index=True, use_container_width=True)
+        st.dataframe(display_frame(pd.json_normalize(logs['rows'], sep='.')), hide_index=True, use_container_width=True)
         if logs['invalid_lines']:
             st.warning(f'읽을 수 없는 로그 {logs["invalid_lines"]}개를 제외했습니다.')
     else:
         st.info(logs.get('reason', 'CT 실행 기록이 없습니다. CT 모니터 실행과 결과 경로를 확인하세요.'))
     with st.expander('측정 근거와 제한'):
-        st.json(dict(environment=report.get('environment', {}), identity=report.get('identity', {}), limitations=report.get('limitations', [])))
+        st.json(display_value(dict(environment=report.get('environment', {}), identity=report.get('identity', {}), limitations=report.get('limitations', []))))
 
 
 def main() -> None:
@@ -205,6 +208,7 @@ def main() -> None:
     st.markdown('<style>.block-container{padding-top:2rem;max-width:1400px}h1{letter-spacing:-.04em}div[data-testid="stMetric"]{padding:1rem;border-radius:.75rem}</style>', unsafe_allow_html=True)
     st.title('검색·추천 평가실')
     st.caption('고정된 평가 기준으로 검색, 추천, 실험과 시스템 상태를 확인합니다.')
+    st.caption('시간은 KST(UTC+9), 소수는 한 자리로 표시합니다. 작은 값은 과학적 표기법을 사용하며 판정은 원본 정밀도를 따릅니다.')
     config = settings(Path(__file__).resolve().parents[1])
     files = available_reports(config['results_dir'])
     report = {}
@@ -232,7 +236,7 @@ def main() -> None:
         if report.get('integration'):
             st.caption('full test와 필수 통합 검사 결과를 연결한 판정입니다. A/B의 양의 효과나 CT 모델 교체를 뜻하지 않습니다.')
             with st.expander('최종 통합 검사 근거'):
-                st.json(report['integration'])
+                st.json(display_value(report['integration']))
         st.caption('dev/valid 결과는 full test 최종 통과를 뜻하지 않습니다. 기준 미달과 미측정은 그대로 표시합니다.')
     else:
         st.info('통합 평가를 실행하면 측정값이 표시됩니다. 데모는 실행 중인 API에 연결합니다.')

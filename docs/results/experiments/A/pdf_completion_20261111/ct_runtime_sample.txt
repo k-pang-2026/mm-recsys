@@ -1,0 +1,2 @@
+mm-recsys-simulator-1 2.53GiB / 4GiB 230.64%
+mm-recsys-api-server-1 1.86GiB / 4GiB 6.49%

@@ -25,6 +25,8 @@ serving:
   ct:
     enabled: true
     poll_seconds: 60
+    retry_seconds: 300
+    retrain_on_degradation: true
     recent_seconds: 86400
     attribution_seconds: 3600
     min_mature_requests: 20

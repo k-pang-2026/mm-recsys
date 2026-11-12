@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-11T14:40:15.644558+00:00",
+  "command": "SIMULATOR_BATCH_SIZE=1 SIMULATOR_INTERVAL_SECONDS=60 docker compose up -d --no-deps simulator",
+  "ct_auto_train": "default 1",
+  "threshold": 10000,
+  "collection_override": {
+    "batch_size": 1,
+    "interval_seconds": 60
+  },
+  "journal_before_worker": {
+    "events": 103504,
+    "requests": 958
+  },
+  "scope": "Automatic default worker after completed A/B; lower collection rate only to observe exactly one training/watermark cycle, promotion guard unchanged"
+}

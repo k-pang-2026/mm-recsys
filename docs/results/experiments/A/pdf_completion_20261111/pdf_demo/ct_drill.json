@@ -1,0 +1,202 @@
+{
+  "environment": {
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-aarch64-with-glibc2.41",
+    "python": "3.11.18",
+    "cpu": "aarch64",
+    "logical_cpus": 8,
+    "ram_bytes": 8103927808,
+    "docker_allocation": {
+      "status": "UNMEASURED"
+    },
+    "benchmark_scope": "native controlled CT training and HTTP reload; memory FeatureStore; Docker info is descriptive only",
+    "torch": "2.6.0+cpu",
+    "numpy": "2.1.3",
+    "faiss": "1.9.0",
+    "torch_threads": 1,
+    "faiss_threads": 1,
+    "device": "cpu",
+    "gpu_used": false,
+    "pythonhashseed": "42",
+    "nondeterminism": "seeded CPU inference; cross-platform floating point may differ"
+  },
+  "status": "PASS",
+  "acceptance": "UNMEASURED",
+  "scale": "controlled_fixture",
+  "seed": 42,
+  "scope": "400 items/24 users/6000 source events; 5000 initial; additional observed view/cart/purchase only; initial ranker deliberately constant; real candidate training and measured paired valid improvement; not production dev/full quality or Docker reproduction",
+  "source_fingerprint": "98fdba2d1afb791f71630f91ba131e66a9737787e6c15ecc4e64a78491dd7b7d",
+  "source_counts": {
+    "products": 400,
+    "users": 24,
+    "events": 6000,
+    "impressions": 13632
+  },
+  "new_events": 712,
+  "threshold": 200,
+  "default_threshold": 10000,
+  "monitor": {
+    "event": "monitor",
+    "status": "ALERT",
+    "ctr": 0.0,
+    "hit_rate_at_50": 0.0,
+    "clicks": 0,
+    "exposures": 50,
+    "mature_requests": 1,
+    "top50_requests": 1,
+    "hit_requests": 0,
+    "alerts": [
+      "ctr_below_threshold",
+      "hitrate_below_threshold"
+    ],
+    "window_start": -70.0,
+    "observed_through": 30.0,
+    "attribution_seconds": 10,
+    "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+    "thresholds": {
+      "ctr_threshold": 0.01,
+      "hitrate_threshold": 0.2,
+      "min_mature_requests": 1
+    }
+  },
+  "concurrent_trigger": {
+    "status": "BUSY"
+  },
+  "training": {
+    "status": "PROMOTED",
+    "version": "v1.1",
+    "active": "v1.1",
+    "new_events": 712,
+    "through_seq": 712,
+    "comparison": {
+      "split": "valid",
+      "validation_fingerprint": "6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4",
+      "baseline": {
+        "ctr_auc": 0.5,
+        "ctr_logloss": 0.6931471805599454,
+        "hit_rate_at_50": 0.125,
+        "truth_users": 24,
+        "ctr_samples": 1374,
+        "validation_fingerprint": "6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4"
+      },
+      "candidate": {
+        "ctr_auc": 0.908127198583944,
+        "ctr_logloss": 1.077794754532974,
+        "hit_rate_at_50": 0.9583333333333334,
+        "truth_users": 24,
+        "ctr_samples": 1374,
+        "validation_fingerprint": "6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4"
+      },
+      "training_reports": {
+        "candidate": "15d96be04d18d6a4d775a32a47b6c1d5961ac37bff72593e4820631bc1f72518",
+        "ranking": "52b7695a104f99042a03394dffe51630d172de9e14595c9e544a68ea1975b4af",
+        "session": "6c850e6c221aacd7e4e3d2c1fc177094bb2ca1ffb135ac2ffe47f009091d4534"
+      }
+    }
+  },
+  "checks": {
+    "alert": true,
+    "threshold": true,
+    "duplicate_trigger_blocked": true,
+    "real_three_model_retraining": true,
+    "fresh_chronological_split": true,
+    "increment": true,
+    "paired_valid_improvement": true,
+    "no_improvement_retained": true,
+    "atomic_http_reload": true,
+    "rollback": true,
+    "corrupt_bundle_rejected": true,
+    "new_events_consumed_once": true
+  },
+  "api": {
+    "before": 200,
+    "after": 200,
+    "reloaded": {
+      "status": "reloaded",
+      "version": "v1.1"
+    },
+    "rollback": {
+      "status": "reloaded",
+      "version": "v1.0"
+    },
+    "concurrent_requests": 40,
+    "all_concurrent_http_200": true
+  },
+  "versions": {
+    "v1.0": {
+      "status": "ACTIVE",
+      "parent": null,
+      "hashes": {
+        "meta.json": "9841b625969a1ff072b4a6a5f7cf38fd277340207255118aecf1cfac8e4428bc",
+        "two_tower.pt": "d46a22788ace794ee5d50f1ddcae91aa257c88dafebdfb44c441e121960d5929",
+        "feature_vocab_scalers.json": "2ac6e12bcf9d96399e72f37bbf69a63ef6706157316c27818e2d8e5224754d28",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "4f078214cbc9cd7a9b904a884f9204794793d3b0485934a5ccbb6b166ef7b4b5",
+        "index_manifest.json": "c22dfaa844831a47c88f55d243884895cbfde3561cb41a1e4f2e6713a30d462c",
+        "ranking/meta.json": "d2ef5d72230c2a88f38eccf1b32ec9ef04143ca61fffb0a9bd64145145adb5b0",
+        "ranking/deepfm.pt": "64cbd9908be79f42f8e7d9630878911de62980328c80ac409981035a0b6a653d",
+        "ranking/features.json": "8d1e212a25fba3f77cfdcbaf18127b6a5aefb64ef6f57e78b1c2b94545fcff88",
+        "session/meta.json": "675d0fd57e0b2677f5eb7486440ac01da7e689a863b56756402f54bc3eda6b84",
+        "session/session.pt": "d2092065b37c819412d84777cee9dc2fff6b020078b6c0b12b107d254adf9030",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    },
+    "v1.1": {
+      "status": "ROLLED_BACK",
+      "parent": "v1.0",
+      "hashes": {
+        "meta.json": "1e032f066e82d60ce56cacf5d5e3169041f98d5208e7dacb8db05ace8efb7445",
+        "two_tower.pt": "2ee630ef28cdec42ed977ff921987ee589dd65e4acaad5b0dd04df7207b179c9",
+        "feature_vocab_scalers.json": "661ac1f5a70aa5b661ebea962510ad7f2f08d31a586920c2874cd6fec63c54d6",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "24f1af0e49220a8787d4c1823b5570cb26449d02bc43ef20062bdb8c75ee6bf9",
+        "index_manifest.json": "dad807f5f71e4a2dd65c0dcfc836dfd93e0c587a259e2658f181203cff61d97b",
+        "ranking/meta.json": "9e8932ec1d89b48b48a16c7b195035dd45dc489d4cea41b113271ff47980bda3",
+        "ranking/deepfm.pt": "7b894dc3a38445427b075b98fbeacb39f09be99058b30bcf464516a8355e33d0",
+        "ranking/features.json": "ac1aabb5655f1380b621bc5dd7f505b6a522f5d990c3442e28d911ef3a10dd8d",
+        "session/meta.json": "373adea52f57c4eb800b33bb380d515949d89432ac620c065a577239b5b85fd5",
+        "session/session.pt": "45a8194e6603a39c2691b39784e1c2de7eeb45799c85b4177629630d93872289",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    },
+    "v1.2": {
+      "status": "REJECTED",
+      "parent": "v1.1",
+      "hashes": {
+        "meta.json": "1e032f066e82d60ce56cacf5d5e3169041f98d5208e7dacb8db05ace8efb7445",
+        "two_tower.pt": "2ee630ef28cdec42ed977ff921987ee589dd65e4acaad5b0dd04df7207b179c9",
+        "feature_vocab_scalers.json": "661ac1f5a70aa5b661ebea962510ad7f2f08d31a586920c2874cd6fec63c54d6",
+        "item_ids.json": "5f1e50ac494b8f13c920b078418b97701f93615bc302489f1337c45fbb114d24",
+        "item_index.faiss": "24f1af0e49220a8787d4c1823b5570cb26449d02bc43ef20062bdb8c75ee6bf9",
+        "index_manifest.json": "dad807f5f71e4a2dd65c0dcfc836dfd93e0c587a259e2658f181203cff61d97b",
+        "ranking/meta.json": "9e8932ec1d89b48b48a16c7b195035dd45dc489d4cea41b113271ff47980bda3",
+        "ranking/deepfm.pt": "7b894dc3a38445427b075b98fbeacb39f09be99058b30bcf464516a8355e33d0",
+        "ranking/features.json": "ac1aabb5655f1380b621bc5dd7f505b6a522f5d990c3442e28d911ef3a10dd8d",
+        "session/meta.json": "373adea52f57c4eb800b33bb380d515949d89432ac620c065a577239b5b85fd5",
+        "session/session.pt": "45a8194e6603a39c2691b39784e1c2de7eeb45799c85b4177629630d93872289",
+        "session/item_ids.json": "e60c9cd6f2e903342633c450aa4465c216a52c9c0a818a258b1c3017c151a39d"
+      }
+    }
+  },
+  "artifacts": {
+    "registry": "/app/models/.ct/verification/7fbcad916f/models/registry.json",
+    "registry_sha256": "8ad70e2ba0e4e967d229899b292896b217e1868bd211475c6b7f789960ef0ad9",
+    "log": "docs/results/docker/runtime-v44/full/pdf-demo-verification/experiments/C/ct_fixture_log.jsonl",
+    "log_sha256": "b6c05f41dd2758d6df514fbeea5e8cbdd9239ab19b58ab261541d4411573bb9c",
+    "training": {
+      "candidate": {
+        "source": "docs/results/docker/runtime-v44/full/pdf-demo-verification/experiments/C/ct_training_candidate_fixture.json",
+        "sha256": "15d96be04d18d6a4d775a32a47b6c1d5961ac37bff72593e4820631bc1f72518"
+      },
+      "ranking": {
+        "source": "docs/results/docker/runtime-v44/full/pdf-demo-verification/experiments/C/ct_training_ranking_fixture.json",
+        "sha256": "52b7695a104f99042a03394dffe51630d172de9e14595c9e544a68ea1975b4af"
+      },
+      "session": {
+        "source": "docs/results/docker/runtime-v44/full/pdf-demo-verification/experiments/C/ct_training_session_fixture.json",
+        "sha256": "6c850e6c221aacd7e4e3d2c1fc177094bb2ca1ffb135ac2ffe47f009091d4534"
+      }
+    }
+  },
+  "full_test_quality": "UNMEASURED",
+  "docker_reproduction": "UNMEASURED"
+}

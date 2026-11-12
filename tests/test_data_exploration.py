@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-import json
 
 import numpy as np
 import pandas as pd
@@ -15,6 +14,51 @@ from src.simulator.catalog import make_catalog
 from src.simulator.events import make_events
 from src.simulator.generate import generate
 from src.simulator.users import make_users
+
+
+def test_dashboard_api_preserves_exposure_id(monkeypatch):
+    import requests
+    from dashboard.data import api_call
+    calls = []
+
+    def reply(self, method, url, **kwargs):
+        calls.append(kwargs)
+        response = requests.Response()
+        response.status_code = 200
+        response.headers['X-Recommendation-Request-ID'] = 'displayed-request'
+        response._content = b'{"applied": true}'
+        return response
+
+    monkeypatch.setattr(requests.Session, 'request', reply)
+    result = api_call('http://localhost', 'POST', '/api/event', request_id='displayed-request')
+    assert result['ok'] and result['request_id'] == 'displayed-request'
+    assert calls[0]['headers'] == {'X-Recommendation-Request-ID': 'displayed-request'}
+
+
+def test_dashboard_click_uses_displayed_exposure_not_a_new_recommendation(monkeypatch):
+    from contextlib import nullcontext
+    from types import SimpleNamespace
+    import dashboard.explore as page
+    noop = lambda *args, **kwargs: None
+    ui = SimpleNamespace(image=noop, write=noop, caption=noop, button=lambda *a, **k: True)
+    state = {}
+    monkeypatch.setattr(page, 'st', SimpleNamespace(session_state=state, container=lambda **k: nullcontext(),
+        columns=lambda *a: (ui, ui), subheader=noop, success=noop, error=noop, json=noop))
+    monkeypatch.setattr(page, 'deployed', lambda cfg: dict(data_dir='data', data_fingerprint='hash'))
+    monkeypatch.setattr(page, 'catalog', lambda *a: pd.DataFrame([dict(product_id='p1', name='black bag',
+        price=100, category_l1='bags', category_l2='bags', category_l3='bag', brand='B')]).set_index('product_id'))
+    monkeypatch.setattr(page, 'image_path', lambda *a: 'image.png')
+    calls = []
+    def request(url, method, route, **kwargs):
+        calls.append((method, route, kwargs))
+        return dict(ok=True, data={})
+    monkeypatch.setattr(page, 'api_call', request)
+    exposure = dict(ok=True, data=dict(recommendations=[dict(product_id='p1')]), request_id='original')
+    page.product_cards(exposure['data']['recommendations'], dict(api_url='http://localhost', api_timeout=1),
+                       'recommend', 'u1', exposure)
+    assert [c[0] for c in calls] == ['POST', 'GET']
+    assert calls[0][2]['request_id'] == 'original'
+    assert state['recommend_comparison']['before'] is exposure
 
 
 def test_persona_brand_override_changes_only_configured_behavior():

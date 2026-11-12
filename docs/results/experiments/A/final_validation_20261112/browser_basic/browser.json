@@ -1,0 +1,14 @@
+{
+  "errors": [],
+  "failures": [],
+  "tabs": [
+    "검색",
+    "추천",
+    "A/B 실험",
+    "시스템",
+    "EDA·구매 이력",
+    "상품·CLIP"
+  ],
+  "scope": "Actual six-tab rendering and live search/recommendation actions; final acceptance display is verified separately after publication.",
+  "status": "PASS"
+}

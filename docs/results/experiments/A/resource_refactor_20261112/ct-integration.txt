@@ -1,0 +1,71 @@
+ Container mm-recsys-api-server-run-b8382fa0372c Creating 
+ Container mm-recsys-api-server-run-b8382fa0372c Created 
+[데이터 준비] 상품 400개·사용자 24명·이벤트 6,000건 준비 완료 / 경로=/app/models/.ct/resource-refactor-20261112/source
+[모델 학습] Two-Tower epoch=1 / loss=1.24867 / valid_recall@300=0.916667 / 갱신=6
+[모델 학습] Two-Tower epoch=2 / loss=0.57212 / valid_recall@300=0.939394 / 갱신=6
+[모델 학습] Two-Tower epoch=3 / loss=0.39220 / valid_recall@300=0.939394 / 갱신=6
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.939394 / 결과=/app/models/.ct/resource-refactor-20261112/initial_training/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=16.06001 / valid_ctr_auc=0.642022 / cvr_auc=0.4382569204152249
+[모델 학습] DeepFM epoch=2 / loss=5.68106 / valid_ctr_auc=0.889779 / cvr_auc=0.4146842560553633
+[모델 학습] DeepFM epoch=3 / loss=3.93568 / valid_ctr_auc=0.903936 / cvr_auc=0.431985294117647
+[모델 학습] DeepFM epoch=4 / loss=3.24860 / valid_ctr_auc=0.905454 / cvr_auc=0.4469074394463668
+[모델 학습] DeepFM epoch=5 / loss=2.75101 / valid_ctr_auc=0.907171 / cvr_auc=0.4752378892733564
+[모델 학습] DeepFM epoch=6 / loss=2.33704 / valid_ctr_auc=0.909030 / cvr_auc=0.49080882352941174
+[모델 학습] DeepFM epoch=7 / loss=1.98158 / valid_ctr_auc=0.908773 / cvr_auc=0.5068122837370242
+[모델 학습] DeepFM epoch=8 / loss=1.68627 / valid_ctr_auc=0.910807 / cvr_auc=0.5213019031141868
+[모델 학습] DeepFM epoch=9 / loss=1.47723 / valid_ctr_auc=0.909666 / cvr_auc=0.5273572664359862
+[모델 학습] DeepFM epoch=10 / loss=1.26361 / valid_ctr_auc=0.911727 / cvr_auc=0.5424956747404844
+[모델 학습] DeepFM epoch=11 / loss=1.10808 / valid_ctr_auc=0.911365 / cvr_auc=0.5530925605536332
+[모델 학습] DeepFM epoch=12 / loss=0.96530 / valid_ctr_auc=0.907114 / cvr_auc=0.5327638408304498
+[모델 학습] DeepFM epoch=13 / loss=0.83656 / valid_ctr_auc=0.911304 / cvr_auc=0.5587153979238755
+[모델 학습] 세션 epoch=1 / valid_loss=4.14343 / sampled_hit@10=0.32692
+[모델 학습] 세션 epoch=2 / valid_loss=3.86391 / sampled_hit@10=0.49359
+[모델 학습] 세션 epoch=3 / valid_loss=3.61830 / sampled_hit@10=0.55128
+[CT 버전 등록] 모델=v1.0
+[CT 초기화] 모델=v1.0
+[CT 알림] [경고] CTR=0.0 / 기준=0.01 / HitRate@50=0.0 / 기준=0.2 / 성숙 요청=1 / 노출=50 / 성능 저하 감지. 다음 조치: 표본과 재학습 누적 로그를 확인하세요.
+[CT 재학습] 신규 로그 712건 누적 / 사유=new_logs / v1.0 → v1.1 / 재학습 시작
+[CT 스냅샷] 관측 로그를 묶음 단위로 읽고 시간순 학습 스냅샷을 생성합니다.
+[CT 학습 준비] 스냅샷·관측 라벨 검사 통과; 세 모델 학습을 시작합니다.
+[모델 학습] Two-Tower epoch=1 / loss=1.19647 / valid_recall@300=0.961806 / 갱신=7
+[모델 학습] Two-Tower epoch=2 / loss=0.53223 / valid_recall@300=0.972222 / 갱신=7
+[모델 학습] Two-Tower epoch=3 / loss=0.38114 / valid_recall@300=0.958333 / 갱신=7
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.972222 / 결과=/app/models/.ct/resource-refactor-20261112/models/.ct/runs/v1.1-7bc696e1/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=15.19322 / valid_ctr_auc=0.709000 / cvr_auc=0.47088262056414926
+[모델 학습] DeepFM epoch=2 / loss=5.10139 / valid_ctr_auc=0.891524 / cvr_auc=0.4609872611464968
+[모델 학습] DeepFM epoch=3 / loss=3.69829 / valid_ctr_auc=0.908127 / cvr_auc=0.4794131028207461
+[모델 학습] DeepFM epoch=4 / loss=3.01060 / valid_ctr_auc=0.899981 / cvr_auc=0.48089171974522305
+[모델 학습] DeepFM epoch=5 / loss=2.56571 / valid_ctr_auc=0.904864 / cvr_auc=0.467697907188353
+[모델 학습] DeepFM epoch=6 / loss=2.15139 / valid_ctr_auc=0.903377 / cvr_auc=0.4794131028207462
+[모델 학습] 세션 epoch=1 / valid_loss=3.99862 / sampled_hit@10=0.43787
+[모델 학습] 세션 epoch=2 / valid_loss=3.70289 / sampled_hit@10=0.54438
+[모델 학습] 세션 epoch=3 / valid_loss=3.44556 / sampled_hit@10=0.64497
+[CT 버전 등록] 모델=v1.1
+[CT 버전 등록] 모델=v1.1
+[CT 판정] 검증 조건을 충족하여 새 모델을 승격합니다. / 후보=v1.1 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4', 'baseline': {'ctr_auc': 0.5, 'ctr_logloss': 0.6931471805599454, 'hit_rate_at_50': 0.125, 'truth_users': 24, 'ctr_samples': 1374, 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4'}, 'candidate': {'ctr_auc': 0.908127198583944, 'ctr_logloss': 1.077794754532974, 'hit_rate_at_50': 0.9583333333333334, 'truth_users': 24, 'ctr_samples': 1374, 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4'}, 'training_reports': {'candidate': '83a999349f0443ebe5d271e37f4a7f6f781a2e82efadd5b1a9ba0da28748360c', 'ranking': '459f5fd3dfe7c69f8dd5b6a6e5641cf039f6ad1b897138505bca14a5b8494f18', 'session': 'd6a6045c7df212da4934b7d4408e0eaade2b801a2d6bdd111d8dfd58d7baf8d6'}}
+[CT 서비스 모델 교체] 모델=v1.1
+[CT 버전 등록] 모델=v1.2
+[CT 판정] 검증 개선 조건을 충족하지 못해 기존 모델을 유지합니다. / 후보=v1.2 / 활성=v1.1 / 검증={'split': 'valid', 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4', 'baseline': {'ctr_auc': 0.908127198583944, 'ctr_logloss': 1.077794754532974, 'hit_rate_at_50': 0.9583333333333334, 'truth_users': 24, 'ctr_samples': 1374, 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4'}, 'candidate': {'ctr_auc': 0.908127198583944, 'ctr_logloss': 1.077794754532974, 'hit_rate_at_50': 0.9583333333333334, 'truth_users': 24, 'ctr_samples': 1374, 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4'}, 'training_reports': {'candidate': '83a999349f0443ebe5d271e37f4a7f6f781a2e82efadd5b1a9ba0da28748360c', 'ranking': '459f5fd3dfe7c69f8dd5b6a6e5641cf039f6ad1b897138505bca14a5b8494f18', 'session': 'd6a6045c7df212da4934b7d4408e0eaade2b801a2d6bdd111d8dfd58d7baf8d6'}}
+[CT 롤백] v1.1 → v1.0 / 사유=controlled rollback drill after measured promotion
+[CT 서비스 모델 교체] 모델=v1.0
+[CT 재학습] 신규 로그 0건 누적 / 사유=performance_degradation / v1.0 → v1.3 / 재학습 시작
+[CT 스냅샷] 관측 로그를 묶음 단위로 읽고 시간순 학습 스냅샷을 생성합니다.
+[CT 학습 준비] 스냅샷·관측 라벨 검사 통과; 세 모델 학습을 시작합니다.
+[모델 학습] Two-Tower epoch=1 / loss=1.19647 / valid_recall@300=0.961806 / 갱신=7
+[모델 학습] Two-Tower epoch=2 / loss=0.53223 / valid_recall@300=0.972222 / 갱신=7
+[모델 학습] Two-Tower epoch=3 / loss=0.38114 / valid_recall@300=0.958333 / 갱신=7
+[모델 학습] Two-Tower 선택 epoch=2 / valid_recall@300=0.972222 / 결과=/app/models/.ct/resource-refactor-20261112/degradation-models/.ct/runs/v1.3-864a5cbd/results/candidate_training_dev.json
+[모델 학습] DeepFM epoch=1 / loss=15.19322 / valid_ctr_auc=0.709000 / cvr_auc=0.47088262056414926
+[모델 학습] DeepFM epoch=2 / loss=5.10139 / valid_ctr_auc=0.891524 / cvr_auc=0.4609872611464968
+[모델 학습] DeepFM epoch=3 / loss=3.69829 / valid_ctr_auc=0.908127 / cvr_auc=0.4794131028207461
+[모델 학습] DeepFM epoch=4 / loss=3.01060 / valid_ctr_auc=0.899981 / cvr_auc=0.48089171974522305
+[모델 학습] DeepFM epoch=5 / loss=2.56571 / valid_ctr_auc=0.904864 / cvr_auc=0.467697907188353
+[모델 학습] DeepFM epoch=6 / loss=2.15139 / valid_ctr_auc=0.903377 / cvr_auc=0.4794131028207462
+[모델 학습] 세션 epoch=1 / valid_loss=3.99862 / sampled_hit@10=0.43787
+[모델 학습] 세션 epoch=2 / valid_loss=3.70289 / sampled_hit@10=0.54438
+[모델 학습] 세션 epoch=3 / valid_loss=3.44556 / sampled_hit@10=0.64497
+[CT 버전 등록] 모델=v1.3
+[CT 버전 등록] 모델=v1.3
+[CT 판정] 검증 조건을 충족하여 새 모델을 승격합니다. / 후보=v1.3 / 활성=v1.3 / 검증={'split': 'valid', 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4', 'baseline': {'ctr_auc': 0.5, 'ctr_logloss': 0.6931471805599454, 'hit_rate_at_50': 0.125, 'truth_users': 24, 'ctr_samples': 1374, 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4'}, 'candidate': {'ctr_auc': 0.908127198583944, 'ctr_logloss': 1.077794754532974, 'hit_rate_at_50': 0.9583333333333334, 'truth_users': 24, 'ctr_samples': 1374, 'validation_fingerprint': '6b8913695bc636148f58748e10446a7c648602a35a12c95cfc64cfdd4d48e8d4'}, 'training_reports': {'candidate': '68a5f56bcdbd532db90828c9699f2af0c31e668408043f503297e927a7b5ed9d', 'ranking': '9b5d4b9cfd826d0efc632526794c04544fecddf046d58f00958fc50f8a25fc8a', 'session': '1bb15481b7819b87db12e99316cc0ec94ea098b5e25b0b01fdc92a24a8f5b408'}}
+[CT 롤백] v1.3 → v1.0 / 사유=controlled degradation check complete
+{"lifecycle": "PASS", "degradation": "PASS", "trigger_reason": "performance_degradation"}

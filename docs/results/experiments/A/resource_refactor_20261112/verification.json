@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "scope": "resource refactor implementation and regression verification",
+  "acceptance": "UNMEASURED",
+  "tests": {
+    "passed": 485,
+    "warnings": 2
+  },
+  "types": {
+    "mypy_files": 123,
+    "strict_files": 2
+  },
+  "full_quality": {
+    "valid_passes": 11,
+    "test_passes": 11,
+    "frozen_identity_equal": true,
+    "previous_test_comparison": {
+      "reference": "docs/results/experiments/A/pdf_completion_20261111/quality_full_test.json",
+      "reference_sha256": "aa19fcba7bb0477c712131c5bb7fdfe6b2424ff58aa55ac458a19864cb89ee96",
+      "same_data": true,
+      "same_cohort": true,
+      "same_cutoff": true,
+      "quality_metrics_equal": true
+    }
+  },
+  "limitations": [
+    "full 5000 users per arm / 30 days A/B was not rerun",
+    "CT real training/promotion used a controlled small initial model; production improvement was not measured",
+    "B11 final acceptance was not regenerated"
+  ],
+  "evidence_sha256": {
+    "verify_degradation.py": "6cf2459d9d8d8ccaf4d240f4ba40c04c010f7ac471b54724898c78aec10aea37",
+    "ct_lifecycle.json": "ab4ae05e34ee1782576d3bf40dc0b3268455bf503dc5657063ee0fee3f26dcb5",
+    "before.json": "f1f6af5452aa7f7979f679f532e9628af8f0d5b6b67a873425be35e6812d08e2",
+    "ct_degradation.json": "8c38292158a3ad07317da849ec8bf605aa8dc18f09719da09d45392ab34d3d38",
+    "mypy-final.txt": "62f7c4c63dd61757257e3e6457752556858069091c5f9afd703f3e2aaee660f7",
+    "full-tests-before-fixture-fixes.txt": "d77ed6f1669bab41d6c9f06dfffad4063eb1fdba6d70ddc1a87a3b1de615d095",
+    "full-comparison.txt": "be1498ee153dd23b438d22a291ec2fbaa4c30a9a0bef0dee4f361ad15affd801",
+    "ct_log.jsonl": "e7829bcc24a477a944d6b14daf6fdb35d88d63358dc18648f7102857c07a864b",
+    "recheck-failures.txt": "dc034cf74a4fef9148534d00a0a4252f296c46a75d821fa9f27f9e5dadef8699",
+    "quality-verify.txt": "28b3135328a1fbd16e0adbd7cd37864708efa6cfb175fb8ae4e8273d45572657",
+    "docker-quality.txt": "4c14647d12ed75a8e9ec6dd5225c3e08796e155c989373e32437a803406ff991",
+    "after.json": "9700e6c93e9ce63036990f3c924d673b1989fbc3216242cda5ad15e026132e10",
+    "ct-integration.txt": "1c696c4a895fa24c42b60d29f286d115de5c7a1e24aef2de2ab5ba8f46d6b7f0",
+    "strict-final.txt": "f9b031e5c45aa702cd4fef028d465551cb20a2c4698e0913c7b00766b20ac4d8",
+    "compare.py": "1d57161e4fe60137ab4975d89eec36c74b245e84988dd00b779f2b36d17420fe",
+    "full-tests-final.txt": "739f526073207cfb7680626073def28618fd2f09972b481212c4f0defd7bd69d",
+    "comparison.json": "71c3354287f6265f5e3b002b59495316b98b4fec8cffbc15f54cc40b0e3b93a5",
+    "experiments/C/resource-refactor-20261112/ct_fixture_log.jsonl": "e7829bcc24a477a944d6b14daf6fdb35d88d63358dc18648f7102857c07a864b",
+    "experiments/C/resource-refactor-20261112/ct_training_ranking_fixture.json": "459f5fd3dfe7c69f8dd5b6a6e5641cf039f6ad1b897138505bca14a5b8494f18",
+    "experiments/C/resource-refactor-20261112/ct_training_candidate_fixture.json": "83a999349f0443ebe5d271e37f4a7f6f781a2e82efadd5b1a9ba0da28748360c",
+    "experiments/C/resource-refactor-20261112/ct_training_session_fixture.json": "d6a6045c7df212da4934b7d4408e0eaade2b801a2d6bdd111d8dfd58d7baf8d6",
+    "docker/quality_selection_full.json": "692b4f2ee9da8b1711807bbd6139fd0a2b8f680fa672bdaf3d4829964d01dd59",
+    "docker/preparation_full.json": "ba01d6724ab038afef990de877eb337ae0ec59aab489246b900ba8d608a898ea",
+    "docker/smoke_full.json": "de9ba00902319b3528e674e7660e4a9b3f8b8f0d8832f7d0c219cfbfb42ea853",
+    "docker/latency.json": "de9ba00902319b3528e674e7660e4a9b3f8b8f0d8832f7d0c219cfbfb42ea853",
+    "docker/quality_full_valid.json": "4c7e5697077c296d2f5b777846992c37070aea98995d57f83d0034d016ddbfb2",
+    "docker/quality_full_test.json": "cc73f42d2e6493c70bac60836bebd576b72a1506970453a2e35e010aa4173a05",
+    "docker/freezes/4c7e5697077c296d2f5b777846992c37070aea98995d57f83d0034d016ddbfb2.json": "4c7e5697077c296d2f5b777846992c37070aea98995d57f83d0034d016ddbfb2",
+    "runtime/full/evaluation_full_valid.json": "4c7e5697077c296d2f5b777846992c37070aea98995d57f83d0034d016ddbfb2",
+    "runtime/full/evaluation_full_test.json": "cc73f42d2e6493c70bac60836bebd576b72a1506970453a2e35e010aa4173a05"
+  }
+}

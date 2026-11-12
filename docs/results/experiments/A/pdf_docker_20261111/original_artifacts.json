@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "container_source_files_checked": 160,
+  "container_sources_equal_host": true,
+  "tests_excluded_by_dockerignore": 45,
+  "original_search_artifacts": {
+    "embeddings": {
+      "fingerprint": "59c3c95a04bc4833c511c2fd832a73dd6d37c240820327e2a7c70fa65e003780",
+      "count": 50000,
+      "file_hashes": {
+        "text.npy": "064fc5377d84128b30e96bd7cb881fded17f3d36e40f117b3cc0352092195baf",
+        "image.npy": "950c43d5c6b4204b1f62c47a6a78aa01e6dac1c5404567e54c70e0bc3e85bf67",
+        "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+        "text_audit.json": "a85242d955fe72156e5bb3b69b5749f6f2b6835feb3cbb76f7deed8eb378e1e0"
+      },
+      "same_original_bundle": true
+    },
+    "indexes": {
+      "fingerprint": "49a3d5a7d102c3fa28daed382107daff70285d8c7840a8910d18f3b20817f4d7",
+      "count": 50000,
+      "file_hashes": {
+        "item_ids.json": "e23c0461ef0c7dc5854056f44cb50441710d1c6a97bc8912063c88a11d0d843c",
+        "text.faiss": "37e0feee551c407d814620e385f392e54aebb32ccecdd6e91004e26cc94b773a",
+        "image.faiss": "4ca1d092faff3afbc1cab619ae21964da6b42b56810fc25089ebeb438dc63ef8",
+        "hybrid.faiss": "4f01b6044ead1e48935f2b2968c82974607ad1dccc0a1f2bb261262863dd3c23",
+        "text_members.json": "f5174232c786637c669121e441fd7018b1685b7ba3ee06a997982716ca1fbd7e",
+        "image_members.json": "e4e7f33aea6bda6c8eae15b91e1455a6b681788fd72e0aabf754d9888d2dcda8",
+        "hybrid_members.json": "02215faf13ed9f62517cea0d5aa4f982d87bba5a58ae6b381bf3268a1c173f4c"
+      },
+      "same_original_bundle": true
+    }
+  },
+  "scope": "original bundle checksums verified through Docker; no host ownership change"
+}

@@ -1,5 +1,13 @@
 # B4 추천 API·B5 재랭킹·MAB·세션 최종 검증 v2
 
+<!-- current-v44 -->
+현재 구현·새 full valid/test·실행 조건은 [v4.4 보고서](submission/report.md)를 따른다.
+2026-11-12 리팩터링 소스로 full valid/test와 지연을 다시 측정해 11개 기준이 모두 통과했다.
+추천의 과거 단계 기록과 현재 결과를 구분한다. 현재 전체 시연·CT·최종 통합 상태는
+[최종 실행 집계](results/experiments/A/final_validation_20261112/submission/checks.json)를 따른다.
+
+## 이전 실행 기록 보존
+
 B 소유 구현과 B 메모리 주입 환경, 동결 CTR 정책의 full test 추천 품질은 **PASS**다.
 공통 서버/Redis/Docker와 전체 회귀는 완료되지 않았으며 전체 acceptance는 **UNMEASURED**다.
 

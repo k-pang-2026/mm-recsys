@@ -1,0 +1,86 @@
+{
+  "created_at": "2026-11-11T12:29:28.434738+00:00",
+  "scope": "PDF requirements follow-up; current source and saved execution evidence; no new full training or A/B run",
+  "acceptance": "UNMEASURED",
+  "implementation_findings": [
+    {
+      "id": "cart_config",
+      "status": "OPEN",
+      "source": "src/simulator/events.py:119",
+      "problem": "cart transition configuration is replaced by hard-coded persona CVR calculation",
+      "evidence": "pdf_refactor_20261111/cart_config_reproduction.json",
+      "completion": "honor transition config, version the generator, regenerate dependent artifacts and validate before frozen test"
+    },
+    {
+      "id": "ct_threshold_equality",
+      "status": "OPEN_NEWLY_REPRODUCED",
+      "source": "src/ct/monitor.py:35",
+      "problem": "PDF requires at-or-below threshold; code uses strictly below for CTR and HitRate",
+      "source_sha256": "399bbe44309543afb1a4dcceea5690cd573682bcaf1617fcac804963412ca1ba",
+      "reproduction": {
+        "finding": "PDF threshold equality does not trigger an alert",
+        "pdf_requirement": "alert when metric is at or below threshold",
+        "expected_alerts": [
+          "ctr_below_threshold",
+          "hitrate_below_threshold"
+        ],
+        "actual": {
+          "event": "monitor",
+          "status": "MEASURED",
+          "ctr": 0.01,
+          "hit_rate_at_50": 0.2,
+          "clicks": 10,
+          "exposures": 1000,
+          "mature_requests": 20,
+          "top50_requests": 20,
+          "hit_requests": 4,
+          "alerts": [],
+          "window_start": -72799.0,
+          "observed_through": 13601.0,
+          "attribution_seconds": 3600,
+          "semantics": "CTR: unique linked viewed items / mature exposed items; HitRate@50: mature top50 requests with attributed cart/purchase / mature top50 requests; online monitoring, distinct from fixed-origin offline quality",
+          "thresholds": {
+            "ctr_threshold": 0.01,
+            "hitrate_threshold": 0.2,
+            "min_mature_requests": 20
+          }
+        },
+        "scope": "isolated temporary SQLite; no running service or production data changed"
+      },
+      "completion": "inclusive threshold comparisons and below/equal/above plus insufficient-observation regression checks"
+    }
+  ],
+  "unfinished_verification": [
+    {
+      "item": "current full CT data flow",
+      "reason": "previous full journal run had zero observed valid labels; current refactor verified controlled fixture training, not current full collected-log training",
+      "evidence": "final_fixes_20261110/ct_backlog.json",
+      "completion": "collect attributable mature positive/negative outcomes across chronological training/validation, run full retraining, paired validation and serving version/rollback checks"
+    },
+    {
+      "item": "clean artifact-free Docker reproduction",
+      "reason": "latest Docker run reused frozen full v4.3 artifacts; a new-source clean generation/training run was not executed",
+      "completion": "isolated empty data/model directories, generation/training/readiness/reuse checks without altering originals"
+    },
+    {
+      "item": "current submission documentation and final evidence bundle",
+      "reason": "new evidence is isolated in experiment directories; existing submission requirements document still leads with v4.2 results",
+      "completion": "update current requirement-source-result mapping, recompute submission/final acceptance checks, prepare reviewed local commit; remote push/PR requires existing project approval process"
+    }
+  ],
+  "additional_project_scope": {
+    "configured_ab": "5000 users per arm for 30 days not rerun for this refactor; 100 per arm for 7 days executed",
+    "pdf_classification": "PDF gives these counts as an example, not mandatory fixed acceptance thresholds"
+  },
+  "not_required_for_pdf_acceptance": [
+    "exact example product IDs, prices, scores, latency and log wording",
+    "positive A/B lift or p=0.003",
+    "automatic model promotion when validation does not improve",
+    "optional real datasets under docs/submission/dataset_scope.json"
+  ],
+  "resolved_environment_blocks": [
+    "Docker access",
+    "original search index read/checksum through Docker"
+  ],
+  "accountability": "Old artifacts needed preservation, but separate versioned generation and subsequent verification were authorized and not completed; missing approval did not block those local steps."
+}

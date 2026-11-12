@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "checks": {
+    "assignment": true,
+    "arms": false,
+    "user_outcomes": true,
+    "inference": true,
+    "outcome_model": true
+  },
+  "scope": "Compare the freshly measured full A/B outcomes against the prior same-data full run; no replacement of the new measurement"
+}

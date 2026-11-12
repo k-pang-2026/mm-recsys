@@ -1,4 +1,3 @@
-import copy
 import numpy as np
 import pandas as pd
 import pytest
@@ -109,7 +108,6 @@ def test_rare_required_new_item_is_reserved_without_consuming_separator_early():
 
 def test_completion_feasibility_matches_exhaustive_small_sequences():
     from itertools import product
-    from collections import Counter
     from src.recommendation.reranking import completion_feasible
     for counts_tuple in product(range(4),repeat=3):
         counts=dict(zip('abc',counts_tuple)); total=sum(counts_tuple)

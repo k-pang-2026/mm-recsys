@@ -11,7 +11,7 @@ from collections.abc import Mapping
 from typing import Any, cast
 
 import redis
-from redis.exceptions import RedisError, WatchError
+from redis.exceptions import ConnectionError as RedisConnectionError, RedisError, TimeoutError as RedisTimeoutError, WatchError
 
 from src.common.schemas import EventRequest, FeedbackRequest, UserFeatures
 from src.serving.memory_store import MemoryFeatureStore
@@ -225,13 +225,20 @@ class RedisFeatureStore:
                    for user_id, profile in profiles.items()]
         try:
             for offset in range(0, len(encoded), batch_size):
-                with self.client.pipeline(transaction=True) as pipe:
-                    for user_id, profile in encoded[offset:offset + batch_size]:
-                        key = self.key("user", user_id, "profile")
-                        pipe.delete(key)
-                        if profile:
-                            pipe.hset(key, mapping=profile)
-                    pipe.execute()
+                for attempt in range(self.write_retries):
+                    try:
+                        with self.client.pipeline(transaction=True) as pipe:
+                            for user_id, profile in encoded[offset:offset + batch_size]:
+                                key = self.key("user", user_id, "profile")
+                                pipe.delete(key)
+                                if profile:
+                                    pipe.hset(key, mapping=profile)
+                            pipe.execute()
+                        break
+                    except (RedisConnectionError, RedisTimeoutError):
+                        # Replacing the same profiles is safe even if EXEC's reply was lost.
+                        if attempt + 1 == self.write_retries:
+                            raise
             self.available = True
         except RedisError as error:
             self._failure("batch_load_profiles", error)
