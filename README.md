@@ -3,6 +3,16 @@
 텍스트·이미지로 상품을 검색하고, 사용자 행동과 현재 세션을 반영해 상품을 추천하는 시스템입니다.
 합성 고객 행동 데이터로 모델을 학습하며, 검색·추천 API, 평가 대시보드, A/B 실험과 자동 재학습을 로컬 Docker에서 실행합니다.
 
+**최신 평가 대시보드 (2026-11-23 개편): https://kpang-mm-recsys.streamlit.app**
+
+| 보는 곳 | 주소 | 화면 |
+|---|---|---|
+| 온라인 (설치 없이 바로) | https://kpang-mm-recsys.streamlit.app | 11/23 개편 화면 · 저장된 평가 결과(`docs/results`)를 보여 주는 읽기 전용 |
+| 로컬 Docker (PDF 2쪽 실행 주소) | http://localhost:8501 | 같은 11/23 개편 화면 · 「직접 해보기」 검색·추천과 실시간 API 상태 포함 |
+
+두 주소 모두 지금 main의 대시보드입니다. 한 페이지에 개요부터 참고까지 이어지고, 왼쪽 목차가 지금 읽는 곳을 따라 펼쳐집니다. 기본으로 보여 주는 기록은 새 도안(`illustrations-v1`) 카탈로그의 2026-11-21 full test(「최종 제출 · 시험 데이터」)이며, 개요 › 측정 기록에서 「상품 그림 바꾸기 전」 등 비교용 기록도 고를 수 있습니다.
+로컬 실행은 [Docker로 로컬 결과 확인](#docker로-로컬-결과-확인)을 따릅니다. 온라인 앱은 무료라 한동안 접속이 없으면 잠들며, 화면의 깨우기 버튼을 누르면 1분 안팎으로 다시 열립니다. 배포 원본은 `giitbal/mm-recsys` 포크의 `feat/dashboard-redesign` 브랜치입니다.
+
 PDF 2·4·7절의 로컬 통합 검증을 통과했습니다. 전체 성능 기준 11개와 후보 300개 조건을 충족했습니다. 제출 소스와 통합 PR의 병합 내역은 공개 저장소에서 확인할 수 있습니다. [공개 저장소](https://github.com/k-pang-2026/mm-recsys) · [제출 보고서](docs/submission/report.md) · [최종 검사 결과](docs/results/final_acceptance.json)
 
 검색 600개 질의의 모드별 점수와 BM25 비교, 추천 1만 명의 성능과 기준선, 5,000명씩 30일간 비교한 합성 실험의 CTR·CVR을 각각 확인할 수 있습니다. [검색 보고서](docs/search_report.md) · [추천 보고서](docs/recommend_report.md) · [A/B 보고서](docs/ab_test_report.md) · [재현 절차](docs/submission/reproduction.md)
@@ -94,12 +104,14 @@ curl --fail 'http://localhost:8000/api/recommend?user_id=U000001'
 
 | 확인할 내용 | 주소 |
 |---|---|
-| Streamlit 평가 대시보드 (기본) | http://localhost:8501 |
+| Streamlit 평가 대시보드 (기본 · 11/23 개편 화면) | http://localhost:8501 |
 | API 문서와 요청 실행 | http://localhost:8000/docs |
 | 모델 준비 상태 | http://localhost:8000/ready |
 | 대시보드 카탈로그를 공유하는 쇼핑몰 | http://localhost:3000 · http://localhost:3000/operations |
 
-기본 대시보드·API·쇼핑몰은 같은 `illustrations-v1` 카탈로그와 CLIP 인덱스를 사용합니다. full 상품 5만 개의 JPEG와 독립 검색 평가 쿼리를 새 생성기로 그립니다. 모델 준비 중에는 같은 데이터의 full test와 합성 A/B 기준 측정을 표시합니다. A/B 탭에 실제 군별 인원과 기간이 표시됩니다.
+대시보드의 「직접 해보기」에서 검색·추천을 실행하고 상품·CLIP 벡터와 구매 원장을 조회하며, 「데이터」에서 EDA·페르소나를 확인할 수 있습니다.
+
+기본 대시보드·API·쇼핑몰은 같은 `illustrations-v1` 카탈로그와 CLIP 인덱스를 사용합니다. full 상품 5만 개의 JPEG와 독립 검색 평가 쿼리를 새 생성기로 그립니다. 모델 준비 중에는 같은 데이터의 full test와 합성 A/B 기준 측정을 표시합니다. 「A/B 실험」에 실제 군별 인원과 기간이 표시됩니다.
 
 쇼핑몰을 추가로 실행하려면 저장소 루트에서 다음 명령을 실행하세요.
 
@@ -175,7 +187,7 @@ docker compose run --rm --no-deps --pull never api-server demo evaluate --split 
 docker compose start simulator
 ```
 
-valid 평가가 통과한 후 test를 실행합니다. 대시보드에서 **결과 새로고침**을 누르고 `evaluation_full_test.json`을 선택합니다.
+valid 평가가 통과한 후 test를 실행합니다. 대시보드 개요 › 측정 기록에서 **기록 다시 읽기**를 누르고 「이 컴퓨터에서 실행 (전체 데이터)」와 「시험 데이터」(`evaluation_full_test.json`)를 고릅니다.
 지연은 10회 준비 호출 후 100회 단건 요청의 p95로 측정합니다.
 이 평가는 검색·추천 품질을 확인하며, 최종 종합 판정은 별도 통합 검증 결과를 사용합니다.
 

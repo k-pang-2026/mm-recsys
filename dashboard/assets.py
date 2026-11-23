@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from dashboard.data import ab_record
 from src.common.artifacts import file_hash, fingerprint
 from src.recommendation.bundle_compat import training_config_matches
 
@@ -35,14 +36,14 @@ def different_recommendation_policy(report: dict, results: Path) -> bool:
 def reference_identity(report: dict, results: Path) -> str:
     active = deployment(results)
     if active is None:
-        return '현재 배포의 데이터·모델을 준비하면 제출 기준과 비교합니다.'
+        return '현재 배포의 데이터·모델을 준비하면 최종 제출 기록과 비교합니다.'
     if (active['data_fingerprint'] != report['data_fingerprint']
             or file_hash(Path(active['data_dir']) / 'split_manifest.json') != report['identity']['data_manifest_sha256']):
-        return '현재 배포는 제출 기준과 다른 데이터를 사용합니다.'
+        return '현재 배포는 최종 제출 기록과 다른 데이터를 사용합니다.'
     model = Path(active['model_dir'])
     registry = json.loads((model / 'registry.json').read_text())
     if registry['active'] != report['model_version']:
-        return '현재 활성 모델 버전이 제출 기준과 다릅니다.'
+        return '현재 활성 모델 버전이 최종 제출 기록과 다릅니다.'
     for kind, subdir in (('candidate', ''), ('ranking', 'ranking'), ('session', 'session')):
         folder = model / registry['active'] / subdir
         hashes = json.loads((folder / 'meta.json').read_text())['hashes']
@@ -62,19 +63,19 @@ def reference_identity(report: dict, results: Path) -> str:
                     and training_config_matches(active_index.pop('config_fingerprint'), recipe)
                     and active_index == measured_index):
                 continue
-        return '데이터는 일치하며 추천 모델 산출물은 제출 기준과 다릅니다.'
+        return '데이터는 일치하며 추천 모델 산출물은 최종 제출 기록과 다릅니다.'
     search = model / active['search_subdir']
     for key, directory in (('embeddings', 'embeddings'), ('index', 'indexes')):
         pointer = json.loads((search / f'{directory}_current.json').read_text())
         expected_bundle = report['search']['models'][key]
         if pointer['fingerprint'] != expected_bundle['fingerprint']:
-            return '데이터와 추천 모델은 일치하며 검색 번들은 제출 기준과 다릅니다.'
+            return '데이터와 추천 모델은 일치하며 검색 번들은 최종 제출 기록과 다릅니다.'
         if not expected_bundle.get('files'):
-            return '제출 기준에 검색 파일 해시가 없어 산출물 일치 여부를 확인할 수 없습니다.'
+            return '최종 제출 기록에 검색 파일 해시가 없어 산출물 일치 여부를 확인할 수 없습니다.'
         manifest = json.loads((search / directory / pointer['fingerprint'] / 'manifest.json').read_text())
         if manifest.get('files') != expected_bundle['files']:
-            return '데이터·검색 설정·추천 모델은 일치하며 검색 파일 해시는 제출 기준과 다릅니다.'
-    return '현재 배포와 제출 기준의 데이터·검색 번들·추천 모델이 일치합니다.'
+            return '데이터·검색 설정·추천 모델은 일치하며 검색 파일 해시는 최종 제출 기록과 다릅니다.'
+    return '현재 배포와 최종 제출 기록의 데이터·검색 번들·추천 모델이 일치합니다.'
 
 
 @lru_cache(maxsize=2)
@@ -164,7 +165,4 @@ def ab_result(results: Path) -> dict | None:
         return None
     if not _initial_models_match(active['model_dir'], value['identity']['bundle_metadata']):
         raise ValueError('A/B와 배포 초기 모델이 다릅니다.')
-    return dict(status='MEASURED', source=str(path), days=value['days'], seed=value['seed'],
-        strategies=value['strategies'], denominators=value['denominators'], inference=value['inference'],
-        arms={key: {k: v for k,v in row.items() if k != 'arm_statistics'} for key,row in value['arms'].items()},
-        limitations=value['limitations'])
+    return ab_record(value, path)

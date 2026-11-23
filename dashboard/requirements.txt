@@ -1,0 +1,10 @@
+# Streamlit Community Cloud reads this file (next to dashboard/app.py) instead of the root ML requirements.
+# Same pins as requirements-dashboard.txt, plus pyarrow for the purchase-ledger parquet reader.
+streamlit==1.41.1
+plotly==5.24.1
+pandas==2.2.3
+numpy==2.1.3
+requests==2.32.3
+pyyaml==6.0.2
+python-dotenv==1.0.1
+pyarrow==19.0.0

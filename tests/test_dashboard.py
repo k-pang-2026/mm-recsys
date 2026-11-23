@@ -32,6 +32,13 @@ def test_display_conversion_handles_timezone_rollover_without_mutating_values():
     assert original == before
 
 
+@pytest.fixture(autouse=True)
+def isolated_published_results(tmp_path, monkeypatch):
+    """Keep the repository's published bundles out of tests unless a test opts in."""
+    monkeypatch.setenv('PUBLISHED_RESULTS_DIR', str(tmp_path / 'published'))
+    monkeypatch.delenv('DASHBOARD_REFERENCE_REPORT', raising=False)
+
+
 @pytest.fixture
 def report():
     values = dict(mrr=.6, ndcg_at_10=.45, recall_at_300=.8, auc=.96, hit_rate_at_50=.4,
@@ -58,6 +65,40 @@ def report():
 
 def offline(*args, **kwargs):
     return dict(ok=False, status_code=None, data=None, error='fixture: API unavailable')
+
+
+def flatten(node):
+    for child in getattr(node, 'children', {}).values():
+        yield child
+        yield from flatten(child)
+
+
+def part(app, name, kind):
+    """Elements of one kind inside one category of the single page: between its heading and the next category's."""
+    current, found = None, []
+    for node in flatten(app.main):
+        if getattr(node, 'type', None) == 'header':
+            current = node.value
+        elif current == name and getattr(node, 'type', None) == kind:
+            found.append(node)
+    return found
+
+
+def texts(app, name, *kinds):
+    return [node.value for kind in kinds for node in part(app, name, kind)]
+
+
+def shown(app) -> str:
+    """The measurement record every category reads, as picked in 개요 › 측정 기록."""
+    return data.label(app.session_state['record_choice'], app.session_state['split_choice'])
+
+
+def pick(app, record, split=None):
+    """Choose a measurement record (and its scoring data) in the 개요 card."""
+    app.radio(key='record').set_value(record).run()
+    if split and any(item.key == 'split' for item in app.radio):
+        app.radio(key='split').set_value(split).run()
+    return app
 
 
 def test_large_ct_log_reads_latest_utf8_records_and_preserves_invalid_count(tmp_path):
@@ -102,9 +143,12 @@ def test_test_report_is_preferred_and_integration_receipt_is_visible(tmp_path, m
     monkeypatch.setattr(data, 'api_call', offline)
     app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
     assert not app.exception
-    assert app.selectbox[0].value.name == 'evaluation_dev_test.json'
-    assert any(item.label == '최종 통합 검사 근거' for item in app.expander)
-    assert next(m.value for m in app.metric if m.label == '최종 종합 품질') == 'UNMEASURED'
+    assert shown(app) == '이 컴퓨터에서 실행 (개발용 데이터) · 시험 데이터'
+    assert app.radio(key='record').value == '이 컴퓨터에서 실행 (개발용 데이터)' and app.radio(key='split').value == '시험'
+    assert next(m.value for m in part(app, '개요', 'metric') if m.label == '최종 종합 품질') == '미측정'
+    assert '통합 검사 근거' in texts(app, '참고', 'subheader')  # the integration receipt has one home: 참고 › 통합 검사 근거
+    assert any(item.label == '근거' for item in part(app, '참고', 'expander'))
+
 
 
 def test_missing_full_test_falls_back_to_full_valid_before_dev(tmp_path, monkeypatch, report):
@@ -115,51 +159,127 @@ def test_missing_full_test_falls_back_to_full_valid_before_dev(tmp_path, monkeyp
     monkeypatch.setattr(data, 'api_call', offline)
     app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
     assert not app.exception
-    assert app.selectbox[0].value.name == 'evaluation_full_valid.json'
+    assert shown(app) == '이 컴퓨터에서 실행 (전체 데이터) · 검증 데이터'
+    assert not any(item.key == 'split' for item in app.radio)  # one scoring data only: stated, not offered
 
 
-def test_four_tabs_charts_and_metric_tables_match_json(tmp_path, monkeypatch, report):
+def test_published_bundles_come_first_and_side_evidence_stays_inside_results(tmp_path, report):
+    published, results = tmp_path / 'published', tmp_path / 'results'
+    entry = data.PUBLISHED[2]
+    path, folder = published / entry['path'], published / entry['folder']
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(dict(report, scale='full', split='test')))
+    results.mkdir()
+    config = dict(published_dir=published, results_dir=results, scale='full', reference_report=None)
+    items, default = data.bundles(config)
+    assert [item['label'] for item in items] == [data.label(entry['record'], entry['split'])]
+    assert default == 0 and items[0]['folder'] == folder and items[0]['root'] == published
+    assert data.read_json(data.evidence(items[0], 'data_audit.json'), published) is None
+    (results / 'evaluation_dev_valid.json').write_text(json.dumps(report))
+    (results / 'evaluation_full_test.json').write_text(json.dumps(dict(report, scale='full', split='test')))
+    items, default = data.bundles(config)
+    assert [item['label'] for item in items] == [data.label(entry['record'], entry['split']),
+                                                 '이 컴퓨터에서 실행 (개발용 데이터) · 검증 데이터',
+                                                 '이 컴퓨터에서 실행 (전체 데이터) · 시험 데이터']
+    assert default == 2 and items[2]['root'] == results  # a finished runtime run of the configured scale wins
+    outside = tmp_path.parent / 'outside_evidence.json'
+    outside.write_text('{}')
+    with pytest.raises(ValueError, match='경로'):
+        data.read_json(outside, tmp_path)
+
+
+def test_tabs_charts_and_metric_tables_match_json(tmp_path, monkeypatch, report):
     path = tmp_path / 'evaluation_dev_valid.json'
     path.write_text(json.dumps(report))
     monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
     monkeypatch.setattr(data, 'api_call', offline)
     app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
     assert not app.exception
-    assert [tab.label for tab in app.tabs] == ['검색', '추천', 'A/B 실험', '시스템', 'EDA·구매 이력', '상품·CLIP']
-    assert len(app.get('plotly_chart')) == 5
-    metrics = {m.label: m.value for m in app.metric}
-    assert metrics['측정 기준 판정'] == 'FAIL' and metrics['최종 종합 품질'] == 'UNMEASURED'
-    assert metrics['CVR 상대 lift'] == '-50.0%' and metrics['API 연결'] == '연결 안 됨'
-    observed = {}
-    for frame in app.dataframe:
-        df = frame.value
-        if '측정값' in df:
-            observed.update({row['지표']: (row['측정값'], row['판정']) for row in df.to_dict('records')})
-    from dashboard.app import LABELS
+    from dashboard.app import LABELS, STATUS, fmt
+    from dashboard.sections import TABS
+    assert TABS == ['개요', '데이터', '검색', '추천', 'A/B 실험', '시스템', '직접 해보기', '참고']
+    assert [item.value for item in app.header] == TABS  # one page: every category, one after another
+    assert not any(item.key == 'tab' for item in app.radio)  # no tab bar
+    assert not any(str(item.key).startswith('nav_') for item in app.button)  # and no category buttons
+    assert any('상품 1,000개' in value for value in texts(app, '개요', 'markdown'))  # selected counts
+    metrics = {m.label: m.value for m in part(app, '개요', 'metric')}
+    assert metrics['측정 기준 판정'] == '미달' and metrics['최종 종합 품질'] == '미측정'
+    assert metrics['MRR'] == '0.600' and metrics['검색 HTTP p95'] == '250.0ms'
+    table = next(frame.value for frame in part(app, '개요', 'arrow_data_frame') if '측정값' in frame.value)
+    observed = {row['지표']: (row['측정값'], row['판정']) for row in table.to_dict('records')}
     assert len(observed) == len(report['metrics'])
     for row in report['metrics']:
-        assert observed[LABELS[row['name']]] == (row['value'], row['status'])
-    spec = json.loads(app.get('plotly_chart')[0].proto.spec)
+        assert observed[LABELS[row['name']]] == (fmt(row['name'], row['value']), STATUS[row['status']])
+    charts = part(app, '검색', 'plotly_chart')
+    assert len(charts) == 2 + 1  # MRR, NDCG@10, ANN (no HTTP samples)
+    spec = json.loads(charts[0].proto.spec)
     assert spec['data'][0]['y'] == [.6, .6, .6]
     assert spec['data'][1]['y'] == [.4, None, .4]
-    assert spec['layout']['annotations'][0]['text'] == '기준 0.55'
-    assert spec['layout']['yaxis']['tickformat'] == '.1f'
-    assert spec['layout']['yaxis']['hoverformat'] == '.1f'
-    shown = pa.ipc.open_stream(app.dataframe[0].proto.styler.display_values).read_all().to_pandas()
-    assert shown['측정값'].tolist() == ['0.6', '0.5']
-    assert shown['기준'].tolist() == ['0.55', '0.5']
+    assert spec['data'][1]['text'][1] == '해당 없음'  # image mode has no BM25 (not a zero score)
+    assert any('상대 -50.0%' in value for value in texts(app, 'A/B 실험', 'markdown'))
+    assert any('모델 버전은 fixture-v1' in value for value in texts(app, '시스템', 'caption'))
+    assert any('연결 안 됨' in value for value in texts(app, '직접 해보기', 'caption'))  # live API state sits with the demos
+
+
+
+def test_contents_list_the_page_in_order_and_only_the_place_being_read_opens(tmp_path, monkeypatch, report):
+    (tmp_path / 'evaluation_dev_valid.json').write_text(json.dumps(report))
+    monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
+    monkeypatch.setattr(data, 'api_call', offline)
+    from dashboard.sections import CATEGORIES, SECTIONS, TABS
+    app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
+    assert not app.exception and [item.value for item in app.header] == TABS
+    complete = {'개요', '검색', '추천', '시스템', '직접 해보기', '참고'}  # categories whose every section has data in the fixture
+    for tab in TABS:
+        titles = [title for title, _ in SECTIONS[tab]]
+        shown_titles = texts(app, tab, 'subheader')
+        assert shown_titles == [title for title in titles if title in shown_titles], (tab, shown_titles)  # same names and order
+        if tab in complete:
+            assert shown_titles == titles, (tab, shown_titles)
+    toc = ' '.join(item.value for item in app.sidebar.markdown)
+    places = [anchor for tab in TABS for anchor in [CATEGORIES[tab]] + [anchor for _, anchor in SECTIONS[tab]]]
+    positions = [toc.index(f'href="#{anchor}"') for anchor in places]
+    assert positions == sorted(positions)  # the contents list every place in page order
+    assert toc.count('toc-group open') == 1 and toc.index('toc-group open') < toc.index('href="#overview"')  # 개요 starts open
+
 
 
 def test_absent_and_malformed_results_render_without_fake_values(tmp_path, monkeypatch):
     monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
     monkeypatch.setattr(data, 'api_call', offline)
+    from dashboard.sections import TABS
     for content in (None, '{not JSON}', '{"version":"old"}'):
         if content is not None:
             (tmp_path / 'evaluation_dev_valid.json').write_text(content)
         app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
-        assert not app.exception and len(app.tabs) == 6
+        assert not app.exception and [item.value for item in app.header] == TABS
         assert not app.get('plotly_chart')
-        assert all(m.label not in ('측정 기준 판정', 'Control CVR') for m in app.metric)
+        assert all(m.label not in ('측정 기준 판정', 'Control CVR', 'CTR 상대 변화') for m in app.metric)
+
+
+
+def test_background_reads_without_results(tmp_path, monkeypatch):
+    monkeypatch.setenv('RESULTS_DIR', str(tmp_path))
+    monkeypatch.setattr(data, 'api_call', offline)
+    from dashboard.sections import SECTIONS
+    app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
+    assert not app.exception and not app.error, [item.value for item in app.error]
+    assert texts(app, '개요', 'subheader') == [title for title, _ in SECTIONS['개요']]
+    assert app.subheader[0].value == '프로젝트 소개'  # what the project is and aims for comes before any number
+    assert not app.get('plotly_chart')
+    text = ' '.join(texts(app, '개요', 'markdown'))
+    assert '상품 50,000개' in text and '기준을 넘는지' in text
+    from dashboard.guide import STORY
+    story = next(value for value in texts(app, '개요', 'markdown') if 'class="story"' in value)
+    assert [tab for tab, _, _ in STORY] == ['데이터', '검색', '추천', 'A/B 실험', '시스템']  # the five steps follow the page
+    assert all(f'</span>{tab}</div><b>{goal}</b>' in story for tab, goal, _ in STORY)
+    explained = {'데이터': '학습 train 80%', '검색': 'CLIP 모델이', '추천': '② 랭킹 · DeepFM'}  # how each part works, before any result
+    for tab, phrase in explained.items():
+        assert any(phrase in value for value in texts(app, tab, 'markdown')), tab
+    text = ' '.join(texts(app, '참고', 'markdown'))
+    for word in ('MRR', 'Recall@300', 'AUC', 'HitRate@50', 'Coverage', 'p95', 'CTR', 'p값'):  # every 개요 metric is explained
+        assert word in text, word
+
 
 
 def test_demos_use_shared_http_contract_and_empty_search_is_local(tmp_path, monkeypatch):
@@ -181,7 +301,7 @@ def test_demos_use_shared_http_contract_and_empty_search_is_local(tmp_path, monk
     app.text_input(key='query_text').set_value(' black shirt ')
     next(b for b in app.button if b.label == '검색 실행').click().run()
     assert next(kwargs['payload'] for _, route, kwargs in calls if route == '/api/search') == dict(query_text='black shirt', top_k=10)
-    next(b for b in app.button if b.label == '추천 실행').click().run()
+    next(b for b in app.button if b.label == '추천 실행').click().run()  # both demos share the 직접 해보기 tab
     assert next(kwargs['params'] for _, route, kwargs in calls if route == '/api/recommend') == dict(user_id='U000001', top_n=10)
     assert not app.exception
     image = b'fixture image bytes; server validates decoding'
@@ -243,9 +363,12 @@ def test_live_model_version_and_nested_ct_logs_are_distinct_from_saved_measureme
     monkeypatch.setattr(data, 'api_call', api)
     app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
     assert not app.exception
-    assert {m.label: m.value for m in app.metric}['현재 모델 버전'] == 'v1.1'
-    assert any('fixture-v1' in caption.value for caption in app.caption)
-    assert any('controlled_fixture' in caption.value for caption in app.caption)
+    status = next(value for value in texts(app, '직접 해보기', 'caption') if value.startswith('지금 API 상태'))
+    assert '현재 모델 버전 v1.1' in status and '모델 버전 fixture-v1에서 측정' in status
+    assert any('controlled_fixture' in value for value in texts(app, '시스템', 'caption'))
+    curated = next(df for df in app.dataframe if '이벤트' in df.value)
+    assert curated.value['이벤트'].tolist() == ['승격', '롤백']  # event codes shown in Korean
+    assert pa.ipc.open_stream(curated.proto.styler.display_values).read_all().to_pandas()['시각'].iloc[0] == '2026-11-12 03:07:08 KST'
     frame = next(df.value for df in app.dataframe if 'event' in df.value)
     assert frame['comparison.candidate.ctr_auc'].iloc[0] == .9
     assert frame['at'].iloc[0] == '2026-11-11T18:07:08.123Z'
@@ -262,32 +385,101 @@ def test_packaged_report_renders_charts_then_prefers_new_runtime_measurement(tmp
     monkeypatch.setenv('SCALE', 'full')
     monkeypatch.setattr(data, 'api_call', offline)
     app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
-    assert not app.exception and app.selectbox[0].value == reference
-    assert all(tab.get('plotly_chart') for tab in app.tabs[:3])
-    assert any('새 도안 카탈로그에서 측정한' in item.value for item in app.info)
+    assert not app.exception and shown(app) == '최종 제출 · 시험 데이터'
+    assert any('Docker 이미지에 함께 넣은' in caption for caption in app.radio(key='record').proto.captions)
+    assert any('지금 상품 그림으로 측정한' in value for value in texts(app, '개요', 'caption'))  # where it was measured
+    for tab in ('검색', '추천', 'A/B 실험'):
+        assert part(app, tab, 'plotly_chart'), tab
     archived = json.loads(reference.read_text())
-    chart = json.loads(app.tabs[2].get('plotly_chart')[1].proto.spec)
-    for trace in chart['data']:
-        estimate = archived['ab']['inference'][trace['x'][0].lower()]
-        assert trace['y'] == pytest.approx([100 * estimate['difference']])
-        assert trace['customdata'][0] == pytest.approx([100 * bound for bound in estimate['difference_ci95']])
-        p_value = estimate['z_p_value']
-        assert trace['text'] == ['p < 0.001' if p_value < .001 else f'p = {p_value:.3f}']
+    intervals = [spec for spec in (json.loads(chart.proto.spec) for chart in part(app, 'A/B 실험', 'plotly_chart'))
+                 if spec['data'][0].get('error_x')]
+    assert len(intervals) == 2
+    for spec, metric in zip(intervals, ('ctr', 'cvr')):
+        estimate = archived['ab']['inference'][metric]
+        assert spec['data'][0]['x'] == pytest.approx([100 * estimate['difference']])
+    assert any('고른 측정 기록의 A/B 실험' in value for value in texts(app, 'A/B 실험', 'caption'))
 
     report.update(scale='full', ab={'status': 'UNMEASURED'})
     live = tmp_path / 'evaluation_full_valid.json'
     live.write_text(json.dumps(report))
     with pytest.raises(ValueError, match='제출 보고서'):
         data.read_reference(live)
-    app.run()
-    assert not app.exception and app.selectbox[0].value == live
-    assert next(metric.value for metric in app.metric if metric.label == '측정 기준 판정') == 'FAIL'
-    assert not app.tabs[2].get('plotly_chart')
+    app = AppTest.from_file('dashboard/app.py', default_timeout=20).run()
+    assert not app.exception and shown(app) == '이 컴퓨터에서 실행 (전체 데이터) · 검증 데이터'
+    assert next(metric.value for metric in part(app, '개요', 'metric') if metric.label == '측정 기준 판정') == '미달'
+    assert not part(app, 'A/B 실험', 'plotly_chart')
+    assert any('A/B는 시험 데이터 통합 실행에서 측정' in value for value in texts(app, 'A/B 실험', 'info'))
     report.update(data_fingerprint=archived['data_fingerprint'])
     report['recommendation']['models'] = archived['recommendation']['models']
     live.write_text(json.dumps(report))
     app.run()
-    assert any('현재 배포의 A/B 측정 전' in item.value for item in app.tabs[2].caption)
+    assert not app.exception and part(app, 'A/B 실험', 'plotly_chart')
+    assert any('현재 배포의 A/B 측정 전' in value for value in texts(app, 'A/B 실험', 'caption'))
+
+
+def test_repository_default_is_the_new_catalog_submission(monkeypatch):
+    monkeypatch.delenv('PUBLISHED_RESULTS_DIR')
+    monkeypatch.setattr(data, 'api_call', offline)
+    app = AppTest.from_file('dashboard/app.py', default_timeout=30).run()
+    assert not app.exception and shown(app) == '최종 제출 · 시험 데이터'
+    records = app.radio(key='record')  # plain names, one per record, each with its date and use underneath
+    assert records.options == ['최종 제출', '상품 그림 바꾸기 전', '통계 보정 실험']
+    assert app.radio(key='split').options == ['시험 데이터', '검증 데이터']
+    assert not app.error, [item.value for item in app.error]
+    from dashboard.sections import TABS
+    # Inputs that belong to 직접 해보기 only; the product lookup needs a local deployment, so it may be absent here.
+    lookups = {'ledger_user', 'catalog_product', 'query_text', 'user_id'}
+    for tab in TABS:
+        inputs = {item.key for item in part(app, tab, 'text_input')}
+        assert lookups - {'catalog_product'} <= inputs if tab == '직접 해보기' else not inputs & lookups, (tab, inputs)
+
+
+def test_record_picked_in_overview_applies_to_every_category(monkeypatch):
+    monkeypatch.delenv('PUBLISHED_RESULTS_DIR')
+    monkeypatch.setattr(data, 'api_call', offline)
+    app = pick(AppTest.from_file('dashboard/app.py', default_timeout=30).run(), '상품 그림 바꾸기 전', '검증')
+    assert not app.exception and shown(app) == '상품 그림 바꾸기 전 · 검증 데이터'
+    for tab in ('데이터', '검색', '추천', 'A/B 실험', '시스템', '참고'):  # each says which record its numbers come from
+        assert any('지금 보고 있는 기록: 상품 그림 바꾸기 전 · 검증 데이터' in value for value in texts(app, tab, 'markdown')), tab
+    assert app.radio(key='record').value == '상품 그림 바꾸기 전' and app.radio(key='split').value == '검증'
+    pick(app, '통계 보정 실험')  # 시험 data only: stated in the card instead of a switch
+    assert shown(app) == '통계 보정 실험 · 시험 데이터' and not any(item.key == 'split' for item in app.radio)
+    assert any('이 기록에는 하나만 있습니다' in value for value in texts(app, '개요', 'markdown'))
+
+
+def test_every_published_bundle_shows_an_ab_with_its_source(monkeypatch):
+    monkeypatch.delenv('PUBLISHED_RESULTS_DIR')
+    monkeypatch.setattr(data, 'api_call', offline)
+    for entry in data.PUBLISHED:
+        label = data.label(entry['record'], entry['split'])
+        app = pick(AppTest.from_file('dashboard/app.py', default_timeout=30).run(), entry['record'], entry['split'])
+        assert shown(app) == label
+        assert not app.exception and not app.error and part(app, 'A/B 실험', 'plotly_chart'), label
+        captions = texts(app, 'A/B 실험', 'caption')
+        assert any('고른 측정 기록의 A/B 실험' in text or '같은 데이터·추천 모델' in text for text in captions), label
+
+
+def test_paired_ab_requires_the_same_data_and_models(tmp_path, report):
+    models = {kind: {'hashes': {'weights': kind}} for kind in ('candidate', 'ranking', 'session')}
+    report.update(data_fingerprint='same', recommendation=dict(report.get('recommendation', {}), models=models))
+    measured = dict(deepcopy(report), split='test')
+    measured['ab'] = dict(report['ab'], status='MEASURED')
+    root = tmp_path / 'docs' / 'results'
+    path = root / 'paired' / 'evaluation_full_test.json'
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(measured))
+    bundle = dict(root=root, ab=path)
+    ab, caption = data.paired_ab(dict(report, ab={'status': 'UNMEASURED'}), bundle)
+    assert ab['status'] == 'MEASURED' and '시험 데이터 결과의 A/B' in caption
+    assert caption.split(' · ')[1] == 'docs/results/paired/evaluation_full_test.json'
+    assert data.paired_ab(dict(report, data_fingerprint='other'), bundle) is None
+    changed = deepcopy(report)
+    changed['recommendation']['models']['ranking'] = {'hashes': {'weights': 'other'}}
+    assert data.paired_ab(changed, bundle) is None
+    path.write_text(json.dumps(dict(measured, split='valid')))
+    assert data.paired_ab(report, bundle) is None
+    assert data.paired_ab(report, dict(root=root, ab=root / 'missing.json')) is None
+    assert data.paired_ab(report, None) is None
 
 
 def test_reference_compares_data_search_and_active_recommender(tmp_path):
@@ -314,7 +506,7 @@ def test_reference_compares_data_search_and_active_recommender(tmp_path):
     assert '일치합니다' in reference_identity(report, results)
     index_manifest = models / 'search/indexes/i/manifest.json'
     write_json(index_manifest, {'fingerprint': 'i', 'files': {'text.faiss': 'rebuilt-index-hash'}})
-    assert '검색 파일 해시는 제출 기준과 다릅니다' in reference_identity(report, results)
+    assert '검색 파일 해시는 최종 제출 기록과 다릅니다' in reference_identity(report, results)
     write_json(index_manifest, search['index'])
     from src.common.artifacts import fingerprint
     recipe = {'candidate': {'max_grad_norm': 10.0}}
@@ -324,12 +516,12 @@ def test_reference_compares_data_search_and_active_recommender(tmp_path):
     write_json(models / 'registry.json', {'active': 'v1.0', 'versions': {'v1.0': {'config': {'recommend': recipe}}}})
     index_path = models / 'v1.0/index_manifest.json'
     active_index = dict(expected_index, config_fingerprint=fingerprint(recipe))
-    for digest, expected_text in [('different-index', '추천 모델 산출물은 제출 기준과 다릅니다'), ('same-index', '일치합니다')]:
+    for digest, expected_text in [('different-index', '추천 모델 산출물은 최종 제출 기록과 다릅니다'), ('same-index', '일치합니다')]:
         write_json(index_path, dict(active_index, index_sha256=digest))
         write_json(models / 'v1.0/meta.json', {'hashes': {**bundles['candidate']['hashes'], 'index_manifest.json': file_hash(index_path)}})
         assert expected_text in reference_identity(report, results)
     write_json(models / 'search/indexes_current.json', {'fingerprint': 'other'})
-    assert '검색 번들은 제출 기준과 다릅니다' in reference_identity(report, results)
+    assert '검색 번들은 최종 제출 기록과 다릅니다' in reference_identity(report, results)
     write_json(models / 'registry.json', {'active': 'v2.0'})
     assert '활성 모델 버전' in reference_identity(report, results)
     report['data_fingerprint'] = 'other'
