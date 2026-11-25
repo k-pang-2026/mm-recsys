@@ -19,7 +19,8 @@ STORY = [('데이터', '가상 고객 만들기', '시뮬레이터로 행동 기
          ('A/B 실험', '정말 나은지 실험', '두 그룹의 클릭·구매 비교'),
          ('시스템', '빠르고 스스로 고치기', '0.2초 응답, 자동 재학습')]
 # One glossary for the 참고 table and the 개요 card tooltips: (area, [(metric key or None, name, meaning, how to read)]).
-TERMS = [('검색', [('mrr', 'MRR', '첫 정답이 몇 번째에 나오는지의 역수 평균', '높을수록 좋음 · 최대 1'),
+GlossaryTerm = tuple[str | None, str, str, str]
+TERMS: list[tuple[str, list[GlossaryTerm]]] = [('검색', [('mrr', 'MRR', '첫 정답이 몇 번째에 나오는지의 역수 평균', '높을수록 좋음 · 최대 1'),
                    ('ndcg_at_10', 'NDCG@10', '상위 10개 안에서 정답이 위쪽에 있을수록 커지는 점수', '높을수록 좋음 · 최대 1')]),
          ('추천', [('recall_at_300', 'Recall@300', '실제로 담거나 산 상품이 후보 300개 안에 든 비율', '높을수록 좋음'),
                    ('auc', 'CTR AUC', '클릭한 상품을 안 한 상품보다 높게 매긴 비율', '높을수록 좋음 · 0.5는 무작위'),

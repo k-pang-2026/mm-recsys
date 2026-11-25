@@ -5,6 +5,7 @@ reads the same way: a one-sentence answer, how the part works, the comparison ch
 measurement record is shown is picked once, in 개요 › 측정 기록. Each topic lives in one section (dashboard/sections.py)."""
 from __future__ import annotations
 
+from collections.abc import Callable
 from functools import partial
 from html import escape
 import math
@@ -995,7 +996,8 @@ def requirement_list(requirements: dict | None) -> None:
 
 
 # ── 화면 틀 ──────────────────────────────────────────────────────────────────
-VIEWS = dict(zip(TABS, (overview_tab, data_tab, search_tab, recommendation_tab, ab_tab, system_tab, try_tab, reference_tab)))
+VIEWS: dict[str, Callable[[dict, dict | None, dict], None]] = dict(zip(
+    TABS, (overview_tab, data_tab, search_tab, recommendation_tab, ab_tab, system_tab, try_tab, reference_tab)))
 
 
 def navigation() -> None:
