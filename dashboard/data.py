@@ -7,6 +7,7 @@ import os
 import re
 import base64
 from pathlib import Path
+from typing import TypedDict
 from urllib.parse import urlsplit
 
 from src.common.artifacts import file_hash
@@ -65,7 +66,22 @@ FINAL, BEFORE_IMAGES, CALIBRATED = '최종 제출', '상품 그림 바꾸기 전
 RECORD_NOTES = {FINAL: '11/21 · 기본으로 보여 주는 기록',
                 BEFORE_IMAGES: '11/12 · 비교용 · 상품 그림을 바꾸기 전에 같은 방식으로 측정',
                 CALIBRATED: '11/15 · 비교용 · 실제 쇼핑 통계에 맞춰 바꾼 데이터로 측정'}
-PUBLISHED = (
+
+
+class _RequiredRecordFields(TypedDict):
+    record: str
+    split: str
+    path: str
+    folder: str
+
+
+class PublishedRecord(_RequiredRecordFields, total=False):
+    ab: str
+    files: dict[str, str]
+    reference: bool
+
+
+PUBLISHED: tuple[PublishedRecord, ...] = (
     dict(record=FINAL, split='시험', path=f'{ILLUSTRATIONS}/release_display/evaluation_full_test.json',
          folder=ILLUSTRATIONS, files=ILLUSTRATIONS_FILES, reference=True),
     dict(record=FINAL, split='검증', path=f'{ILLUSTRATIONS}/release_quality/quality_full_valid.json',
@@ -149,7 +165,9 @@ def paired_ab(report: dict, bundle: dict | None) -> tuple[dict, str] | None:
 
     Returns the A/B and a caption naming where it came from, or None when nothing matching is stored.
     """
-    path: Path | None = (bundle or {}).get('ab')
+    if bundle is None:
+        return None
+    path: Path | None = bundle.get('ab')
     if path is None or not path.is_file():
         return None
     value = read_json(path, bundle['root'])
@@ -180,9 +198,9 @@ def load_bundle(bundle: dict) -> dict:
     return read_reference(bundle['path']) if bundle.get('reference') else read_report(bundle['path'], bundle['root'])
 
 
-def read_json(path: Path, root: Path, limit: int = 20_000_000):
+def read_json(path: Path | None, root: Path, limit: int = 20_000_000):
     """Read side evidence inside results_dir; None when the file is absent."""
-    if not path.is_file():
+    if path is None or not path.is_file():
         return None
     if not path.resolve().is_relative_to(root.resolve()) or path.stat().st_size > limit:
         raise ValueError('결과 파일 경로 또는 크기를 확인하세요.')
